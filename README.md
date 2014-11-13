@@ -16,7 +16,7 @@ file { '/usr/lib/systemd/system/foo.service':
   owner  => 'root',
   group  => 'root',
   mode   => '0644',
-  source => 'puppet:///modules/${module_name}/foo.service',
+  source => "puppet:///modules/${module_name}/foo.service",
 } ~>
 Exec['systemctl-daemon-reload']
-`̀``
+```
