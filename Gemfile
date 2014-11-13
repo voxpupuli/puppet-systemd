@@ -6,6 +6,7 @@ group :development, :test do
   gem 'puppetlabs_spec_helper',  :require => false
   gem 'puppet-lint',             :require => false
   gem 'metadata-json-lint',      :require => false
+  gem 'travis'
 end
 
 if facterversion = ENV['FACTER_GEM_VERSION']
