@@ -9,3 +9,11 @@ PuppetLint::RakeTask.new :lint do |config|
 end
 
 PuppetSyntax.exclude_paths = ["spec/fixtures/**/*.pp", "vendor/**/*"]
+
+task :changelog do
+  sh 'github_changelog_generator'
+  if File.file? 'CHANGELOG.base.md'
+    sh 'cat CHANGELOG.md CHANGELOG.base.md > CHANGELOG.new.md'
+    sh 'mv CHANGELOG.new.md CHANGELOG.md'
+  end
+end
