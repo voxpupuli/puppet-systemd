@@ -1,5 +1,8 @@
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
+require 'github_changelog_generator/task'
+require 'puppet_blacksmith'
+require 'puppet_blacksmith/rake_tasks'
 
 Rake::Task[:lint].clear
 PuppetLint::RakeTask.new :lint do |config|
@@ -10,10 +13,8 @@ end
 
 PuppetSyntax.exclude_paths = ["spec/fixtures/**/*.pp", "vendor/**/*"]
 
-task :changelog do
-  sh 'github_changelog_generator'
-  if File.file? 'CHANGELOG.base.md'
-    sh 'cat CHANGELOG.md CHANGELOG.base.md > CHANGELOG.new.md'
-    sh 'mv CHANGELOG.new.md CHANGELOG.md'
-  end
+GitHubChangelogGenerator::RakeTask.new :changelog do |config|
+  m = Blacksmith::Modulefile.new
+  config.future_release = m.version
+  config.release_url = "https://forge.puppetlabs.com/#{m.author}/#{m.name}/%s"
 end
