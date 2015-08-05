@@ -1,0 +1,35 @@
+## [0.1.15](https://forge.puppetlabs.com/camptocamp/systemd/0.1.15) (2015-06-26)
+
+- Fix strict_variables activation with rspec-puppet 2.2
+
+## [0.1.14](https://forge.puppetlabs.com/camptocamp/systemd/0.1.14) (2015-05-28)
+
+- Add beaker_spec_helper to Gemfile
+
+## [0.1.13](https://forge.puppetlabs.com/camptocamp/systemd/0.1.13) (2015-05-26)
+
+- Use random application order in nodeset
+
+## [0.1.12](https://forge.puppetlabs.com/camptocamp/systemd/0.1.12) (2015-05-26)
+
+- Add utopic & vivid nodesets
+
+## [0.1.11](https://forge.puppetlabs.com/camptocamp/systemd/0.1.11) (2015-05-25)
+
+- Don't allow failure on Puppet 4
+
+## [0.1.10](https://forge.puppetlabs.com/camptocamp/systemd/0.1.10) (2015-05-13)
+
+- Add puppet-lint-file_source_rights-check gem
+
+## [0.1.9](https://forge.puppetlabs.com/camptocamp/systemd/0.1.9) (2015-05-12)
+
+- Don't pin beaker
+
+## [0.1.8](https://forge.puppetlabs.com/camptocamp/systemd/0.1.8) (2015-04-27)
+
+- Add nodeset ubuntu-12.04-x86_64-openstack
+
+## [0.1.7](https://forge.puppetlabs.com/camptocamp/systemd/0.1.7) (2015-04-03)
+
+- Confine rspec pinning to ruby 1.8
