@@ -1,3 +1,7 @@
+## 2015-08-21 - Release 0.2.1
+
+Use docker for acceptance tests
+
 # Change Log
 
 ## [0.2.0](https://forge.puppetlabs.com/Camptocamp/systemd/0.2.0) (2015-08-05)
