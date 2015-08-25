@@ -1,7 +1,7 @@
 {
   "name": "camptocamp-systemd",
-  "version": "0.2.1",
-  "author": "Camptocamp",
+  "version": "0.2.2",
+  "author": "camptocamp",
   "summary": "Puppet Systemd module",
   "license": "Apache-2.0",
   "source": "https://github.com/camptocamp/puppet-systemd",
