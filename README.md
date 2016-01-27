@@ -20,7 +20,7 @@ file { '/usr/lib/systemd/system/foo.service':
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.service",
 } ~>
-Exec['systemctl-daemon-reload']
+Class['systemd::daemon_reload']
 ```
 
 ### systemd-tmpfiles --create
@@ -34,5 +34,5 @@ file { '/etc/tmpfiles.d/foo.conf':
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.conf",
 } ~>
-Exec['systemd-tmpfiles-create']
+Class['systemd::tmpfiles_create']
 ```
