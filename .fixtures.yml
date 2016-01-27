@@ -1,0 +1,4 @@
+---
+fixtures:
+  symlinks:
+    systemd: "#{source_dir}"
