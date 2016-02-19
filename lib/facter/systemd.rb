@@ -23,17 +23,13 @@
 Facter.add(:systemd) do
   confine :kernel => :linux
   setcode do
-    result = false
-    init_process_name = Facter::Core::Execution.exec('ps -p 1 -o comm=')
-    if init_process_name.eql? 'systemd'
-      result = true
-    end
+    Facter::Core::Execution.exec('ps -p 1 -o comm=') == 'systemd'
   end
 end
 
 Facter.add(:systemd_version) do
   confine :systemd => true
   setcode do
-    version = Facter::Core::Execution.exec("systemctl --version | grep 'systemd' | awk '{ print $2 }'")
+    Facter::Core::Execution.exec("systemctl --version | grep 'systemd' | awk '{ print $2 }'")
   end
 end
