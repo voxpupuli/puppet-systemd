@@ -1,8 +1,8 @@
 source ENV['GEM_SOURCE'] || "https://rubygems.org"
 
 group :development, :unit_tests do
-  gem 'rake',                                              :require => false
-  gem 'rspec', '< 3.2',                                    :require => false if RUBY_VERSION =~ /^1.8/
+  gem 'rake', ' < 11.0',                                   :require => false if RUBY_VERSION =~ /^1\.8/
+  gem 'rspec', '< 3.2',                                    :require => false if RUBY_VERSION =~ /^1\.8/
   gem 'rspec-puppet',                                      :require => false
   gem 'puppetlabs_spec_helper',                            :require => false
   gem 'metadata-json-lint',                                :require => false
@@ -21,8 +21,8 @@ group :development, :unit_tests do
   gem 'puppet-lint-file_source_rights-check',              :require => false
   gem 'puppet-lint-alias-check',                           :require => false
   gem 'rspec-puppet-facts',                                :require => false
-  gem 'github_changelog_generator',                        :require => false, :git => 'https://github.com/raphink/github-changelog-generator.git', :branch => 'dev/all_patches' if RUBY_VERSION !~ /^1.8/
-  gem 'puppet-blacksmith',                                 :require => false if RUBY_VERSION !~ /^1.8/
+  gem 'ruby-augeas',                                       :require => false
+  gem 'puppet-blacksmith',                                 :require => false if RUBY_VERSION !~ /^1\./
 end
 
 group :system_tests do
