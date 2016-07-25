@@ -1,6 +1,6 @@
 # Fact: systemd
 #
-# Purpose: 
+# Purpose:
 #   Determine whether SystemD is the init system on the node
 #
 # Resolution:
@@ -11,7 +11,7 @@
 
 # Fact: systemd-version
 #
-# Purpose: 
+# Purpose:
 #   Determine the version of systemd installed
 #
 # Resolution:
@@ -30,6 +30,6 @@ end
 Facter.add(:systemd_version) do
   confine :systemd => true
   setcode do
-    Facter::Core::Execution.exec("systemctl --version | grep 'systemd' | awk '{ print $2 }'")
+    Facter::Core::Execution.exec("systemctl --version | awk '{/systemd/ print $2 }'")
   end
 end
