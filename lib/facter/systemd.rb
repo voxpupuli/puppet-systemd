@@ -1,6 +1,6 @@
 # Fact: systemd
 #
-# Purpose: 
+# Purpose:
 #   Determine whether SystemD is the init system on the node
 #
 # Resolution:
@@ -11,7 +11,7 @@
 
 # Fact: systemd-version
 #
-# Purpose: 
+# Purpose:
 #   Determine the version of systemd installed
 #
 # Resolution:
