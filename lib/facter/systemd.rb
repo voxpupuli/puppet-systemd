@@ -30,6 +30,6 @@ end
 Facter.add(:systemd_version) do
   confine :systemd => true
   setcode do
-    Facter::Core::Execution.exec("systemctl --version | grep 'systemd' | awk '{ print $2 }'")
+    Facter::Core::Execution.exec("systemctl --version | awk '/systemd/{ print $2 }'")
   end
 end
