@@ -33,6 +33,7 @@ describe 'systemd::unit_file' do
         :path => '/usr/lib/systemd/system',
         :content => 'some-content',
         :source => 'some-source',
+        :target => 'some-target',
     } }
 
     it 'creates the unit file' do
@@ -40,6 +41,7 @@ describe 'systemd::unit_file' do
                                                                             'ensure' => 'absent',
                                                                             'content' => 'some-content',
                                                                             'source' => 'some-source',
+                                                                            'target' => 'some-target',
                                                                         })
     end
 

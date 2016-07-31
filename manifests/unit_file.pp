@@ -5,6 +5,7 @@ define systemd::unit_file(
   $path = '/etc/systemd/system',
   $content = undef,
   $source = undef,
+  $target = undef,
 ) {
   include ::systemd
 
@@ -12,6 +13,7 @@ define systemd::unit_file(
     ensure  => $ensure,
     content => $content,
     source  => $source,
+    target  => $target,
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
