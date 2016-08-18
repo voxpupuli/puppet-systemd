@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.4.0](https://forge.puppetlabs.com/camptocamp/systemd/0.4.0) (2016-08-18)
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/0.3.0...0.4.0)
+
+- Deprecate Ruby 1.8 tests
+- Only use awk instead of grep and awk [\#9](https://github.com/camptocamp/puppet-systemd/pull/9) ([igalic](https://github.com/igalic))
+- Add LICENSE (fix #11)
+- Add target param for the unit file [\#10](https://github.com/camptocamp/puppet-systemd/pull/10) ([tampakrap](https://github.com/tampakrap))
+
 ## [0.3.0](https://forge.puppetlabs.com/camptocamp/systemd/0.3.0) (2016-05-16)
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/0.2.2...0.3.0)
 
