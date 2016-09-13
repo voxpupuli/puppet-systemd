@@ -1,0 +1,26 @@
+# This file is created by Puppet
+[Service]
+<%
+[
+  'LimitCPU',
+  'LimitFSIZE',
+  'LimitDATA',
+  'LimitSTACK',
+  'LimitCORE',
+  'LimitRSS',
+  'LimitNOFILE',
+  'LimitAS',
+  'LimitNPROC',
+  'LimitMEMLOCK',
+  'LimitLOCKS',
+  'LimitSIGPENDING',
+  'LimitMSGQUEUE',
+  'LimitNICE',
+  'LimitRTPRIO',
+  'LimitRTTIME'
+].each do |d|
+if @limits[d] -%>
+<%= d %>=<%= @limits[d] %>
+<%
+end
+end %>

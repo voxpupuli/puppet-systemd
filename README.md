@@ -58,3 +58,24 @@ file { '/etc/tmpfiles.d/foo.conf':
 } ~>
 Exec['systemd-tmpfiles-create']
 ```
+
+### service limits
+
+Manage soft and hard limits on various resources for executed processes.
+
+```puppet
+::systemd::service_limits { 'foo.service':
+  limits => {
+    LimitNOFILE => 8192,
+    LimitNPROC  => 16384
+  }
+}
+```
+
+Or provide the configuration file yourself. Systemd reloading and restarting of the service are handled by the module.
+
+```puppet
+::systemd::service_limits { 'foo.service':
+  source => "puppet:///modules/${module_name}/foo.conf",
+}
+```
