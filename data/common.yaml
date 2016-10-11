@@ -21,3 +21,4 @@ systemd::fallback_ntp_server: ~
 systemd::manage_accounting: false
 systemd::accounting: {}
 systemd::purge_dropin_dirs: true
+systemd::journald_settings: {}

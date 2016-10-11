@@ -209,3 +209,14 @@ class{'systemd':
   }
 }
 ```
+### journald configuration
+
+It also allows you to manage journald settings. You can manage journald settings through setting the `journald_settings` parameter. If you want a parameter to be removed, you can pass its value as params.
+
+```yaml
+systemd::journald_settings:
+  Storage: auto
+  MaxRetentionSec: 5day
+  MaxLevelStore:
+    ensure: absent
+```
