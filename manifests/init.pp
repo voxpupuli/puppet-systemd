@@ -1,27 +1,23 @@
-# -- Class systemd
 # This module allows triggering systemd commands once for all modules
+#
+# @api public
+#
+# @param service_limits
+#   May be passed a resource hash suitable for passing directly into the
+#   ``create_resources()`` function as called on ``systemd::service_limits``
+#
 class systemd (
-  $service_limits          = {},
+  Optional[Hash] $service_limits = undef
   Boolean $manage_resolved = true,
   Boolean $manage_networkd = true,
 ){
 
-  Exec {
-    refreshonly => true,
-    path        => $::path,
-  }
+  include '::systemd::systemctl::daemon_reload'
+  include '::systemd::tmpfiles'
 
-  exec {
-    'systemctl-daemon-reload':
-      command => 'systemctl daemon-reload',
+  if $service_limits {
+    create_resources('systemd::service_limits', $service_limits)
   }
-
-  exec {
-    'systemd-tmpfiles-create':
-      command => 'systemd-tmpfiles --create',
-  }
-
-  create_resources('systemd::service_limits', $service_limits, {})
 
   if $manage_resolved {
     service{'systemd-resolved':
