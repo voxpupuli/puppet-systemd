@@ -1,0 +1,85 @@
+#puppet managed file.
+
+[Unit]
+<%
+[
+  'Description',
+  'Requires',
+  'Conflicts',
+  'Wants',
+  'After',
+].each do |s| 
+if @settings[s]
+  if @settings[s].kind_of?(Array)
+    @settings[s].each do |v| 
+-%>
+<%= s %>=<%= v %>
+<%
+    end
+  elsif @settings[s].kind_of?(String) 
+-%>
+<%= s %>=<%= @settings[s] %>
+<%
+  else
+   raise Puppet::Error, "settings hash contains a key '#{s}' whose value which is not an array or a string"
+  end
+end
+end
+-%> 
+
+[Service]
+<%
+[
+  'Type',
+  'ExecStart',
+  'ExecStop',
+  'ExecReload',
+  'Environment',
+  'EnvironmentFile',
+  'WorkingDirectory',
+  'Restart',
+  'RestartSec',
+  'RestartAfterExec',
+].each do |s| 
+if @settings[s]
+  if @settings[s].kind_of?(Array)
+    @settings[s].each do |v| 
+-%>
+<%= s %>=<%= v %>
+<%
+    end
+  elsif @settings[s].kind_of?(String) 
+-%>
+<%= s %>=<%= @settings[s] %>
+<%
+  else
+   raise Puppet::Error, "settings hash contains a key '#{s}' whose value which is not an array or a string"
+  end
+end
+end
+-%> 
+
+[Install]
+<%
+[
+  'WantedBy',
+].each do |s| 
+if @settings[s]
+  if @settings[s].kind_of?(Array)
+    @settings[s].each do |v| 
+-%>
+<%= s %>=<%= v %>
+<%
+    end
+  elsif @settings[s].kind_of?(String) 
+-%>
+<%= s %>=<%= @settings[s] %>
+<%
+  else
+   raise Puppet::Error, "settings hash contains a key '#{s}' whose value which is not an array or a string"
+  end
+end
+end
+-%> 
+
+

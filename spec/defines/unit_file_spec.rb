@@ -47,4 +47,21 @@ describe 'systemd::unit_file' do
 
   end
 
+  context 'with settings' do
+    let(:title) { 'fancy.service' }
+
+    let(:params) { {
+        :ensure => 'absent',
+        :path => '/usr/lib/systemd/system',
+        :settings => {'EnvironmentFile' => ['','/etc/sysconfig/foo'],
+                      'Description' => 'Foo Service',
+                     }
+    } }
+    it 'creates the unit file' do
+      should contain_file('/usr/lib/systemd/system/fancy.service').with({
+                                                                            'ensure' => 'absent',
+                                                                            'content' => %r{^EnvironmentFile=$}
+                                                                        })
+    end
+  end
 end

@@ -20,6 +20,23 @@ Let this module handle file creation and systemd reloading.
  source => "puppet:///modules/${module_name}/foo.service",
 }
 ```
+Or specify a settings hash for a new unit file.
+
+```puppet
+::systemd::unit_file{ 'foo.service':
+   settings => { 'Description'     => 'the foo service',
+                 'ExecStart'       => '/bin/foo',
+                 'Wants'           => ['network.target', 'bar.service'],
+                 'Type'            => 'oneshot',
+                 'EnvironmentFile' => ['-/etc/sysconfig/foo','/etc/sysconfig/myfoo'],
+               }
+}
+```
+The following keys for the settings hash are supported: `Description`, `Requires`, `Conflicts`, `Wants`,
+`After`, `Type`, `ExecStart`, `ExecStop`, `ExecReload`, `Environment`, `EnvironmentFile`, `WorkingDirectory`,
+`Restart`, `RestartSec`, `RestartAfterExec` and`WantedBy`. If a value is specified as an array multiple
+lines will be added to the unit file.
+
 
 Or handle file creation yourself and trigger systemd.
 
