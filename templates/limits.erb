@@ -17,7 +17,8 @@
   'LimitMSGQUEUE',
   'LimitNICE',
   'LimitRTPRIO',
-  'LimitRTTIME'
+  'LimitRTTIME',
+  'MemoryLimit',
 ].each do |d|
 if @limits[d] -%>
 <%= d %>=<%= @limits[d] %>
