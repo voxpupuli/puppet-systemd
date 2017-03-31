@@ -28,7 +28,7 @@ define systemd::service_limits(
     owner  => 'root',
     group  => 'root',
   }
-  
+
   -> file { "${path}/${title}.d/limits.conf":
     ensure  => $ensure,
     content => $content,
