@@ -35,6 +35,19 @@ file { '/usr/lib/systemd/system/foo.service':
 Exec['systemctl-daemon-reload']
 ```
 
+### unit files wrapper
+
+Simplify creation of multiple unit files.
+
+```puppet
+::systemd::simplified_unit_file { [
+  'foo.service',
+  'bar.service',
+]:
+  source_base => "puppet:///modules/${module_name}",
+}
+```
+
 ### tmpfiles
 
 Let this module handle file creation and systemd reloading
