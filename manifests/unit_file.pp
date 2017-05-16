@@ -12,10 +12,10 @@ define systemd::unit_file(
   if $title =~ /^([^\/]+)\// {
     $subdir = $1
     if $subdir !~ /\.d$/ {
-      fail("drop-in unit dirs must have suffix .d")
+      fail('drop-in unit dirs must have suffix .d')
     }
     if $title !~ /\.conf$/ {
-      fail("drop-in unit files must have suffix .conf")
+      fail('drop-in unit files must have suffix .conf')
     }
     file { "${path}/${subdir}":
       ensure  => directory,
