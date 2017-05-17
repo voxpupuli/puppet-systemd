@@ -24,9 +24,10 @@ define systemd::service_limits(
   }
 
   file { "${path}/${title}.d/":
-    ensure => 'directory',
-    owner  => 'root',
-    group  => 'root',
+    ensure  => 'directory',
+    owner   => 'root',
+    group   => 'root',
+    seltype => 'systemd_unit_file_t',
   }
 
   -> file { "${path}/${title}.d/limits.conf":
