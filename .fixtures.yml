@@ -1,4 +1,6 @@
 ---
 fixtures:
+  repositories:
+    stdlib: https://github.com/puppetlabs/puppetlabs-stdlib.git
   symlinks:
     systemd: "#{source_dir}"
