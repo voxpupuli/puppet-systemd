@@ -33,7 +33,8 @@ define systemd::service_limits(
   Optional[String]                 $source          = undef,
   Boolean                          $restart_service = true
 ) {
-  include ::systemd
+
+  include systemd
 
   if $title !~ Pattern['^.+\.(service|socket|mount|swap)$'] {
     fail('$name must match Pattern["^.+\.(service|socket|mount|swap)$"]')
@@ -70,18 +71,16 @@ define systemd::service_limits(
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
+    notify  => Class['systemd::systemctl::daemon_reload']
   }
-
-  File["${path}/${title}.d/90-limits.conf"] ~> Class['systemd::systemctl::daemon_reload']
 
   if $restart_service {
     exec { "restart ${title} because limits":
       command     => "systemctl restart ${title}",
       path        => $::path,
       refreshonly => true,
+      subscribe   => File["${path}/${title}.d/90-limits.conf"],
+      require     => Class['systemd::systemctl::daemon_reload']
     }
-
-    File["${path}/${title}.d/90-limits.conf"] ~> Exec["restart ${title} because limits"]
-    Class['systemd::systemctl::daemon_reload'] -> Exec["restart ${title} because limits"]
   }
 }

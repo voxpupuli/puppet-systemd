@@ -16,7 +16,7 @@ describe 'systemd::tmpfile' do
         it { is_expected.to create_file("/etc/tmpfiles.d/#{title}").with(
           :ensure  => 'file',
           :content => /#{params[:content]}/,
-          :mode    => '0644'
+          :mode    => '0444'
         ) }
       end
     end

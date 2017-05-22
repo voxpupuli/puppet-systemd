@@ -9,7 +9,6 @@ describe 'systemd' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('systemd') }
         it { is_expected.to create_class('systemd::systemctl::daemon_reload') }
-        it { is_expected.to create_class('systemd::tmpfiles') }
       end
     end
   end

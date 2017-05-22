@@ -34,16 +34,13 @@ define systemd::unit_file(
   Optional[String]               $source  = undef,
   Optional[Stdlib::Absolutepath] $target  = undef,
 ) {
-  include ::systemd
+  include systemd
 
-  if $title !~ Pattern['^.+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$'] {
-    fail('$name must match Pattern["^.+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$"]')
-  }
+  assert_type(Systemd::Unit, $title)
 
   if $target {
     $_ensure = 'link'
-  }
-  else {
+  } else {
     $_ensure = $ensure
   }
 
@@ -54,7 +51,7 @@ define systemd::unit_file(
     target  => $target,
     owner   => 'root',
     group   => 'root',
-    mode    => '0644',
+    mode    => '0444',
     notify  => Class['systemd::systemctl::daemon_reload'],
   }
 }

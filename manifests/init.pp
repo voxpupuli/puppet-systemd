@@ -12,8 +12,7 @@ class systemd (
   Boolean $manage_networkd = true,
 ){
 
-  include '::systemd::systemctl::daemon_reload'
-  include '::systemd::tmpfiles'
+  contain systemd::systemctl::daemon_reload
 
   if $service_limits {
     create_resources('systemd::service_limits', $service_limits)

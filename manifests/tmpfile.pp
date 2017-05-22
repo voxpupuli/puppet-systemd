@@ -31,9 +31,9 @@ define systemd::tmpfile(
   Optional[String]      $content = undef,
   Optional[String]      $source  = undef,
 ) {
-  include ::systemd
+  include systemd::tmpfiles
 
-  if name =~ Pattern['/'] {
+  if $title =~ Pattern['/'] {
     fail('$name may not contain a forward slash "(/)"')
   }
 
@@ -43,7 +43,7 @@ define systemd::tmpfile(
     source  => $source,
     owner   => 'root',
     group   => 'root',
-    mode    => '0644',
+    mode    => '0444',
     notify  => Class['systemd::tmpfiles'],
   }
 }
