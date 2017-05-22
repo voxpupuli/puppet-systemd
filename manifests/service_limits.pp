@@ -34,7 +34,7 @@ define systemd::service_limits(
   Boolean                          $restart_service = true
 ) {
 
-  include systemd
+  include ::systemd
 
   if $title !~ Pattern['^.+\.(service|socket|mount|swap)$'] {
     fail('$name must match Pattern["^.+\.(service|socket|mount|swap)$"]')
@@ -71,7 +71,7 @@ define systemd::service_limits(
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    notify  => Class['systemd::systemctl::daemon_reload']
+    notify  => Class['systemd::systemctl::daemon_reload'],
   }
 
   if $restart_service {
@@ -80,7 +80,7 @@ define systemd::service_limits(
       path        => $::path,
       refreshonly => true,
       subscribe   => File["${path}/${title}.d/90-limits.conf"],
-      require     => Class['systemd::systemctl::daemon_reload']
+      require     => Class['systemd::systemctl::daemon_reload'],
     }
   }
 }

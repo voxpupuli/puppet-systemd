@@ -12,7 +12,7 @@ class systemd (
   Boolean $manage_networkd = true,
 ){
 
-  contain systemd::systemctl::daemon_reload
+  contain ::systemd::systemctl::daemon_reload
 
   if $service_limits {
     create_resources('systemd::service_limits', $service_limits)
