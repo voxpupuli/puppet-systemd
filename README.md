@@ -18,6 +18,8 @@ Let this module handle file creation and systemd reloading.
 ```puppet
 ::systemd::unit_file { 'foo.service':
  source => "puppet:///modules/${module_name}/foo.service",
+} ~> service {'foo':
+  ensure => 'running',
 }
 ```
 
@@ -32,8 +34,12 @@ file { '/usr/lib/systemd/system/foo.service':
   group  => 'root',
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.service",
+} ~> Class['systemd::systemctl::daemon_reload']
+
+service {'foo':
+  ensure    => 'running',
+  subscribe => File['/usr/lib/systemd/system/foo.service'],
 }
-~> Class['systemd::systemctl::daemon_reload']
 ```
 
 ### drop-in files
@@ -46,6 +52,8 @@ directory creation and systemd reloading:
 ::systemd::dropin_file { 'foo.conf':
   unit   => 'foo.service',
   source => "puppet:///modules/${module_name}/foo.conf",
+} ~> service {'foo':
+  ensure    => 'running',
 }
 ```
 
@@ -59,14 +67,19 @@ file { '/etc/systemd/system/foo.service.d':
   owner  => 'root',
   group  => 'root',
 }
+
 file { '/etc/systemd/system/foo.service.d/foo.conf':
   ensure => file,
   owner  => 'root',
   group  => 'root',
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.conf",
+} ~> Class['systemd::systemctl::daemon_reload']
+
+service {'foo':
+  ensure    => 'running',
+  subscribe => File['/etc/systemd/system/foo.service.d/foo.conf'],
 }
-~> Class['systemd::systemctl::daemon_reload']
 ```
 
 ### tmpfiles
