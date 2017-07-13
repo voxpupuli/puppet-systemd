@@ -37,6 +37,9 @@
       "operatingsystemrelease": [
         "7"
       ]
+    },
+    {
+      "operatingsystem": "Archlinux"
     }
   ]
 }
