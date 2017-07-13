@@ -1,5 +1,5 @@
-# -- Class systemd  
-# This module allows triggering systemd commands once for all modules 
+# -- Class systemd
+# This module allows triggering systemd commands once for all modules
 class systemd (
   $service_limits = {}
 ){
