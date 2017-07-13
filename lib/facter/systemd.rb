@@ -1,7 +1,7 @@
 # Fact: systemd
 #
 # Purpose: 
-#   Determine whether SystemD is the init system on the node
+#   Determine whether systemd is the init system on the node
 #
 # Resolution:
 #   Check the name of the process 1 (ps -p 1)
