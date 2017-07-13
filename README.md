@@ -95,3 +95,18 @@ for you:
   restart_service => true,
 }
 ```
+
+### Services
+
+Systemd provides multiple services. Currently you can manage `systemd-resolved`
+and `systemd-networkd` via the main class:
+
+```puppet
+class{'::systemd':
+  $manage_resolved => true,
+  $manage_networkd => true,
+```
+
+$manage_networkd is required if you want to reload it for new
+`::systemd::network` resources. Setting $manage_resolved will also manage your
+`/etc/resolv.conf`.
