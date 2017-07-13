@@ -11,7 +11,7 @@ define systemd::network (
 
   include ::systemd
 
-  if $restart_service {
+  if $restart_service and $systemd::manage_networkd {
     $notify = Service['systemd-networkd']
   } else {
     $notify = undef
