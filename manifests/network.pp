@@ -7,17 +7,9 @@ define systemd::network (
   Optional[String] $source               = undef,
   Optional[Stdlib::Absolutepath] $target = undef,
   Boolean $restart_service               = true,
-  Boolean $manage_service                = true,
 ){
 
   include ::systemd
-
-  if $manage_service {
-    service{'systemd-networkd':
-      ensure  => 'running',
-      enabled => true,
-    }
-  }
 
   if $restart_service {
     $notify = Service['systemd-networkd']
