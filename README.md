@@ -79,3 +79,18 @@ Or provide the configuration file yourself. Systemd reloading and restarting of 
   source => "puppet:///modules/${module_name}/foo.conf",
 }
 ```
+
+### network
+
+systemd-networkd is able to manage your network configuration. We provide a
+defined resource which can write the interface configurations. systemd-networkd
+needs to be restarted to apply the configs. The defined resource can do this
+for you, besides managing the service itself.
+
+```puppet
+::systemd::network{'eth0.network':
+  source          => "puppet:///modules/${module_name}/eth0.network",
+  manage_service  => true,
+  restart_service => true,
+}
+```

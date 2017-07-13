@@ -3,6 +3,7 @@
 class systemd (
   $service_limits          = {},
   Boolean $manage_resolved = true,
+  Boolean $manage_networkd = true,
 ){
 
   Exec {
@@ -30,6 +31,13 @@ class systemd (
     -> file{'/etc/resolv.conf':
       ensure => 'symlink',
       target => '/run/systemd/resolve/resolv.conf',
+    }
+  }
+
+  if $manage_networkd {
+    service{'systemd-networkd':
+      ensure => 'running',
+      enable => true,
     }
   }
 }
