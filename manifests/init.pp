@@ -20,9 +20,9 @@
 #
 class systemd (
   Optional[Hash]                             $service_limits  = undef,
-  Boolean                                    $manage_resolved = true,
+  Boolean                                    $manage_resolved = false,
   Variant[Enum['stopped','running'],Boolean] $resolved_ensure  = 'running',
-  Boolean                                    $manage_networkd = true,
+  Boolean                                    $manage_networkd = false,
   Variant[Enum['stopped','running'],Boolean] $networkd_ensure = 'running',
 ){
 
