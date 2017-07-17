@@ -32,8 +32,8 @@ file { '/usr/lib/systemd/system/foo.service':
   group  => 'root',
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.service",
-} ~>
-Class['systemd::systemctl::daemon_reload']
+}
+~> Class['systemd::systemctl::daemon_reload']
 ```
 
 ### tmpfiles
@@ -57,8 +57,8 @@ file { '/etc/tmpfiles.d/foo.conf':
   group  => 'root',
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.conf",
-} ~>
-Class['systemd::tmpfiles']
+}
+~> Class['systemd::tmpfiles']
 ```
 
 ### service limits
@@ -69,7 +69,7 @@ Manage soft and hard limits on various resources for executed processes.
 ::systemd::service_limits { 'foo.service':
   limits => {
     LimitNOFILE => 8192,
-    LimitNPROC  => 16384
+    LimitNPROC  => 16384,
   }
 }
 ```

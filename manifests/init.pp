@@ -19,11 +19,11 @@
 #   The state that the ``networkd`` service should be in
 #
 class systemd (
-  Optional[Hash]                             $service_limits  = undef,
-  Boolean                                    $manage_resolved = false,
-  Variant[Enum['stopped','running'],Boolean] $resolved_ensure  = 'running',
-  Boolean                                    $manage_networkd = false,
-  Variant[Enum['stopped','running'],Boolean] $networkd_ensure = 'running',
+  Optional[Hash]            $service_limits  = undef,
+  Boolean                   $manage_resolved = false,
+  Enum['stopped','running'] $resolved_ensure = 'running',
+  Boolean                   $manage_networkd = false,
+  Enum['stopped','running'] $networkd_ensure = 'running',
 ){
 
   contain ::systemd::systemctl::daemon_reload
