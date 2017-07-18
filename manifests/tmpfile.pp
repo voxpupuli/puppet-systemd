@@ -26,19 +26,24 @@
 #  * Mutually exclusive with ``$limits``
 #
 define systemd::tmpfile(
-  Enum['file','absent'] $ensure  = 'file',
-  Stdlib::Absolutepath  $path    = '/etc/tmpfiles.d',
-  Optional[String]      $content = undef,
-  Optional[String]      $source  = undef,
+  Enum['present', 'absent', 'file'] $ensure  = 'file',
+  Stdlib::Absolutepath              $path    = '/etc/tmpfiles.d',
+  Optional[String]                  $content = undef,
+  Optional[String]                  $source  = undef,
 ) {
   include ::systemd::tmpfiles
 
-  if $title =~ Pattern['/'] {
+  if $name =~ Pattern['/'] {
     fail('$name may not contain a forward slash "(/)"')
   }
 
-  file { "${path}/${title}":
-    ensure  => $ensure,
+  $_tmp_file_ensure = $ensure ? {
+    'present' => 'file',
+    default   => $ensure,
+  }
+
+  file { "${path}/${name}":
+    ensure  => $_tmp_file_ensure,
     content => $content,
     source  => $source,
     owner   => 'root',

@@ -6,14 +6,14 @@
 #   The state that the ``networkd`` service should be in
 #
 class systemd::networkd (
-  Variant[Enum['stopped','running'],Boolean] $ensure = 'running',
+  Enum['stopped','running'] $ensure = 'running',
 ){
 
   assert_private()
 
   $_enable_networkd = $ensure ? {
-    /stopped/ => false,
-    /running/ => true,
+    'stopped' => false,
+    'running' => true,
     default   => $ensure,
   }
 

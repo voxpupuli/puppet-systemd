@@ -27,16 +27,16 @@
 #   Restart the managed service after setting the limits
 #
 define systemd::service_limits(
-  Enum['file','absent']            $ensure          = 'file',
-  Stdlib::Absolutepath             $path            = '/etc/systemd/system',
-  Optional[Systemd::ServiceLimits] $limits          = undef,
-  Optional[String]                 $source          = undef,
-  Boolean                          $restart_service = true
+  Enum['present', 'absent', 'file'] $ensure          = 'present',
+  Stdlib::Absolutepath              $path            = '/etc/systemd/system',
+  Optional[Systemd::ServiceLimits]  $limits          = undef,
+  Optional[String]                  $source          = undef,
+  Boolean                           $restart_service = true
 ) {
 
   include ::systemd
 
-  if $title !~ Pattern['^.+\.(service|socket|mount|swap)$'] {
+  if $name !~ Pattern['^.+\.(service|socket|mount|swap)$'] {
     fail('$name must match Pattern["^.+\.(service|socket|mount|swap)$"]')
   }
 
@@ -54,18 +54,21 @@ define systemd::service_limits(
     fail('You must supply either the limits or source parameter to systemd::service_limits')
   }
 
-  ensure_resource('file', "${path}/${title}.d/",
-    {
-      ensure => 'directory',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
-      seltype => 'systemd_unit_file_t',
-    }
-  )
+  file { "${path}/${name}.d/":
+    ensure => 'directory',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    seltype => 'systemd_unit_file_t',
+  }
 
-  file { "${path}/${title}.d/90-limits.conf":
-    ensure  => $ensure,
+  $_conf_file_ensure = $ensure ? {
+    'present' => 'file',
+    default   => $ensure,
+  }
+
+  file { "${path}/${name}.d/90-limits.conf":
+    ensure  => $_conf_file_ensure,
     content => $_content,
     source  => $source,
     owner   => 'root',
@@ -75,11 +78,11 @@ define systemd::service_limits(
   }
 
   if $restart_service {
-    exec { "restart ${title} because limits":
-      command     => "systemctl restart ${title}",
+    exec { "restart ${name} because limits":
+      command     => "systemctl restart ${name}",
       path        => $::path,
       refreshonly => true,
-      subscribe   => File["${path}/${title}.d/90-limits.conf"],
+      subscribe   => File["${path}/${name}.d/90-limits.conf"],
       require     => Class['systemd::systemctl::daemon_reload'],
     }
   }

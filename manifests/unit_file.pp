@@ -28,23 +28,26 @@
 #   * Mutually exclusive with both ``$source`` and ``$content``
 #
 define systemd::unit_file(
-  Enum['file', 'absent']         $ensure  = 'file',
-  Stdlib::Absolutepath           $path    = '/etc/systemd/system',
-  Optional[String]               $content = undef,
-  Optional[String]               $source  = undef,
-  Optional[Stdlib::Absolutepath] $target  = undef,
+  Enum['present', 'absent', 'file'] $ensure  = 'present',
+  Stdlib::Absolutepath              $path    = '/etc/systemd/system',
+  Optional[String]                  $content = undef,
+  Optional[String]                  $source  = undef,
+  Optional[Stdlib::Absolutepath]    $target  = undef,
 ) {
   include ::systemd
 
-  assert_type(Systemd::Unit, $title)
+  assert_type(Systemd::Unit, $name)
 
   if $target {
     $_ensure = 'link'
   } else {
-    $_ensure = $ensure
+    $_ensure = $ensure ? {
+      'present' => 'file',
+      default   => $ensure,
+    }
   }
 
-  file { "${path}/${title}":
+  file { "${path}/${name}":
     ensure  => $_ensure,
     content => $content,
     source  => $source,
