@@ -55,10 +55,10 @@ define systemd::service_limits(
   }
 
   file { "${path}/${name}.d/":
-    ensure => 'directory',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    ensure  => 'directory',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
     seltype => 'systemd_unit_file_t',
   }
 
