@@ -87,12 +87,26 @@ Or provide the configuration file yourself. Systemd reloading and restarting of 
 systemd-networkd is able to manage your network configuration. We provide a
 defined resource which can write the interface configurations. systemd-networkd
 needs to be restarted to apply the configs. The defined resource can do this
-for you, besides managing the service itself.
+for you:
 
 ```puppet
 ::systemd::network{'eth0.network':
   source          => "puppet:///modules/${module_name}/eth0.network",
-  manage_service  => true,
   restart_service => true,
 }
 ```
+
+### Services
+
+Systemd provides multiple services. Currently you can manage `systemd-resolved`
+and `systemd-networkd` via the main class:
+
+```puppet
+class{'::systemd':
+  $manage_resolved => true,
+  $manage_networkd => true,
+```
+
+$manage_networkd is required if you want to reload it for new
+`::systemd::network` resources. Setting $manage_resolved will also manage your
+`/etc/resolv.conf`.
