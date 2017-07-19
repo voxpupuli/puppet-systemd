@@ -1,48 +1,24 @@
 require 'spec_helper'
 
 describe 'systemd::tmpfile' do
+  context 'supported operating systems' do
+    on_supported_os.each do |os, facts|
+      context "on #{os}" do
+        let(:facts) { facts }
 
-  let(:facts) { {
-      :path => '/usr/bin',
-  } }
+        let(:title) { 'random_tmpfile' }
 
-  context 'default params' do
+        let(:params) {{
+          :content => 'random stuff'
+        }}
 
-    let(:title) { 'fancy.conf' }
-
-    it 'creates the tmpfile' do
-      should contain_file('/etc/tmpfiles.d/fancy.conf').with({
-                                                                 'ensure' => 'file',
-                                                                 'owner' => 'root',
-                                                                 'group' => 'root',
-                                                                 'mode' => '0444',
-                                                             })
-    end
-
-    it 'triggers systemd daemon-reload' do
-      should contain_class('systemd')
-      should contain_file('/etc/tmpfiles.d/fancy.conf').with_notify("Exec[systemd-tmpfiles-create]")
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to create_file("/etc/tmpfiles.d/#{title}").with(
+          :ensure  => 'file',
+          :content => /#{params[:content]}/,
+          :mode    => '0444'
+        ) }
+      end
     end
   end
-
-  context 'with params' do
-    let(:title) { 'fancy.conf' }
-
-    let(:params) { {
-        :ensure => 'absent',
-        :path => '/etc/tmpfiles.d/foo',
-        :content => 'some-content',
-        :source => 'some-source',
-    } }
-
-    it 'creates the unit file' do
-      should contain_file('/etc/tmpfiles.d/foo/fancy.conf').with({
-                                                                     'ensure' => 'absent',
-                                                                     'content' => 'some-content',
-                                                                     'source' => 'some-source',
-                                                                 })
-    end
-
-  end
-
 end

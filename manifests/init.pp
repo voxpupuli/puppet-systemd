@@ -1,43 +1,42 @@
-# -- Class systemd
 # This module allows triggering systemd commands once for all modules
+#
+# @api public
+#
+# @param service_limits
+#   May be passed a resource hash suitable for passing directly into the
+#   ``create_resources()`` function as called on ``systemd::service_limits``
+#
+# @param manage_resolved
+#   Manage the systemd resolver
+#
+# @param resolved_ensure
+#   The state that the ``resolved`` service should be in
+#
+# @param manage_networkd
+#   Manage the systemd network daemon
+#
+# @param networkd_ensure
+#   The state that the ``networkd`` service should be in
+#
 class systemd (
-  $service_limits          = {},
-  Boolean $manage_resolved = true,
-  Boolean $manage_networkd = true,
+  Optional[Systemd::ServiceLimits] $service_limits  = undef,
+  Boolean                          $manage_resolved = false,
+  Enum['stopped','running']        $resolved_ensure = 'running',
+  Boolean                          $manage_networkd = false,
+  Enum['stopped','running']        $networkd_ensure = 'running',
 ){
 
-  Exec {
-    refreshonly => true,
-    path        => $::path,
-  }
+  contain ::systemd::systemctl::daemon_reload
 
-  exec {
-    'systemctl-daemon-reload':
-      command => 'systemctl daemon-reload',
+  if $service_limits {
+    create_resources('systemd::service_limits', $service_limits)
   }
-
-  exec {
-    'systemd-tmpfiles-create':
-      command => 'systemd-tmpfiles --create',
-  }
-
-  create_resources('systemd::service_limits', $service_limits, {})
 
   if $manage_resolved {
-    service{'systemd-resolved':
-      ensure => 'running',
-      enable => true,
-    }
-    -> file{'/etc/resolv.conf':
-      ensure => 'symlink',
-      target => '/run/systemd/resolve/resolv.conf',
-    }
+    contain ::systemd::resolved
   }
 
   if $manage_networkd {
-    service{'systemd-networkd':
-      ensure => 'running',
-      enable => true,
-    }
+    contain ::systemd::networkd
   }
 }

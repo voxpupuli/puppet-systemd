@@ -1,51 +1,89 @@
-# -- Define: systemd::service_limits
-# Creates a custom config file and reloads systemd
+# Adds a set of custom limits to the service
+#
+# @api public
+#
+# @see systemd.exec(5)
+#
+# @attr name [Pattern['^.+\.(service|socket|mount|swap)$']]
+#   The name of the service that you will be modifying
+#
+# @param $ensure
+#   Whether to drop a file or remove it
+#
+# @param path
+#   The path to the main systemd settings directory
+#
+# @param limits
+#   A Hash of service limits matching the settings in ``systemd.exec(5)``
+#
+#   * Mutually exclusive with ``$source``
+#
+# @param source
+#   A ``File`` resource compatible ``source``
+#
+#  * Mutually exclusive with ``$limits``
+#
+# @param restart_service
+#   Restart the managed service after setting the limits
+#
 define systemd::service_limits(
-  $ensure          = file,
-  $path            = '/etc/systemd/system',
-  $limits          = undef,
-  $source          = undef,
-  $restart_service = true
+  Enum['present', 'absent', 'file'] $ensure          = 'present',
+  Stdlib::Absolutepath              $path            = '/etc/systemd/system',
+  Optional[Systemd::ServiceLimits]  $limits          = undef,
+  Optional[String]                  $source          = undef,
+  Boolean                           $restart_service = true
 ) {
+
   include ::systemd
 
-  if $limits {
-    validate_hash($limits)
-    $content = template('systemd/limits.erb')
-  }
-  else {
-    $content = undef
+  if $name !~ Pattern['^.+\.(service|socket|mount|swap)$'] {
+    fail('$name must match Pattern["^.+\.(service|socket|mount|swap)$"]')
   }
 
-  if $limits and $source {
+  if $limits and !empty($limits) {
+    $_content = template("${module_name}/limits.erb")
+  }
+  else {
+    $_content = undef
+  }
+
+  if ($limits and !empty($limits)) and $source {
     fail('You may not supply both limits and source parameters to systemd::service_limits')
-  } elsif $limits == undef and $source == undef {
+  }
+  elsif ($limits == undef or empty($limits)) and ($source == undef) {
     fail('You must supply either the limits or source parameter to systemd::service_limits')
   }
 
-  file { "${path}/${title}.d/":
+  file { "${path}/${name}.d/":
     ensure  => 'directory',
     owner   => 'root',
     group   => 'root',
+    mode    => '0644',
     seltype => 'systemd_unit_file_t',
   }
 
-  -> file { "${path}/${title}.d/limits.conf":
-    ensure  => $ensure,
-    content => $content,
+  $_conf_file_ensure = $ensure ? {
+    'present' => 'file',
+    default   => $ensure,
+  }
+
+  file { "${path}/${name}.d/90-limits.conf":
+    ensure  => $_conf_file_ensure,
+    content => $_content,
     source  => $source,
     owner   => 'root',
     group   => 'root',
-    mode    => '0444',
-    notify  => Exec['systemctl-daemon-reload'],
+    mode    => '0644',
+    notify  => Class['systemd::systemctl::daemon_reload'],
   }
 
   if $restart_service {
-    exec { "systemctl restart ${title}":
+    exec { "restart ${name} because limits":
+      command     => "systemctl restart ${name}",
       path        => $::path,
       refreshonly => true,
-      subscribe   => File["${path}/${title}.d/limits.conf"],
-      require     => Exec['systemctl-daemon-reload'],
+      subscribe   => File["${path}/${name}.d/90-limits.conf"],
+      require     => Class['systemd::systemctl::daemon_reload'],
     }
   }
 }

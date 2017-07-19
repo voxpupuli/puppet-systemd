@@ -1,50 +1,37 @@
 require 'spec_helper'
 
 describe 'systemd::unit_file' do
+  context 'supported operating systems' do
+    on_supported_os.each do |os, facts|
+      context "on #{os}" do
+        let(:facts) { facts }
 
-  let(:facts) { {
-      :path => '/usr/bin',
-  } }
+        let(:title) { 'test.service' }
 
-  context 'default params' do
+        let(:params) {{
+          :content => 'random stuff'
+        }}
 
-    let(:title) { 'fancy.service' }
+        it { is_expected.to compile.with_all_deps }
 
-    it 'creates the unit file' do
-      should contain_file('/etc/systemd/system/fancy.service').with({
-                                                                        'ensure' => 'file',
-                                                                        'owner' => 'root',
-                                                                        'group' => 'root',
-                                                                        'mode' => '0444',
-                                                                    })
-    end
+        it { is_expected.to create_file("/etc/systemd/system/#{title}").with(
+          :ensure  => 'file',
+          :content => /#{params[:content]}/,
+          :mode    => '0444'
+        ) }
 
-    it 'triggers systemd daemon-reload' do
-      should contain_class('systemd')
-      should contain_file('/etc/systemd/system/fancy.service').with_notify("Exec[systemctl-daemon-reload]")
+        it { is_expected.to create_file("/etc/systemd/system/#{title}").that_notifies('Class[systemd::systemctl::daemon_reload]') }
+
+        context 'with a bad unit type' do
+          let(:title) { 'test.badtype' }
+
+          it {
+            expect{
+              is_expected.to compile.with_all_deps
+            }.to raise_error(/expects a match for Systemd::Unit/)
+          }
+        end
+      end
     end
   end
-
-  context 'with params' do
-    let(:title) { 'fancy.service' }
-
-    let(:params) { {
-        :ensure => 'absent',
-        :path => '/usr/lib/systemd/system',
-        :content => 'some-content',
-        :source => 'some-source',
-        :target => 'some-target',
-    } }
-
-    it 'creates the unit file' do
-      should contain_file('/usr/lib/systemd/system/fancy.service').with({
-                                                                            'ensure' => 'absent',
-                                                                            'content' => 'some-content',
-                                                                            'source' => 'some-source',
-                                                                            'target' => 'some-target',
-                                                                        })
-    end
-
-  end
-
 end

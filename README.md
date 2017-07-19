@@ -24,15 +24,16 @@ Let this module handle file creation and systemd reloading.
 Or handle file creation yourself and trigger systemd.
 
 ```puppet
-include ::systemd
+include ::systemd::systemctl::daemon_reload
+
 file { '/usr/lib/systemd/system/foo.service':
   ensure => file,
   owner  => 'root',
   group  => 'root',
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.service",
-} ~>
-Exec['systemctl-daemon-reload']
+}
+~> Class['systemd::systemctl::daemon_reload']
 ```
 
 ### tmpfiles
@@ -48,15 +49,16 @@ Let this module handle file creation and systemd reloading
 Or handle file creation yourself and trigger systemd.
 
 ```puppet
-include ::systemd
+include ::systemd::tmpfiles
+
 file { '/etc/tmpfiles.d/foo.conf':
   ensure => file,
   owner  => 'root',
   group  => 'root',
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.conf",
-} ~>
-Exec['systemd-tmpfiles-create']
+}
+~> Class['systemd::tmpfiles']
 ```
 
 ### service limits
@@ -67,7 +69,7 @@ Manage soft and hard limits on various resources for executed processes.
 ::systemd::service_limits { 'foo.service':
   limits => {
     LimitNOFILE => 8192,
-    LimitNPROC  => 16384
+    LimitNPROC  => 16384,
   }
 }
 ```

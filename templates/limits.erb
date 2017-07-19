@@ -1,4 +1,4 @@
-# This file is created by Puppet
+# This file managed by Puppet - DO NOT EDIT
 [Service]
 <%
 [
@@ -20,8 +20,8 @@
   'LimitRTTIME',
   'MemoryLimit',
 ].each do |d|
-if @limits[d] -%>
+  if @limits[d] -%>
 <%= d %>=<%= @limits[d] %>
 <%
-end
+  end
 end %>
