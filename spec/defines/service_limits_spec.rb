@@ -15,7 +15,14 @@ describe 'systemd::service_limits' do
             'LimitDATA'   => '10K',
             'LimitNOFILE' => 20,
             'LimitNICE'   => '-10',
-            'LimitRTPRIO' => 50
+            'LimitRTPRIO' => 50,
+            'IODeviceWeight' => [
+              {'/dev/weight' => 10},
+              {'/dev/weight2' => 20}
+            ],
+            'IOReadBandwidthMax' => [
+              {'/bw/max' => '10K'}
+            ]
           }
         }}
 
@@ -39,6 +46,15 @@ describe 'systemd::service_limits' do
         ) }
         it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
           :content => /LimitRTPRIO=50/
+        ) }
+        it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
+          :content => %r(IODeviceWeight=/dev/weight 10)
+        ) }
+        it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
+          :content => %r(IODeviceWeight=/dev/weight2 20)
+        ) }
+        it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
+          :content => %r(IOReadBandwidthMax=/bw/max 10K)
         ) }
         it { is_expected.to create_exec("restart #{title} because limits").with(
           :command => "systemctl restart #{title}",
