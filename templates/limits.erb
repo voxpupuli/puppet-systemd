@@ -1,27 +1,16 @@
 # This file managed by Puppet - DO NOT EDIT
 [Service]
 <%
-[
-  'LimitCPU',
-  'LimitFSIZE',
-  'LimitDATA',
-  'LimitSTACK',
-  'LimitCORE',
-  'LimitRSS',
-  'LimitNOFILE',
-  'LimitAS',
-  'LimitNPROC',
-  'LimitMEMLOCK',
-  'LimitLOCKS',
-  'LimitSIGPENDING',
-  'LimitMSGQUEUE',
-  'LimitNICE',
-  'LimitRTPRIO',
-  'LimitRTTIME',
-  'MemoryLimit',
-].each do |d|
-  if @limits[d] -%>
-<%= d %>=<%= @limits[d] %>
-<%
-  end
-end %>
+  @limits.keys.sort.each do |k|
+
+    # Handles the Path and Option entries
+    if @limits[k].is_a?(Array)
+      output = @limits[k].map{|x|
+        x = %(#{k}=#{x.to_a.flatten.join(' ')})
+      }.join("\n")
+   else
+     output = %(#{k}=#{@limits[k]})
+   end
+-%>
+<%= output %>
+<% end -%>
