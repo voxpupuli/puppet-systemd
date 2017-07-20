@@ -35,7 +35,7 @@ end
 if facterversion = ENV['FACTER_GEM_VERSION']
   gem 'facter', facterversion, :require => false
 else
-  # There are no facts in place for beaker > 2.4 in rspec-puppet-facts yet
+  # There are no facts in place for facter > 2.4 in rspec-puppet-facts yet
   gem 'facter', '~> 2.4.0', :require => false
 end
 
