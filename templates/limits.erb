@@ -6,8 +6,7 @@
     # Handles the Path and Option entries
     if @limits[k].is_a?(Array)
       output = @limits[k].map{|x|
-        x_to_a = x.to_a.flatten
-        x = %(#{k}=#{x_to_a.first} #{x_to_a[1..-1].join(' ')})
+        x = %(#{k}=#{x.to_a.flatten.join(' ')})
       }.join("\n")
    else
      output = %(#{k}=#{@limits[k]})
