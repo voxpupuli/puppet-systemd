@@ -38,8 +38,8 @@ file { '/usr/lib/systemd/system/foo.service':
 
 ### drop-in files
 
-Drop-in files are used to add or alter settings of a unit without modify the
-unit it self. As for the unit files, the module can handle the file and
+Drop-in files are used to add or alter settings of a unit without modifying the
+unit itself. As for the unit files, the module can handle the file and
 directory creation and systemd reloading:
 
 ```puppet
