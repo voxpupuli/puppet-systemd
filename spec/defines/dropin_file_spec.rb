@@ -15,9 +15,8 @@ describe 'systemd::dropin_file' do
 
         it { is_expected.to compile.with_all_deps }
 
-        it { is_expected.to create_file("#{params[:unit]}.d").with(
+        it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d").with(
           :ensure  => 'directory',
-          :path    => "/etc/systemd/system/#{params[:unit]}.d"
         ) }
 
         it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").with(
