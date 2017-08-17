@@ -36,6 +36,39 @@ file { '/usr/lib/systemd/system/foo.service':
 ~> Class['systemd::systemctl::daemon_reload']
 ```
 
+### drop-in files
+
+Drop-in files are used to add or alter settings of a unit without modifying the
+unit itself. As for the unit files, the module can handle the file and
+directory creation and systemd reloading:
+
+```puppet
+::systemd::dropin_file { 'foo.conf':
+  unit   => 'foo.service',
+  source => "puppet:///modules/${module_name}/foo.conf",
+}
+```
+
+Or handle file and directory creation yourself and trigger systemd:
+
+```puppet
+include ::systemd::systemctl::daemon_reload
+
+file { '/etc/systemd/system/foo.service.d':
+  ensure => directory,
+  owner  => 'root',
+  group  => 'root',
+}
+file { '/etc/systemd/system/foo.service.d/foo.conf':
+  ensure => file,
+  owner  => 'root',
+  group  => 'root',
+  mode   => '0644',
+  source => "puppet:///modules/${module_name}/foo.conf",
+}
+~> Class['systemd::systemctl::daemon_reload']
+```
+
 ### tmpfiles
 
 Let this module handle file creation and systemd reloading
