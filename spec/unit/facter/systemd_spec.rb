@@ -12,7 +12,7 @@ describe Facter::Util::Fact do
       end
       let(:facts) { {:kernel => :linux} }
       it do
-        Facter::Util::Resolution.expects(:exec).with('ps -p 1 -o comm=').returns('systemd')
+        expect(Facter.value(:initsystem)).to eq(:systemd)
         expect(Facter.value(:systemd)).to eq(true)
       end
     end
@@ -22,7 +22,7 @@ describe Facter::Util::Fact do
         end
         let(:facts) { {:kernel => :linux} }
         it do
-          Facter::Util::Resolution.expects(:exec).with('ps -p 1 -o comm=').returns('init')
+          expect(Facter.value(:initsystem)).not_to eq(:systemd)
           expect(Facter.value(:systemd)).to eq(false)
         end
     end
@@ -33,7 +33,7 @@ describe Facter::Util::Fact do
       end
       let(:facts) { {:kernel => :windows} }
       it do
-        Facter::Util::Resolution.expects(:exec).with('ps -p 1 -o comm=').never
+        expect(Facter.value(:initsystem)).to be_nil
         expect(Facter.value(:systemd)).to be_nil
       end
     end

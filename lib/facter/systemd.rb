@@ -1,10 +1,27 @@
+# Fact: initsystem
+#
+# Purpose:
+#   Determine the init system in use on the node
+#
+# Resolution:
+#   Check the output of `/proc/1/exe --version` for identifying substrings:
+#   * runit will include "runit" substring.
+#   * systemd will include "systemd" substring.
+#   * upstart will include "upstart" substring.
+#   * sysvinit will include "invalid option" substring.
+#   * If none of the above are present, sets :initsystem => :unknown
+#
+# Caveats:
+#
+
 # Fact: systemd
 #
-# Purpose: 
+# Purpose:
 #   Determine whether systemd is the init system on the node
 #
 # Resolution:
-#   Check the name of the process 1 (ps -p 1)
+#   Returns true if :initsystem => :systemd
+#   Returns false otherwise
 #
 # Caveats:
 #
@@ -20,10 +37,28 @@
 # Caveats:
 #
 
+Facter.add(:initsystem) do
+  confine :kernel => :linux
+  setcode do
+    output = Facter::Util::Resolution.exec('/proc/1/exe --version')
+    if output.include?('invalid option')
+      'sysvinit'
+    elsif output.include?('runit')
+      'runit'
+    elsif output.include?('systemd')
+      'systemd'
+    elsif output.include?('upstart')
+      'upstart'
+    else
+      'unknown'
+    end
+  end
+end
+
 Facter.add(:systemd) do
   confine :kernel => :linux
   setcode do
-    Facter::Util::Resolution.exec('ps -p 1 -o comm=') == 'systemd'
+    Facter.value(:initsystem) == :systemd
   end
 end
 
