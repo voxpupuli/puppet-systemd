@@ -90,6 +90,7 @@ class systemd (
   Optional[Variant[Array,String]]                        $fallback_ntp_server,
   Boolean                                                $manage_accounting,
   Hash[String,String]                                    $accounting,
+  Boolean                                                $purge_dropin_dirs,
 ){
 
   contain systemd::systemctl::daemon_reload
