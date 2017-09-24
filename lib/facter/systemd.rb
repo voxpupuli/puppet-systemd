@@ -23,7 +23,7 @@
 Facter.add(:systemd) do
   confine :kernel => :linux
   setcode do
-    Facter::Util::Resolution.exec('ps -p 1 -o comm=') == 'systemd'
+    Facter.value(:service_provider) == 'systemd'
   end
 end
 
