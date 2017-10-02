@@ -11,6 +11,7 @@ describe 'systemd' do
         it { is_expected.to create_class('systemd::systemctl::daemon_reload') }
         it { is_expected.to_not create_service('systemd-resolved') }
         it { is_expected.to_not create_service('systemd-networkd') }
+        it { is_expected.to_not create_service('systemd-timesyncd') }
 
         context 'when enabling resolved and networkd' do
           let(:params) {{
@@ -30,6 +31,10 @@ describe 'systemd' do
 
           it { is_expected.to create_service('systemd-timesyncd').with_ensure('running') }
           it { is_expected.to create_service('systemd-timesyncd').with_enable(true) }
+          it { is_expected.not_to create_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.not_to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.not_to create_service('systemd-networkd').with_ensure('running') }
+          it { is_expected.not_to create_service('systemd-networkd').with_enable(true) }
         end
       end
     end
