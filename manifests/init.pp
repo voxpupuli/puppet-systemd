@@ -18,12 +18,19 @@
 # @param networkd_ensure
 #   The state that the ``networkd`` service should be in
 #
+# @param manage_timesyncd
+#   Manage the systemd tiemsyncd daemon
+#
+# @param timesyncd_ensure
+#   The state that the ``timesyncd`` service should be in
 class systemd (
   Optional[Systemd::ServiceLimits] $service_limits  = undef,
   Boolean                          $manage_resolved = false,
   Enum['stopped','running']        $resolved_ensure = 'running',
   Boolean                          $manage_networkd = false,
   Enum['stopped','running']        $networkd_ensure = 'running',
+  Boolean                          $manage_timesyncd = false,
+  Enum['stopped','running']        $timesyncd_ensure = 'running',
 ){
 
   contain ::systemd::systemctl::daemon_reload
@@ -38,5 +45,9 @@ class systemd (
 
   if $manage_networkd {
     contain ::systemd::networkd
+  }
+
+  if $manage_timesyncd {
+    contain ::systemd::timesyncd
   }
 }
