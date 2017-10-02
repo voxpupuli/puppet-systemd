@@ -23,6 +23,14 @@ describe 'systemd' do
           it { is_expected.to create_service('systemd-networkd').with_ensure('running') }
           it { is_expected.to create_service('systemd-networkd').with_enable(true) }
         end
+        context 'when enabling timesyncd' do
+          let(:params) {{
+            :manage_timesyncd => true
+          }}
+
+          it { is_expected.to create_service('systemd-timesyncd').with_ensure('running') }
+          it { is_expected.to create_service('systemd-timesyncd').with_enable(true) }
+        end
       end
     end
   end
