@@ -131,13 +131,14 @@ for you:
 
 ### Services
 
-Systemd provides multiple services. Currently you can manage `systemd-resolved`
-and `systemd-networkd` via the main class:
+Systemd provides multiple services. Currently you can manage `systemd-resolved`,
+`systemd-timesyncd` and `systemd-networkd` via the main class:
 
 ```puppet
 class{'::systemd':
-  $manage_resolved => true,
-  $manage_networkd => true,
+  $manage_resolved  => true,
+  $manage_networkd  => true,
+  $manage_timesyncd => true,
 ```
 
 $manage_networkd is required if you want to reload it for new
