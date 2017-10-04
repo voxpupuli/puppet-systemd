@@ -155,4 +155,4 @@ class{'::systemd':
 }
 ```
 
-This requires puppetlabs-inifile, which is only a soft dependency in this module (you need to explicitly install it).
+This requires puppetlabs-inifile, which is only a soft dependency in this module (you need to explicitly install it). Both parameters accept a string or an array.

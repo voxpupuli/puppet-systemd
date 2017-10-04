@@ -14,9 +14,9 @@
 #   as the fallback NTP servers. Any per-interface NTP servers obtained from
 #   systemd-networkd take precedence over this setting. requires puppetlabs-inifile
 class systemd::timesyncd (
-  Enum['stopped','running'] $ensure     = $systemd::timesyncd_ensure,
-  Optional[String] $ntp_server          = $systemd::ntp_server,
-  Optional[String] $fallback_ntp_server = $systemd::fallback_ntp_server,
+  Enum['stopped','running'] $ensure                    = $systemd::timesyncd_ensure,
+  Optional[Variant[Array,String]] $ntp_server          = $systemd::ntp_server,
+  Optional[Variant[Array,String]] $fallback_ntp_server = $systemd::fallback_ntp_server,
 ){
 
   assert_private()
@@ -33,9 +33,14 @@ class systemd::timesyncd (
   }
 
   if $ntp_server {
+    if $ntp_server =~ String {
+      $_ntp_server = $ntp_server
+    } else {
+      $_ntp_server = join($ntp_server, ',')
+    }
     ini_setting{'ntp_server':
       ensure  => 'present',
-      value   => $ntp_server,
+      value   => $_ntp_server,
       setting => 'NTP',
       section => 'Time',
       path    => '/etc/systemd/timesyncd.conf',
@@ -44,9 +49,14 @@ class systemd::timesyncd (
   }
 
   if $fallback_ntp_server {
+    if $fallback_ntp_server =~ String {
+      $_fallback_ntp_server = $fallback_ntp_server
+    } else {
+      $_fallback_ntp_server = join($fallback_ntp_server, ',')
+    }
     ini_setting{'fallback_ntp_server':
       ensure  => 'present',
-      value   => $fallback_ntp_server,
+      value   => $_fallback_ntp_server,
       setting => 'FallbackNTP',
       section => 'Time',
       path    => '/etc/systemd/timesyncd.conf',
