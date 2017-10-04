@@ -23,14 +23,25 @@
 #
 # @param timesyncd_ensure
 #   The state that the ``timesyncd`` service should be in
+#
+# @param $ntp_server
+#   comma separated list of ntp servers, will be combined with interface specific
+#   addresses from systemd-networkd. requires puppetlabs-inifile
+#
+# @param fallback_ntp_server
+#   A space-separated list of NTP server host names or IP addresses to be used
+#   as the fallback NTP servers. Any per-interface NTP servers obtained from
+#   systemd-networkd take precedence over this setting. requires puppetlabs-inifile
 class systemd (
-  Optional[Systemd::ServiceLimits] $service_limits  = undef,
-  Boolean                          $manage_resolved = false,
-  Enum['stopped','running']        $resolved_ensure = 'running',
-  Boolean                          $manage_networkd = false,
-  Enum['stopped','running']        $networkd_ensure = 'running',
+  Optional[Systemd::ServiceLimits] $service_limits   = undef,
+  Boolean                          $manage_resolved  = false,
+  Enum['stopped','running']        $resolved_ensure  = 'running',
+  Boolean                          $manage_networkd  = false,
+  Enum['stopped','running']        $networkd_ensure  = 'running',
   Boolean                          $manage_timesyncd = false,
   Enum['stopped','running']        $timesyncd_ensure = 'running',
+  Optional[String] $ntp_server                       = undef,
+  Optional[String] $fallback_ntp_server              = undef,
 ){
 
   contain ::systemd::systemctl::daemon_reload
