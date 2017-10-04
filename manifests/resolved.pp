@@ -6,7 +6,7 @@
 #   The state that the ``resolved`` service should be in
 #
 class systemd::resolved (
-  Enum['stopped','running'] $ensure = $::systemd::resolved_ensure,
+  Enum['stopped','running'] $ensure = $systemd::resolved_ensure,
 ){
 
   assert_private()
