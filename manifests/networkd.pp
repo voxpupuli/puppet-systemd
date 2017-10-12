@@ -1,12 +1,12 @@
 # **NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**
 #
-# This class provides an abstract way to trigger resolved
+# This class provides an abstract way to trigger systemd-networkd
 #
 # @param ensure
 #   The state that the ``networkd`` service should be in
 #
 class systemd::networkd (
-  Enum['stopped','running'] $ensure = 'running',
+  Enum['stopped','running'] $ensure = $systemd::networkd_ensure,
 ){
 
   assert_private()

@@ -131,15 +131,28 @@ for you:
 
 ### Services
 
-Systemd provides multiple services. Currently you can manage `systemd-resolved`
-and `systemd-networkd` via the main class:
+Systemd provides multiple services. Currently you can manage `systemd-resolved`,
+`systemd-timesyncd` and `systemd-networkd` via the main class:
 
 ```puppet
 class{'::systemd':
-  $manage_resolved => true,
-  $manage_networkd => true,
+  $manage_resolved  => true,
+  $manage_networkd  => true,
+  $manage_timesyncd => true,
 ```
 
 $manage_networkd is required if you want to reload it for new
 `::systemd::network` resources. Setting $manage_resolved will also manage your
 `/etc/resolv.conf`.
+
+It is possible to configure the default ntp servers in /etc/systemd/timesyncd.conf:
+
+```puppet
+class{'::systemd':
+  $manage_timesyncd => true,
+  $ntp_server          => '0.pool.ntp.org,1.pool.ntp.org',
+  $fallback_ntp_server => '2.pool.ntp.org,3.pool.ntp.org',
+}
+```
+
+This requires puppetlabs-inifile, which is only a soft dependency in this module (you need to explicitly install it). Both parameters accept a string or an array.
