@@ -50,15 +50,15 @@ class systemd (
     create_resources('systemd::service_limits', $service_limits)
   }
 
-  if $manage_resolved {
+  if $manage_resolved and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-resolved.service'] {
     contain ::systemd::resolved
   }
 
-  if $manage_networkd {
+  if $manage_networkd and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-networkd.service'] {
     contain ::systemd::networkd
   }
 
-  if $manage_timesyncd {
+  if $manage_timesyncd and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-timesyncd.service'] {
     contain ::systemd::timesyncd
   }
 }
