@@ -101,8 +101,8 @@ Manage soft and hard limits on various resources for executed processes.
 ```puppet
 ::systemd::service_limits { 'foo.service':
   limits => {
-    LimitNOFILE => 8192,
-    LimitNPROC  => 16384,
+    'LimitNOFILE' => 8192,
+    'LimitNPROC'  => 16384,
   }
 }
 ```
