@@ -36,6 +36,21 @@ describe 'systemd::dropin_file' do
             }.to raise_error(/expects a match for Systemd::Dropin/)
           }
         end
+
+        context 'with explicit filename' do
+            let (:title) {'test'}
+            let (:params) {{
+                :filename => 'test.conf',
+                :unit     => 'test.service',
+                :content  => 'random stuff'
+            }}
+
+            it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{params[:filename]}").with(
+              :ensure  => 'file',
+              :content => /#{params[:content]}/,
+              :mode    => '0444'
+            ) }
+        end
       end
     end
   end
