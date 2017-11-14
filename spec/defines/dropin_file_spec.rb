@@ -38,18 +38,18 @@ describe 'systemd::dropin_file' do
         end
 
         context 'with explicit filename' do
-            let (:title) {'test'}
-            let (:params) {{
-                :filename => 'test.conf',
-                :unit     => 'test.service',
-                :content  => 'random stuff'
-            }}
+          let (:title) {'test'}
+          let (:params) {{
+            :filename => 'test.conf',
+            :unit     => 'test.service',
+            :content  => 'random stuff'
+          }}
 
-            it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{params[:filename]}").with(
-              :ensure  => 'file',
-              :content => /#{params[:content]}/,
-              :mode    => '0444'
-            ) }
+          it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{params[:filename]}").with(
+            :ensure  => 'file',
+            :content => /#{params[:content]}/,
+            :mode    => '0444'
+          ) }
         end
       end
     end
