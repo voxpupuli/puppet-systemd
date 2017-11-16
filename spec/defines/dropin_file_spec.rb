@@ -36,6 +36,35 @@ describe 'systemd::dropin_file' do
             }.to raise_error(/expects a match for Systemd::Dropin/)
           }
         end
+
+        context 'with another drop-in file with the same filename (and content)' do
+          let(:default_params) {{
+            :filename => 'longer-timeout.conf',
+            :content  => 'random stuff'
+          }}
+          # Create drop-in file longer-timeout.conf for unit httpd.service
+          let :pre_condition do
+            "systemd::dropin_file { 'httpd_longer-timeout':
+              filename => '#{default_params[:filename]}',
+              unit     => 'httpd.service',
+              content  => '#{default_params[:context]}',
+            }"
+          end
+          #
+          # Create drop-in file longer-timeout.conf for unit ftp.service
+          let (:title) {'ftp_longer-timeout'}
+          let :params do
+            default_params.merge({
+              :unit     => 'ftp.service'
+            })
+          end
+
+          it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{params[:filename]}").with(
+            :ensure  => 'file',
+            :content => /#{params[:content]}/,
+            :mode    => '0444'
+          ) }
+        end
       end
     end
   end

@@ -29,15 +29,14 @@
 #
 define systemd::dropin_file(
   Systemd::Unit                     $unit,
-  Enum['present', 'absent', 'file'] $ensure  = 'present',
-  Stdlib::Absolutepath              $path    = '/etc/systemd/system',
-  Optional[String]                  $content = undef,
-  Optional[String]                  $source  = undef,
-  Optional[Stdlib::Absolutepath]    $target  = undef,
+  Systemd::Dropin                   $filename = $name,
+  Enum['present', 'absent', 'file'] $ensure   = 'present',
+  Stdlib::Absolutepath              $path     = '/etc/systemd/system',
+  Optional[String]                  $content  = undef,
+  Optional[String]                  $source   = undef,
+  Optional[Stdlib::Absolutepath]    $target   = undef,
 ) {
   include ::systemd
-
-  assert_type(Systemd::Dropin, $name)
 
   if $target {
     $_ensure = 'link'
@@ -56,7 +55,7 @@ define systemd::dropin_file(
     })
   }
 
-  file { "${path}/${unit}.d/${name}":
+  file { "${path}/${unit}.d/${filename}":
     ensure  => $_ensure,
     content => $content,
     source  => $source,
