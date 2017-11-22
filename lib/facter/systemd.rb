@@ -52,7 +52,7 @@ Facter.add(:systemd_internal_services) do
     )
     lines = command_output.lines.lazy.map { |line| line.split(/\s+/) }
     lines.each_with_object({}) do |(service, status, *), result|
-      result[service] = status.to_sym
+      result[service] = status
     end
   end
 end
