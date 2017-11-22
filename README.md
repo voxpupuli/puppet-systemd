@@ -163,8 +163,8 @@ It is possible to configure the default ntp servers in /etc/systemd/timesyncd.co
 ```puppet
 class{'::systemd':
   $manage_timesyncd => true,
-  $ntp_server          => '0.pool.ntp.org,1.pool.ntp.org',
-  $fallback_ntp_server => '2.pool.ntp.org,3.pool.ntp.org',
+  $ntp_server          => '0.pool.ntp.org 1.pool.ntp.org',
+  $fallback_ntp_server => '2.pool.ntp.org 3.pool.ntp.org',
 }
 ```
 

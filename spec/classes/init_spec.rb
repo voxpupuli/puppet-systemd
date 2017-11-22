@@ -40,8 +40,8 @@ describe 'systemd' do
         context 'when enabling timesyncd with NTP values' do
           let(:params) {{
             :manage_timesyncd => true,
-            :ntp_server => '0.pool.ntp.org,1.pool.ntp.org',
-            :fallback_ntp_server => '2.pool.ntp.org,3.pool.ntp.org'
+            :ntp_server => '0.pool.ntp.org 1.pool.ntp.org',
+            :fallback_ntp_server => '2.pool.ntp.org 3.pool.ntp.org'
           }}
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_ini_setting('ntp_server')}
