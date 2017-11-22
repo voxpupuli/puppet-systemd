@@ -33,7 +33,7 @@
 #   as the fallback NTP servers. Any per-interface NTP servers obtained from
 #   systemd-networkd take precedence over this setting. requires puppetlabs-inifile
 class systemd (
-  Optional[Systemd::ServiceLimits] $service_limits   = undef,
+  Hash[String, Hash[String, Any]]  $service_limits   = {},
   Boolean                          $manage_resolved  = false,
   Enum['stopped','running']        $resolved_ensure  = 'running',
   Boolean                          $manage_networkd  = false,
@@ -46,9 +46,7 @@ class systemd (
 
   contain ::systemd::systemctl::daemon_reload
 
-  if $service_limits {
-    create_resources('systemd::service_limits', $service_limits)
-  }
+  create_resources('systemd::service_limits', $service_limits)
 
   if $manage_resolved and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-resolved.service'] {
     contain ::systemd::resolved
