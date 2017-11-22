@@ -24,7 +24,7 @@
 # @param timesyncd_ensure
 #   The state that the ``timesyncd`` service should be in
 #
-# @param $ntp_server
+# @param ntp_server
 #   comma separated list of ntp servers, will be combined with interface specific
 #   addresses from systemd-networkd. requires puppetlabs-inifile
 #
