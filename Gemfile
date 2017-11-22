@@ -19,7 +19,6 @@ group :development, :unit_tests do
   gem 'puppet-lint-file_source_rights-check',              :require => false
   gem 'puppet-lint-alias-check',                           :require => false
   gem 'rspec-puppet-facts',                                :require => false
-  gem 'ruby-augeas',                                       :require => false
   gem 'puppet-blacksmith',                                 :require => false if RUBY_VERSION !~ /^1\./
   gem 'json_pure', '< 2.0.2',                              :require => false
 end
