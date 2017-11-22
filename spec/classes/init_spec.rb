@@ -47,6 +47,15 @@ describe 'systemd' do
           it { is_expected.to contain_ini_setting('ntp_server')}
           it { is_expected.to contain_ini_setting('fallback_ntp_server')}
         end
+
+        context 'when passing service limits' do
+          let(:params) {{
+            :service_limits => {'openstack-nova-compute.service' => {'limits' => {'LimitNOFILE' => 32768}}}
+          }}
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_systemd__service_limits('openstack-nova-compute.service').with_limits({'LimitNOFILE' => 32768}) }
+        end
       end
     end
   end
