@@ -33,7 +33,3 @@ RSpec.configure do |c|
     PuppetlabsSpec::Files.cleanup
   end
 end
-
-require 'pathname'
-dir = Pathname.new(__FILE__).parent
-Puppet[:modulepath] = File.join(dir, 'fixtures', 'modules')
