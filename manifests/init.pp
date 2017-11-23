@@ -40,8 +40,8 @@ class systemd (
   Enum['stopped','running']        $networkd_ensure  = 'running',
   Boolean                          $manage_timesyncd = false,
   Enum['stopped','running']        $timesyncd_ensure = 'running',
-  Optional[String] $ntp_server                       = undef,
-  Optional[String] $fallback_ntp_server              = undef,
+  Optional[Variant[Array,String]] $ntp_server          = undef,
+  Optional[Variant[Array,String]] $fallback_ntp_server = undef,
 ){
 
   contain ::systemd::systemctl::daemon_reload

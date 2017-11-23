@@ -6,7 +6,7 @@
 #   The state that the ``networkd`` service should be in
 #
 # @param $ntp_server
-#   comma separated list of ntp servers, will be combined with interface specific
+#   A space-separated list of NTP servers, will be combined with interface specific
 #   addresses from systemd-networkd. requires puppetlabs-inifile
 #
 # @param fallback_ntp_server
@@ -36,7 +36,7 @@ class systemd::timesyncd (
     if $ntp_server =~ String {
       $_ntp_server = $ntp_server
     } else {
-      $_ntp_server = join($ntp_server, ',')
+      $_ntp_server = join($ntp_server, ' ')
     }
     ini_setting{'ntp_server':
       ensure  => 'present',
@@ -52,7 +52,7 @@ class systemd::timesyncd (
     if $fallback_ntp_server =~ String {
       $_fallback_ntp_server = $fallback_ntp_server
     } else {
-      $_fallback_ntp_server = join($fallback_ntp_server, ',')
+      $_fallback_ntp_server = join($fallback_ntp_server, ' ')
     }
     ini_setting{'fallback_ntp_server':
       ensure  => 'present',
