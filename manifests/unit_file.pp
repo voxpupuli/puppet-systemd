@@ -64,7 +64,7 @@ define systemd::unit_file(
   }
 
   if $enable {
-    service { "$title": 
+    service { $title:
       enable => true,
     }
   }
