@@ -27,12 +27,17 @@
 #
 #   * Mutually exclusive with both ``$source`` and ``$content``
 #
+#
+# @attr enable
+#    If set, will enable the service at the OS level
+#
 define systemd::unit_file(
   Enum['present', 'absent', 'file'] $ensure  = 'present',
   Stdlib::Absolutepath              $path    = '/etc/systemd/system',
   Optional[String]                  $content = undef,
   Optional[String]                  $source  = undef,
   Optional[Stdlib::Absolutepath]    $target  = undef,
+  Optional[Boolean]                 $enable  = false,
 ) {
   include ::systemd
 
@@ -56,5 +61,11 @@ define systemd::unit_file(
     group   => 'root',
     mode    => '0444',
     notify  => Class['systemd::systemctl::daemon_reload'],
+  }
+
+  if $enable {
+    service { "$title": 
+      enable => true,
+    }
   }
 }
