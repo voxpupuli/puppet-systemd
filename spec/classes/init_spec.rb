@@ -37,11 +37,22 @@ describe 'systemd' do
           it { is_expected.not_to create_service('systemd-networkd').with_enable(true) }
         end
 
-        context 'when enabling timesyncd with NTP values' do
+        context 'when enabling timesyncd with NTP values (string)' do
           let(:params) {{
             :manage_timesyncd => true,
             :ntp_server => '0.pool.ntp.org 1.pool.ntp.org',
             :fallback_ntp_server => '2.pool.ntp.org 3.pool.ntp.org'
+          }}
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_ini_setting('ntp_server')}
+          it { is_expected.to contain_ini_setting('fallback_ntp_server')}
+        end
+
+        context 'when enabling timesyncd with NTP values (array)' do
+          let(:params) {{
+            :manage_timesyncd => true,
+            :ntp_server => %w(0.pool.ntp.org 1.pool.ntp.org),
+            :fallback_ntp_server => %w(2.pool.ntp.org 3.pool.ntp.org)
           }}
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_ini_setting('ntp_server')}
