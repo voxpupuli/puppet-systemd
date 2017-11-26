@@ -2,7 +2,29 @@
 
 
 
-## [1.1.0](https://github.com/camptocamp/puppet-systemd/tree/1.1.0) (2017-10-17)
+## [1.1.1](https://github.com/camptocamp/puppet-systemd/tree/1.1.1) (2017-11-26)
+
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/1.1.0...1.1.1)
+
+**Fixed bugs:**
+
+- fact systemd\_internal\_services is empty [\#47](https://github.com/camptocamp/puppet-systemd/issues/47)
+- Use the correct type on $service\_limits [\#52](https://github.com/camptocamp/puppet-systemd/pull/52) ([ekohl](https://github.com/ekohl))
+- Fix issue \#47 [\#48](https://github.com/camptocamp/puppet-systemd/pull/48) ([axxelG](https://github.com/axxelG))
+
+**Closed issues:**
+
+- Not able to set limits via systemd class [\#49](https://github.com/camptocamp/puppet-systemd/issues/49)
+
+**Merged pull requests:**
+
+- Clean up test tooling [\#54](https://github.com/camptocamp/puppet-systemd/pull/54) ([ekohl](https://github.com/ekohl))
+- Correct parameter documentation [\#53](https://github.com/camptocamp/puppet-systemd/pull/53) ([ekohl](https://github.com/ekohl))
+- Use a space-separated in timesyncd.conf [\#50](https://github.com/camptocamp/puppet-systemd/pull/50) ([hfm](https://github.com/hfm))
+- Use the same systemd drop-in file for different units [\#46](https://github.com/camptocamp/puppet-systemd/pull/46) ([countsudoku](https://github.com/countsudoku))
+- release 1.1.0 [\#44](https://github.com/camptocamp/puppet-systemd/pull/44) ([bastelfreak](https://github.com/bastelfreak))
+
+## [1.1.0](https://github.com/camptocamp/puppet-systemd/tree/1.1.0) (2017-10-24)
 
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/1.0.0...1.1.0)
 
