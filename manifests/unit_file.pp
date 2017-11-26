@@ -27,17 +27,21 @@
 #
 #   * Mutually exclusive with both ``$source`` and ``$content``
 #
+# @attr ensure_service
+#    If set, will ensure the state of the resultant service
 #
-# @attr enable
-#    If set, will enable the service at the OS level
+# @attr enable_service
+#    If set, will enable the service at OS startup
 #
 define systemd::unit_file(
-  Enum['present', 'absent', 'file'] $ensure  = 'present',
-  Stdlib::Absolutepath              $path    = '/etc/systemd/system',
-  Optional[String]                  $content = undef,
-  Optional[String]                  $source  = undef,
-  Optional[Stdlib::Absolutepath]    $target  = undef,
-  Optional[Boolean]                 $enable  = false,
+  Enum['present', 'absent', 'file'] $ensure         = 'present',
+  Stdlib::Absolutepath              $path           = '/etc/systemd/system',
+  Optional[String]                  $content        = undef,
+  Optional[String]                  $source         = undef,
+  Optional[Stdlib::Absolutepath]    $target         = undef,
+  Boolean                           $manage_service = false,
+  Enum['stopped','running']         $ensure_service = 'stopped',
+  Boolean                           $enable_service  = false,
 ) {
   include ::systemd
 
@@ -63,9 +67,10 @@ define systemd::unit_file(
     notify  => Class['systemd::systemctl::daemon_reload'],
   }
 
-  if $enable {
+  if $manage_service {
     service { $title:
-      enable => true,
+      ensure => $ensure_service,
+      enable => $enable_service,
     }
   }
 }
