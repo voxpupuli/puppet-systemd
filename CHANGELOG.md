@@ -1,8 +1,7 @@
 # Changelog
 
 
-
-## [1.1.1](https://github.com/camptocamp/puppet-systemd/tree/1.1.1) (2017-11-26)
+## [1.1.1](https://github.com/camptocamp/puppet-systemd/tree/1.1.1) (2017-11-29)
 
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/1.1.0...1.1.1)
 
