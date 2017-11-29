@@ -27,11 +27,16 @@
 #
 #   * Mutually exclusive with both ``$source`` and ``$content``
 #
+# @attr manage_service
+#    If set, will manage the service defined by the unit file
+#
 # @attr ensure_service
-#    If set, will ensure the state of the resultant service
+#    If set, will ensure the state of the resultant service, will
+#    have no effect unless manage_service is true
 #
 # @attr enable_service
-#    If set, will enable the service at OS startup
+#    If set, will enable the service at OS startup, will
+#    have no effect unless manage_service is true. 
 #
 define systemd::unit_file(
   Enum['present', 'absent', 'file'] $ensure         = 'present',
@@ -40,8 +45,8 @@ define systemd::unit_file(
   Optional[String]                  $source         = undef,
   Optional[Stdlib::Absolutepath]    $target         = undef,
   Boolean                           $manage_service = false,
-  Enum['stopped','running']         $ensure_service = 'stopped',
-  Boolean                           $enable_service  = false,
+  Enum['stopped','running']         $ensure_service = 'running',
+  Boolean                           $enable_service  = true,
 ) {
   include ::systemd
 
@@ -68,7 +73,7 @@ define systemd::unit_file(
   }
 
   if $manage_service {
-    service { $title:
+    service { $name:
       ensure => $ensure_service,
       enable => $enable_service,
     }
