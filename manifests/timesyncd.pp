@@ -31,8 +31,8 @@ class systemd::timesyncd (
       'chrony',
       'openntpd',
     ]:
-      ensure  => absent,
-      require => Service['systemd-timesyncd'],
+      ensure => absent,
+      before => Service['systemd-timesyncd'],
     }
   }
 
