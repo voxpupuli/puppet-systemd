@@ -12,6 +12,36 @@
 # @param resolved_ensure
 #   The state that the ``resolved`` service should be in
 #
+# @param $dns
+#   A space-separated list of IPv4 and IPv6 addresses to use as system DNS servers.
+#   DNS requests are sent to one of the listed DNS servers in parallel to suitable
+#   per-link DNS servers acquired from systemd-networkd.service(8) or set at runtime
+#   by external applications. requires puppetlabs-inifile
+#
+# @param fallback_dns
+#   A space-separated list of IPv4 and IPv6 addresses to use as the fallback DNS
+#   servers. Any per-link DNS servers obtained from systemd-networkd take
+#   precedence over this setting. requires puppetlabs-inifile
+#
+# @param domains
+#   A space-separated list of domains host names or IP addresses to be used
+#   systemd-resolved take precedence over this setting.
+#
+# @param llmnr
+#   Takes a boolean argument or "resolve".
+#
+# @param multicast_dns
+#   Takes a boolean argument or "resolve".
+#
+# @param dnssec
+#   Takes a boolean argument or "allow-downgrade".
+#
+# @param cache
+#   Takes a boolean argument.
+#
+# @param dns_stub_listener
+#   Takes a boolean argument or one of "udp" and "tcp".
+#
 # @param manage_networkd
 #   Manage the systemd network daemon
 #
@@ -36,6 +66,14 @@ class systemd (
   Hash[String, Hash[String, Any]] $service_limits,
   Boolean                         $manage_resolved,
   Enum['stopped','running']       $resolved_ensure,
+  Optional[Variant[Array,String]]                    $dns,
+  Optional[Variant[Array,String]]                    $fallback_dns,
+  Optional[Variant[Array,String]]                    $domains,
+  Optional[Variant[Boolean,Enum['resolve']]]         $llmnr,
+  Optional[Variant[Boolean,Enum['resolve']]]         $multicast_dns,
+  Optional[Variant[Boolean,Enum['allow-downgrade']]] $dnssec,
+  Optional[Boolean]                                  $cache,
+  Optional[Variant[Boolean,Enum['udp','tcp']]]       $dns_stub_listener,
   Boolean                         $manage_networkd,
   Enum['stopped','running']       $networkd_ensure,
   Boolean                         $manage_timesyncd,
