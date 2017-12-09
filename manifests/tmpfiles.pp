@@ -14,7 +14,7 @@ class systemd::tmpfiles (
   Array[Enum['create','clean','remove']] $operations = ['create']
 ) {
 
-  $_ops = join($operations.map |$op| { "--${op}" }, ' ')
+  $_ops = join(prefix($operations, '--'), ' ')
 
   exec { 'systemd-tmpfiles':
     command     => "systemd-tmpfiles ${_ops}",
