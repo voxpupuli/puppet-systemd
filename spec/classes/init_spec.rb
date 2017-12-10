@@ -53,7 +53,7 @@ describe 'systemd' do
         context 'when enabling timesyncd with purge packages (specified packages)' do
           let(:params) {{
             :manage_timesyncd => true,
-            :purge_another_ntp_daemon => true
+            :purge_another_ntp_daemon => true,
             :purge_ntp_packages = %w(ntp chrony),
           }}
 
