@@ -54,7 +54,7 @@ describe 'systemd' do
           let(:params) {{
             :manage_timesyncd => true,
             :purge_another_ntp_daemon => true,
-            :purge_ntp_packages = %w(ntp chrony),
+            :purge_ntp_packages => %w(ntp chrony),
           }}
 
           it { is_expected.to create_service('systemd-timesyncd').with_ensure('running') }
