@@ -32,6 +32,13 @@
 #   A space-separated list of NTP server host names or IP addresses to be used
 #   as the fallback NTP servers. Any per-interface NTP servers obtained from
 #   systemd-networkd take precedence over this setting. requires puppetlabs-inifile
+#
+# @param purge_another_ntp_daemon
+#   Determine to purge another NTP daemon
+#
+# @param purge_ntp_packages
+#   A list of packages should be purged
+#
 class systemd (
   Hash[String, Hash[String, Any]]  $service_limits   = {},
   Boolean                          $manage_resolved  = false,
@@ -42,6 +49,8 @@ class systemd (
   Enum['stopped','running']        $timesyncd_ensure = 'running',
   Optional[Variant[Array,String]] $ntp_server          = undef,
   Optional[Variant[Array,String]] $fallback_ntp_server = undef,
+  Boolean $purge_another_ntp_daemon                    = false,
+  Array $purge_ntp_packages                            = ['ntp', 'chrony', 'openntpd'],
 ){
 
   contain ::systemd::systemctl::daemon_reload

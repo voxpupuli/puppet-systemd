@@ -13,13 +13,29 @@
 #   A space-separated list of NTP server host names or IP addresses to be used
 #   as the fallback NTP servers. Any per-interface NTP servers obtained from
 #   systemd-networkd take precedence over this setting. requires puppetlabs-inifile
+#
+# @param purge_another_ntp_daemon
+#   Determine to purge another NTP daemon
+#
+# @param purge_ntp_packages
+#   A list of packages should be purged
+#
 class systemd::timesyncd (
   Enum['stopped','running'] $ensure                    = $systemd::timesyncd_ensure,
   Optional[Variant[Array,String]] $ntp_server          = $systemd::ntp_server,
   Optional[Variant[Array,String]] $fallback_ntp_server = $systemd::fallback_ntp_server,
+  Boolean $purge_another_ntp_daemon                    = $systemd::purge_another_ntp_daemon,
+  Array $purge_ntp_packages                            = $systemd::purge_ntp_packages,
 ){
 
   assert_private()
+
+  if $purge_another_ntp_daemon {
+    package { $purge_ntp_packages:
+      ensure => absent,
+      before => Service['systemd-timesyncd'],
+    }
+  }
 
   $_enable_timesyncd = $ensure ? {
     'stopped' => false,
