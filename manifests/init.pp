@@ -46,6 +46,7 @@ class systemd (
   Optional[Variant[Array,String]] $ntp_server          = undef,
   Optional[Variant[Array,String]] $fallback_ntp_server = undef,
   Boolean $purge_another_ntp_daemon                    = false,
+  Array $purge_ntp_packages                            = ['ntp', 'chrony', 'openntpd'],
 ){
 
   contain ::systemd::systemctl::daemon_reload

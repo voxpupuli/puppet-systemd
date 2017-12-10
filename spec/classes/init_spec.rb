@@ -37,7 +37,7 @@ describe 'systemd' do
           it { is_expected.not_to create_service('systemd-networkd').with_enable(true) }
         end
 
-        context 'when enabling timesyncd' do
+        context 'when enabling timesyncd with purge packages (default)' do
           let(:params) {{
             :manage_timesyncd => true,
             :purge_another_ntp_daemon => true
@@ -48,6 +48,20 @@ describe 'systemd' do
           it { is_expected.to create_package('ntp').with_ensure('absent') }
           it { is_expected.to create_package('chrony').with_ensure('absent') }
           it { is_expected.to create_package('openntpd').with_ensure('absent') }
+        end
+
+        context 'when enabling timesyncd with purge packages (specified packages)' do
+          let(:params) {{
+            :manage_timesyncd => true,
+            :purge_another_ntp_daemon => true
+            :purge_ntp_packages = %w(ntp chrony),
+          }}
+
+          it { is_expected.to create_service('systemd-timesyncd').with_ensure('running') }
+          it { is_expected.to create_service('systemd-timesyncd').with_enable(true) }
+          it { is_expected.to create_package('ntp').with_ensure('absent') }
+          it { is_expected.to create_package('chrony').with_ensure('absent') }
+          it { is_expected.not_to create_package('openntpd').with_ensure('absent') }
         end
 
         context 'when enabling timesyncd with NTP values (string)' do
