@@ -35,6 +35,10 @@
 #
 # @param purge_another_ntp_daemon
 #   Determine to purge another NTP daemon
+#
+# @param purge_ntp_packages
+#   A list of packages should be purged
+#
 class systemd (
   Hash[String, Hash[String, Any]]  $service_limits   = {},
   Boolean                          $manage_resolved  = false,
