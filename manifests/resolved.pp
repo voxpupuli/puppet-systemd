@@ -45,7 +45,7 @@ class systemd::resolved (
   Optional[Variant[Boolean,Enum['resolve']]] $llmnr                = $systemd::llmnr,
   Optional[Variant[Boolean,Enum['resolve']]] $multicast_dns        = $systemd::multicast_dns,
   Optional[Variant[Boolean,Enum['allow-downgrade']]] $dnssec       = $systemd::dnssec,
-  Optional[Boolean] $cache                                         = $systemd::cache,
+  Boolean $cache                                                   = $systemd::cache,
   Optional[Variant[Boolean,Enum['udp', 'tcp']]] $dns_stub_listener = $systemd::dns_stub_listener,
 ){
 
@@ -170,10 +170,9 @@ class systemd::resolved (
   $_cache = $cache ? {
     true    => 'yes',
     false   => 'no',
-    default => $cache,
   }
 
-  if $_cache {
+  if $cache {
     ini_setting{ 'cache':
       ensure  => 'present',
       value   => $_cache,

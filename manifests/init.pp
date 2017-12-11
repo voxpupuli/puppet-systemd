@@ -72,7 +72,7 @@ class systemd (
   Optional[Variant[Boolean,Enum['resolve']]]         $llmnr,
   Optional[Variant[Boolean,Enum['resolve']]]         $multicast_dns,
   Optional[Variant[Boolean,Enum['allow-downgrade']]] $dnssec,
-  Optional[Boolean]                                  $cache,
+  Boolean                                            $cache,
   Optional[Variant[Boolean,Enum['udp','tcp']]]       $dns_stub_listener,
   Boolean                         $manage_networkd,
   Enum['stopped','running']       $networkd_ensure,
