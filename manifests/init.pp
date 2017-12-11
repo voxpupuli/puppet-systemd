@@ -12,7 +12,7 @@
 # @param resolved_ensure
 #   The state that the ``resolved`` service should be in
 #
-# @param $dns
+# @param dns
 #   A space-separated list of IPv4 and IPv6 addresses to use as system DNS servers.
 #   DNS requests are sent to one of the listed DNS servers in parallel to suitable
 #   per-link DNS servers acquired from systemd-networkd.service(8) or set at runtime
