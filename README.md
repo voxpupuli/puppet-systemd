@@ -16,7 +16,7 @@ There are two ways to use this module.
 Let this module handle file creation and systemd reloading.
 
 ```puppet
-::systemd::unit_file { 'foo.service':
+systemd::unit_file { 'foo.service':
  source => "puppet:///modules/${module_name}/foo.service",
 } ~> service {'foo':
   ensure => 'running',
@@ -26,7 +26,7 @@ Let this module handle file creation and systemd reloading.
 Or handle file creation yourself and trigger systemd.
 
 ```puppet
-include ::systemd::systemctl::daemon_reload
+include systemd::systemctl::daemon_reload
 
 file { '/usr/lib/systemd/system/foo.service':
   ensure => file,
@@ -49,7 +49,7 @@ unit itself. As for the unit files, the module can handle the file and
 directory creation and systemd reloading:
 
 ```puppet
-::systemd::dropin_file { 'foo.conf':
+systemd::dropin_file { 'foo.conf':
   unit   => 'foo.service',
   source => "puppet:///modules/${module_name}/foo.conf",
 } ~> service {'foo':
@@ -60,7 +60,7 @@ directory creation and systemd reloading:
 Or handle file and directory creation yourself and trigger systemd:
 
 ```puppet
-include ::systemd::systemctl::daemon_reload
+include systemd::systemctl::daemon_reload
 
 file { '/etc/systemd/system/foo.service.d':
   ensure => directory,
@@ -87,7 +87,7 @@ service {'foo':
 Let this module handle file creation and systemd reloading
 
 ```puppet
-::systemd::tmpfile { 'foo.conf':
+systemd::tmpfile { 'foo.conf':
   source => "puppet:///modules/${module_name}/foo.conf",
 }
 ```
@@ -95,7 +95,7 @@ Let this module handle file creation and systemd reloading
 Or handle file creation yourself and trigger systemd.
 
 ```puppet
-include ::systemd::tmpfiles
+include systemd::tmpfiles
 
 file { '/etc/tmpfiles.d/foo.conf':
   ensure => file,
@@ -112,7 +112,7 @@ file { '/etc/tmpfiles.d/foo.conf':
 Manage soft and hard limits on various resources for executed processes.
 
 ```puppet
-::systemd::service_limits { 'foo.service':
+systemd::service_limits { 'foo.service':
   limits => {
     'LimitNOFILE' => 8192,
     'LimitNPROC'  => 16384,
@@ -123,7 +123,7 @@ Manage soft and hard limits on various resources for executed processes.
 Or provide the configuration file yourself. Systemd reloading and restarting of the service are handled by the module.
 
 ```puppet
-::systemd::service_limits { 'foo.service':
+systemd::service_limits { 'foo.service':
   source => "puppet:///modules/${module_name}/foo.conf",
 }
 ```
@@ -136,7 +136,7 @@ needs to be restarted to apply the configs. The defined resource can do this
 for you:
 
 ```puppet
-::systemd::network{'eth0.network':
+systemd::network{'eth0.network':
   source          => "puppet:///modules/${module_name}/eth0.network",
   restart_service => true,
 }
@@ -148,23 +148,24 @@ Systemd provides multiple services. Currently you can manage `systemd-resolved`,
 `systemd-timesyncd` and `systemd-networkd` via the main class:
 
 ```puppet
-class{'::systemd':
-  $manage_resolved  => true,
-  $manage_networkd  => true,
-  $manage_timesyncd => true,
+class{'systemd':
+  manage_resolved  => true,
+  manage_networkd  => true,
+  manage_timesyncd => true,
+}
 ```
 
 $manage_networkd is required if you want to reload it for new
-`::systemd::network` resources. Setting $manage_resolved will also manage your
+`systemd::network` resources. Setting $manage_resolved will also manage your
 `/etc/resolv.conf`.
 
 It is possible to configure the default ntp servers in /etc/systemd/timesyncd.conf:
 
 ```puppet
-class{'::systemd':
-  $manage_timesyncd => true,
-  $ntp_server          => ['0.pool.ntp.org', '1.pool.ntp.org'],
-  $fallback_ntp_server => ['2.pool.ntp.org', '3.pool.ntp.org'],
+class{'systemd':
+  manage_timesyncd    => true,
+  ntp_server          => ['0.pool.ntp.org', '1.pool.ntp.org'],
+  fallback_ntp_server => ['2.pool.ntp.org', '3.pool.ntp.org'],
 }
 ```
 
