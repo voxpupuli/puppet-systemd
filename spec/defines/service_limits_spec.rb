@@ -30,7 +30,7 @@ describe 'systemd::service_limits' do
         it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
           :ensure  => 'file',
           :content => /LimitCPU=10m/,
-          :mode    => '0644'
+          :mode    => '0444'
         ) }
         it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
           :content => /LimitFSIZE=infinity/
