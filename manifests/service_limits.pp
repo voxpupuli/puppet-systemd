@@ -54,27 +54,13 @@ define systemd::service_limits(
     fail('You must supply either the limits or source parameter to systemd::service_limits')
   }
 
-  file { "${path}/${name}.d/":
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    seltype => 'systemd_unit_file_t',
-  }
-
-  $_conf_file_ensure = $ensure ? {
-    'present' => 'file',
-    default   => $ensure,
-  }
-
-  file { "${path}/${name}.d/90-limits.conf":
-    ensure  => $_conf_file_ensure,
-    content => $_content,
-    source  => $source,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    notify  => Class['systemd::systemctl::daemon_reload'],
+  systemd::dropin_file { "${name}-90-limits.conf":
+    ensure   => $ensure,
+    unit     => $name,
+    filename => '90-limits.conf',
+    path     => $path,
+    content  => $_content,
+    source   => $source,
   }
 
   if $restart_service {
