@@ -14,7 +14,7 @@ describe 'systemd::service_limits' do
               'LimitCPU'    => '10m',
               'LimitFSIZE'  => 'infinity',
               'LimitDATA'   => '10K',
-              'LimitNOFILE' => 20,
+              'LimitNOFILE' => '20:infinity',
               'LimitNICE'   => '-10',
               'LimitRTPRIO' => 50,
               'IODeviceWeight' => [
@@ -40,7 +40,7 @@ describe 'systemd::service_limits' do
             :content => /LimitDATA=10K/
           ) }
           it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
-            :content => /LimitNOFILE=20/
+            :content => /LimitNOFILE=20:infinity/
           ) }
           it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
             :content => /LimitNICE=-10/
