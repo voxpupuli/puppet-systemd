@@ -69,13 +69,17 @@ define systemd::unit_file(
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
-    notify  => Class['systemd::systemctl::daemon_reload'],
   }
 
+  File["${path}/${name}"] -> Class['systemd::systemctl::daemon_reload']
+
   if $manage_service {
+
     service { $name:
       ensure => $ensure_service,
       enable => $enable_service,
     }
+
+    File["${path}/${name}"] -> Service[$name]
   }
 }
