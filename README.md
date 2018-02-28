@@ -7,6 +7,8 @@
 
 This module declares exec resources to create global sync points for reloading systemd.
 
+**Version 2 and newer of the module don't work with Hiera 3! You need to migrate your existing Hiera setup to Hiera 5**
+
 ## Usage and examples
 
 There are two ways to use this module.
