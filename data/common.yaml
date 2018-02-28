@@ -8,3 +8,5 @@ systemd::manage_timesyncd: false
 systemd::timesyncd_ensure: 'running'
 systemd::ntp_server: ~
 systemd::fallback_ntp_server: ~
+systemd::manage_accounting: false
+systemd::accounting: {}

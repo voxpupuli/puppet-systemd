@@ -172,3 +172,22 @@ class{'systemd':
 ```
 
 This requires puppetlabs-inifile, which is only a soft dependency in this module (you need to explicitly install it). Both parameters accept a string or an array.
+
+### Resource Accounting
+
+Systemd has support for different accounting option. It can track
+CPU/Memory/Network stats per process. This is explained in depth at [systemd-system.conf](https://www.freedesktop.org/software/systemd/man/systemd-system.conf.html).
+This defaults to off (default on most operating systems). You can enable this
+with the `$manage_accounting` parameter. The module provides a default set of
+working accounting options per operating system, but you can still modify them
+with `$accounting`:
+
+```puppet
+class{'systemd':
+  manage_accounting => true,
+  accounting        => {
+    'DefaultCPUAccounting'    => 'yes',
+    'DefaultMemoryAccounting' => 'no',
+  }
+}
+```
