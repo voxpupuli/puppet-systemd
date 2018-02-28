@@ -44,19 +44,19 @@ class systemd (
   Optional[Variant[Array,String]] $fallback_ntp_server = undef,
 ){
 
-  contain ::systemd::systemctl::daemon_reload
+  contain systemd::systemctl::daemon_reload
 
   create_resources('systemd::service_limits', $service_limits)
 
   if $manage_resolved and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-resolved.service'] {
-    contain ::systemd::resolved
+    contain systemd::resolved
   }
 
   if $manage_networkd and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-networkd.service'] {
-    contain ::systemd::networkd
+    contain systemd::networkd
   }
 
   if $manage_timesyncd and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-timesyncd.service'] {
-    contain ::systemd::timesyncd
+    contain systemd::timesyncd
   }
 }

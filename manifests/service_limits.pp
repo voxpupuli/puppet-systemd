@@ -34,7 +34,7 @@ define systemd::service_limits(
   Boolean                           $restart_service = true
 ) {
 
-  include ::systemd
+  include systemd
 
   if $name !~ Pattern['^.+\.(service|socket|mount|swap)$'] {
     fail('$name must match Pattern["^.+\.(service|socket|mount|swap)$"]')

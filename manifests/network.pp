@@ -9,7 +9,7 @@ define systemd::network (
   Boolean $restart_service               = true,
 ){
 
-  include ::systemd
+  include systemd
 
   if $restart_service and $systemd::manage_networkd {
     $notify = Service['systemd-networkd']
