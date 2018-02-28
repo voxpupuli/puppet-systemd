@@ -36,7 +36,7 @@ define systemd::dropin_file(
   Optional[String]                  $source   = undef,
   Optional[Stdlib::Absolutepath]    $target   = undef,
 ) {
-  include ::systemd
+  include systemd
 
   if $target {
     $_ensure = 'link'

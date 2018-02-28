@@ -34,7 +34,7 @@ define systemd::unit_file(
   Optional[String]                  $source  = undef,
   Optional[Stdlib::Absolutepath]    $target  = undef,
 ) {
-  include ::systemd
+  include systemd
 
   assert_type(Systemd::Unit, $name)
 
