@@ -4,9 +4,11 @@
 #   Determine whether systemd is the init system on the node
 #
 # Resolution:
-#   Check the name of the process 1 (ps -p 1)
+#   Check if the service_provider fact is systemd
 #
 # Caveats:
+#   If you override the service provider then it will return false, even if the
+#   underlying system still is systemd.
 #
 
 # Fact: systemd_version
@@ -15,7 +17,7 @@
 #   Determine the version of systemd installed
 #
 # Resolution:
-#  Check the output of systemctl --version
+#   Check the output of systemctl --version
 #
 # Caveats:
 #
@@ -26,7 +28,8 @@
 #   List all systemd internal real services + their state
 #
 # Resolution:
-#  Check the output of systemctl --version
+#   Check the output of systemctl --list-unit-files systemd-* and parse it into
+#   a hash with the status
 #
 # Caveats:
 #
