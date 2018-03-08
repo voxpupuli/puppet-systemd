@@ -27,12 +27,20 @@
 #
 #   * Mutually exclusive with both ``$source`` and ``$content``
 #
+# @attr enable
+#   If set, will manage the unit enablement status.
+#
+# @attr active
+#   If set, will manage the state of the unit.
+#
 define systemd::unit_file(
-  Enum['present', 'absent', 'file'] $ensure  = 'present',
-  Stdlib::Absolutepath              $path    = '/etc/systemd/system',
-  Optional[String]                  $content = undef,
-  Optional[String]                  $source  = undef,
-  Optional[Stdlib::Absolutepath]    $target  = undef,
+  Enum['present', 'absent', 'file']        $ensure  = 'present',
+  Stdlib::Absolutepath                     $path    = '/etc/systemd/system',
+  Optional[String]                         $content = undef,
+  Optional[String]                         $source  = undef,
+  Optional[Stdlib::Absolutepath]           $target  = undef,
+  Optional[Variant[Boolean, Enum['mask']]] $enable  = undef,
+  Optional[Boolean]                        $active  = undef,
 ) {
   include systemd
 
@@ -56,5 +64,15 @@ define systemd::unit_file(
     group   => 'root',
     mode    => '0444',
     notify  => Class['systemd::systemctl::daemon_reload'],
+  }
+
+  if $enable != undef or $active != undef {
+    service { $name:
+      ensure    => $active,
+      enable    => $enable,
+      provider  => 'systemd',
+      subscribe => File["${path}/${name}"],
+      require   => Class['systemd::systemctl::daemon_reload'],
+    }
   }
 }
