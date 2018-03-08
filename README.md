@@ -19,7 +19,7 @@ Let this module handle file creation and systemd reloading.
 systemd::unit_file { 'foo.service':
  source => "puppet:///modules/${module_name}/foo.service",
 } ~> service {'foo':
- ensure => running,
+  ensure => 'running',
 }
 ```
 
