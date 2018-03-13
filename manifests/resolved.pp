@@ -39,9 +39,9 @@
 #
 class systemd::resolved (
   Enum['stopped','running'] $ensure                                = $systemd::resolved_ensure,
-  Optional[Variant[Array,String]] $dns                             = $systemd::dns,
-  Optional[Variant[Array,String]] $fallback_dns                    = $systemd::fallback_dns,
-  Optional[Variant[Array,String]] $domains                         = $systemd::domains,
+  Optional[Variant[Array[String],String]] $dns                     = $systemd::dns,
+  Optional[Variant[Array[String],String]] $fallback_dns            = $systemd::fallback_dns,
+  Optional[Variant[Array[String],String]] $domains                 = $systemd::domains,
   Optional[Variant[Boolean,Enum['resolve']]] $llmnr                = $systemd::llmnr,
   Optional[Variant[Boolean,Enum['resolve']]] $multicast_dns        = $systemd::multicast_dns,
   Optional[Variant[Boolean,Enum['allow-downgrade']]] $dnssec       = $systemd::dnssec,
