@@ -2,6 +2,14 @@
 systemd::service_limits: {}
 systemd::manage_resolved: false
 systemd::resolved_ensure: 'running'
+systemd::dns: ~
+systemd::fallback_dns: ~
+systemd::domains: ~
+systemd::llmnr: ~
+systemd::multicast_dns: ~
+systemd::dnssec: ~
+systemd::cache: false
+systemd::dns_stub_listener: ~
 systemd::manage_networkd: false
 systemd::networkd_ensure: 'running'
 systemd::manage_timesyncd: false
