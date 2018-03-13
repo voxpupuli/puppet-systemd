@@ -22,6 +22,10 @@ group :development, :unit_tests do
   gem 'json_pure', '< 2.0.2',                              :require => false
 end
 
+group :release do
+  gem 'github_changelog_generator',                        :require => false, :git => 'https://github.com/skywinder/github-changelog-generator.git'
+end
+
 group :system_tests do
   gem 'beaker',               :require => false
   gem 'beaker-rspec', '> 5',  :require => false
