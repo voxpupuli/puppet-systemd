@@ -67,6 +67,29 @@ describe 'systemd' do
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_systemd__service_limits('openstack-nova-compute.service').with_limits({'LimitNOFILE' => 32768}) }
         end
+
+        context 'when managing Accounting options' do
+          let :params do
+            {
+              manage_accounting: true,
+            }
+          end
+
+          it { is_expected.to contain_class('systemd::system')}
+
+          case facts[:os]['family']
+          when 'Archlinux'
+            accounting = ['DefaultCPUAccounting', 'DefaultIOAccounting', 'DefaultIPAccounting', 'DefaultBlockIOAccounting', 'DefaultMemoryAccounting', 'DefaultTasksAccounting']
+          when 'Debian'
+            accounting = ['DefaultCPUAccounting', 'DefaultBlockIOAccounting', 'DefaultMemoryAccounting']
+          when 'RedHat'
+            accounting = ['DefaultCPUAccounting', 'DefaultBlockIOAccounting', 'DefaultMemoryAccounting', 'DefaultTasksAccounting']
+          end
+          accounting.each do |account|
+            it { is_expected.to contain_ini_setting(account)}
+          end
+          it { is_expected.to compile.with_all_deps }
+        end
       end
     end
   end

@@ -42,6 +42,8 @@ class systemd (
   Enum['stopped','running']       $timesyncd_ensure,
   Optional[Variant[Array,String]] $ntp_server,
   Optional[Variant[Array,String]] $fallback_ntp_server,
+  Boolean                         $manage_accounting,
+  Hash[String,String]             $accounting,
 ){
 
   contain systemd::systemctl::daemon_reload
@@ -58,5 +60,9 @@ class systemd (
 
   if $manage_timesyncd and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-timesyncd.service'] {
     contain systemd::timesyncd
+  }
+
+  if $manage_accounting {
+    contain systemd::system
   }
 }
