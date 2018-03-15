@@ -44,6 +44,16 @@ service {'foo':
 }
 ```
 
+You can also use this module to more fully manage the new unit. This example deploys the unit, reloads systemd and then enables and starts it.
+
+```puppet
+systemd::unit_file { 'foo.service':
+ source => "puppet:///modules/${module_name}/foo.service",
+ enable => true,
+ active => true,
+}
+```
+
 ### drop-in files
 
 Drop-in files are used to add or alter settings of a unit without modifying the
