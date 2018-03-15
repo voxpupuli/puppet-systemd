@@ -7,6 +7,7 @@
   "source": "https://github.com/camptocamp/puppet-systemd",
   "project_page": "https://github.com/camptocamp/puppet-systemd",
   "issues_url": "https://github.com/camptocamp/puppet-systemd/issues",
+  "data_provider": "hiera",
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
@@ -16,7 +17,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.10.10 < 6.0.0"
+      "version_requirement": ">= 4.7.0 < 6.0.0"
     }
   ],
   "operatingsystem_support": [
