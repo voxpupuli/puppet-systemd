@@ -31,6 +31,24 @@ describe 'systemd::unit_file' do
             }.to raise_error(/expects a match for Systemd::Unit/)
           }
         end
+
+        context 'with enable => true and active => true' do
+          let(:params) do
+            super().merge({
+              :enable => true,
+              :active => true
+            })
+          end
+
+          it { is_expected.to contain_service('test.service').with(
+            :ensure   => true,
+            :enable   => true,
+            :provider => 'systemd'
+          ) }
+
+          it { is_expected.to contain_service('test.service').that_subscribes_to("File[/etc/systemd/system/#{title}]") }
+          it { is_expected.to contain_service('test.service').that_requires('Class[systemd::systemctl::daemon_reload]') }
+        end
       end
     end
   end
