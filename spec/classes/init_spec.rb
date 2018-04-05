@@ -24,6 +24,70 @@ describe 'systemd' do
           it { is_expected.to create_service('systemd-networkd').with_ensure('running') }
           it { is_expected.to create_service('systemd-networkd').with_enable(true) }
         end
+
+        context 'when enabling resolved with DNS values (string)' do
+          let(:params) {{
+            :manage_resolved => true,
+            :dns => '8.8.8.8 8.8.4.4',
+            :fallback_dns => '2001:4860:4860::8888 2001:4860:4860::8844',
+          }}
+
+          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_ini_setting('dns')}
+          it { is_expected.to contain_ini_setting('fallback_dns')}
+          it { is_expected.not_to contain_ini_setting('domains')}
+          it { is_expected.not_to contain_ini_setting('multicast_dns')}
+          it { is_expected.not_to contain_ini_setting('llmnr')}
+          it { is_expected.not_to contain_ini_setting('dnssec')}
+          it { is_expected.not_to contain_ini_setting('cache')}
+          it { is_expected.not_to contain_ini_setting('dns_stub_listener')}
+        end
+
+        context 'when enabling resolved with DNS values (array)' do
+          let(:params) {{
+            :manage_resolved => true,
+            :dns => %w(8.8.8.8 8.8.4.4),
+            :fallback_dns => %w(2001:4860:4860::8888 2001:4860:4860::8844),
+          }}
+
+          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_ini_setting('dns')}
+          it { is_expected.to contain_ini_setting('fallback_dns')}
+          it { is_expected.not_to contain_ini_setting('domains')}
+          it { is_expected.not_to contain_ini_setting('multicast_dns')}
+          it { is_expected.not_to contain_ini_setting('llmnr')}
+          it { is_expected.not_to contain_ini_setting('dnssec')}
+          it { is_expected.not_to contain_ini_setting('cache')}
+          it { is_expected.not_to contain_ini_setting('dns_stub_listener')}
+        end
+
+        context 'when enabling resolved with DNS values (full)' do
+          let(:params) {{
+            :manage_resolved => true,
+            :dns => %w(8.8.8.8 8.8.4.4),
+            :fallback_dns => %w(2001:4860:4860::8888 2001:4860:4860::8844),
+            :domains => %w(2001:4860:4860::8888 2001:4860:4860::8844),
+            :llmnr => true,
+            :multicast_dns => false,
+            :dnssec => false,
+            :cache => true,
+            :dns_stub_listener => 'udp',
+          }}
+
+          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_ini_setting('dns')}
+          it { is_expected.to contain_ini_setting('fallback_dns')}
+          it { is_expected.to contain_ini_setting('domains')}
+          it { is_expected.to contain_ini_setting('multicast_dns')}
+          it { is_expected.to contain_ini_setting('llmnr')}
+          it { is_expected.to contain_ini_setting('dnssec')}
+          it { is_expected.to contain_ini_setting('cache')}
+          it { is_expected.to contain_ini_setting('dns_stub_listener')}
+        end
+
         context 'when enabling timesyncd' do
           let(:params) {{
             :manage_timesyncd => true
