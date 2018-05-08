@@ -60,6 +60,20 @@ describe 'systemd::service_limits' do
           :command => "systemctl restart #{title}",
           :refreshonly => true
         ) }
+
+        context "limitNOFILE is unlimited" do
+
+          let(:params) do
+            { :limits => { 'LimitNOFILE' => 'unlimited' }}
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it do
+            is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
+              :content => /LimitNOFILE=unlimited/
+            )
+          end
+        end
       end
     end
   end
