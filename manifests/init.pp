@@ -42,6 +42,9 @@
 # @param dns_stub_listener
 #   Takes a boolean argument or one of "udp" and "tcp".
 #
+# @param use_stub_resolver
+#   Takes a boolean argument. When "false" (default) it uses /var/run/systemd/resolve/resolv.conf
+#   as /etc/resolv.conf. When "true", it uses /var/run/systemd/resolve/stub-resolv.conf
 # @param manage_networkd
 #   Manage the systemd network daemon
 #
@@ -74,6 +77,7 @@ class systemd (
   Optional[Variant[Boolean,Enum['allow-downgrade']]] $dnssec,
   Boolean                                            $cache,
   Optional[Variant[Boolean,Enum['udp','tcp']]]       $dns_stub_listener,
+  Boolean                                            $use_stub_resolver,
   Boolean                                            $manage_networkd,
   Enum['stopped','running']                          $networkd_ensure,
   Boolean                                            $manage_timesyncd,

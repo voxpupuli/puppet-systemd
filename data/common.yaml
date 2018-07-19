@@ -10,6 +10,7 @@ systemd::multicast_dns: ~
 systemd::dnssec: ~
 systemd::cache: false
 systemd::dns_stub_listener: ~
+systemd::use_stub_resolver: false
 systemd::manage_networkd: false
 systemd::networkd_ensure: 'running'
 systemd::manage_timesyncd: false

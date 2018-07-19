@@ -37,6 +37,10 @@
 # @param dns_stub_listener
 #   Takes a boolean argument or one of "udp" and "tcp".
 #
+# @param use_stub_resolver
+#   Takes a boolean argument. When "false" (default) it uses /var/run/systemd/resolve/resolv.conf
+#   as /etc/resolv.conf. When "true", it uses /var/run/systemd/resolve/stub-resolv.conf
+#
 class systemd::resolved (
   Enum['stopped','running'] $ensure                                = $systemd::resolved_ensure,
   Optional[Variant[Array[String],String]] $dns                     = $systemd::dns,
@@ -47,6 +51,7 @@ class systemd::resolved (
   Optional[Variant[Boolean,Enum['allow-downgrade']]] $dnssec       = $systemd::dnssec,
   Boolean $cache                                                   = $systemd::cache,
   Optional[Variant[Boolean,Enum['udp', 'tcp']]] $dns_stub_listener = $systemd::dns_stub_listener,
+  Boolean $use_stub_resolver                                       = $systemd::use_stub_resolver,
 ){
 
   assert_private()
@@ -62,9 +67,13 @@ class systemd::resolved (
     enable => $_enable_resolved,
   }
 
+  $_resolv_conf_target = $use_stub_resolver ? {
+    true    => '/run/systemd/resolve/stub-resolv.conf',
+    default => '/run/systemd/resolve/resolv.conf',
+  }
   file { '/etc/resolv.conf':
     ensure  => 'symlink',
-    target  => '/run/systemd/resolve/resolv.conf',
+    target  => $_resolv_conf_target,
     require => Service['systemd-resolved'],
   }
 
