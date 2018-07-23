@@ -175,6 +175,8 @@ $manage_networkd is required if you want to reload it for new
 `systemd::network` resources. Setting $manage_resolved will also manage your
 `/etc/resolv.conf`.
 
+When configuring `systemd::resolved` you could set `dns_stub_resolver` to false (default) to use a *standard* `/etc/resolved.conf`, or you could set it to `true` to use the local resolver provided by `systemd-resolved`.
+
 It is possible to configure the default ntp servers in /etc/systemd/timesyncd.conf:
 
 ```puppet
