@@ -47,11 +47,13 @@ define systemd::service_limits(
     $_content = undef
   }
 
-  if ($limits and !empty($limits)) and $source {
-    fail('You may not supply both limits and source parameters to systemd::service_limits')
-  }
-  elsif ($limits == undef or empty($limits)) and ($source == undef) {
-    fail('You must supply either the limits or source parameter to systemd::service_limits')
+  if $ensure != 'absent' {
+    if ($limits and !empty($limits)) and $source {
+      fail('You may not supply both limits and source parameters to systemd::service_limits')
+    }
+    elsif ($limits == undef or empty($limits)) and ($source == undef) {
+      fail('You must supply either the limits or source parameter to systemd::service_limits')
+    }
   }
 
   systemd::dropin_file { "${name}-90-limits.conf":
