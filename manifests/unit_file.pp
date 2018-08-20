@@ -42,7 +42,7 @@ define systemd::unit_file(
   Optional[Variant[Boolean, Enum['mask']]] $enable  = undef,
   Optional[Boolean]                        $active  = undef,
 ) {
-  include systemd
+  include ::systemd
 
   assert_type(Systemd::Unit, $name)
 
