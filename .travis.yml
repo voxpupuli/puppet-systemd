@@ -1,8 +1,14 @@
 ---
 language: ruby
 sudo: false
+addons:
+  apt:
+    packages:
+      - libaugeas-dev
+    sources:
+      - augeas
 cache: bundler
-bundler_args: --without system_tests --without release
+bundler_args: --without system_tests
 script: ["bundle exec rake validate", "bundle exec rake lint", "bundle exec rake spec SPEC_OPTS='--format documentation'"]
 matrix:
   fast_finish: true
@@ -10,9 +16,49 @@ matrix:
   - rvm: 2.1.9
     env: PUPPET_GEM_VERSION="~> 4.0"
   - rvm: 2.4.1
-    env: PUPPET_GEM_VERSION="~> 4"
-  - rvm: 2.4.1
-    env: PUPPET_GEM_VERSION="~> 5"
+    env: PUPPET_GEM_VERSION="~> 5.0"
+  - rvm: default
+    sudo: required
+    dist: trusty
+    services: docker
+    env: BEAKER_set="debian-8"
+    bundler_args:
+    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+  - rvm: default
+    sudo: required
+    dist: trusty
+    services: docker
+    env: BEAKER_set="debian-9"
+    bundler_args:
+    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+  - rvm: default
+    sudo: required
+    dist: trusty
+    services: docker
+    env: BEAKER_set="debian-10"
+    bundler_args:
+    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+  - rvm: default
+    sudo: required
+    dist: trusty
+    services: docker
+    env: BEAKER_set="ubuntu-16.04"
+    bundler_args:
+    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+  - rvm: default
+    sudo: required
+    dist: trusty
+    services: docker
+    env: BEAKER_set="ubuntu-18.04"
+    bundler_args:
+    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+  - rvm: default
+    sudo: required
+    dist: trusty
+    services: docker
+    env: BEAKER_set="centos-7"
+    bundler_args:
+    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
 notifications:
   email: false
 deploy:
