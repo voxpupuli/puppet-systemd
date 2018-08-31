@@ -19,7 +19,6 @@ group :development, :unit_tests do
   gem 'puppet-lint-alias-check',                           :require => false
   gem 'rspec-puppet-facts',                                :require => false
   gem 'ruby-augeas',                                       :require => false
-  gem 'puppet-blacksmith',                                 :require => false if RUBY_VERSION !~ /^1\./
   gem 'json_pure', '< 2.0.2',                              :require => false
 end
 
@@ -41,6 +40,12 @@ if puppetversion = ENV['PUPPET_GEM_VERSION']
   gem 'puppet', puppetversion, :require => false
 else
   gem 'puppet', :require => false
+end
+
+group :release do
+  gem 'github_changelog_generator',  :require => false, :git => 'https://github.com/github-changelog-generator/github-changelog-generator' if RUBY_VERSION >= '2.2.2'
+  gem 'puppet-blacksmith',           :require => false
+  gem 'voxpupuli-release',           :require => false, :git => 'https://github.com/voxpupuli/voxpupuli-release-gem'
 end
 
 # vim:ft=ruby
