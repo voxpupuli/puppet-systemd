@@ -19,6 +19,8 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
+- do not access facts as top scope variable [\#85](https://github.com/camptocamp/puppet-systemd/pull/85) ([bastelfreak](https://github.com/bastelfreak))
+- Release 2.1.0 [\#84](https://github.com/camptocamp/puppet-systemd/pull/84) ([bastelfreak](https://github.com/bastelfreak))
 - allow puppetlabs/stdlib 5.x [\#83](https://github.com/camptocamp/puppet-systemd/pull/83) ([bastelfreak](https://github.com/bastelfreak))
 - Fix CHANGELOG.md duplicate footer [\#78](https://github.com/camptocamp/puppet-systemd/pull/78) ([alexjfisher](https://github.com/alexjfisher))
 
