@@ -5,6 +5,6 @@ class systemd::systemctl::daemon_reload {
   exec { 'systemctl-daemon-reload':
     command     => 'systemctl daemon-reload',
     refreshonly => true,
-    path        => $::path,
+    path        => $facts['path'],
   }
 }
