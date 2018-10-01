@@ -36,6 +36,9 @@
 # @param dnssec
 #   Takes a boolean argument or "allow-downgrade".
 #
+# @param dnsovertls
+#   Takes a boolean argument or "opportunistic"
+#
 # @param cache
 #   Takes a boolean argument.
 #
@@ -66,26 +69,27 @@
 #   as the fallback NTP servers. Any per-interface NTP servers obtained from
 #   systemd-networkd take precedence over this setting. requires puppetlabs-inifile
 class systemd (
-  Hash[String,Hash[String, Any]]                     $service_limits,
-  Boolean                                            $manage_resolved,
-  Enum['stopped','running']                          $resolved_ensure,
-  Optional[Variant[Array[String],String]]            $dns,
-  Optional[Variant[Array[String],String]]            $fallback_dns,
-  Optional[Variant[Array[String],String]]            $domains,
-  Optional[Variant[Boolean,Enum['resolve']]]         $llmnr,
-  Optional[Variant[Boolean,Enum['resolve']]]         $multicast_dns,
-  Optional[Variant[Boolean,Enum['allow-downgrade']]] $dnssec,
-  Boolean                                            $cache,
-  Optional[Variant[Boolean,Enum['udp','tcp']]]       $dns_stub_listener,
-  Boolean                                            $use_stub_resolver,
-  Boolean                                            $manage_networkd,
-  Enum['stopped','running']                          $networkd_ensure,
-  Boolean                                            $manage_timesyncd,
-  Enum['stopped','running']                          $timesyncd_ensure,
-  Optional[Variant[Array,String]]                    $ntp_server,
-  Optional[Variant[Array,String]]                    $fallback_ntp_server,
-  Boolean                                            $manage_accounting,
-  Hash[String,String]                                $accounting,
+  Hash[String,Hash[String, Any]]                         $service_limits,
+  Boolean                                                $manage_resolved,
+  Enum['stopped','running']                              $resolved_ensure,
+  Optional[Variant[Array[String],String]]                $dns,
+  Optional[Variant[Array[String],String]]                $fallback_dns,
+  Optional[Variant[Array[String],String]]                $domains,
+  Optional[Variant[Boolean,Enum['resolve']]]             $llmnr,
+  Optional[Variant[Boolean,Enum['resolve']]]             $multicast_dns,
+  Optional[Variant[Boolean,Enum['allow-downgrade']]]     $dnssec,
+  Optional[Variant[Boolean,Enum['opportunistic', 'no']]] $dnsovertls,
+  Boolean                                                $cache,
+  Optional[Variant[Boolean,Enum['udp','tcp']]]           $dns_stub_listener,
+  Boolean                                                $use_stub_resolver,
+  Boolean                                                $manage_networkd,
+  Enum['stopped','running']                              $networkd_ensure,
+  Boolean                                                $manage_timesyncd,
+  Enum['stopped','running']                              $timesyncd_ensure,
+  Optional[Variant[Array,String]]                        $ntp_server,
+  Optional[Variant[Array,String]]                        $fallback_ntp_server,
+  Boolean                                                $manage_accounting,
+  Hash[String,String]                                    $accounting,
 ){
 
   contain systemd::systemctl::daemon_reload
