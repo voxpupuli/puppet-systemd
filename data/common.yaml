@@ -8,6 +8,7 @@ systemd::domains: ~
 systemd::llmnr: ~
 systemd::multicast_dns: ~
 systemd::dnssec: ~
+systemd::dnsovertls: false
 systemd::cache: false
 systemd::dns_stub_listener: ~
 systemd::use_stub_resolver: false

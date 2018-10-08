@@ -31,6 +31,9 @@
 # @param dnssec
 #   Takes a boolean argument or "allow-downgrade".
 #
+# @param dnsovertls
+#   Takes a boolean argument or "opportunistic" or "no"
+#
 # @param cache
 #   Takes a boolean argument.
 #
@@ -42,16 +45,17 @@
 #   as /etc/resolv.conf. When "true", it uses /var/run/systemd/resolve/stub-resolv.conf
 #
 class systemd::resolved (
-  Enum['stopped','running'] $ensure                                = $systemd::resolved_ensure,
-  Optional[Variant[Array[String],String]] $dns                     = $systemd::dns,
-  Optional[Variant[Array[String],String]] $fallback_dns            = $systemd::fallback_dns,
-  Optional[Variant[Array[String],String]] $domains                 = $systemd::domains,
-  Optional[Variant[Boolean,Enum['resolve']]] $llmnr                = $systemd::llmnr,
-  Optional[Variant[Boolean,Enum['resolve']]] $multicast_dns        = $systemd::multicast_dns,
-  Optional[Variant[Boolean,Enum['allow-downgrade']]] $dnssec       = $systemd::dnssec,
-  Boolean $cache                                                   = $systemd::cache,
-  Optional[Variant[Boolean,Enum['udp', 'tcp']]] $dns_stub_listener = $systemd::dns_stub_listener,
-  Boolean $use_stub_resolver                                       = $systemd::use_stub_resolver,
+  Enum['stopped','running'] $ensure                                  = $systemd::resolved_ensure,
+  Optional[Variant[Array[String],String]] $dns                       = $systemd::dns,
+  Optional[Variant[Array[String],String]] $fallback_dns              = $systemd::fallback_dns,
+  Optional[Variant[Array[String],String]] $domains                   = $systemd::domains,
+  Optional[Variant[Boolean,Enum['resolve']]] $llmnr                  = $systemd::llmnr,
+  Optional[Variant[Boolean,Enum['resolve']]] $multicast_dns          = $systemd::multicast_dns,
+  Optional[Variant[Boolean,Enum['allow-downgrade']]] $dnssec         = $systemd::dnssec,
+  Optional[Variant[Boolean,Enum['opportunistic', 'no']]] $dnsovertls = $systemd::dnsovertls,
+  Boolean $cache                                                     = $systemd::cache,
+  Optional[Variant[Boolean,Enum['udp', 'tcp']]] $dns_stub_listener   = $systemd::dns_stub_listener,
+  Boolean $use_stub_resolver                                         = $systemd::use_stub_resolver,
 ){
 
   assert_private()
@@ -170,6 +174,23 @@ class systemd::resolved (
       ensure  => 'present',
       value   => $_dnssec,
       setting => 'DNSSEC',
+      section => 'Resolve',
+      path    => '/etc/systemd/resolved.conf',
+      notify  => Service['systemd-resolved'],
+    }
+  }
+
+  $_dnsovertls = $dnsovertls ? {
+    true    => 'opportunistic',
+    false   => false,
+    default => $dnsovertls,
+  }
+
+  if $_dnsovertls {
+    ini_setting{ 'dnsovertls':
+      ensure  => 'present',
+      value   => $_dnsovertls,
+      setting => 'DNSOverTLS',
       section => 'Resolve',
       path    => '/etc/systemd/resolved.conf',
       notify  => Service['systemd-resolved'],

@@ -40,6 +40,7 @@ describe 'systemd' do
           it { is_expected.not_to contain_ini_setting('multicast_dns')}
           it { is_expected.not_to contain_ini_setting('llmnr')}
           it { is_expected.not_to contain_ini_setting('dnssec')}
+          it { is_expected.not_to contain_ini_setting('dnsovertls')}
           it { is_expected.not_to contain_ini_setting('cache')}
           it { is_expected.not_to contain_ini_setting('dns_stub_listener')}
         end
@@ -59,6 +60,7 @@ describe 'systemd' do
           it { is_expected.not_to contain_ini_setting('multicast_dns')}
           it { is_expected.not_to contain_ini_setting('llmnr')}
           it { is_expected.not_to contain_ini_setting('dnssec')}
+          it { is_expected.not_to contain_ini_setting('dnsovertls')}
           it { is_expected.not_to contain_ini_setting('cache')}
           it { is_expected.not_to contain_ini_setting('dns_stub_listener')}
         end
@@ -72,6 +74,7 @@ describe 'systemd' do
             :llmnr => true,
             :multicast_dns => false,
             :dnssec => false,
+            :dnsovertls => 'no',
             :cache => true,
             :dns_stub_listener => 'udp',
           }}
@@ -84,6 +87,7 @@ describe 'systemd' do
           it { is_expected.to contain_ini_setting('multicast_dns')}
           it { is_expected.to contain_ini_setting('llmnr')}
           it { is_expected.to contain_ini_setting('dnssec')}
+          it { is_expected.to contain_ini_setting('dnsovertls')}
           it { is_expected.to contain_ini_setting('cache')}
           it { is_expected.to contain_ini_setting('dns_stub_listener')}
         end
