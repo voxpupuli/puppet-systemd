@@ -17,6 +17,8 @@ describe 'systemd::dropin_file' do
 
         it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d").with(
           :ensure  => 'directory',
+          :recurse => 'true',
+          :purge   => 'true'
         ) }
 
         it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").with(

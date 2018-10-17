@@ -49,9 +49,11 @@ define systemd::dropin_file(
 
   if $ensure != 'absent' {
     ensure_resource('file', "${path}/${unit}.d", {
-      ensure => directory,
-      owner  => 'root',
-      group  => 'root',
+      ensure  => directory,
+      owner   => 'root',
+      group   => 'root',
+      recurse => $::systemd::purge_dropin_dirs,
+      purge   => $::systemd::purge_dropin_dirs,
     })
   }
 
