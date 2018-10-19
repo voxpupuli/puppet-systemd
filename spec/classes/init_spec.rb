@@ -9,6 +9,9 @@ describe 'systemd' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('systemd') }
         it { is_expected.to create_class('systemd::systemctl::daemon_reload') }
+        it { is_expected.to contain_class('systemd::journald')}
+        it { is_expected.to create_service('systemd-journald') }
+        it { is_expected.to have_ini_setting_resource_count(0) }
         it { is_expected.to_not create_service('systemd-resolved') }
         it { is_expected.to_not create_service('systemd-networkd') }
         it { is_expected.to_not create_service('systemd-timesyncd') }
@@ -157,6 +160,42 @@ describe 'systemd' do
             it { is_expected.to contain_ini_setting(account)}
           end
           it { is_expected.to compile.with_all_deps }
+        end
+        context 'with journald options' do
+          let(:params) do
+            {
+              :journald_settings => {
+                'Storage'         => 'auto',
+                'MaxRetentionSec' => '5day',
+                'MaxLevelStore'   => {
+                  'ensure' => 'absent',
+                },
+              }
+            }
+          end
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_service('systemd-journald').with(
+            :ensure => 'running'
+          ) }
+          it { is_expected.to have_ini_setting_resource_count(3) }
+          it { is_expected.to contain_ini_setting('Storage').with(
+            :path    => '/etc/systemd/journald.conf',
+            :section => 'Journal',
+            :notify  => 'Service[systemd-journald]',
+            :value   => 'auto',
+          )}
+          it { is_expected.to contain_ini_setting('MaxRetentionSec').with(
+            :path    => '/etc/systemd/journald.conf',
+            :section => 'Journal',
+            :notify  => 'Service[systemd-journald]',
+            :value   => '5day',
+          )}
+          it { is_expected.to contain_ini_setting('MaxLevelStore').with(
+            :path    => '/etc/systemd/journald.conf',
+            :section => 'Journal',
+            :notify  => 'Service[systemd-journald]',
+            :ensure  => 'absent',
+          )}
         end
       end
     end

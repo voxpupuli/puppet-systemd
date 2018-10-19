@@ -91,6 +91,7 @@ class systemd (
   Boolean                                                $manage_accounting,
   Hash[String,String]                                    $accounting,
   Boolean                                                $purge_dropin_dirs,
+  Hash[String,Variant[String,Hash[String, String]]]      $journald_settings,
 ){
 
   contain systemd::systemctl::daemon_reload
@@ -112,4 +113,6 @@ class systemd (
   if $manage_accounting {
     contain systemd::system
   }
+
+  contain systemd::journald
 }
