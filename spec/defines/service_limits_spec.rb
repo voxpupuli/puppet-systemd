@@ -17,6 +17,7 @@ describe 'systemd::service_limits' do
               'LimitNOFILE' => '20:infinity',
               'LimitNICE'   => '-10',
               'LimitRTPRIO' => 50,
+              'CPUQuota'    => '25%',
               'IODeviceWeight' => [
                 {'/dev/weight' => 10},
                 {'/dev/weight2' => 20}
@@ -47,6 +48,9 @@ describe 'systemd::service_limits' do
           ) }
           it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
             :content => /LimitRTPRIO=50/
+          ) }
+	  it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
+            :content => /CPUQuota=25%/
           ) }
           it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
             :content => %r(IODeviceWeight=/dev/weight 10)
