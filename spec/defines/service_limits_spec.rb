@@ -49,7 +49,7 @@ describe 'systemd::service_limits' do
           it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
             :content => /LimitRTPRIO=50/
           ) }
-	  it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
+          it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
             :content => /CPUQuota=25%/
           ) }
           it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
