@@ -9,7 +9,7 @@ addons:
       - augeas
 cache: bundler
 bundler_args: --without system_tests
-script: ["bundle exec rake validate", "bundle exec rake lint", "bundle exec rake spec SPEC_OPTS='--format documentation'"]
+script: bundle exec rake beaker
 matrix:
   fast_finish: true
   include:
@@ -23,28 +23,28 @@ matrix:
     services: docker
     env: BEAKER_set="debian-8"
     bundler_args:
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+    script: bundle exec rake beaker
   - rvm: default
     sudo: required
     dist: trusty
     services: docker
     env: BEAKER_set="debian-9"
     bundler_args:
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+    script: bundle exec rake beaker
   - rvm: default
     sudo: required
     dist: trusty
     services: docker
     env: BEAKER_set="ubuntu-16.04"
     bundler_args:
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+    script: bundle exec rake beaker
   - rvm: default
     sudo: required
     dist: trusty
     services: docker
     env: BEAKER_set="centos-7"
     bundler_args:
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+    script: bundle exec rake beaker
 notifications:
   email: false
 deploy:
