@@ -68,6 +68,10 @@
 #   A space-separated list of NTP server host names or IP addresses to be used
 #   as the fallback NTP servers. Any per-interface NTP servers obtained from
 #   systemd-networkd take precedence over this setting. requires puppetlabs-inifile
+#
+# @param journald_settings
+#   Config Hash that is used to configure settings in journald.conf
+#
 class systemd (
   Hash[String,Hash[String, Any]]                         $service_limits,
   Boolean                                                $manage_resolved,
@@ -91,7 +95,7 @@ class systemd (
   Boolean                                                $manage_accounting,
   Hash[String,String]                                    $accounting,
   Boolean                                                $purge_dropin_dirs,
-  Hash[String,Variant[String,Hash[String, String]]]      $journald_settings,
+  Systemd::JournaldSettings                              $journald_settings,
 ){
 
   contain systemd::systemctl::daemon_reload
