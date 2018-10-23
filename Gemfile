@@ -1,5 +1,8 @@
 source ENV['GEM_SOURCE'] || "https://rubygems.org"
 
+ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
+minor_version = ruby_version_segments[0..1].join('.')
+
 group :development, :unit_tests do
   gem 'rake',                                              :require => false
   gem 'rspec',                                             :require => false
@@ -23,11 +26,7 @@ group :development, :unit_tests do
 end
 
 group :system_tests do
-  gem 'beaker', '~>3.13',     :require => false
-  gem 'beaker-rspec', '> 5',  :require => false
-  gem 'beaker_spec_helper',   :require => false
-  gem 'serverspec',           :require => false
-  gem 'specinfra',            :require => false
+  gem "puppet-module-posix-system-r#{minor_version}",  :require => false
 end
 
 if facterversion = ENV['FACTER_GEM_VERSION']
