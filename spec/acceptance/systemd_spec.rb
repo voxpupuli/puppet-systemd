@@ -13,7 +13,10 @@ describe 'systemd' do
     end
   end
 
-  ['resolved', 'networkd', 'timesyncd', 'accounting'].each do |srv|
+  # resolved requires to modify /etc/resolv.conf, which is not possible in
+  # Docker
+  #['resolved', 'networkd', 'timesyncd', 'accounting'].each do |srv|
+  ['networkd', 'timesyncd', 'accounting'].each do |srv|
     context "when managing service #{srv}" do
       it 'should run successfully and idempotently' do
         pp = <<-EOS
