@@ -37,7 +37,7 @@
 #   The mode to set on the dropin file
 #
 # @attr show_diff
-#   Wether to show the diff when updating dropin file
+#   Whether to show the diff when updating dropin file
 #
 define systemd::dropin_file(
   Systemd::Unit                     $unit,

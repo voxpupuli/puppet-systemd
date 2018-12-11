@@ -37,7 +37,7 @@
 #   The mode to set on the unit file
 #
 # @attr show_diff
-#   Wether to show the diff when updating unit file
+#   Whether to show the diff when updating unit file
 #
 # @attr enable
 #   If set, will manage the unit enablement status.
