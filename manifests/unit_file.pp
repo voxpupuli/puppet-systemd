@@ -27,6 +27,18 @@
 #
 #   * Mutually exclusive with both ``$source`` and ``$content``
 #
+# @attr owner
+#   The owner to set on the unit file
+#
+# @attr group
+#   The group to set on the unit file
+#
+# @attr mode
+#   The mode to set on the unit file
+#
+# @attr show_diff
+#   Whether to show the diff when updating unit file
+#
 # @attr enable
 #   If set, will manage the unit enablement status.
 #
@@ -34,13 +46,17 @@
 #   If set, will manage the state of the unit.
 #
 define systemd::unit_file(
-  Enum['present', 'absent', 'file']        $ensure  = 'present',
-  Stdlib::Absolutepath                     $path    = '/etc/systemd/system',
-  Optional[String]                         $content = undef,
-  Optional[String]                         $source  = undef,
-  Optional[Stdlib::Absolutepath]           $target  = undef,
-  Optional[Variant[Boolean, Enum['mask']]] $enable  = undef,
-  Optional[Boolean]                        $active  = undef,
+  Enum['present', 'absent', 'file']        $ensure    = 'present',
+  Stdlib::Absolutepath                     $path      = '/etc/systemd/system',
+  Optional[String]                         $content   = undef,
+  Optional[String]                         $source    = undef,
+  Optional[Stdlib::Absolutepath]           $target    = undef,
+  String                                   $owner     = 'root',
+  String                                   $group     = 'root',
+  String                                   $mode      = '0444',
+  Boolean                                  $show_diff = true,
+  Optional[Variant[Boolean, Enum['mask']]] $enable    = undef,
+  Optional[Boolean]                        $active    = undef,
 ) {
   include systemd
 
@@ -56,14 +72,15 @@ define systemd::unit_file(
   }
 
   file { "${path}/${name}":
-    ensure  => $_ensure,
-    content => $content,
-    source  => $source,
-    target  => $target,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    notify  => Class['systemd::systemctl::daemon_reload'],
+    ensure    => $_ensure,
+    content   => $content,
+    source    => $source,
+    target    => $target,
+    owner     => $owner,
+    group     => $group,
+    mode      => $mode,
+    show_diff => $show_diff,
+    notify    => Class['systemd::systemctl::daemon_reload'],
   }
 
   if $enable != undef or $active != undef {
