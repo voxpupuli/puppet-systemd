@@ -4,9 +4,30 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v2.1.0](https://github.com/camptocamp/puppet-systemd/tree/v2.1.0) (2018-08-31)
+## [v2.2.0](https://github.com/camptocamp/puppet-systemd/tree/v2.2.0) (2019-02-11)
 
-[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.0.0...v2.1.0)
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.1.0...v2.2.0)
+
+**Implemented enhancements:**
+
+- Puppet 6 support [\#96](https://github.com/camptocamp/puppet-systemd/pull/96) ([ekohl](https://github.com/ekohl))
+- Manage journald service and configuration [\#89](https://github.com/camptocamp/puppet-systemd/pull/89) ([treydock](https://github.com/treydock))
+- Add support for DNSoverTLS [\#88](https://github.com/camptocamp/puppet-systemd/pull/88) ([shibumi](https://github.com/shibumi))
+- unit.d directory should be purged of unmanaged dropin files [\#41](https://github.com/camptocamp/puppet-systemd/pull/41) ([treydock](https://github.com/treydock))
+- Add Journald support [\#14](https://github.com/camptocamp/puppet-systemd/pull/14) ([duritong](https://github.com/duritong))
+
+**Closed issues:**
+
+- Hiera usage for systemd::unit\_file [\#86](https://github.com/camptocamp/puppet-systemd/issues/86)
+- Please push a new module to the forge that includes service\_limits [\#25](https://github.com/camptocamp/puppet-systemd/issues/25)
+
+**Merged pull requests:**
+
+- Allow specifying owner/group/mode/show\_diff [\#94](https://github.com/camptocamp/puppet-systemd/pull/94) ([simondeziel](https://github.com/simondeziel))
+
+## [2.1.0](https://github.com/camptocamp/puppet-systemd/tree/2.1.0) (2018-08-31)
+
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.0.0...2.1.0)
 
 **Implemented enhancements:**
 
