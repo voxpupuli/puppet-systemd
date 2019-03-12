@@ -117,6 +117,7 @@ class systemd (
   if $manage_accounting {
     contain systemd::system
   }
-
-  contain systemd::journald
+  if $facts['systemd_internal_services'] {
+    contain systemd::journald
+  }
 }
