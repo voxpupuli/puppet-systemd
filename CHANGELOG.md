@@ -4,9 +4,21 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v2.2.0](https://github.com/camptocamp/puppet-systemd/tree/v2.2.0) (2019-02-11)
+## [v2.3.0](https://github.com/camptocamp/puppet-systemd/tree/v2.3.0) (2019-04-10)
 
-[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.1.0...v2.2.0)
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.2.0...v2.3.0)
+
+**Implemented enhancements:**
+
+- Add parameter to enable/disable the management of journald [\#99](https://github.com/camptocamp/puppet-systemd/pull/99) ([dhoppe](https://github.com/dhoppe))
+
+**Closed issues:**
+
+- Puppet version compatibility [\#34](https://github.com/camptocamp/puppet-systemd/issues/34)
+
+## [2.2.0](https://github.com/camptocamp/puppet-systemd/tree/2.2.0) (2019-02-25)
+
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.1.0...2.2.0)
 
 **Implemented enhancements:**
 
@@ -23,6 +35,7 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
+- release 2.2.0 [\#97](https://github.com/camptocamp/puppet-systemd/pull/97) ([bastelfreak](https://github.com/bastelfreak))
 - Allow specifying owner/group/mode/show\_diff [\#94](https://github.com/camptocamp/puppet-systemd/pull/94) ([simondeziel](https://github.com/simondeziel))
 
 ## [2.1.0](https://github.com/camptocamp/puppet-systemd/tree/2.1.0) (2018-08-31)
