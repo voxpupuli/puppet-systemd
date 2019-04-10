@@ -161,9 +161,10 @@ describe 'systemd' do
           end
           it { is_expected.to compile.with_all_deps }
         end
-        context 'with journald options' do
+        context 'when enabling journald with options' do
           let(:params) do
             {
+              :manage_journald   => true,
               :journald_settings => {
                 'Storage'         => 'auto',
                 'MaxRetentionSec' => '5day',
@@ -196,6 +197,16 @@ describe 'systemd' do
             :notify  => 'Service[systemd-journald]',
             :ensure  => 'absent',
           )}
+        end
+
+        context 'when disabling journald' do
+          let(:params) do
+            {
+              :manage_journald => false,
+            }
+          end
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_service('systemd-journald') }
         end
       end
     end
