@@ -69,6 +69,9 @@
 #   as the fallback NTP servers. Any per-interface NTP servers obtained from
 #   systemd-networkd take precedence over this setting. requires puppetlabs-inifile
 #
+# @param manage_journald
+#   Manage the systemd journald
+#
 # @param journald_settings
 #   Config Hash that is used to configure settings in journald.conf
 #
@@ -95,6 +98,7 @@ class systemd (
   Boolean                                                $manage_accounting,
   Hash[String,String]                                    $accounting,
   Boolean                                                $purge_dropin_dirs,
+  Boolean                                                $manage_journald,
   Systemd::JournaldSettings                              $journald_settings,
 ){
 
@@ -118,5 +122,7 @@ class systemd (
     contain systemd::system
   }
 
-  contain systemd::journald
+  if $manage_journald {
+    contain systemd::journald
+  }
 }

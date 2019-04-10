@@ -164,6 +164,7 @@ describe 'systemd' do
         context 'with journald options' do
           let(:params) do
             {
+              :manage_journald   => true,
               :journald_settings => {
                 'Storage'         => 'auto',
                 'MaxRetentionSec' => '5day',
