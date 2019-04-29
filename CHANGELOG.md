@@ -4,9 +4,17 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v2.3.0](https://github.com/camptocamp/puppet-systemd/tree/v2.3.0) (2019-04-10)
+## [v2.4.0](https://github.com/camptocamp/puppet-systemd/tree/v2.4.0) (2019-04-29)
 
-[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.2.0...v2.3.0)
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.3.0...v2.4.0)
+
+**Merged pull requests:**
+
+- Allow `puppetlabs/inifile` 3.x [\#101](https://github.com/camptocamp/puppet-systemd/pull/101) ([alexjfisher](https://github.com/alexjfisher))
+
+## [2.3.0](https://github.com/camptocamp/puppet-systemd/tree/2.3.0) (2019-04-10)
+
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.2.0...2.3.0)
 
 **Implemented enhancements:**
 
@@ -35,7 +43,6 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- release 2.2.0 [\#97](https://github.com/camptocamp/puppet-systemd/pull/97) ([bastelfreak](https://github.com/bastelfreak))
 - Allow specifying owner/group/mode/show\_diff [\#94](https://github.com/camptocamp/puppet-systemd/pull/94) ([simondeziel](https://github.com/simondeziel))
 
 ## [2.1.0](https://github.com/camptocamp/puppet-systemd/tree/2.1.0) (2018-08-31)
@@ -54,7 +61,6 @@ These should not affect the functionality of the module.
 **Merged pull requests:**
 
 - do not access facts as top scope variable [\#85](https://github.com/camptocamp/puppet-systemd/pull/85) ([bastelfreak](https://github.com/bastelfreak))
-- Release 2.1.0 [\#84](https://github.com/camptocamp/puppet-systemd/pull/84) ([bastelfreak](https://github.com/bastelfreak))
 - allow puppetlabs/stdlib 5.x [\#83](https://github.com/camptocamp/puppet-systemd/pull/83) ([bastelfreak](https://github.com/bastelfreak))
 - Fix CHANGELOG.md duplicate footer [\#78](https://github.com/camptocamp/puppet-systemd/pull/78) ([alexjfisher](https://github.com/alexjfisher))
 
@@ -82,7 +88,6 @@ These should not affect the functionality of the module.
 **Merged pull requests:**
 
 - fix puppet-linter warnings in README.md [\#75](https://github.com/camptocamp/puppet-systemd/pull/75) ([bastelfreak](https://github.com/bastelfreak))
-- release 2.0.0 [\#70](https://github.com/camptocamp/puppet-systemd/pull/70) ([bastelfreak](https://github.com/bastelfreak))
 - Update the documentation of facts [\#68](https://github.com/camptocamp/puppet-systemd/pull/68) ([ekohl](https://github.com/ekohl))
 - purge legacy puppet-lint checks [\#66](https://github.com/camptocamp/puppet-systemd/pull/66) ([bastelfreak](https://github.com/bastelfreak))
 - Reuse the systemd::dropin\_file in service\_limits [\#61](https://github.com/camptocamp/puppet-systemd/pull/61) ([ekohl](https://github.com/ekohl))
