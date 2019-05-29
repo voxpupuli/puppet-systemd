@@ -4,9 +4,18 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v2.5.0](https://github.com/camptocamp/puppet-systemd/tree/v2.5.0) (2019-05-29)
+## [v2.5.1](https://github.com/camptocamp/puppet-systemd/tree/v2.5.1) (2019-05-29)
 
-[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.4.0...v2.5.0)
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.5.0...v2.5.1)
+
+**Merged pull requests:**
+
+- Pin `public\_suffix` to `3.0.3` on rvm 2.1.9 builds [\#108](https://github.com/camptocamp/puppet-systemd/pull/108) ([alexjfisher](https://github.com/alexjfisher))
+- run CI jobs on xenial instead of trusty [\#107](https://github.com/camptocamp/puppet-systemd/pull/107) ([bastelfreak](https://github.com/bastelfreak))
+
+## [2.5.0](https://github.com/camptocamp/puppet-systemd/tree/2.5.0) (2019-05-29)
+
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.4.0...2.5.0)
 
 **Merged pull requests:**
 
