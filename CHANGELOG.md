@@ -4,9 +4,17 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v2.4.0](https://github.com/camptocamp/puppet-systemd/tree/v2.4.0) (2019-04-29)
+## [v2.5.0](https://github.com/camptocamp/puppet-systemd/tree/v2.5.0) (2019-05-29)
 
-[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.3.0...v2.4.0)
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.4.0...v2.5.0)
+
+**Merged pull requests:**
+
+- Allow `puppetlabs/stdlib` 6.x [\#103](https://github.com/camptocamp/puppet-systemd/pull/103) ([alexjfisher](https://github.com/alexjfisher))
+
+## [2.4.0](https://github.com/camptocamp/puppet-systemd/tree/2.4.0) (2019-04-29)
+
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.3.0...2.4.0)
 
 **Merged pull requests:**
 
