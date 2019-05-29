@@ -20,6 +20,7 @@ group :development, :unit_tests do
   gem 'rspec-puppet-facts',                                :require => false
   gem 'ruby-augeas',                                       :require => false
   gem 'json_pure', '< 2.0.2',                              :require => false
+  gem 'public_suffix', '3.0.3',                            :require => false if RUBY_VERSION < '2.2.0'
 end
 
 group :system_tests do
