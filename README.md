@@ -98,6 +98,12 @@ service {'foo':
 }
 ```
 
+Sometimes it's desirable to reload the systemctl daemon before a service is refreshed (for example:
+when overriding `ExecStart` or adding environment variables to the drop-in file).  In that case,
+use `daemon_reload => 'eager'` instead of the default `'lazy'`.  Be aware that the daemon could be
+reloaded multiple times if you have multiple `systemd::dropin_file` resources and any one of them
+is using `'eager'`.
+
 ### tmpfiles
 
 Let this module handle file creation and systemd reloading
