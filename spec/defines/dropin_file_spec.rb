@@ -27,7 +27,21 @@ describe 'systemd::dropin_file' do
           :mode    => '0444'
         ) }
 
-        it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").that_notifies('Class[systemd::systemctl::daemon_reload]') }
+        context 'with daemon_reload => lazy (default)' do
+          it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").that_notifies('Class[systemd::systemctl::daemon_reload]') }
+
+          it { is_expected.not_to create_exec("#{params[:unit]}-systemctl-daemon-reload") }
+        end
+
+        context 'with daemon_reload => eager' do
+          let(:params) do
+            super().merge({ :daemon_reload => 'eager' })
+          end
+
+          it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").that_notifies("Exec[#{params[:unit]}-systemctl-daemon-reload]") }
+
+          it { is_expected.to create_exec("#{params[:unit]}-systemctl-daemon-reload") }
+        end
 
         context 'with a bad unit type' do
           let(:title) { 'test.badtype' }
