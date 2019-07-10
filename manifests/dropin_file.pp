@@ -47,18 +47,18 @@
 #   May cause multiple daemon reloads.
 #
 define systemd::dropin_file(
-  Systemd::Unit                     $unit,
-  Systemd::Dropin                   $filename      = $name,
-  Enum['present', 'absent', 'file'] $ensure        = 'present',
-  Stdlib::Absolutepath              $path          = '/etc/systemd/system',
-  Optional[String]                  $content       = undef,
-  Optional[String]                  $source        = undef,
-  Optional[Stdlib::Absolutepath]    $target        = undef,
-  String                            $owner         = 'root',
-  String                            $group         = 'root',
-  String                            $mode          = '0444',
-  Boolean                           $show_diff     = true,
-  Enum['lazy', 'eager']             $daemon_reload = 'lazy',
+  Systemd::Unit                               $unit,
+  Systemd::Dropin                             $filename      = $name,
+  Enum['present', 'absent', 'file']           $ensure        = 'present',
+  Stdlib::Absolutepath                        $path          = '/etc/systemd/system',
+  Optional[Variant[String,Sensitive[String]]] $content       = undef,
+  Optional[String]                            $source        = undef,
+  Optional[Stdlib::Absolutepath]              $target        = undef,
+  String                                      $owner         = 'root',
+  String                                      $group         = 'root',
+  String                                      $mode          = '0444',
+  Boolean                                     $show_diff     = true,
+  Enum['lazy', 'eager']                       $daemon_reload = 'lazy',
 ) {
   include systemd
 
