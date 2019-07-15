@@ -81,6 +81,19 @@ describe 'systemd::dropin_file' do
             :mode    => '0444'
           ) }
         end
+        context 'with sensitve content' do
+          let(:title) { 'sensitive.conf' }
+          let(:params) {{
+            :unit    => 'sensitive.service',
+            :content     => RSpec::Puppet::RawString.new("Sensitive('TEST_CONTENT')")
+          }}
+
+          it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").with(
+            :ensure  => 'file',
+            :content => 'TEST_CONTENT'
+          ) }
+
+        end
       end
     end
   end
