@@ -1,12 +1,12 @@
-require "spec_helper"
+require 'spec_helper'
 
-describe Facter::Util::Fact do
-  before { Facter.clear }
-  after { Facter.clear }
+describe Facter.fact(:systemd) do
+  before(:each) { Facter.clear }
+  after(:each) { Facter.clear }
 
   describe 'systemd' do
     context 'returns true when systemd present' do
-      before do
+      before(:each) do
         Facter.fact(:kernel).stubs(:value).returns(:linux)
         Facter.add(:service_provider) { setcode { 'systemd' } }
       end
@@ -16,7 +16,7 @@ describe Facter::Util::Fact do
     end
 
     context 'returns false when systemd not present' do
-      before do
+      before(:each) do
         Facter.fact(:kernel).stubs(:value).returns(:linux)
         Facter.add(:service_provider) { setcode { 'redhat' } }
       end
@@ -26,7 +26,7 @@ describe Facter::Util::Fact do
     end
 
     context 'returns nil when kernel is not linux' do
-      before do
+      before(:each) do
         Facter.fact(:kernel).stubs(:value).returns(:windows)
       end
 

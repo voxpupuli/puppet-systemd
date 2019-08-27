@@ -20,7 +20,7 @@ type Systemd::ServiceLimits = Struct[
     Optional['CPUAccounting']       => Boolean,
     Optional['CPUShares']           => Integer[2,262144],
     Optional['StartupCPUShares']    => Integer[2,262144],
-    Optional['CPUQuota']            => Pattern['^([1-9][0-9]?$|^100)%$'],
+    Optional['CPUQuota']            => Pattern['^([1-9][0-9]?|100)%$'],
     Optional['MemoryAccounting']    => Boolean,
     Optional['MemoryLow']           => Pattern['^(\d+(K|M|G|T)?)$'],
     Optional['MemoryHigh']          => Pattern['^(\d+(K|M|G|T)?)$'],
@@ -39,6 +39,7 @@ type Systemd::ServiceLimits = Struct[
     Optional['DeviceAllow']         => String[1],
     Optional['DevicePolicy']        => Enum['auto','closed','strict'],
     Optional['Slice']               => String[1],
-    Optional['Delegate']            => Boolean
+    Optional['Delegate']            => Boolean,
+    Optional['OOMScoreAdjust']      => Integer[-1000,1000]
   }
 ]

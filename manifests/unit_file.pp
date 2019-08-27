@@ -4,45 +4,46 @@
 #
 # @see systemd.unit(5)
 #
-# @attr name [Pattern['^.+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']]
+# @param name [Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']]
 #   The target unit file to create
 #
-#   * Must not contain ``/``
+# @param ensure
+#   The state of the unit file to ensure
 #
-# @attr path
+# @param path
 #   The main systemd configuration path
 #
-# @attr content
+# @param content
 #   The full content of the unit file
 #
 #   * Mutually exclusive with ``$source``
 #
-# @attr source
+# @param source
 #   The ``File`` resource compatible ``source``
 #
 #   * Mutually exclusive with ``$content``
 #
-# @attr target
+# @param target
 #   If set, will force the file to be a symlink to the given target
 #
 #   * Mutually exclusive with both ``$source`` and ``$content``
 #
-# @attr owner
+# @param owner
 #   The owner to set on the unit file
 #
-# @attr group
+# @param group
 #   The group to set on the unit file
 #
-# @attr mode
+# @param mode
 #   The mode to set on the unit file
 #
-# @attr show_diff
+# @param show_diff
 #   Whether to show the diff when updating unit file
 #
-# @attr enable
+# @param enable
 #   If set, will manage the unit enablement status.
 #
-# @attr active
+# @param active
 #   If set, will manage the state of the unit.
 #
 define systemd::unit_file(
@@ -85,11 +86,19 @@ define systemd::unit_file(
 
   if $enable != undef or $active != undef {
     service { $name:
-      ensure    => $active,
-      enable    => $enable,
-      provider  => 'systemd',
-      subscribe => File["${path}/${name}"],
-      require   => Class['systemd::systemctl::daemon_reload'],
+      ensure   => $active,
+      enable   => $enable,
+      provider => 'systemd',
+    }
+
+    if $ensure == 'absent' {
+      if $enable or $active {
+        fail("Can't ensure the unit file is absent and activate/enable the service at the same time")
+      }
+      Service[$name] -> File["${path}/${name}"]
+    } else {
+      Class['systemd::systemctl::daemon_reload'] -> Service[$name]
+      File["${path}/${name}"] ~> Service[$name]
     }
   }
 }

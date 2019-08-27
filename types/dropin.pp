@@ -1,1 +1,1 @@
-type Systemd::Dropin = Pattern['^.+\.conf$']
+type Systemd::Dropin = Pattern['^[^/]+\.conf$']
