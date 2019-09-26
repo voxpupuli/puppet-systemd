@@ -129,6 +129,82 @@ file { '/etc/tmpfiles.d/foo.conf':
 ~> Class['systemd::tmpfiles']
 ```
 
+### timer units
+Create a systemd timer unit and a systemd service unit to execute from
+that timer 
+
+The following will create a timer unit and a service unit file.
+The execution of `systemctl daemon-reload` will occur.
+When `active` and `enable` are set to `true` the puppet service `runoften.timer` will be 
+declared, started and enabled.
+
+```puppet
+systemd::timer{'runoften.timer':
+  timer_source   => "puppet:///modules/${module_name}/runoften.timer",
+  service_source => "puppet:///modules/${module_name}/runoften.service",
+  active         => true,
+  enable         => true,
+}
+```
+
+A trivial daily run.
+In this case enable and active are both unset and so the service `daily.timer` 
+is not declared by the `systemd::timer` type.
+
+```puppet
+$_timer = @(EOT)
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=1d
+EOT
+
+$_service = @(EOT)
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/touch /tmp/file
+EOT
+
+systemd::timer{'daily.timer':
+  timer_content   => $_timer,
+  service_content => $_service,
+}
+
+service{'daily.timer':
+  ensure    => running,
+  subscribe => Systemd::Timer['daily.timer'],
+}
+
+```
+
+If neither `service_content` or `service_source` are specified then no
+service unit will be created.
+
+The service unit name can also be specified.
+
+```puppet
+$_timer = @(EOT)
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=1d
+Unit=touch-me-today.service
+EOT
+
+$_service = @(EOT)
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/touch /tmp/file
+EOT
+
+
+systemd::timer{'daily.timer':
+  timer_content   => $_timer,
+  service_unit    => 'touch-me-today.service',
+  service_content => $_service,
+  active          => true,
+  enable          => true,
+} 
+```
+
 ### service limits
 
 Manage soft and hard limits on various resources for executed processes.
