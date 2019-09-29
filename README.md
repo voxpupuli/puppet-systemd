@@ -167,13 +167,16 @@ systemd::network{'eth0.network':
 ### Services
 
 Systemd provides multiple services. Currently you can manage `systemd-resolved`,
-`systemd-timesyncd` and `systemd-networkd` via the main class:
+`systemd-timesyncd`, `systemd-networkd`, `systemd-journald` and `systemd-logind`
+via the main class:
 
 ```puppet
 class{'systemd':
   manage_resolved  => true,
   manage_networkd  => true,
   manage_timesyncd => true,
+  manage_journald  => true,
+  manage_logind    => true,
 }
 ```
 
@@ -225,4 +228,17 @@ systemd::journald_settings:
   MaxRetentionSec: 5day
   MaxLevelStore:
     ensure: absent
+```
+
+### logind configuration
+
+It also allows you to manage logind settings. You can manage logind settings through setting the `logind_settings` parameter. If you want a parameter to be removed, you can pass its value as params.
+
+```yaml
+systemd::logind_settings:
+  HandleSuspendKey: 'ignore'
+  KillUserProcesses: 'no'
+  RemoveIPC:
+    ensure: absent
+  UserTasksMax: 10000
 ```

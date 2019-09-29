@@ -208,6 +208,51 @@ describe 'systemd' do
           it { is_expected.to compile.with_all_deps }
           it { is_expected.not_to contain_service('systemd-journald') }
         end
+
+        context 'when enabling logind with options' do
+          let(:params) do
+            {
+              :manage_logind   => true,
+              :logind_settings => {
+                'HandleSuspendKey'  => 'ignore',
+                'KillUserProcesses' => 'no',
+                'RemoveIPC'         => {
+                  'ensure' => 'absent',
+                },
+                'UserTasksMax'      => '10000',
+              }
+            }
+          end
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_service('systemd-logind').with(
+            :ensure => 'running'
+          ) }
+          it { is_expected.to have_ini_setting_resource_count(4) }
+          it { is_expected.to contain_ini_setting('HandleSuspendKey').with(
+            :path    => '/etc/systemd/logind.conf',
+            :section => 'Login',
+            :notify  => 'Service[systemd-logind]',
+            :value   => 'ignore',
+          )}
+          it { is_expected.to contain_ini_setting('KillUserProcesses').with(
+            :path    => '/etc/systemd/logind.conf',
+            :section => 'Login',
+            :notify  => 'Service[systemd-logind]',
+            :value   => 'no',
+          )}
+          it { is_expected.to contain_ini_setting('RemoveIPC').with(
+            :path    => '/etc/systemd/logind.conf',
+            :section => 'Login',
+            :notify  => 'Service[systemd-logind]',
+            :ensure  => 'absent',
+          )}
+          it { is_expected.to contain_ini_setting('UserTasksMax').with(
+            :path    => '/etc/systemd/logind.conf',
+            :section => 'Login',
+            :notify  => 'Service[systemd-logind]',
+            :value   => '10000',
+          )}
+        end
       end
     end
   end
