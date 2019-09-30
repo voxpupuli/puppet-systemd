@@ -1,4 +1,4 @@
-# **NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**
+# @api private
 #
 # This class manages systemd's login manager configuration.
 #
