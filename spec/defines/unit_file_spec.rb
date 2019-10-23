@@ -40,6 +40,7 @@ describe 'systemd::unit_file' do
             })
           end
 
+          it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_service('test.service').with(
             :ensure   => true,
             :enable   => true,
@@ -48,6 +49,38 @@ describe 'systemd::unit_file' do
 
           it { is_expected.to contain_service('test.service').that_subscribes_to("File[/etc/systemd/system/#{title}]") }
           it { is_expected.to contain_service('test.service').that_requires('Class[systemd::systemctl::daemon_reload]') }
+        end
+
+        context 'ensure => absent' do
+          let(:params) { super().merge(ensure: 'absent') }
+
+          context 'with enable => true' do
+            let(:params) { super().merge(enable: true) }
+            it { is_expected.to compile.and_raise_error(/Can't ensure the unit file is absent and activate/) }
+          end
+
+          context 'with active => true' do
+            let(:params) { super().merge(active: true) }
+            it { is_expected.to compile.and_raise_error(/Can't ensure the unit file is absent and activate/) }
+          end
+
+          context 'with enable => false and active => false' do
+            let(:params) do
+              super().merge(
+                enable: false,
+                active: false
+              )
+            end
+
+            it { is_expected.to compile.with_all_deps }
+            it do
+              is_expected.to contain_service('test.service')
+                .with_ensure(false)
+                .with_enable(false)
+                .with_provider('systemd')
+                .that_comes_before("File[/etc/systemd/system/#{title}]")
+            end
+          end
         end
       end
     end

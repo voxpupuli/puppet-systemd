@@ -88,11 +88,19 @@ define systemd::unit_file(
 
   if $enable != undef or $active != undef {
     service { $name:
-      ensure    => $active,
-      enable    => $enable,
-      provider  => 'systemd',
-      subscribe => File["${path}/${name}"],
-      require   => Class['systemd::systemctl::daemon_reload'],
+      ensure   => $active,
+      enable   => $enable,
+      provider => 'systemd',
+    }
+
+    if $ensure == 'absent' {
+      if $enable or $active {
+        fail("Can't ensure the unit file is absent and activate/enable the service at the same time")
+      }
+      Service[$name] -> File["${path}/${name}"]
+    } else {
+      Class['systemd::systemctl::daemon_reload'] -> Service[$name]
+      File["${path}/${name}"] ~> Service[$name]
     }
   }
 }
