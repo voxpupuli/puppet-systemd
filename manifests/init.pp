@@ -75,6 +75,12 @@
 # @param journald_settings
 #   Config Hash that is used to configure settings in journald.conf
 #
+# @param manage_logind
+#   Manage the systemd logind
+#
+# @param logind_settings
+#   Config Hash that is used to configure settings in logind.conf
+#
 class systemd (
   Hash[String,Hash[String, Any]]                         $service_limits,
   Boolean                                                $manage_resolved,
@@ -100,6 +106,8 @@ class systemd (
   Boolean                                                $purge_dropin_dirs,
   Boolean                                                $manage_journald,
   Systemd::JournaldSettings                              $journald_settings,
+  Boolean                                                $manage_logind,
+  Systemd::LogindSettings                                $logind_settings,
 ){
 
   contain systemd::systemctl::daemon_reload
@@ -124,5 +132,9 @@ class systemd (
 
   if $manage_journald {
     contain systemd::journald
+  }
+
+  if $manage_logind {
+    contain systemd::logind
   }
 }

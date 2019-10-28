@@ -23,3 +23,5 @@ systemd::accounting: {}
 systemd::purge_dropin_dirs: true
 systemd::manage_journald: true
 systemd::journald_settings: {}
+systemd::manage_logind: false
+systemd::logind_settings: {}
