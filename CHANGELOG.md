@@ -4,7 +4,30 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [2.6.0](https://github.com/camptocamp/puppet-systemd/tree/2.6.0) (2019-06-16)
+## [2.7.0](https://github.com/camptocamp/puppet-systemd/tree/2.7.0) (2019-10-28)
+
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.6.0...2.7.0)
+
+**Implemented enhancements:**
+
+- add support for 'VirtuozzoLinux 7' [\#121](https://github.com/camptocamp/puppet-systemd/pull/121) ([kBite](https://github.com/kBite))
+- Manage logind service and configuration [\#120](https://github.com/camptocamp/puppet-systemd/pull/120) ([fraenki](https://github.com/fraenki))
+
+**Fixed bugs:**
+
+- Correct order when ensuring unit files are absent [\#122](https://github.com/camptocamp/puppet-systemd/pull/122) ([ekohl](https://github.com/ekohl))
+
+**Closed issues:**
+
+- vacuum as routine task [\#123](https://github.com/camptocamp/puppet-systemd/issues/123)
+- Manage dropin\_file for target type systemd unit  [\#117](https://github.com/camptocamp/puppet-systemd/issues/117)
+- Allow Sensitive type for systemd::dropin\_file::content [\#114](https://github.com/camptocamp/puppet-systemd/issues/114)
+
+**Merged pull requests:**
+
+- allow Sensitive type for content param [\#115](https://github.com/camptocamp/puppet-systemd/pull/115) ([TheMeier](https://github.com/TheMeier))
+
+## [2.6.0](https://github.com/camptocamp/puppet-systemd/tree/2.6.0) (2019-06-17)
 
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.5.1...2.6.0)
 
@@ -63,6 +86,7 @@ These should not affect the functionality of the module.
 - Manage journald service and configuration [\#89](https://github.com/camptocamp/puppet-systemd/pull/89) ([treydock](https://github.com/treydock))
 - Add support for DNSoverTLS [\#88](https://github.com/camptocamp/puppet-systemd/pull/88) ([shibumi](https://github.com/shibumi))
 - unit.d directory should be purged of unmanaged dropin files [\#41](https://github.com/camptocamp/puppet-systemd/pull/41) ([treydock](https://github.com/treydock))
+- Add Journald support [\#14](https://github.com/camptocamp/puppet-systemd/pull/14) ([duritong](https://github.com/duritong))
 
 **Closed issues:**
 
@@ -120,6 +144,7 @@ These should not affect the functionality of the module.
 - purge legacy puppet-lint checks [\#66](https://github.com/camptocamp/puppet-systemd/pull/66) ([bastelfreak](https://github.com/bastelfreak))
 - Reuse the systemd::dropin\_file in service\_limits [\#61](https://github.com/camptocamp/puppet-systemd/pull/61) ([ekohl](https://github.com/ekohl))
 - cleanup README.md [\#60](https://github.com/camptocamp/puppet-systemd/pull/60) ([bastelfreak](https://github.com/bastelfreak))
+- implement github changelog generator [\#45](https://github.com/camptocamp/puppet-systemd/pull/45) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [1.1.1](https://github.com/camptocamp/puppet-systemd/tree/1.1.1) (2017-11-29)
 
@@ -146,10 +171,6 @@ These should not affect the functionality of the module.
 
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/1.0.0...1.1.0)
 
-**Implemented enhancements:**
-
-- Add Journald support [\#14](https://github.com/camptocamp/puppet-systemd/pull/14) ([duritong](https://github.com/duritong))
-
 **Closed issues:**
 
 - Add explicit ordering to README.md [\#24](https://github.com/camptocamp/puppet-systemd/issues/24)
@@ -175,7 +196,6 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- implement github changelog generator [\#45](https://github.com/camptocamp/puppet-systemd/pull/45) ([bastelfreak](https://github.com/bastelfreak))
 - Add support for drop-in files [\#39](https://github.com/camptocamp/puppet-systemd/pull/39) ([countsudoku](https://github.com/countsudoku))
 - Adds control group limits to ServiceLimits [\#36](https://github.com/camptocamp/puppet-systemd/pull/36) ([trevor-vaughan](https://github.com/trevor-vaughan))
 - it's systemd not SystemD [\#33](https://github.com/camptocamp/puppet-systemd/pull/33) ([shibumi](https://github.com/shibumi))
