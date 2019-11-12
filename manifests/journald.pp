@@ -7,6 +7,19 @@ class systemd::journald {
 
   assert_private()
 
+  if $::systemd::journald_persist_log {
+    $journald_dir = 'directory'
+  } else {
+    $journald_dir = 'absent'
+  }
+
+  file { '/var/log/journal/':
+    ensure => $journald_dir,
+    force  => true,
+    owner  => 0,
+    group  => 'systemd-journal',
+  }
+
   service{'systemd-journald':
     ensure => running,
   }
