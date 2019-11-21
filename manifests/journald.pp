@@ -7,7 +7,7 @@ class systemd::journald {
 
   assert_private()
 
-  if $::systemd::journald_persist_log {
+  if $systemd::journald_persist_log {
     $journald_dir = 'directory'
   } else {
     $journald_dir = 'absent'
