@@ -4,10 +4,10 @@
 #
 # @see systemd-tmpfiles(8)
 #
-# @attr name [String]
+# @attr name [Pattern['^.+\.conf$']] (filename)
 #   The name of the tmpfile to create
 #
-#   * May not contain ``/``
+#   * May not contain ``/`` and must end in .conf
 #
 # @param $ensure
 #   Whether to drop a file or remove it
@@ -26,15 +26,16 @@
 #  * Mutually exclusive with ``$limits``
 #
 define systemd::tmpfile(
-  Enum['present', 'absent', 'file'] $ensure  = 'file',
-  Stdlib::Absolutepath              $path    = '/etc/tmpfiles.d',
-  Optional[String]                  $content = undef,
-  Optional[String]                  $source  = undef,
+  Enum['present', 'absent', 'file'] $ensure   = 'file',
+  Systemd::Dropin                   $filename = $name,
+  Stdlib::Absolutepath              $path     = '/etc/tmpfiles.d',
+  Optional[String]                  $content  = undef,
+  Optional[String]                  $source   = undef,
 ) {
   include systemd::tmpfiles
 
-  if $name =~ Pattern['/'] {
-    fail('$name may not contain a forward slash "(/)"')
+  if $filename =~ Pattern['/'] {
+    fail('$filename may not contain a forward slash "(/)"')
   }
 
   $_tmp_file_ensure = $ensure ? {
@@ -42,7 +43,7 @@ define systemd::tmpfile(
     default   => $ensure,
   }
 
-  file { "${path}/${name}":
+  file { "${path}/${filename}":
     ensure  => $_tmp_file_ensure,
     content => $content,
     source  => $source,
