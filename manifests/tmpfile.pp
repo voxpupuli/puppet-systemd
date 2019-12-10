@@ -4,10 +4,8 @@
 #
 # @see systemd-tmpfiles(8)
 #
-# @attr name [Pattern['^.+\.conf$']] (filename)
+# @attr name [Pattern['^[^/]+\.conf$']] (filename)
 #   The name of the tmpfile to create
-#
-#   * May not contain ``/`` and must end in .conf
 #
 # @param $ensure
 #   Whether to drop a file or remove it
@@ -33,10 +31,6 @@ define systemd::tmpfile(
   Optional[String]                  $source   = undef,
 ) {
   include systemd::tmpfiles
-
-  if $filename =~ Pattern['/'] {
-    fail('$filename may not contain a forward slash "(/)"')
-  }
 
   $_tmp_file_ensure = $ensure ? {
     'present' => 'file',

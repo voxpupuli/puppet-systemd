@@ -28,6 +28,12 @@ describe 'systemd::unit_file' do
           it { is_expected.to compile.and_raise_error(/expects a match for Systemd::Unit/) }
         end
 
+        context 'with a bad unit type containing a slash' do
+          let(:title) { 'test/unit.service' }
+
+          it { is_expected.to compile.and_raise_error(/expects a match for Systemd::Unit/) }
+        end
+
         context 'with enable => true and active => true' do
           let(:params) do
             super().merge(

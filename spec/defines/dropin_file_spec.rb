@@ -53,6 +53,17 @@ describe 'systemd::dropin_file' do
           }
         end
 
+        context 'with a bad unit type containing a slash' do
+          let(:title) { 'test/bad.conf' }
+
+          it {
+            expect{
+              is_expected.to compile.with_all_deps
+            }.to raise_error(/expects a match for Systemd::Dropin/)
+          }
+        end
+
+
         context 'with another drop-in file with the same filename (and content)' do
           let(:default_params) {{
             :filename => 'longer-timeout.conf',
