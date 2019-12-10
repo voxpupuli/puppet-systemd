@@ -28,6 +28,16 @@ describe 'systemd::tmpfile' do
           }
         end
 
+        context 'with a bad tmpfile name with slash' do
+          let(:title) { 'test/foo.conf' }
+          it {
+            expect{
+              is_expected.to compile.with_all_deps
+            }.to raise_error(/expects a match for Systemd::Dropin/)
+          }
+        end
+
+
         context 'with a tmpfile name specified with filename' do
           let(:title) { 'test.badtype' }
           let(:params) {{
