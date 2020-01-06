@@ -23,7 +23,7 @@
 # @param service_content
 #   The full content of the service unit file
 #
-#   * Mutually exclusive with ``$timer_source``
+#   * Mutually exclusive with ``$service_source``
 #
 # @param service_source
 #   The ``File`` resource compatible ``source``
