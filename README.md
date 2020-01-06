@@ -135,7 +135,7 @@ that timer
 
 The following will create a timer unit and a service unit file.
 The execution of `systemctl daemon-reload` will occur.
-As active and enable are set true the puppet service `runoften.timer` will be 
+When `active` and `enable` are set to `true` the puppet service `runoften.timer` will be 
 declared and be started and enabled.
 
 ```puppet
