@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Facter::Util::Fact do
+describe Facter.fact(:systemd_version) do
   before(:each) do
     Facter.clear
   end
