@@ -26,4 +26,13 @@ Puppet::Type.type(:loginctl_user).provide(:ruby) do
   end
 
   mk_resource_methods
+
+  def linger=(value)
+    case value
+    when :enabled
+      loginctl('enable-linger', resource[:name])
+    when :disabled
+      loginctl('disable-linger', resource[:name])
+    end
+  end
 end
