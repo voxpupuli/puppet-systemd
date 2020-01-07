@@ -4,3 +4,10 @@
   secure: "ASTRdmLjJNa1NvHy2LRGvmvUeth6W3Fh/alYWvcvI8nDDsdkweHk0iXhcXZwtMQReb0NI5vJiRNXNy7a3XySC4+SP3hfHuDU58H2FqC4Ff0EHRPRHTEiXf7xmN53RxXYXZQvrFfqUb6tIsBNVKVmsYWNe01k8NVKPyYDfQB75PQ="
 .rubocop.yml:
   selected_profile: off
+Gemfile:
+  optional:
+    ':development':
+      - gem: 'github_changelog_generator'
+        git: 'https://github.com/skywinder/github-changelog-generator'
+        ref: '20ee04ba1234e9e83eb2ffb5056e23d641c7a018'
+        condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.2.2')"
