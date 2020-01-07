@@ -17,13 +17,14 @@ describe provider_class do
       inst = provider_class.instances.map do |p|
       end
 
-      inst.size.is_expected.to eq(3)
+      expect(inst.size).to eq(3)
     end
   end
 
   context 'when enabling linger' do
     it 'should enable linger' do
-      resource = Puppet::Type::LoginctlUser.new(common_params)
+      resource = Puppet::Type.type(:loginctl_user).new(common_params)
+      expect(resource).not_to be_nil
     end
   end
 end

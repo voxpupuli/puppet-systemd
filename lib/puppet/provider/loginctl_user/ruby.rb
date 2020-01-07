@@ -2,7 +2,7 @@ Puppet::Type.type(:loginctl_user).provide(:ruby) do
   commands :loginctl => 'loginctl'
 
   def self.instances
-    users = loginctl('list-users', '--no-legend').split("\n").map { |l| l.split[0] }
+    users = loginctl('list-users', '--no-legend').split("\n").map { |l| l.split[1] }
     loginctl('show-user', '-p', 'Name', '-p', 'Linger', *users).split("\n\n").map do |u|
       user = u.split("\n").map { |f| f.split("=") }.to_h
       if user['Linger'] == 'yes'
