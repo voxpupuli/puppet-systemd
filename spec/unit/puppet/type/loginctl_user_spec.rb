@@ -9,14 +9,14 @@ describe loginctl_user do
     }
   end
 
-  it 'should disable linger by default' do
+  it 'disables linger by default' do
     resource = Puppet::Type.type(:loginctl_user).new(common_params)
     expect(resource).not_to be_nil
     expect(resource.parameters[:linger].value).to eq(:disabled)
   end
 
-  it 'should enable linger when requested' do
-    resource = Puppet::Type.type(:loginctl_user).new(common_params.merge({linger: 'enabled'}))
+  it 'enables linger when requested' do
+    resource = Puppet::Type.type(:loginctl_user).new(common_params.merge(linger: 'enabled'))
     expect(resource).not_to be_nil
     expect(resource.parameters[:linger].value).to eq(:enabled)
   end
