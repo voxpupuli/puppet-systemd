@@ -34,26 +34,26 @@
 # Caveats:
 #
 Facter.add(:systemd) do
-  confine :kernel => :linux
+  confine kernel: :linux
   setcode do
     Facter.value(:service_provider) == 'systemd'
   end
 end
 
 Facter.add(:systemd_version) do
-  confine :systemd => true
+  confine systemd: true
   setcode do
     Facter::Util::Resolution.exec("systemctl --version | awk '/systemd/{ print $2 }'")
   end
 end
 
 Facter.add(:systemd_internal_services) do
-  confine :systemd => true
+  confine systemd: true
   setcode do
     command_output = Facter::Util::Resolution.exec(
-      'systemctl list-unit-files --no-legend --no-pager "systemd-*" -t service --state=enabled,disabled,enabled-runtime,indirect'
+      'systemctl list-unit-files --no-legend --no-pager "systemd-*" -t service --state=enabled,disabled,enabled-runtime,indirect',
     )
-    lines = command_output.lines.lazy.map { |line| line.split(/\s+/) }
+    lines = command_output.lines.lazy.map { |line| line.split(%r{\s+}) }
     lines.each_with_object({}) do |(service, status, *), result|
       result[service] = status
     end
