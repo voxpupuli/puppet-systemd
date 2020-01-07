@@ -77,7 +77,7 @@ describe 'systemd::dropin_file' do
             }
           end
           # Create drop-in file longer-timeout.conf for unit httpd.service
-          let :pre_condition do
+          let(:pre_condition) do
             "systemd::dropin_file { 'httpd_longer-timeout':
               filename => '#{default_params[:filename]}',
               unit     => 'httpd.service',
@@ -86,8 +86,8 @@ describe 'systemd::dropin_file' do
           end
           #
           # Create drop-in file longer-timeout.conf for unit ftp.service
-          let (:title) { 'ftp_longer-timeout' }
-          let :params do
+          let(:title) { 'ftp_longer-timeout' }
+          let(:params) do
             default_params.merge(unit: 'ftp.service')
           end
 
