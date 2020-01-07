@@ -17,12 +17,6 @@
       "version_requirement": ">= 1.6.0 < 5.0.0"
     }
   ],
-  "requirements": [
-    {
-      "name": "puppet",
-      "version_requirement": ">= 4.10.10 < 7.0.0"
-    }
-  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian",
@@ -60,5 +54,14 @@
     {
       "operatingsystem": "Archlinux"
     }
-  ]
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.10.10 < 7.0.0"
+    }
+  ],
+  "pdk-version": "1.14.1",
+  "template-url": "pdk-default#1.14.1",
+  "template-ref": "1.14.1-0-g0b5b39b"
 }
