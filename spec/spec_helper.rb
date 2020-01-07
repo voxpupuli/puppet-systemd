@@ -49,6 +49,23 @@ def ensure_module_defined(module_name)
     last_module.const_set(next_module, Module.new) unless last_module.const_defined?(next_module, false)
     last_module.const_get(next_module, false)
   end
+
+  c.mock_with :rspec
+  c.before :each do
+    # Ensure that we don't accidentally cache facts and environment between
+    # test cases.  This requires each example group to explicitly load the
+    # facts being exercised with something like
+    # Facter.collection.loader.load(:ipaddress)
+    Facter.clear
+    Facter.clear_messages
+
+    RSpec::Mocks.setup
+  end
+
+  c.after :each do
+    RSpec::Mocks.verify
+    RSpec::Mocks.teardown
+  end
 end
 
 # 'spec_overrides' from sync.yml will appear below this line
