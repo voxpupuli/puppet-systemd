@@ -1,10 +1,26 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-Each new release typically also includes the latest modulesync defaults.
-These should not affect the functionality of the module.
+## [2.8.0](https://github.com/camptocamp/puppet-systemd/tree/2.8.0) (2020-01-08)
 
-## [2.7.0](https://github.com/camptocamp/puppet-systemd/tree/2.7.0) (2019-10-28)
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.7.0...2.8.0)
+
+**Implemented enhancements:**
+
+- Rubocop [\#135](https://github.com/camptocamp/puppet-systemd/pull/135) ([raphink](https://github.com/raphink))
+- Update types to avoid / in unit or drop file name [\#130](https://github.com/camptocamp/puppet-systemd/pull/130) ([traylenator](https://github.com/traylenator))
+- Add OOMScoreAdjust to Systemd::ServiceLimits type [\#128](https://github.com/camptocamp/puppet-systemd/pull/128) ([jlutran](https://github.com/jlutran))
+
+**Fixed bugs:**
+
+- Correct CPUQuota service limit regex [\#92](https://github.com/camptocamp/puppet-systemd/pull/92) ([matt6697](https://github.com/matt6697))
+
+**Merged pull requests:**
+
+- Convert to PDK [\#132](https://github.com/camptocamp/puppet-systemd/pull/132) ([raphink](https://github.com/raphink))
+- Add loginctl\_user type/provider [\#131](https://github.com/camptocamp/puppet-systemd/pull/131) ([raphink](https://github.com/raphink))
+- allow puppetlabs/inifile 4.x [\#126](https://github.com/camptocamp/puppet-systemd/pull/126) ([bastelfreak](https://github.com/bastelfreak))
+
+## [2.7.0](https://github.com/camptocamp/puppet-systemd/tree/2.7.0) (2019-10-29)
 
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.6.0...2.7.0)
 

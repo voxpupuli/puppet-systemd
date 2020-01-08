@@ -32,7 +32,7 @@ end
 
 def changelog_future_release
   return unless Rake.application.top_level_tasks.include? "changelog"
-  returnVal = "v%s" % JSON.load(File.read('metadata.json'))['version']
+  returnVal = JSON.load(File.read('metadata.json'))['version']
   raise "unable to find the future_release (version) in metadata.json" if returnVal.nil?
   puts "GitHubChangelogGenerator future_release:#{returnVal}"
   returnVal
@@ -46,25 +46,7 @@ if Bundler.rubygems.find_name('github_changelog_generator').any?
     config.user = "#{changelog_user}"
     config.project = "#{changelog_project}"
     config.future_release = "#{changelog_future_release}"
-    config.exclude_labels = ['maintenance']
-    config.header = "# Change log\n\nAll notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org)."
-    config.add_pr_wo_labels = true
-    config.issues = false
-    config.merge_prefix = "### UNCATEGORIZED PRS; GO LABEL THEM"
-    config.configure_sections = {
-      "Changed" => {
-        "prefix" => "### Changed",
-        "labels" => ["backwards-incompatible"],
-      },
-      "Added" => {
-        "prefix" => "### Added",
-        "labels" => ["feature", "enhancement"],
-      },
-      "Fixed" => {
-        "prefix" => "### Fixed",
-        "labels" => ["bugfix"],
-      },
-    }
+    config.exclude_labels = %w{duplicate question invalid wontfix wont-fix modulesync skip-changelog}
   end
 else
   desc 'Generate a Changelog from GitHub'
