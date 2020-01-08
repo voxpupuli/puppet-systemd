@@ -2,11 +2,13 @@
 #
 # This class provides a solution to enable accounting
 #
-class systemd::system {
+class systemd::system (
+  Hash[String,String] $accounting = $systemd::accounting
+) {
 
   assert_private()
 
-  $systemd::accounting.each |$option, $value| {
+  $accounting.each |$option, $value| {
     ini_setting{$option:
       ensure  => 'present',
       path    => '/etc/systemd/system.conf',
