@@ -173,6 +173,8 @@ describe 'systemd' do
             accounting = ['DefaultCPUAccounting', 'DefaultBlockIOAccounting', 'DefaultMemoryAccounting']
           when 'RedHat'
             accounting = ['DefaultCPUAccounting', 'DefaultBlockIOAccounting', 'DefaultMemoryAccounting', 'DefaultTasksAccounting']
+          when 'Suse'
+            accounting = ['DefaultCPUAccounting', 'DefaultBlockIOAccounting', 'DefaultMemoryAccounting', 'DefaultTasksAccounting']
           end
           accounting.each do |account|
             it { is_expected.to contain_ini_setting(account) }

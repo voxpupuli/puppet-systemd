@@ -1,0 +1,15 @@
+HOSTS:
+  opensuse-15-x64:
+    default_apply_opts:
+      order: random
+      strict_variables:
+    platform: opensuse-15-amd64
+    hypervisor : docker
+    image: opensuse/leap:15
+    docker_preserve_image: true
+    docker_cmd: '["/sbin/init"]'
+    docker_image_commands:
+      - 'zypper install -y cronie tar wget iproute2'
+CONFIG:
+  type: foss
+  log_level: debug
