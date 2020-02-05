@@ -242,15 +242,15 @@ describe 'systemd' do
         context 'when enabling journald log persistence' do
           let(:params) do
             {
-              :journald_persist_log => true,
+              journald_persist_log: true,
             }
           end
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_file('/var/log/journal').with({
-            :ensure => 'directory',
-            :owner  => 'root',
-            :group  => 'systemd-journal',
-            :mode   => '0755',
+            ensure: 'directory',
+            owner: 'root',
+            group: 'systemd-journal',
+            mode: '0755',
             })
           }
         end
@@ -258,12 +258,12 @@ describe 'systemd' do
         context 'when disabling journald log persistence' do
           let(:params) do
             {
-              :journald_persist_log => false,
+              journald_persist_log: false,
             }
           end
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_file('/var/log/journal').with({
-            :ensure => 'absent',
+            ensure: 'absent',
             })
           }
         end
