@@ -9,68 +9,52 @@ describe 'systemd::service_limits' do
         let(:title) { 'test.service' }
 
         describe 'with limits and present' do
-          let(:params) {{
-            :limits => {
-              'LimitCPU'    => '10m',
-              'LimitFSIZE'  => 'infinity',
-              'LimitDATA'   => '10K',
-              'LimitNOFILE' => '20:infinity',
-              'LimitNICE'   => '-10',
-              'LimitRTPRIO' => 50,
-              'CPUQuota'    => '25%',
-              'IODeviceWeight' => [
-                {'/dev/weight' => 10},
-                {'/dev/weight2' => 20}
-              ],
-              'IOReadBandwidthMax' => [
-                {'/bw/max' => '10K'}
-              ]
+          let(:params) do
+            {
+              limits: {
+                'LimitCPU'    => '10m',
+                'LimitFSIZE'  => 'infinity',
+                'LimitDATA'   => '10K',
+                'LimitNOFILE' => '20:infinity',
+                'LimitNICE'   => '-10',
+                'LimitRTPRIO' => 50,
+                'CPUQuota'    => '25%',
+                'IODeviceWeight' => [
+                  { '/dev/weight' => 10 },
+                  { '/dev/weight2' => 20 },
+                ],
+                'IOReadBandwidthMax' => [
+                  { '/bw/max' => '10K' },
+                ],
+              },
             }
-          }}
+          end
 
           it { is_expected.to compile.with_all_deps }
-          it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
-            :ensure  => 'file',
-              :content => /LimitCPU=10m/,
-              :mode    => '0444'
-          ) }
-          it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
-            :content => /LimitFSIZE=infinity/
-          ) }
-          it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
-            :content => /LimitDATA=10K/
-          ) }
-          it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
-            :content => /LimitNOFILE=20:infinity/
-          ) }
-          it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
-            :content => /LimitNICE=-10/
-          ) }
-          it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
-            :content => /LimitRTPRIO=50/
-          ) }
-          it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
-            :content => /CPUQuota=25%/
-          ) }
-          it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
-            :content => %r(IODeviceWeight=/dev/weight 10)
-          ) }
-          it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
-            :content => %r(IODeviceWeight=/dev/weight2 20)
-          ) }
-          it { is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").with(
-            :content => %r(IOReadBandwidthMax=/bw/max 10K)
-          ) }
-          it { is_expected.to create_exec("restart #{title} because limits").with(
-            :command => "systemctl restart #{title}",
-            :refreshonly => true
-          ) }
+          it {
+            is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf")
+              .with(ensure: 'file', mode: '0444')
+              .with_content(%r{LimitCPU=10m})
+              .with_content(%r{LimitFSIZE=infinity})
+              .with_content(%r{LimitDATA=10K})
+              .with_content(%r{LimitNOFILE=20:infinity})
+              .with_content(%r{LimitNICE=-10})
+              .with_content(%r{LimitRTPRIO=50})
+              .with_content(%r{CPUQuota=25%})
+              .with_content(%r{IODeviceWeight=/dev/weight 10})
+              .with_content(%r{IODeviceWeight=/dev/weight2 20})
+              .with_content(%r{IOReadBandwidthMax=/bw/max 10K})
+          }
+          it {
+            is_expected.to create_exec("restart #{title} because limits").with(
+              command: "systemctl restart #{title}",
+              refreshonly: true,
+            )
+          }
         end
 
         describe 'ensured absent' do
-          let(:params) {{
-            :ensure => 'absent',
-          }}
+          let(:params) { { ensure: 'absent' } }
 
           it { is_expected.to compile.with_all_deps }
           it do

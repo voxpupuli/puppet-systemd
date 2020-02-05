@@ -242,3 +242,13 @@ systemd::logind_settings:
     ensure: absent
   UserTasksMax: 10000
 ```
+
+### User linger
+
+A `loginctl_user` resource is available to manage user linger enablement:
+
+```puppet
+loginctl_user { 'foo':
+  linger => enabled,
+}
+```

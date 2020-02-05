@@ -4,10 +4,8 @@
 #
 # @see systemd.unit(5)
 #
-# @param name [Pattern['^.+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']]
+# @param name [Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']]
 #   The target unit file to create
-#
-#   * Must not contain ``/``
 #
 # @param ensure
 #   The state of the unit file to ensure

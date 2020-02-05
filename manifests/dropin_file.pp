@@ -4,10 +4,8 @@
 #
 # @see systemd.unit(5)
 #
-# @attr name [Pattern['^.+\.conf$']]
+# @attr name [Pattern['^[^/]+\.conf$']]
 #   The target unit file to create
-#
-#   * Must not contain ``/``
 #
 # @attr path
 #   The main systemd configuration path
