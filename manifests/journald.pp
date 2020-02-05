@@ -13,7 +13,7 @@ class systemd::journald {
     $journald_dir = 'absent'
   }
 
-  file { '/var/log/journal/':
+  file { '/var/log/journal':
     ensure => $journald_dir,
     force  => true,
     owner  => 0,
