@@ -25,3 +25,4 @@ systemd::manage_journald: true
 systemd::journald_settings: {}
 systemd::manage_logind: false
 systemd::logind_settings: {}
+systemd::journald_persist_log: false
