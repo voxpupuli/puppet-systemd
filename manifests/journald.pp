@@ -16,8 +16,9 @@ class systemd::journald {
   file { '/var/log/journal':
     ensure => $journald_dir,
     force  => true,
-    owner  => 0,
+    owner  => 'root',
     group  => 'systemd-journal',
+    mode   => '2755',
   }
 
   service{'systemd-journald':

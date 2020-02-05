@@ -252,7 +252,7 @@ describe 'systemd' do
               ensure: 'directory',
               owner: 'root',
               group: 'systemd-journal',
-              mode: '0755',
+              mode: '2755',
             )
           }
         end
