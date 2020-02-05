@@ -217,10 +217,10 @@ describe 'systemd' do
           end
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_file('/var/log/journal').with({
-            'ensure' => 'directory',
-            'owner'  => 'root',
-            'group'  => 'systemd-journal',
-            'mode'   => '0755'
+            :ensure => 'directory',
+            :owner  => 'root',
+            :group  => 'systemd-journal',
+            :mode   => '0755',
             })
           }
         end
@@ -233,7 +233,7 @@ describe 'systemd' do
           end
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_file('/var/log/journal').with({
-            'ensure' => 'absent'
+            :ensure => 'absent',
             })
           }
         end
