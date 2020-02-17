@@ -75,6 +75,9 @@
 # @param journald_settings
 #   Config Hash that is used to configure settings in journald.conf
 #
+# @param journald_persist_log
+#   Enable journald persistent logging asuming storage option is auto or persistent
+#
 # @param manage_logind
 #   Manage the systemd logind
 #
@@ -82,32 +85,33 @@
 #   Config Hash that is used to configure settings in logind.conf
 #
 class systemd (
-  Hash[String,Hash[String, Any]]                         $service_limits      = {},
-  Boolean                                                $manage_resolved     = false,
-  Enum['stopped','running']                              $resolved_ensure     = 'running',
-  Optional[Variant[Array[String],String]]                $dns                 = undef,
-  Optional[Variant[Array[String],String]]                $fallback_dns        = undef,
-  Optional[Variant[Array[String],String]]                $domains             = undef,
-  Optional[Variant[Boolean,Enum['resolve']]]             $llmnr               = undef,
-  Optional[Variant[Boolean,Enum['resolve']]]             $multicast_dns       = undef,
-  Optional[Variant[Boolean,Enum['allow-downgrade']]]     $dnssec              = undef,
-  Optional[Variant[Boolean,Enum['opportunistic', 'no']]] $dnsovertls          = undef,
-  Boolean                                                $cache               = false,
-  Optional[Variant[Boolean,Enum['udp','tcp']]]           $dns_stub_listener   = undef,
-  Boolean                                                $use_stub_resolver   = false,
-  Boolean                                                $manage_networkd     = false,
-  Enum['stopped','running']                              $networkd_ensure     = 'running',
-  Boolean                                                $manage_timesyncd    = false,
-  Enum['stopped','running']                              $timesyncd_ensure    = 'running',
-  Optional[Variant[Array,String]]                        $ntp_server          = undef,
-  Optional[Variant[Array,String]]                        $fallback_ntp_server = undef,
-  Boolean                                                $manage_accounting   = false,
-  Optional[Hash[String,String]]                          $accounting          = undef,
-  Boolean                                                $purge_dropin_dirs   = false,
-  Boolean                                                $manage_journald     = false,
-  Systemd::JournaldSettings                              $journald_settings   = {},
-  Boolean                                                $manage_logind       = false,
-  Systemd::LogindSettings                                $logind_settings     = {},
+  Hash[String,Hash[String, Any]]                         $service_limits       = {},
+  Boolean                                                $manage_resolved      = false,
+  Enum['stopped','running']                              $resolved_ensure      = 'running',
+  Optional[Variant[Array[String],String]]                $dns                  = undef,
+  Optional[Variant[Array[String],String]]                $fallback_dns         = undef,
+  Optional[Variant[Array[String],String]]                $domains              = undef,
+  Optional[Variant[Boolean,Enum['resolve']]]             $llmnr                = undef,
+  Optional[Variant[Boolean,Enum['resolve']]]             $multicast_dns        = undef,
+  Optional[Variant[Boolean,Enum['allow-downgrade']]]     $dnssec               = undef,
+  Optional[Variant[Boolean,Enum['opportunistic', 'no']]] $dnsovertls           = undef,
+  Boolean                                                $cache                = false,
+  Optional[Variant[Boolean,Enum['udp','tcp']]]           $dns_stub_listener    = undef,
+  Boolean                                                $use_stub_resolver    = false,
+  Boolean                                                $manage_networkd      = false,
+  Enum['stopped','running']                              $networkd_ensure      = 'running',
+  Boolean                                                $manage_timesyncd     = false,
+  Enum['stopped','running']                              $timesyncd_ensure     = 'running',
+  Optional[Variant[Array,String]]                        $ntp_server           = undef,
+  Optional[Variant[Array,String]]                        $fallback_ntp_server  = undef,
+  Boolean                                                $manage_accounting    = false,
+  Optional[Hash[String,String]]                          $accounting           = undef,
+  Boolean                                                $purge_dropin_dirs    = false,
+  Boolean                                                $manage_journald      = false,
+  Systemd::JournaldSettings                              $journald_settings    = {},
+  Boolean                                                $journald_persist_log = false,
+  Boolean                                                $manage_logind        = false,
+  Systemd::LogindSettings                                $logind_settings      = {},
 ){
 
   contain systemd::systemctl::daemon_reload
