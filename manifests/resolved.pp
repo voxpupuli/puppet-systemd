@@ -203,15 +203,13 @@ class systemd::resolved (
     default => $cache,
   }
 
-  if $cache {
-    ini_setting{ 'cache':
-      ensure  => 'present',
-      value   => $_cache,
-      setting => 'Cache',
-      section => 'Resolve',
-      path    => '/etc/systemd/resolved.conf',
-      notify  => Service['systemd-resolved'],
-    }
+  ini_setting { 'cache':
+    ensure  => 'present',
+    value   => $_cache,
+    setting => 'Cache',
+    section => 'Resolve',
+    path    => '/etc/systemd/resolved.conf',
+    notify  => Service['systemd-resolved'],
   }
 
   $_dns_stub_listener = $dns_stub_listener ? {
