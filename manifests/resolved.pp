@@ -35,7 +35,7 @@
 #   Takes a boolean argument or "opportunistic" or "no"
 #
 # @param cache
-#   Takes a boolean argument.
+#   Takes a boolean argument or "no-negative".
 #
 # @param dns_stub_listener
 #   Takes a boolean argument or one of "udp" and "tcp".
@@ -53,7 +53,7 @@ class systemd::resolved (
   Optional[Variant[Boolean,Enum['resolve']]] $multicast_dns          = $systemd::multicast_dns,
   Optional[Variant[Boolean,Enum['allow-downgrade']]] $dnssec         = $systemd::dnssec,
   Optional[Variant[Boolean,Enum['opportunistic', 'no']]] $dnsovertls = $systemd::dnsovertls,
-  Boolean $cache                                                     = $systemd::cache,
+  Optional[Variant[Boolean,Enum['no-negative']]] $cache              = $systemd::cache,
   Optional[Variant[Boolean,Enum['udp', 'tcp']]] $dns_stub_listener   = $systemd::dns_stub_listener,
   Boolean $use_stub_resolver                                         = $systemd::use_stub_resolver,
 ){
@@ -200,6 +200,7 @@ class systemd::resolved (
   $_cache = $cache ? {
     true    => 'yes',
     false   => 'no',
+    default => $cache,
   }
 
   if $cache {
