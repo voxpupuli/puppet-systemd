@@ -239,10 +239,13 @@ describe 'systemd' do
           it { is_expected.not_to contain_service('systemd-journald') }
         end
 
-        context 'when enabling journald log persistence' do
+        context 'when you want to keep your logs' do
           let(:params) do
             {
-              journald_persist_log: true,
+              journald_settings:
+              {
+                Storage: 'auto',
+              },
             }
           end
 
@@ -257,19 +260,9 @@ describe 'systemd' do
           }
         end
 
-        context 'when disabling journald log persistence' do
-          let(:params) do
-            {
-              journald_persist_log: false,
-            }
-          end
-
+        context 'without parameters' do
           it { is_expected.to compile.with_all_deps }
-          it {
-            is_expected.to contain_file('/var/log/journal').with(
-              ensure: 'absent',
-            )
-          }
+          it { is_expected.not_to contain_file('/var/log/journal') }
         end
 
         context 'when enabling logind with options' do
