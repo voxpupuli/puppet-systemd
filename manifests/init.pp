@@ -109,7 +109,6 @@ class systemd (
   Boolean                                                $purge_dropin_dirs,
   Boolean                                                $manage_journald,
   Systemd::JournaldSettings                              $journald_settings,
-  Boolean                                                $journald_persist_log,
   Boolean                                                $manage_logind,
   Systemd::LogindSettings                                $logind_settings,
 ){

@@ -6,19 +6,15 @@
 class systemd::journald {
 
   assert_private()
-
-  if $systemd::journald_persist_log {
-    $journald_dir = 'directory'
-  } else {
-    $journald_dir = 'absent'
-  }
-
-  file { '/var/log/journal':
-    ensure => $journald_dir,
-    force  => true,
-    owner  => 'root',
-    group  => 'systemd-journal',
-    mode   => '2755',
+  if 'Storage' in $systemd::journald_settings {
+    if $systemd::journald_settings['Storage'] == 'persistent' {
+      file { '/var/log/journal':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'systemd-journal',
+        mode   => '2755',
+      }
+    }
   }
 
   service{'systemd-journald':
