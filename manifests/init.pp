@@ -75,9 +75,6 @@
 # @param journald_settings
 #   Config Hash that is used to configure settings in journald.conf
 #
-# @param journald_persist_log
-#   Enable journald persistent logging asuming storage option is auto or persistent
-#
 # @param manage_logind
 #   Manage the systemd logind
 #
@@ -109,7 +106,6 @@ class systemd (
   Boolean                                                $purge_dropin_dirs,
   Boolean                                                $manage_journald,
   Systemd::JournaldSettings                              $journald_settings,
-  Boolean                                                $journald_persist_log,
   Boolean                                                $manage_logind,
   Systemd::LogindSettings                                $logind_settings,
 ){
