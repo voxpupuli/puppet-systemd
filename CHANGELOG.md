@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.9.0](https://github.com/camptocamp/puppet-systemd/tree/2.9.0) (2020-03-09)
+
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.8.0...2.9.0)
+
+**Implemented enhancements:**
+
+- Add EL8 Support [\#144](https://github.com/camptocamp/puppet-systemd/pull/144) ([trevor-vaughan](https://github.com/trevor-vaughan))
+- Add Fedora 30/31 compatibility [\#141](https://github.com/camptocamp/puppet-systemd/pull/141) ([bastelfreak](https://github.com/bastelfreak))
+- New systemd::timer define type [\#138](https://github.com/camptocamp/puppet-systemd/pull/138) ([mmoll](https://github.com/mmoll))
+- Add SLES 12/15 support [\#137](https://github.com/camptocamp/puppet-systemd/pull/137) ([msurato](https://github.com/msurato))
+
+**Closed issues:**
+
+- Discussion: use class instead of exec for notification [\#2](https://github.com/camptocamp/puppet-systemd/issues/2)
+
+**Merged pull requests:**
+
+- fix Issue 113 [\#140](https://github.com/camptocamp/puppet-systemd/pull/140) ([schlitzered](https://github.com/schlitzered))
+
 ## [2.8.0](https://github.com/camptocamp/puppet-systemd/tree/2.8.0) (2020-01-08)
 
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.7.0...2.8.0)
@@ -16,8 +35,10 @@
 
 **Merged pull requests:**
 
+- Release 2.8.0 [\#134](https://github.com/camptocamp/puppet-systemd/pull/134) ([raphink](https://github.com/raphink))
 - Convert to PDK [\#132](https://github.com/camptocamp/puppet-systemd/pull/132) ([raphink](https://github.com/raphink))
 - Add loginctl\_user type/provider [\#131](https://github.com/camptocamp/puppet-systemd/pull/131) ([raphink](https://github.com/raphink))
+- Force tmpfiles.d drop file to end in .conf [\#129](https://github.com/camptocamp/puppet-systemd/pull/129) ([traylenator](https://github.com/traylenator))
 - allow puppetlabs/inifile 4.x [\#126](https://github.com/camptocamp/puppet-systemd/pull/126) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [2.7.0](https://github.com/camptocamp/puppet-systemd/tree/2.7.0) (2019-10-29)
@@ -203,6 +224,11 @@
 
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/0.4.0...1.0.0)
 
+**Implemented enhancements:**
+
+- Add support for drop-in files [\#39](https://github.com/camptocamp/puppet-systemd/pull/39) ([countsudoku](https://github.com/countsudoku))
+- Adds control group limits to ServiceLimits [\#36](https://github.com/camptocamp/puppet-systemd/pull/36) ([trevor-vaughan](https://github.com/trevor-vaughan))
+
 **Closed issues:**
 
 - PR\#18 broke service limits capacity [\#35](https://github.com/camptocamp/puppet-systemd/issues/35)
@@ -212,8 +238,6 @@
 
 **Merged pull requests:**
 
-- Add support for drop-in files [\#39](https://github.com/camptocamp/puppet-systemd/pull/39) ([countsudoku](https://github.com/countsudoku))
-- Adds control group limits to ServiceLimits [\#36](https://github.com/camptocamp/puppet-systemd/pull/36) ([trevor-vaughan](https://github.com/trevor-vaughan))
 - it's systemd not SystemD [\#33](https://github.com/camptocamp/puppet-systemd/pull/33) ([shibumi](https://github.com/shibumi))
 - General cleanup + add Puppet4 datatypes [\#32](https://github.com/camptocamp/puppet-systemd/pull/32) ([bastelfreak](https://github.com/bastelfreak))
 - add management for systemd-resolved [\#31](https://github.com/camptocamp/puppet-systemd/pull/31) ([bastelfreak](https://github.com/bastelfreak))
@@ -228,15 +252,15 @@
 
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/0.3.0...0.4.0)
 
+**Implemented enhancements:**
+
+- Add target param for the unit file [\#10](https://github.com/camptocamp/puppet-systemd/pull/10) ([tampakrap](https://github.com/tampakrap))
+- only use awk, instead of grep and awk [\#9](https://github.com/camptocamp/puppet-systemd/pull/9) ([igalic](https://github.com/igalic))
+
 **Closed issues:**
 
 - No LICENSE file [\#11](https://github.com/camptocamp/puppet-systemd/issues/11)
 - Forge update  [\#7](https://github.com/camptocamp/puppet-systemd/issues/7)
-
-**Merged pull requests:**
-
-- Add target param for the unit file [\#10](https://github.com/camptocamp/puppet-systemd/pull/10) ([tampakrap](https://github.com/tampakrap))
-- only use awk, instead of grep and awk [\#9](https://github.com/camptocamp/puppet-systemd/pull/9) ([igalic](https://github.com/igalic))
 
 ## [0.3.0](https://forge.puppetlabs.com/camptocamp/systemd/0.3.0) (2016-05-16)
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/0.2.2...0.3.0)
