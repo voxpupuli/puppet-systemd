@@ -148,7 +148,7 @@ Create a systemd timer unit and a systemd service unit to execute from
 that timer
 
 The following will create a timer unit and a service unit file.
-The execution of `systemctl daemon-reload` will occur.
+The execution of `systemctl daemon-reload` will occur in Puppet < 6.1. Puppet >= 6.1 handles this itself.
 When `active` and `enable` are set to `true` the puppet service `runoften.timer` will be
 declared, started and enabled.
 

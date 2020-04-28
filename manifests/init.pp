@@ -112,8 +112,7 @@ class systemd (
   Systemd::LogindSettings                                $logind_settings,
   Hash                                                   $dropin_files = {},
 ){
-
-  contain systemd::systemctl::daemon_reload
+  $manage_daemon_reload = versioncmp($facts['puppetversion'], '6.1.0') < 0
 
   create_resources('systemd::service_limits', $service_limits)
 

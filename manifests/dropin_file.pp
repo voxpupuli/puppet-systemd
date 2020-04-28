@@ -46,6 +46,7 @@
 #   Set to `eager` to immediately reload after the dropin file is updated.
 #   Useful if the daemon needs to be reloaded before a service is refreshed.
 #   May cause multiple daemon reloads.
+#   Only relevant on Puppet < 6.1.
 #
 define systemd::dropin_file(
   Systemd::Unit                               $unit,
@@ -96,15 +97,17 @@ define systemd::dropin_file(
     show_diff               => $show_diff,
   }
 
-  if $daemon_reload == 'lazy' {
-    File["${path}/${unit}.d/${filename}"] ~> Class['systemd::systemctl::daemon_reload']
-  } else {
-    File["${path}/${unit}.d/${filename}"] ~> Exec["${unit}-systemctl-daemon-reload"]
+  if $systemd::manage_daemon_reload {
+    if $daemon_reload == 'lazy' {
+      File["${path}/${unit}.d/${filename}"] ~> Class['systemd::systemctl::daemon_reload']
+    } else {
+      File["${path}/${unit}.d/${filename}"] ~> Exec["${unit}-systemctl-daemon-reload"]
 
-    exec { "${unit}-systemctl-daemon-reload":
-      command     => 'systemctl daemon-reload',
-      refreshonly => true,
-      path        => $facts['path'],
+      exec { "${unit}-systemctl-daemon-reload":
+        command     => 'systemctl daemon-reload',
+        refreshonly => true,
+        path        => $facts['path'],
+      }
     }
   }
 }

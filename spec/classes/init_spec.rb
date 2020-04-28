@@ -8,7 +8,13 @@ describe 'systemd' do
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('systemd') }
-        it { is_expected.to create_class('systemd::systemctl::daemon_reload') }
+        it do
+          if facts[:puppetversion] >= '6.1'
+            is_expected.not_to create_class('systemd::systemctl::daemon_reload')
+          else
+            is_expected.to create_class('systemd::systemctl::daemon_reload')
+          end
+        end
         it { is_expected.to contain_class('systemd::journald') }
         it { is_expected.to create_service('systemd-journald') }
         it { is_expected.to have_ini_setting_resource_count(0) }

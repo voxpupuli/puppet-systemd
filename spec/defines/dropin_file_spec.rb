@@ -45,7 +45,14 @@ describe 'systemd::dropin_file' do
         end
 
         context 'with daemon_reload => lazy (default)' do
-          it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").that_notifies('Class[systemd::systemctl::daemon_reload]') }
+          it do
+            if facts[:puppetversion] >= '6.1'
+              is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}")
+              is_expected.not_to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").that_notifies('Class[systemd::systemctl::daemon_reload]')
+            else
+              is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").that_notifies('Class[systemd::systemctl::daemon_reload]')
+            end
+          end
 
           it { is_expected.not_to create_exec("#{params[:unit]}-systemctl-daemon-reload") }
         end
@@ -55,9 +62,15 @@ describe 'systemd::dropin_file' do
             super().merge(daemon_reload: 'eager')
           end
 
-          it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").that_notifies("Exec[#{params[:unit]}-systemctl-daemon-reload]") }
+          it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}") }
 
-          it { is_expected.to create_exec("#{params[:unit]}-systemctl-daemon-reload") }
+          it do
+            if facts[:puppetversion] >= '6.1'
+              is_expected.not_to create_exec("#{params[:unit]}-systemctl-daemon-reload")
+            else
+              is_expected.to create_exec("#{params[:unit]}-systemctl-daemon-reload").that_subscribes_to("File[/etc/systemd/system/#{params[:unit]}.d/#{title}]")
+            end
+          end
         end
 
         context 'with a bad unit type' do

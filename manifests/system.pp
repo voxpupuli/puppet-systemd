@@ -13,7 +13,10 @@ class systemd::system {
       section => 'Manager',
       setting => $option,
       value   => $value,
-      notify  => Class['systemd::systemctl::daemon_reload'],
+    }
+
+    if $systemd::manage_daemon_reload {
+      Ini_setting[$option] ~>Class['systemd::systemctl::daemon_reload']
     }
   }
 }
