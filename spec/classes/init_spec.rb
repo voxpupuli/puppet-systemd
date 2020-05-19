@@ -179,7 +179,65 @@ describe 'systemd' do
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_systemd__service_limits('openstack-nova-compute.service').with_limits('LimitNOFILE' => 32_768) }
         end
+        context 'when passing networks' do
+          let :params do
+            {
+              networks: { 'uplink.network' => { 'content' => 'foo' }, 'uplink.netdev' => { 'content' => 'bar' }, },
+            }
+          end
 
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_systemd__network('uplink.network').with_content('foo') }
+          it { is_expected.to contain_systemd__network('uplink.netdev').with_content('bar') }
+          it { is_expected.to contain_file('/etc/systemd/network/uplink.network') }
+          it { is_expected.to contain_file('/etc/systemd/network/uplink.netdev') }
+          it { is_expected.to have_systemd__network_resource_count(2) }
+        end
+        context 'when passing timers' do
+          let :params do
+            {
+              timers: { 'first.timer' => { 'timer_content' => 'foo' }, 'second.timer' => { 'timer_content' => 'bar' }, },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_systemd__timer('first.timer').with_timer_content('foo') }
+          it { is_expected.to contain_systemd__timer('second.timer').with_timer_content('bar') }
+          it { is_expected.to contain_systemd__unit_file('first.timer').with_content('foo') }
+          it { is_expected.to contain_systemd__unit_file('second.timer').with_content('bar') }
+          it { is_expected.to contain_file('/etc/systemd/system/first.timer') }
+          it { is_expected.to contain_file('/etc/systemd/system/second.timer') }
+          it { is_expected.to have_systemd__timer_resource_count(2) }
+          it { is_expected.to have_systemd__unit_file_resource_count(2) }
+        end
+        context 'when passing tmpfiles' do
+          let :params do
+            {
+              tmpfiles: { 'first_tmpfile.conf' => { 'content' => 'foo' }, 'second_tmpfile.conf' => { 'content' => 'bar' }, },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_systemd__tmpfile('first_tmpfile.conf').with_content('foo') }
+          it { is_expected.to contain_systemd__tmpfile('second_tmpfile.conf').with_content('bar') }
+          it { is_expected.to contain_file('/etc/tmpfiles.d/first_tmpfile.conf') }
+          it { is_expected.to contain_file('/etc/tmpfiles.d/second_tmpfile.conf') }
+          it { is_expected.to have_systemd__tmpfile_resource_count(2) }
+        end
+        context 'when passing unit_files' do
+          let :params do
+            {
+              unit_files: { 'first.service' => { 'content' => 'foo' }, 'second.service' => { 'content' => 'bar' }, },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_systemd__unit_file('first.service').with_content('foo') }
+          it { is_expected.to contain_systemd__unit_file('second.service').with_content('bar') }
+          it { is_expected.to contain_file('/etc/systemd/system/first.service') }
+          it { is_expected.to contain_file('/etc/systemd/system/second.service') }
+          it { is_expected.to have_systemd__unit_file_resource_count(2) }
+        end
         context 'when managing Accounting options' do
           let :params do
             {
