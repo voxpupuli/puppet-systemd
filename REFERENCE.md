@@ -56,6 +56,10 @@ This module allows triggering systemd commands once for all modules
 The following parameters are available in the `systemd` class:
 
 * [`service_limits`](#service_limits)
+* [`networks`](#networks)
+* [`timers`](#timers)
+* [`tmpfiles`](#tmpfiles)
+* [`unit_files`](#unit_files)
 * [`manage_resolved`](#manage_resolved)
 * [`resolved_ensure`](#resolved_ensure)
 * [`dns`](#dns)
@@ -100,6 +104,30 @@ Data type: `Hash[String,Hash[String, Any]]`
 
 May be passed a resource hash suitable for passing directly into the
 ``create_resources()`` function as called on ``systemd::service_limits``
+
+##### <a name="networks"></a>`networks`
+
+Data type: `Hash[String,Hash[String, Any]]`
+
+Hash of `systemd::network` resources
+
+##### <a name="timers"></a>`timers`
+
+Data type: `Hash[String,Hash[String, Any]]`
+
+Hash of `systemd::timer` resources
+
+##### <a name="tmpfiles"></a>`tmpfiles`
+
+Data type: `Hash[String,Hash[String, Any]]`
+
+Hash of `systemd::tmpfile` resources
+
+##### <a name="unit_files"></a>`unit_files`
+
+Data type: `Hash[String,Hash[String, Any]]`
+
+Hash of `systemd::unit_file` resources
 
 ##### <a name="manage_resolved"></a>`manage_resolved`
 
@@ -157,9 +185,10 @@ Takes a boolean argument or "allow-downgrade".
 
 ##### <a name="dnsovertls"></a>`dnsovertls`
 
-Data type: `Optional[Variant[Boolean,Enum['opportunistic', 'no']]]`
+Data type: `Optional[Variant[Boolean,Enum['yes', 'opportunistic', 'no']]]`
 
-Takes a boolean argument or "opportunistic"
+Takes a boolean argument or one of "yes", "opportunistic" or "no". "true" corresponds to
+"opportunistic" and "false" (default) to "no".
 
 ##### <a name="cache"></a>`cache`
 
@@ -275,12 +304,10 @@ The value of /etc/udev/udev.conf timeout_signal
 
 ##### <a name="udev_rules"></a>`udev_rules`
 
-Data type: `Hash`
+Data type: `Hash[String,Hash[String, Any]]`
 
 Config Hash that is used to generate instances of our
 `udev::rule` define.
-
-Default value: `{}`
 
 ##### <a name="manage_logind"></a>`manage_logind`
 
@@ -296,20 +323,16 @@ Config Hash that is used to configure settings in logind.conf
 
 ##### <a name="loginctl_users"></a>`loginctl_users`
 
-Data type: `Hash`
+Data type: `Hash[String,Hash[String, Any]]`
 
 Config Hash that is used to generate instances of our type
 `loginctl_user`.
 
-Default value: `{}`
-
 ##### <a name="dropin_files"></a>`dropin_files`
 
-Data type: `Hash`
+Data type: `Hash[String,Hash[String, Any]]`
 
 Configure dropin files via hiera with factory pattern
-
-Default value: `{}`
 
 ##### <a name="manage_all_network_files"></a>`manage_all_network_files`
 
@@ -1012,7 +1035,7 @@ Default value: `'/etc/systemd/system'`
 
 ##### <a name="content"></a>`content`
 
-Data type: `Optional[Variant[String, Sensitive[String]]]`
+Data type: `Optional[Variant[String, Sensitive[String], Deferred]]`
 
 The full content of the unit file
 

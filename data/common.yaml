@@ -1,5 +1,9 @@
 ---
 systemd::service_limits: {}
+systemd::networks: {}
+systemd::timers: {}
+systemd::tmpfiles: {}
+systemd::unit_files: {}
 systemd::manage_resolved: false
 systemd::resolved_ensure: 'running'
 systemd::dns: ~
@@ -34,3 +38,32 @@ systemd::manage_logind: false
 systemd::logind_settings: {}
 systemd::manage_all_network_files: false
 systemd::network_path: '/etc/systemd/network'
+systemd::loginctl_users: {}
+systemd::dropin_files: {}
+systemd::udev_rules: {}
+
+lookup_options:
+  systemd::service_limits:
+    merge:
+      strategy: deep
+  systemd::networks:
+    merge:
+      strategy: deep
+  systemd::timers:
+    merge:
+      strategy: deep
+  systemd::tmpfiles:
+    merge:
+      strategy: deep
+  systemd::unit_files:
+    merge:
+      strategy: deep
+  systemd::loginctl_users:
+    merge:
+      strategy: deep
+  systemd::dropin_files:
+    merge:
+      strategy: deep
+  systemd::udev_rules:
+    merge:
+      strategy: deep
