@@ -104,6 +104,17 @@ use `daemon_reload => 'eager'` instead of the default `'lazy'`.  Be aware that t
 reloaded multiple times if you have multiple `systemd::dropin_file` resources and any one of them
 is using `'eager'`.
 
+dropin-files can also be generated via hiera:
+
+```yaml
+
+systemd::dropin_files:
+  my-foo.conf:
+    unit: foo.service
+    source: puppet:///modules/${module_name}/foo.conf
+
+```
+
 ### tmpfiles
 
 Let this module handle file creation and systemd reloading
