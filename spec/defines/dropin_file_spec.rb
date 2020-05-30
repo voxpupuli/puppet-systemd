@@ -22,6 +22,7 @@ describe 'systemd::dropin_file' do
             ensure: 'directory',
             recurse: 'true',
             purge: 'true',
+            selinux_ignore_defaults: false,
           )
         }
 
@@ -30,8 +31,18 @@ describe 'systemd::dropin_file' do
             ensure: 'file',
             content: %r{#{params[:content]}},
             mode: '0444',
+            selinux_ignore_defaults: false,
           )
         }
+
+        context 'with selinux_ignore_defaults set to true' do
+          let(:params) do
+            super().merge(selinux_ignore_defaults: true)
+          end
+
+          it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d").with_selinux_ignore_defaults(true) }
+          it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").with_selinux_ignore_defaults(true) }
+        end
 
         context 'with daemon_reload => lazy (default)' do
           it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").that_notifies('Class[systemd::systemctl::daemon_reload]') }
