@@ -13,6 +13,9 @@
 # @param path
 #   The path to the main systemd settings directory
 #
+# @param selinux_ignore_defaults
+#   If Puppet should ignore the default SELinux labels.
+#
 # @param limits
 #   A Hash of service limits matching the settings in ``systemd.exec(5)``
 #
@@ -27,11 +30,12 @@
 #   Restart the managed service after setting the limits
 #
 define systemd::service_limits(
-  Enum['present', 'absent', 'file'] $ensure          = 'present',
-  Stdlib::Absolutepath              $path            = '/etc/systemd/system',
-  Optional[Systemd::ServiceLimits]  $limits          = undef,
-  Optional[String]                  $source          = undef,
-  Boolean                           $restart_service = true
+  Enum['present', 'absent', 'file'] $ensure                  = 'present',
+  Stdlib::Absolutepath              $path                    = '/etc/systemd/system',
+  Optional[Boolean]                 $selinux_ignore_defaults = false,
+  Optional[Systemd::ServiceLimits]  $limits                  = undef,
+  Optional[String]                  $source                  = undef,
+  Boolean                           $restart_service         = true
 ) {
 
   include systemd
@@ -57,12 +61,13 @@ define systemd::service_limits(
   }
 
   systemd::dropin_file { "${name}-90-limits.conf":
-    ensure   => $ensure,
-    unit     => $name,
-    filename => '90-limits.conf',
-    path     => $path,
-    content  => $_content,
-    source   => $source,
+    ensure                  => $ensure,
+    unit                    => $name,
+    filename                => '90-limits.conf',
+    path                    => $path,
+    selinux_ignore_defaults => $selinux_ignore_defaults,
+    content                 => $_content,
+    source                  => $source,
   }
 
   if $restart_service {
