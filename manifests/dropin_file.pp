@@ -10,6 +10,9 @@
 # @attr path
 #   The main systemd configuration path
 #
+# @attr selinux_ignore_defaults
+#   If Puppet should ignore the default SELinux labels.
+#
 # @attr content
 #   The full content of the unit file
 #
@@ -46,17 +49,18 @@
 #
 define systemd::dropin_file(
   Systemd::Unit                               $unit,
-  Systemd::Dropin                             $filename      = $name,
-  Enum['present', 'absent', 'file']           $ensure        = 'present',
-  Stdlib::Absolutepath                        $path          = '/etc/systemd/system',
-  Optional[Variant[String,Sensitive[String]]] $content       = undef,
-  Optional[String]                            $source        = undef,
-  Optional[Stdlib::Absolutepath]              $target        = undef,
-  String                                      $owner         = 'root',
-  String                                      $group         = 'root',
-  String                                      $mode          = '0444',
-  Boolean                                     $show_diff     = true,
-  Enum['lazy', 'eager']                       $daemon_reload = 'lazy',
+  Systemd::Dropin                             $filename                = $name,
+  Enum['present', 'absent', 'file']           $ensure                  = 'present',
+  Stdlib::Absolutepath                        $path                    = '/etc/systemd/system',
+  Optional[Boolean]                           $selinux_ignore_defaults = false,
+  Optional[Variant[String,Sensitive[String]]] $content                 = undef,
+  Optional[String]                            $source                  = undef,
+  Optional[Stdlib::Absolutepath]              $target                  = undef,
+  String                                      $owner                   = 'root',
+  String                                      $group                   = 'root',
+  String                                      $mode                    = '0444',
+  Boolean                                     $show_diff               = true,
+  Enum['lazy', 'eager']                       $daemon_reload           = 'lazy',
 ) {
   include systemd
 
@@ -71,23 +75,25 @@ define systemd::dropin_file(
 
   if $ensure != 'absent' {
     ensure_resource('file', "${path}/${unit}.d", {
-      ensure  => directory,
-      owner   => 'root',
-      group   => 'root',
-      recurse => $::systemd::purge_dropin_dirs,
-      purge   => $::systemd::purge_dropin_dirs,
+      ensure                  => directory,
+      owner                   => 'root',
+      group                   => 'root',
+      recurse                 => $::systemd::purge_dropin_dirs,
+      purge                   => $::systemd::purge_dropin_dirs,
+      selinux_ignore_defaults => $selinux_ignore_defaults,
     })
   }
 
   file { "${path}/${unit}.d/${filename}":
-    ensure    => $_ensure,
-    content   => $content,
-    source    => $source,
-    target    => $target,
-    owner     => $owner,
-    group     => $group,
-    mode      => $mode,
-    show_diff => $show_diff,
+    ensure                  => $_ensure,
+    content                 => $content,
+    source                  => $source,
+    target                  => $target,
+    owner                   => $owner,
+    group                   => $group,
+    mode                    => $mode,
+    selinux_ignore_defaults => $selinux_ignore_defaults,
+    show_diff               => $show_diff,
   }
 
   if $daemon_reload == 'lazy' {
