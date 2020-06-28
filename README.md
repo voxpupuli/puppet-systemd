@@ -274,7 +274,7 @@ class{'systemd':
 }
 ```
 
-This requires puppetlabs-inifile, which is only a soft dependency in this module (you need to explicitly install it). Both parameters accept a string or an array.
+This requires [puppetlabs-inifile](https://forge.puppet.com/puppetlabs/inifile), which is only a soft dependency in this module (you need to explicitly install it). Both parameters accept a string or an array.
 
 ### Resource Accounting
 
