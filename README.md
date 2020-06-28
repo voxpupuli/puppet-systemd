@@ -131,11 +131,11 @@ file { '/etc/tmpfiles.d/foo.conf':
 
 ### timer units
 Create a systemd timer unit and a systemd service unit to execute from
-that timer 
+that timer
 
 The following will create a timer unit and a service unit file.
 The execution of `systemctl daemon-reload` will occur.
-When `active` and `enable` are set to `true` the puppet service `runoften.timer` will be 
+When `active` and `enable` are set to `true` the puppet service `runoften.timer` will be
 declared, started and enabled.
 
 ```puppet
@@ -148,7 +148,7 @@ systemd::timer{'runoften.timer':
 ```
 
 A trivial daily run.
-In this case enable and active are both unset and so the service `daily.timer` 
+In this case enable and active are both unset and so the service `daily.timer`
 is not declared by the `systemd::timer` type.
 
 ```puppet
@@ -202,7 +202,7 @@ systemd::timer{'daily.timer':
   service_content => $_service,
   active          => true,
   enable          => true,
-} 
+}
 ```
 
 ### service limits
