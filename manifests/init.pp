@@ -143,7 +143,7 @@ class systemd (
 
   $dropin_files.each |$name, $resource| {
     systemd::dropin_file { $name:
-      * => $resource
+      * => $resource,
     }
   }
 }
