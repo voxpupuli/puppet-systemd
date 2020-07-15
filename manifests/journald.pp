@@ -1,6 +1,6 @@
 # **NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**
 #
-# This class provides a solution to enable accounting
+# This class manages and configures journald.
 #
 # https://www.freedesktop.org/software/systemd/man/journald.conf.html
 class systemd::journald {
