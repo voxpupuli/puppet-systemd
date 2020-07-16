@@ -81,6 +81,8 @@
 # @param logind_settings
 #   Config Hash that is used to configure settings in logind.conf
 #
+# @param drpoin_files
+#   Configure dropin files via hiera with factory pattern
 class systemd (
   Hash[String,Hash[String, Any]]                         $service_limits,
   Boolean                                                $manage_resolved,
@@ -108,6 +110,7 @@ class systemd (
   Systemd::JournaldSettings                              $journald_settings,
   Boolean                                                $manage_logind,
   Systemd::LogindSettings                                $logind_settings,
+  Hash                                                   $dropin_files = {},
 ){
 
   contain systemd::systemctl::daemon_reload
@@ -136,5 +139,11 @@ class systemd (
 
   if $manage_logind {
     contain systemd::logind
+  }
+
+  $dropin_files.each |$name, $resource| {
+    systemd::dropin_file { $name:
+      * => $resource,
+    }
   }
 }

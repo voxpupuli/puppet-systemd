@@ -294,6 +294,20 @@ describe 'systemd' do
             )
           }
         end
+        context 'when passing dropin_files' do
+          let(:params) do
+            {
+              dropin_files: {
+                'my-foo.conf' => {
+                  'unit'    => 'foo.service',
+                  'content' => '[Service]\nReadWritePaths=/',
+                },
+              },
+            }
+          end
+
+          it { is_expected.to contain_systemd__dropin_file('my-foo.conf').with_content('[Service]\nReadWritePaths=/') }
+        end
       end
     end
   end
