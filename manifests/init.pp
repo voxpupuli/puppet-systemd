@@ -81,7 +81,7 @@
 # @param logind_settings
 #   Config Hash that is used to configure settings in logind.conf
 #
-# @param drpoin_files
+# @param dropin_files
 #   Configure dropin files via hiera with factory pattern
 class systemd (
   Hash[String,Hash[String, Any]]                         $service_limits,
