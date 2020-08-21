@@ -1,7 +1,10 @@
 # Systemd
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/camptocamp/systemd.svg)](https://forge.puppetlabs.com/camptocamp/systemd)
+[![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/camptocamp/systemd.svg)](https://forge.puppetlabs.com/camptocamp/systemd)
 [![Build Status](https://travis-ci.org/camptocamp/puppet-systemd.png?branch=master)](https://travis-ci.org/camptocamp/puppet-systemd)
+[![Puppet Forge Endorsement](https://img.shields.io/puppetforge/e/camptocamp/systemd.svg)](https://forge.puppetlabs.com/camptocamp/systemd)
+[![By Camptocamp](https://img.shields.io/badge/by-camptocamp-fb7047.svg)](http://www.camptocamp.com)
 
 ## Overview
 
