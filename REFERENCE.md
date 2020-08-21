@@ -9,17 +9,17 @@
 #### Public Classes
 
 * [`systemd`](#systemd): This module allows triggering systemd commands once for all modules
-* [`systemd::journald`](#systemdjournald): **NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**  This class manages and configures journa
-* [`systemd::networkd`](#systemdnetworkd): **NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**  This class provides an abstract way to t
-* [`systemd::resolved`](#systemdresolved): **NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**  This class provides an abstract way to t
-* [`systemd::system`](#systemdsystem): **NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**  This class provides a solution to enable
 * [`systemd::systemctl::daemon_reload`](#systemdsystemctldaemon_reload): Reload the systemctl daemon
-* [`systemd::timesyncd`](#systemdtimesyncd): **NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**  This class provides an abstract way to t
 * [`systemd::tmpfiles`](#systemdtmpfiles): Update the systemd temp files
 
 #### Private Classes
 
+* `systemd::journald`: This class manages and configures journald.  https://www.freedesktop.org/software/systemd/man/journald.conf.html
 * `systemd::logind`: This class manages systemd's login manager configuration.  https://www.freedesktop.org/software/systemd/man/logind.conf.html
+* `systemd::networkd`: This class provides an abstract way to trigger systemd-networkd
+* `systemd::resolved`: This class provides an abstract way to trigger resolved. Each parameters correspond to resolved.conf(5): https://www.freedesktop.org/software
+* `systemd::system`: This class provides a solution to enable accounting
+* `systemd::timesyncd`: This class provides an abstract way to trigger systemd-timesyncd
 
 ### Defined types
 
@@ -229,189 +229,9 @@ Data type: `Boolean`
 
 
 
-### `systemd::journald`
-
-**NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**
-
-This class manages and configures journald.
-
-https://www.freedesktop.org/software/systemd/man/journald.conf.html
-
-### `systemd::networkd`
-
-**NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**
-
-This class provides an abstract way to trigger systemd-networkd
-
-#### Parameters
-
-The following parameters are available in the `systemd::networkd` class.
-
-##### `ensure`
-
-Data type: `Enum['stopped','running']`
-
-The state that the ``networkd`` service should be in
-
-Default value: `$systemd::networkd_ensure`
-
-### `systemd::resolved`
-
-**NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**
-
-This class provides an abstract way to trigger resolved.
-Each parameters correspond to resolved.conf(5):
-https://www.freedesktop.org/software/systemd/man/resolved.conf.html
-
-#### Parameters
-
-The following parameters are available in the `systemd::resolved` class.
-
-##### `ensure`
-
-Data type: `Enum['stopped','running']`
-
-The state that the ``resolved`` service should be in
-
-Default value: `$systemd::resolved_ensure`
-
-##### `dns`
-
-Data type: `Optional[Variant[Array[String],String]]`
-
-A space-separated list of IPv4 and IPv6 addresses to use as system DNS servers.
-DNS requests are sent to one of the listed DNS servers in parallel to suitable
-per-link DNS servers acquired from systemd-networkd.service(8) or set at runtime
-by external applications. requires puppetlabs-inifile
-
-Default value: `$systemd::dns`
-
-##### `fallback_dns`
-
-Data type: `Optional[Variant[Array[String],String]]`
-
-A space-separated list of IPv4 and IPv6 addresses to use as the fallback DNS
-servers. Any per-link DNS servers obtained from systemd-networkd take
-precedence over this setting. requires puppetlabs-inifile
-
-Default value: `$systemd::fallback_dns`
-
-##### `domains`
-
-Data type: `Optional[Variant[Array[String],String]]`
-
-A space-separated list of domains host names or IP addresses to be used
-systemd-resolved take precedence over this setting.
-
-Default value: `$systemd::domains`
-
-##### `llmnr`
-
-Data type: `Optional[Variant[Boolean,Enum['resolve']]]`
-
-Takes a boolean argument or "resolve".
-
-Default value: `$systemd::llmnr`
-
-##### `multicast_dns`
-
-Data type: `Optional[Variant[Boolean,Enum['resolve']]]`
-
-Takes a boolean argument or "resolve".
-
-Default value: `$systemd::multicast_dns`
-
-##### `dnssec`
-
-Data type: `Optional[Variant[Boolean,Enum['allow-downgrade']]]`
-
-Takes a boolean argument or "allow-downgrade".
-
-Default value: `$systemd::dnssec`
-
-##### `dnsovertls`
-
-Data type: `Optional[Variant[Boolean,Enum['opportunistic', 'no']]]`
-
-Takes a boolean argument or "opportunistic" or "no"
-
-Default value: `$systemd::dnsovertls`
-
-##### `cache`
-
-Data type: `Optional[Variant[Boolean,Enum['no-negative']]]`
-
-Takes a boolean argument or "no-negative".
-
-Default value: `$systemd::cache`
-
-##### `dns_stub_listener`
-
-Data type: `Optional[Variant[Boolean,Enum['udp', 'tcp']]]`
-
-Takes a boolean argument or one of "udp" and "tcp".
-
-Default value: `$systemd::dns_stub_listener`
-
-##### `use_stub_resolver`
-
-Data type: `Boolean`
-
-Takes a boolean argument. When "false" (default) it uses /var/run/systemd/resolve/resolv.conf
-as /etc/resolv.conf. When "true", it uses /var/run/systemd/resolve/stub-resolv.conf
-
-Default value: `$systemd::use_stub_resolver`
-
-### `systemd::system`
-
-**NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**
-
-This class provides a solution to enable accounting
-
 ### `systemd::systemctl::daemon_reload`
 
 Reload the systemctl daemon
-
-### `systemd::timesyncd`
-
-**NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**
-
-This class provides an abstract way to trigger systemd-timesyncd
-
-#### Parameters
-
-The following parameters are available in the `systemd::timesyncd` class.
-
-##### `ensure`
-
-Data type: `Enum['stopped','running']`
-
-The state that the ``networkd`` service should be in
-
-Default value: `$systemd::timesyncd_ensure`
-
-##### `$ntp_server`
-
-A space-separated list of NTP servers, will be combined with interface specific
-addresses from systemd-networkd. requires puppetlabs-inifile
-
-##### `fallback_ntp_server`
-
-Data type: `Optional[Variant[Array,String]]`
-
-A space-separated list of NTP server host names or IP addresses to be used
-as the fallback NTP servers. Any per-interface NTP servers obtained from
-systemd-networkd take precedence over this setting. requires puppetlabs-inifile
-
-Default value: `$systemd::fallback_ntp_server`
-
-##### `ntp_server`
-
-Data type: `Optional[Variant[Array,String]]`
-
-
-
-Default value: `$systemd::ntp_server`
 
 ### `systemd::tmpfiles`
 
