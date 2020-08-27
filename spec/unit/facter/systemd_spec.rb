@@ -7,7 +7,7 @@ describe Facter.fact(:systemd) do
   describe 'systemd' do
     context 'returns true when systemd present' do
       before(:each) do
-        Facter.fact(:kernel).stubs(:value).returns(:linux)
+        allow(Facter.fact(:kernel)).to receive(:value).and_return(:linux)
         Facter.add(:service_provider) { setcode { 'systemd' } }
       end
 
@@ -17,7 +17,7 @@ describe Facter.fact(:systemd) do
 
     context 'returns false when systemd not present' do
       before(:each) do
-        Facter.fact(:kernel).stubs(:value).returns(:linux)
+        allow(Facter.fact(:kernel)).to receive(:value).and_return(:linux)
         Facter.add(:service_provider) { setcode { 'redhat' } }
       end
 
@@ -27,7 +27,7 @@ describe Facter.fact(:systemd) do
 
     context 'returns nil when kernel is not linux' do
       before(:each) do
-        Facter.fact(:kernel).stubs(:value).returns(:windows)
+        allow(Facter.fact(:kernel)).to receive(:value).and_return(:windows)
       end
 
       it { expect(Facter.value(:systemd)).to be_nil }
