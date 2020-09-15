@@ -1,4 +1,5 @@
 # Matches Systemd Login Manager Struct
+# lint:ignore:140chars
 type Systemd::LogindSettings = Struct[
   {
     Optional['HandleHibernateKey']           => Variant[Enum['ignore','poweroff','reboot','halt','kexec','suspend','hibernate','hybrid-sleep','suspend-then-hibernate','lock'],Systemd::LogindSettings::Ensure],
@@ -27,3 +28,4 @@ type Systemd::LogindSettings = Struct[
     Optional['UserTasksMax']                 => Variant[Integer,Pattern['^(infinity|(\d+(K|M|G|T|P|E|%)?))$'],Systemd::LogindSettings::Ensure]
   }
 ]
+# lint:endignore

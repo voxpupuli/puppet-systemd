@@ -11,8 +11,7 @@ define systemd::network (
   String                         $mode            = '0444',
   Boolean                        $show_diff       = true,
   Boolean                        $restart_service = true,
-){
-
+) {
   include systemd
 
   if $restart_service and $systemd::manage_networkd {

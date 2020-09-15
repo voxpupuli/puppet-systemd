@@ -23,7 +23,7 @@
 #
 #  * Mutually exclusive with ``$limits``
 #
-define systemd::tmpfile(
+define systemd::tmpfile (
   Enum['present', 'absent', 'file'] $ensure   = 'file',
   Systemd::Dropin                   $filename = $name,
   Stdlib::Absolutepath              $path     = '/etc/tmpfiles.d',

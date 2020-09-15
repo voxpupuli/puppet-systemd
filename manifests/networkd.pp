@@ -7,8 +7,7 @@
 #
 class systemd::networkd (
   Enum['stopped','running'] $ensure = $systemd::networkd_ensure,
-){
-
+) {
   assert_private()
 
   $_enable_networkd = $ensure ? {
@@ -17,7 +16,7 @@ class systemd::networkd (
     default   => $ensure,
   }
 
-  service{ 'systemd-networkd':
+  service { 'systemd-networkd':
     ensure => $ensure,
     enable => $_enable_networkd,
   }

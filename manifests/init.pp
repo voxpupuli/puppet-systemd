@@ -111,8 +111,7 @@ class systemd (
   Boolean                                                $manage_logind,
   Systemd::LogindSettings                                $logind_settings,
   Hash                                                   $dropin_files = {},
-){
-
+) {
   contain systemd::systemctl::daemon_reload
 
   create_resources('systemd::service_limits', $service_limits)

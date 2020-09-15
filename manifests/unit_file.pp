@@ -46,7 +46,7 @@
 # @param active
 #   If set, will manage the state of the unit.
 #
-define systemd::unit_file(
+define systemd::unit_file (
   Enum['present', 'absent', 'file']        $ensure    = 'present',
   Stdlib::Absolutepath                     $path      = '/etc/systemd/system',
   Optional[String]                         $content   = undef,

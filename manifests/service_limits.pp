@@ -29,7 +29,7 @@
 # @param restart_service
 #   Restart the managed service after setting the limits
 #
-define systemd::service_limits(
+define systemd::service_limits (
   Enum['present', 'absent', 'file'] $ensure                  = 'present',
   Stdlib::Absolutepath              $path                    = '/etc/systemd/system',
   Optional[Boolean]                 $selinux_ignore_defaults = false,
@@ -37,7 +37,6 @@ define systemd::service_limits(
   Optional[String]                  $source                  = undef,
   Boolean                           $restart_service         = true
 ) {
-
   include systemd
 
   if $name !~ Pattern['^.+\.(service|socket|mount|swap)$'] {
