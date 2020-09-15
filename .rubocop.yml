@@ -1,4 +1,5 @@
 ---
+# yamllint disable rule:line-length rule:indentation
 require:
 - rubocop-rspec
 - rubocop-i18n

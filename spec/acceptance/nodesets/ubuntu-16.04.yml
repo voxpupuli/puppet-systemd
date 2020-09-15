@@ -1,10 +1,11 @@
+---
 HOSTS:
   ubuntu-1604-x64:
     default_apply_opts:
       order: random
       strict_variables:
     platform: ubuntu-16.04-amd64
-    hypervisor : docker
+    hypervisor: docker
     image: ubuntu:16.04
     docker_preserve_image: true
     docker_cmd: '["/sbin/init"]'
