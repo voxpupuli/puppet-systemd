@@ -1,4 +1,5 @@
 ---
+# yamllint disable rule:line-length rule:truthy
 stages:
   - syntax
   - unit
@@ -41,4 +42,3 @@ parallel_spec-Ruby 2.4.5-Puppet ~> 5:
     - bundle exec rake parallel_spec
   variables:
     PUPPET_GEM_VERSION: '~> 5'
-
