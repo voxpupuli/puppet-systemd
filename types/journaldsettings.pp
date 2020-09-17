@@ -1,4 +1,5 @@
 # Matches Systemd journald config Struct
+# lint:ignore:140chars
 type Systemd::JournaldSettings = Struct[
   {
     Optional['Storage']              => Variant[Enum['volatile','persistent','auto','none'],Systemd::JournaldSettings::Ensure],
@@ -33,3 +34,4 @@ type Systemd::JournaldSettings = Struct[
     Optional['LineMax']              => Variant[Pattern[/^[0-9]+(K|M|G|T)?$/],Systemd::JournaldSettings::Ensure],
   }
 ]
+# lint:endignore

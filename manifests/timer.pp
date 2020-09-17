@@ -79,7 +79,7 @@ define systemd::timer (
   }
 
   if $service_content or $service_source {
-    systemd::unit_file{$_service_unit:
+    systemd::unit_file { $_service_unit:
       ensure    => $ensure,
       content   => $service_content,
       source    => $service_source,
@@ -91,7 +91,7 @@ define systemd::timer (
     }
   }
 
-  systemd::unit_file{$name:
+  systemd::unit_file { $name:
     ensure    => $ensure,
     content   => $timer_content,
     source    => $timer_source,

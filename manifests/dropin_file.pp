@@ -47,7 +47,7 @@
 #   Useful if the daemon needs to be reloaded before a service is refreshed.
 #   May cause multiple daemon reloads.
 #
-define systemd::dropin_file(
+define systemd::dropin_file (
   Systemd::Unit                               $unit,
   Systemd::Dropin                             $filename                = $name,
   Enum['present', 'absent', 'file']           $ensure                  = 'present',
@@ -75,12 +75,12 @@ define systemd::dropin_file(
 
   if $ensure != 'absent' {
     ensure_resource('file', "${path}/${unit}.d", {
-      ensure                  => directory,
-      owner                   => 'root',
-      group                   => 'root',
-      recurse                 => $::systemd::purge_dropin_dirs,
-      purge                   => $::systemd::purge_dropin_dirs,
-      selinux_ignore_defaults => $selinux_ignore_defaults,
+        ensure                  => directory,
+        owner                   => 'root',
+        group                   => 'root',
+        recurse                 => $systemd::purge_dropin_dirs,
+        purge                   => $systemd::purge_dropin_dirs,
+        selinux_ignore_defaults => $selinux_ignore_defaults,
     })
   }
 
