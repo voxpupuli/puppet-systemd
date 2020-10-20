@@ -27,4 +27,10 @@ class systemd::logind {
       }
     }
   }
+
+  $systemd::loginctl_users.each |$loginctl_name, $loginctl_settings| {
+    loginctl_user { $loginctl_name:
+      * => $loginctl_settings,
+    }
+  }
 }
