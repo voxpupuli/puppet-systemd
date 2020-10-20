@@ -21,6 +21,10 @@ class systemd::logind {
       Ini_setting[$option] {
         * => $value,
       }
+    } elsif $value =~ Array {
+      Ini_setting[$option] {
+        value   => join($value, ' '),
+      }
     } else {
       Ini_setting[$option] {
         value   => $value,

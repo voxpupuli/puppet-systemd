@@ -246,6 +246,7 @@ describe 'systemd' do
               logind_settings: {
                 'HandleSuspendKey'  => 'ignore',
                 'KillUserProcesses' => 'no',
+                'KillExcludeUsers'  => ['a', 'b'],
                 'RemoveIPC'         => {
                   'ensure' => 'absent',
                 },
@@ -260,7 +261,7 @@ describe 'systemd' do
               ensure: 'running',
             )
           }
-          it { is_expected.to have_ini_setting_resource_count(4) }
+          it { is_expected.to have_ini_setting_resource_count(5) }
           it {
             is_expected.to contain_ini_setting('HandleSuspendKey').with(
               path: '/etc/systemd/logind.conf',
@@ -275,6 +276,14 @@ describe 'systemd' do
               section: 'Login',
               notify: 'Service[systemd-logind]',
               value: 'no',
+            )
+          }
+          it {
+            is_expected.to contain_ini_setting('KillExcludeUsers').with(
+              path: '/etc/systemd/logind.conf',
+              section: 'Login',
+              notify: 'Service[systemd-logind]',
+              value: 'a b',
             )
           }
           it {
