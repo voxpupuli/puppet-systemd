@@ -296,7 +296,7 @@ describe 'systemd' do
               value: '10000',
             )
           }
-          it { is_expected.to have__loginctl_user('foo').with(linger: 'enabled') }
+          it { is_expected.to contain_loginctl_user('foo').with(linger: 'enabled') }
         end
         context 'when passing dropin_files' do
           let(:params) do
