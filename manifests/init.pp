@@ -81,6 +81,10 @@
 # @param logind_settings
 #   Config Hash that is used to configure settings in logind.conf
 #
+# @param loginctl_users
+#   Config Hash that is used to generate instances of our type
+#   `loginctl_user`.
+#
 # @param dropin_files
 #   Configure dropin files via hiera with factory pattern
 class systemd (
@@ -110,6 +114,7 @@ class systemd (
   Systemd::JournaldSettings                              $journald_settings,
   Boolean                                                $manage_logind,
   Systemd::LogindSettings                                $logind_settings,
+  Hash                                                   $loginctl_users = {},
   Hash                                                   $dropin_files = {},
 ) {
   contain systemd::systemctl::daemon_reload

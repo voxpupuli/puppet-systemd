@@ -252,6 +252,9 @@ describe 'systemd' do
                 },
                 'UserTasksMax' => '10000',
               },
+              loginctl_users: {
+                'foo' => { 'linger' => 'enabled' },
+              },
             }
           end
 
@@ -302,6 +305,7 @@ describe 'systemd' do
               value: '10000',
             )
           }
+          it { is_expected.to contain_loginctl_user('foo').with(linger: 'enabled') }
         end
         context 'when passing dropin_files' do
           let(:params) do

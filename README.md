@@ -342,3 +342,5 @@ loginctl_user { 'foo':
   linger => enabled,
 }
 ```
+
+or as a hash via the `systemd::loginctl_users` parameter.
