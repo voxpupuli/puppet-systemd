@@ -23,5 +23,12 @@ systemd::accounting: {}
 systemd::purge_dropin_dirs: true
 systemd::manage_journald: true
 systemd::journald_settings: {}
+systemd::manage_udevd: false
+systemd::udev_log: ~
+systemd::udev_children_max: ~
+systemd::udev_exec_delay: ~
+systemd::udev_event_timeout: ~
+systemd::udev_timeout_signal: ~
+systemd::udev_resolve_names: ~
 systemd::manage_logind: false
 systemd::logind_settings: {}
