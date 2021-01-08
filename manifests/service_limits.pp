@@ -29,13 +29,20 @@
 # @param restart_service
 #   Restart the managed service after setting the limits
 #
+# @param daemon_reload
+#   Set to `lazy` to defer execution of a systemctl daemon reload.
+#   Minimizes the number of times the daemon is reloaded.
+#   Set to `eager` to immediately reload after the dropin file is updated.
+#   May cause multiple daemon reloads.
+#
 define systemd::service_limits (
   Enum['present', 'absent', 'file'] $ensure                  = 'present',
   Stdlib::Absolutepath              $path                    = '/etc/systemd/system',
   Optional[Boolean]                 $selinux_ignore_defaults = false,
   Optional[Systemd::ServiceLimits]  $limits                  = undef,
   Optional[String]                  $source                  = undef,
-  Boolean                           $restart_service         = true
+  Boolean                           $restart_service         = true,
+  Enum['lazy', 'eager']             $daemon_reload           = 'lazy',
 ) {
   include systemd
 
@@ -67,6 +74,7 @@ define systemd::service_limits (
     selinux_ignore_defaults => $selinux_ignore_defaults,
     content                 => $_content,
     source                  => $source,
+    daemon_reload           => $daemon_reload,
   }
 
   if $restart_service {
