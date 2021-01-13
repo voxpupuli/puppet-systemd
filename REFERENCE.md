@@ -203,6 +203,15 @@ Data type: `Systemd::LogindSettings`
 
 Config Hash that is used to configure settings in logind.conf
 
+##### `loginctl_users`
+
+Data type: `Hash`
+
+Config Hash that is used to generate instances of our type
+`loginctl_user`.
+
+Default value: `{}`
+
 ##### `dropin_files`
 
 Data type: `Hash`
@@ -912,7 +921,7 @@ Alias of `Struct[{
 
 The Systemd::JournaldSettings::Ensure data type.
 
-Alias of `Struct[{'ensure' => Enum['present','absent']}]`
+Alias of `Struct[{ 'ensure' => Enum['present','absent'] }]`
 
 ### `Systemd::LogindSettings`
 
@@ -949,7 +958,7 @@ Alias of `Struct[{
 
 The Systemd::LogindSettings::Ensure data type.
 
-Alias of `Struct[{'ensure' => Enum['present','absent']}]`
+Alias of `Struct[{ 'ensure' => Enum['present','absent'] }]`
 
 ### `Systemd::ServiceLimits`
 
