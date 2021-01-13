@@ -12,7 +12,6 @@ class systemd::system {
       section => 'Manager',
       setting => $option,
       value   => $value,
-      notify  => Class['systemd::systemctl::daemon_reload'],
     }
   }
 }
