@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [2.11.0](https://github.com/camptocamp/puppet-systemd/tree/2.11.0) (2021-01-18)
+
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.10.0...2.11.0)
+
+### Added
+
+- Permit using arrays to make extending lists easier [\#164](https://github.com/camptocamp/puppet-systemd/pull/164) ([jcpunk](https://github.com/jcpunk))
+- Add parameter for ENCs to make loginctl\_users easily [\#163](https://github.com/camptocamp/puppet-systemd/pull/163) ([jcpunk](https://github.com/jcpunk))
+- Add ability to specify supported option 'infinity' for LimitNPROC [\#152](https://github.com/camptocamp/puppet-systemd/pull/152) ([hdeheer](https://github.com/hdeheer))
+
 ## [2.10.0](https://github.com/camptocamp/puppet-systemd/tree/2.10.0) (2020-08-21)
 
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.9.0...2.10.0)
