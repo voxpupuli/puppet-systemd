@@ -15,3 +15,5 @@ Gemfile:
       - gem: 'github_changelog_generator'
 Rakefile:
   changelog_version_tag_pattern: '%s'
+spec/spec_helper.rb:
+  mock_with: :rspec
