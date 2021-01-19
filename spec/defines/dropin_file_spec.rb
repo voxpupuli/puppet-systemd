@@ -122,7 +122,7 @@ describe 'systemd::dropin_file' do
           it {
             is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").with(
               ensure: 'file',
-              content: 'TEST_CONTENT',
+              content: sensitive('TEST_CONTENT'),
             )
           }
         end
