@@ -44,7 +44,7 @@ define systemd::service_limits (
   }
 
   if $limits and !empty($limits) {
-    $_content = template("${module_name}/limits.erb")
+    $_content = epp("${module_name}/limits.epp")
   }
   else {
     $_content = undef
