@@ -46,22 +46,22 @@
 # @param active
 #   If set, will manage the state of the unit.
 #
-# @param use_reload
-#   If set to true, will reload the service instead of restart.
+# @param restart
+#   Specify a restart command manually. If left unspecified, the service will be stopped and then started.
 #
 define systemd::unit_file (
-  Enum['present', 'absent', 'file']        $ensure     = 'present',
-  Stdlib::Absolutepath                     $path       = '/etc/systemd/system',
-  Optional[String]                         $content    = undef,
-  Optional[String]                         $source     = undef,
-  Optional[Stdlib::Absolutepath]           $target     = undef,
-  String                                   $owner      = 'root',
-  String                                   $group      = 'root',
-  String                                   $mode       = '0444',
-  Boolean                                  $show_diff  = true,
-  Optional[Variant[Boolean, Enum['mask']]] $enable     = undef,
-  Optional[Boolean]                        $active     = undef,
-  Optional[Boolean]                        $use_reload = undef,
+  Enum['present', 'absent', 'file']        $ensure    = 'present',
+  Stdlib::Absolutepath                     $path      = '/etc/systemd/system',
+  Optional[String]                         $content   = undef,
+  Optional[String]                         $source    = undef,
+  Optional[Stdlib::Absolutepath]           $target    = undef,
+  String                                   $owner     = 'root',
+  String                                   $group     = 'root',
+  String                                   $mode      = '0444',
+  Boolean                                  $show_diff = true,
+  Optional[Variant[Boolean, Enum['mask']]] $enable    = undef,
+  Optional[Boolean]                        $active    = undef,
+  Optional[String]                         $restart   = undef,
 ) {
   include systemd
 
@@ -89,16 +89,11 @@ define systemd::unit_file (
   }
 
   if $enable != undef or $active != undef {
-    if $use_reload != undef and $use_reload {
-      $restart_command = "systemctl reload ${name}"
-    } else {
-      $restart_command = undef
-    }
 
     service { $name:
       ensure   => $active,
       enable   => $enable,
-      restart  => $restart_command,
+      restart  => $restart,
       provider => 'systemd',
     }
 
