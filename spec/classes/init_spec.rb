@@ -99,8 +99,31 @@ describe 'systemd' do
           it { is_expected.to contain_ini_setting('llmnr') }
           it { is_expected.to contain_ini_setting('dnssec') }
           it { is_expected.to contain_ini_setting('dnsovertls') }
-          it { is_expected.to contain_ini_setting('cache') }
+          it {
+            is_expected.to contain_ini_setting('cache').with(
+              path: '/etc/systemd/resolved.conf',
+              value: 'yes',
+            )
+          }
           it { is_expected.to contain_ini_setting('dns_stub_listener') }
+        end
+
+        context 'when enabling resolved with no-negative cache variant' do
+          let(:params) do
+            {
+              manage_resolved: true,
+              cache: 'no-negative',
+            }
+          end
+
+          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it {
+            is_expected.to contain_ini_setting('cache').with(
+              path: '/etc/systemd/resolved.conf',
+              value: 'no-negative',
+            )
+          }
         end
 
         context 'when enabling timesyncd' do
