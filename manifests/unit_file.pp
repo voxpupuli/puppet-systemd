@@ -47,7 +47,7 @@
 #   If set, will manage the state of the unit.
 #
 # @param restart
-#   Specify a restart command manually. If left unspecified, the service will be stopped and then started.
+#   Specify a restart command manually. If left unspecified, a standard Puppet service restart happens.
 #
 define systemd::unit_file (
   Enum['present', 'absent', 'file']        $ensure    = 'present',
