@@ -40,7 +40,7 @@
 #   Takes a boolean argument or "opportunistic"
 #
 # @param cache
-#   Takes a boolean argument.
+#   Takes a boolean argument or "no-negative".
 #
 # @param dns_stub_listener
 #   Takes a boolean argument or one of "udp" and "tcp".
@@ -98,7 +98,7 @@ class systemd (
   Optional[Variant[Boolean,Enum['resolve']]]             $multicast_dns,
   Optional[Variant[Boolean,Enum['allow-downgrade']]]     $dnssec,
   Optional[Variant[Boolean,Enum['opportunistic', 'no']]] $dnsovertls,
-  Boolean                                                $cache,
+  Optional[Variant[Boolean,Enum['no-negative']]]         $cache,
   Optional[Variant[Boolean,Enum['udp','tcp']]]           $dns_stub_listener,
   Boolean                                                $use_stub_resolver,
   Boolean                                                $manage_networkd,
