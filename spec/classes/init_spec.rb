@@ -262,6 +262,102 @@ describe 'systemd' do
           it { is_expected.not_to contain_service('systemd-journald') }
         end
 
+        context 'when disabling udevd management' do
+          let(:params) do
+            {
+              manage_udevd: false,
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_service('systemd-udevd') }
+          it { is_expected.not_to contain_file('/etc/udev/udev.conf') }
+        end
+
+        context 'when working with udevd and no custom rules' do
+          let(:params) do
+            {
+              manage_udevd: true,
+              udev_log: 'daemon',
+              udev_children_max: 1,
+              udev_exec_delay: 2,
+              udev_event_timeout: 3,
+              udev_resolve_names: 'early',
+              udev_timeout_signal: 'SIGKILL',
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it {
+            is_expected.to contain_service('systemd-udevd')
+              .with(enable: true,
+                    ensure: 'running')
+          }
+          it {
+            is_expected.to contain_file('/etc/udev/udev.conf')
+              .with(ensure: 'file',
+                    owner: 'root',
+                    group: 'root',
+                    mode: '0444')
+              .with_content(%r{^udev_log=daemon$})
+              .with_content(%r{^children_max=1$})
+              .with_content(%r{^exec_delay=2$})
+              .with_content(%r{^event_timeout=3$})
+              .with_content(%r{^resolve_names=early$})
+              .with_content(%r{^timeout_signal=SIGKILL$})
+          }
+        end
+
+        context 'when working with udevd and a rule set' do
+          let(:params) do
+            {
+              manage_udevd: true,
+              udev_log: 'daemon',
+              udev_children_max: 1,
+              udev_exec_delay: 2,
+              udev_event_timeout: 3,
+              udev_resolve_names: 'early',
+              udev_timeout_signal: 'SIGKILL',
+              udev_rules: { 'example_raw.rules' => {
+                'rules' => [
+                  '# I am a comment',
+                  'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"',
+                  'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
+                ],
+              } },
+
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it {
+            is_expected.to contain_service('systemd-udevd')
+              .with(enable: true,
+                    ensure: 'running')
+          }
+          it {
+            is_expected.to contain_file('/etc/udev/udev.conf')
+              .with(ensure: 'file',
+                    owner: 'root',
+                    group: 'root',
+                    mode: '0444')
+              .with_content(%r{^udev_log=daemon$})
+              .with_content(%r{^children_max=1$})
+              .with_content(%r{^exec_delay=2$})
+              .with_content(%r{^event_timeout=3$})
+              .with_content(%r{^resolve_names=early$})
+              .with_content(%r{^timeout_signal=SIGKILL$})
+          }
+          it {
+            is_expected.to contain_systemd__udev__rule('example_raw.rules')
+              .with(rules: [
+                      '# I am a comment',
+                      'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"',
+                      'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
+                    ])
+          }
+        end
+
         context 'when enabling logind with options' do
           let(:params) do
             {

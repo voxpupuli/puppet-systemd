@@ -1,0 +1,31 @@
+<%- |
+  Optional[Variant[Integer,String]]        $udev_log,
+  Optional[Integer]                        $udev_children_max,
+  Optional[Integer]                        $udev_exec_delay,
+  Optional[Integer]                        $udev_event_timeout,
+  Optional[Enum['early', 'late', 'never']] $udev_resolve_names,
+  Optional[Variant[Integer,String]]        $udev_timeout_signal
+| -%>
+# This file managed by Puppet - DO NOT EDIT
+#
+# The initial syslog(3) priority: "err", "info", "debug" or its
+# numerical equivalent. For runtime debugging, the daemons internal
+# state can be changed with: "udevadm control --log-priority=<value>".
+<% if $udev_log { -%>
+udev_log=<%= $udev_log %>
+<% } -%>
+<% if $udev_children_max { -%>
+children_max=<%= $udev_children_max %>
+<% } -%>
+<% if $udev_exec_delay { -%>
+exec_delay=<%= $udev_exec_delay %>
+<% } -%>
+<% if $udev_event_timeout { -%>
+event_timeout=<%= $udev_event_timeout %>
+<% } -%>
+<% if $udev_resolve_names { -%>
+resolve_names=<%= $udev_resolve_names %>
+<% } -%>
+<% if $udev_timeout_signal { -%>
+timeout_signal=<%= $udev_timeout_signal %>
+<% } -%>

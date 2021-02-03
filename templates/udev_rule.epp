@@ -1,0 +1,5 @@
+<%- | Array $rules | -%>
+# This file managed by Puppet - DO NOT EDIT
+<% $rules.each | $rule | { -%>
+<%= $rule %>
+<% } -%>
