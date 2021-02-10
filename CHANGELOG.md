@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [2.12.0](https://github.com/camptocamp/puppet-systemd/tree/2.12.0) (2021-02-10)
+
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.11.0...2.12.0)
+
+### Added
+
+- Allow service reloading \#159 [\#175](https://github.com/camptocamp/puppet-systemd/pull/175) ([k0ka](https://github.com/k0ka))
+- Allow additional option for $cache parameter [\#169](https://github.com/camptocamp/puppet-systemd/pull/169) ([bryangwilliam](https://github.com/bryangwilliam))
+- Add management of udev objects [\#165](https://github.com/camptocamp/puppet-systemd/pull/165) ([jcpunk](https://github.com/jcpunk))
+
 ## [2.11.0](https://github.com/camptocamp/puppet-systemd/tree/2.11.0) (2021-01-19)
 
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.10.0...2.11.0)
