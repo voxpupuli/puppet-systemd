@@ -41,8 +41,8 @@
 #   Takes a boolean argument or one of "udp" and "tcp".
 #
 # @param use_stub_resolver
-#   Takes a boolean argument. When "false" (default) it uses /var/run/systemd/resolve/resolv.conf
-#   as /etc/resolv.conf. When "true", it uses /var/run/systemd/resolve/stub-resolv.conf
+#   Takes a boolean argument. When "false" (default) it uses /run/systemd/resolve/resolv.conf
+#   as /etc/resolv.conf. When "true", it uses /run/systemd/resolve/stub-resolv.conf
 #
 class systemd::resolved (
   Enum['stopped','running'] $ensure                                  = $systemd::resolved_ensure,
