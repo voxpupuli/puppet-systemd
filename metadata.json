@@ -1,6 +1,6 @@
 {
   "name": "camptocamp-systemd",
-  "version": "2.8.0",
+  "version": "2.12.0",
   "author": "camptocamp",
   "summary": "Puppet Systemd module",
   "license": "Apache-2.0",
@@ -43,7 +43,8 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8"
       ]
     },
     {
@@ -55,11 +56,26 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "7",
+        "8"
       ]
     },
     {
       "operatingsystem": "Archlinux"
+    },
+    {
+      "operatingsystem": "Fedora",
+      "operatingsystemrelease": [
+        "30",
+        "31"
+      ]
     }
   ],
   "requirements": [
@@ -68,7 +84,7 @@
       "version_requirement": ">= 4.10.10 < 7.0.0"
     }
   ],
-  "pdk-version": "1.15.0",
-  "template-url": "pdk-default#1.15.0",
-  "template-ref": "tags/1.15.0-0-g0bc522e"
+  "pdk-version": "1.18.0",
+  "template-url": "pdk-default#1.18.0",
+  "template-ref": "tags/1.18.0-0-g095317c"
 }

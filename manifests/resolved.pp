@@ -1,4 +1,4 @@
-# **NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**
+# @api private
 #
 # This class provides an abstract way to trigger resolved.
 # Each parameters correspond to resolved.conf(5):
@@ -41,8 +41,8 @@
 #   Takes a boolean argument or one of "udp" and "tcp".
 #
 # @param use_stub_resolver
-#   Takes a boolean argument. When "false" (default) it uses /var/run/systemd/resolve/resolv.conf
-#   as /etc/resolv.conf. When "true", it uses /var/run/systemd/resolve/stub-resolv.conf
+#   Takes a boolean argument. When "false" (default) it uses /run/systemd/resolve/resolv.conf
+#   as /etc/resolv.conf. When "true", it uses /run/systemd/resolve/stub-resolv.conf
 #
 class systemd::resolved (
   Enum['stopped','running'] $ensure                                  = $systemd::resolved_ensure,
@@ -56,8 +56,7 @@ class systemd::resolved (
   Optional[Variant[Boolean,Enum['no-negative']]] $cache              = $systemd::cache,
   Optional[Variant[Boolean,Enum['udp', 'tcp']]] $dns_stub_listener   = $systemd::dns_stub_listener,
   Boolean $use_stub_resolver                                         = $systemd::use_stub_resolver,
-){
-
+) {
   assert_private()
 
   $_enable_resolved = $ensure ? {
@@ -87,7 +86,7 @@ class systemd::resolved (
     } else {
       $_dns = join($dns, ' ')
     }
-    ini_setting{ 'dns':
+    ini_setting { 'dns':
       ensure  => 'present',
       value   => $_dns,
       setting => 'DNS',
@@ -103,7 +102,7 @@ class systemd::resolved (
     } else {
       $_fallback_dns = join($fallback_dns, ' ')
     }
-    ini_setting{ 'fallback_dns':
+    ini_setting { 'fallback_dns':
       ensure  => 'present',
       value   => $_fallback_dns,
       setting => 'FallbackDNS',
@@ -119,7 +118,7 @@ class systemd::resolved (
     } else {
       $_domains = join($domains, ' ')
     }
-    ini_setting{ 'domains':
+    ini_setting { 'domains':
       ensure  => 'present',
       value   => $_domains,
       setting => 'Domains',
@@ -136,7 +135,7 @@ class systemd::resolved (
   }
 
   if $_llmnr {
-    ini_setting{ 'llmnr':
+    ini_setting { 'llmnr':
       ensure  => 'present',
       value   => $_llmnr,
       setting => 'LLMNR',
@@ -153,7 +152,7 @@ class systemd::resolved (
   }
 
   if $_multicast_dns {
-    ini_setting{ 'multicast_dns':
+    ini_setting { 'multicast_dns':
       ensure  => 'present',
       value   => $_multicast_dns,
       setting => 'MulticastDNS',
@@ -170,7 +169,7 @@ class systemd::resolved (
   }
 
   if $_dnssec {
-    ini_setting{ 'dnssec':
+    ini_setting { 'dnssec':
       ensure  => 'present',
       value   => $_dnssec,
       setting => 'DNSSEC',
@@ -187,7 +186,7 @@ class systemd::resolved (
   }
 
   if $_dnsovertls {
-    ini_setting{ 'dnsovertls':
+    ini_setting { 'dnsovertls':
       ensure  => 'present',
       value   => $_dnsovertls,
       setting => 'DNSOverTLS',
@@ -219,7 +218,7 @@ class systemd::resolved (
   }
 
   if $_dns_stub_listener {
-    ini_setting{ 'dns_stub_listener':
+    ini_setting { 'dns_stub_listener':
       ensure  => 'present',
       value   => $_dns_stub_listener,
       setting => 'DNSStubListener',
@@ -228,5 +227,4 @@ class systemd::resolved (
       notify  => Service['systemd-resolved'],
     }
   }
-
 }

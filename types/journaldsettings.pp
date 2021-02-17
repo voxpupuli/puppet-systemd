@@ -1,5 +1,6 @@
 # Matches Systemd journald config Struct
 type Systemd::JournaldSettings = Struct[
+  # lint:ignore:140chars
   {
     Optional['Storage']              => Variant[Enum['volatile','persistent','auto','none'],Systemd::JournaldSettings::Ensure],
     Optional['Compress']             => Variant[Enum['yes','no'], Pattern[/^[0-9]+(K|M|G)?$/],Systemd::JournaldSettings::Ensure],
@@ -32,4 +33,5 @@ type Systemd::JournaldSettings = Struct[
     Optional['TTYPath']              => Variant[Stdlib::Absolutepath,Systemd::JournaldSettings::Ensure],
     Optional['LineMax']              => Variant[Pattern[/^[0-9]+(K|M|G|T)?$/],Systemd::JournaldSettings::Ensure],
   }
+  # lint:endignore
 ]

@@ -99,8 +99,31 @@ describe 'systemd' do
           it { is_expected.to contain_ini_setting('llmnr') }
           it { is_expected.to contain_ini_setting('dnssec') }
           it { is_expected.to contain_ini_setting('dnsovertls') }
-          it { is_expected.to contain_ini_setting('cache') }
+          it {
+            is_expected.to contain_ini_setting('cache').with(
+              path: '/etc/systemd/resolved.conf',
+              value: 'yes',
+            )
+          }
           it { is_expected.to contain_ini_setting('dns_stub_listener') }
+        end
+
+        context 'when enabling resolved with no-negative cache variant' do
+          let(:params) do
+            {
+              manage_resolved: true,
+              cache: 'no-negative',
+            }
+          end
+
+          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it {
+            is_expected.to contain_ini_setting('cache').with(
+              path: '/etc/systemd/resolved.conf',
+              value: 'no-negative',
+            )
+          }
         end
 
         context 'when enabling timesyncd' do
@@ -239,36 +262,99 @@ describe 'systemd' do
           it { is_expected.not_to contain_service('systemd-journald') }
         end
 
-        context 'when enabling journald log persistence' do
+        context 'when disabling udevd management' do
           let(:params) do
             {
-              journald_persist_log: true,
+              manage_udevd: false,
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_service('systemd-udevd') }
+          it { is_expected.not_to contain_file('/etc/udev/udev.conf') }
+        end
+
+        context 'when working with udevd and no custom rules' do
+          let(:params) do
+            {
+              manage_udevd: true,
+              udev_log: 'daemon',
+              udev_children_max: 1,
+              udev_exec_delay: 2,
+              udev_event_timeout: 3,
+              udev_resolve_names: 'early',
+              udev_timeout_signal: 'SIGKILL',
             }
           end
 
           it { is_expected.to compile.with_all_deps }
           it {
-            is_expected.to contain_file('/var/log/journal').with(
-              ensure: 'directory',
-              owner: 'root',
-              group: 'systemd-journal',
-              mode: '2755',
-            )
+            is_expected.to contain_service('systemd-udevd')
+              .with(enable: true,
+                    ensure: 'running')
+          }
+          it {
+            is_expected.to contain_file('/etc/udev/udev.conf')
+              .with(ensure: 'file',
+                    owner: 'root',
+                    group: 'root',
+                    mode: '0444')
+              .with_content(%r{^udev_log=daemon$})
+              .with_content(%r{^children_max=1$})
+              .with_content(%r{^exec_delay=2$})
+              .with_content(%r{^event_timeout=3$})
+              .with_content(%r{^resolve_names=early$})
+              .with_content(%r{^timeout_signal=SIGKILL$})
           }
         end
 
-        context 'when disabling journald log persistence' do
+        context 'when working with udevd and a rule set' do
           let(:params) do
             {
-              journald_persist_log: false,
+              manage_udevd: true,
+              udev_log: 'daemon',
+              udev_children_max: 1,
+              udev_exec_delay: 2,
+              udev_event_timeout: 3,
+              udev_resolve_names: 'early',
+              udev_timeout_signal: 'SIGKILL',
+              udev_rules: { 'example_raw.rules' => {
+                'rules' => [
+                  '# I am a comment',
+                  'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"',
+                  'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
+                ],
+              } },
+
             }
           end
 
           it { is_expected.to compile.with_all_deps }
           it {
-            is_expected.to contain_file('/var/log/journal').with(
-              ensure: 'absent',
-            )
+            is_expected.to contain_service('systemd-udevd')
+              .with(enable: true,
+                    ensure: 'running')
+          }
+          it {
+            is_expected.to contain_file('/etc/udev/udev.conf')
+              .with(ensure: 'file',
+                    owner: 'root',
+                    group: 'root',
+                    mode: '0444')
+              .with_content(%r{^udev_log=daemon$})
+              .with_content(%r{^children_max=1$})
+              .with_content(%r{^exec_delay=2$})
+              .with_content(%r{^event_timeout=3$})
+              .with_content(%r{^resolve_names=early$})
+              .with_content(%r{^timeout_signal=SIGKILL$})
+          }
+          it {
+            is_expected.to contain_systemd__udev__rule('example_raw.rules')
+              .with(rules: [
+                      '# I am a comment',
+                      'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"',
+                      'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
+                    ])
           }
         end
 
@@ -279,10 +365,14 @@ describe 'systemd' do
               logind_settings: {
                 'HandleSuspendKey'  => 'ignore',
                 'KillUserProcesses' => 'no',
+                'KillExcludeUsers'  => ['a', 'b'],
                 'RemoveIPC'         => {
                   'ensure' => 'absent',
                 },
                 'UserTasksMax' => '10000',
+              },
+              loginctl_users: {
+                'foo' => { 'linger' => 'enabled' },
               },
             }
           end
@@ -293,7 +383,7 @@ describe 'systemd' do
               ensure: 'running',
             )
           }
-          it { is_expected.to have_ini_setting_resource_count(4) }
+          it { is_expected.to have_ini_setting_resource_count(5) }
           it {
             is_expected.to contain_ini_setting('HandleSuspendKey').with(
               path: '/etc/systemd/logind.conf',
@@ -308,6 +398,14 @@ describe 'systemd' do
               section: 'Login',
               notify: 'Service[systemd-logind]',
               value: 'no',
+            )
+          }
+          it {
+            is_expected.to contain_ini_setting('KillExcludeUsers').with(
+              path: '/etc/systemd/logind.conf',
+              section: 'Login',
+              notify: 'Service[systemd-logind]',
+              value: 'a b',
             )
           }
           it {
@@ -326,6 +424,21 @@ describe 'systemd' do
               value: '10000',
             )
           }
+          it { is_expected.to contain_loginctl_user('foo').with(linger: 'enabled') }
+        end
+        context 'when passing dropin_files' do
+          let(:params) do
+            {
+              dropin_files: {
+                'my-foo.conf' => {
+                  'unit'    => 'foo.service',
+                  'content' => '[Service]\nReadWritePaths=/',
+                },
+              },
+            }
+          end
+
+          it { is_expected.to contain_systemd__dropin_file('my-foo.conf').with_content('[Service]\nReadWritePaths=/') }
         end
       end
     end

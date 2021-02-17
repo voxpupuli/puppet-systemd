@@ -1,4 +1,4 @@
-# **NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**
+# @api private
 #
 # This class provides an abstract way to trigger systemd-networkd
 #
@@ -7,8 +7,7 @@
 #
 class systemd::networkd (
   Enum['stopped','running'] $ensure = $systemd::networkd_ensure,
-){
-
+) {
   assert_private()
 
   $_enable_networkd = $ensure ? {
@@ -17,7 +16,7 @@ class systemd::networkd (
     default   => $ensure,
   }
 
-  service{ 'systemd-networkd':
+  service { 'systemd-networkd':
     ensure => $ensure,
     enable => $_enable_networkd,
   }

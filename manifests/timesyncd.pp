@@ -1,4 +1,4 @@
-# **NOTE: THIS IS A [PRIVATE](https://github.com/puppetlabs/puppetlabs-stdlib#assert_private) CLASS**
+# @api private
 #
 # This class provides an abstract way to trigger systemd-timesyncd
 #
@@ -17,8 +17,7 @@ class systemd::timesyncd (
   Enum['stopped','running'] $ensure                    = $systemd::timesyncd_ensure,
   Optional[Variant[Array,String]] $ntp_server          = $systemd::ntp_server,
   Optional[Variant[Array,String]] $fallback_ntp_server = $systemd::fallback_ntp_server,
-){
-
+) {
   assert_private()
 
   $_enable_timesyncd = $ensure ? {
@@ -27,7 +26,7 @@ class systemd::timesyncd (
     default   => $ensure,
   }
 
-  service{ 'systemd-timesyncd':
+  service { 'systemd-timesyncd':
     ensure => $ensure,
     enable => $_enable_timesyncd,
   }
@@ -38,7 +37,7 @@ class systemd::timesyncd (
     } else {
       $_ntp_server = join($ntp_server, ' ')
     }
-    ini_setting{'ntp_server':
+    ini_setting { 'ntp_server':
       ensure  => 'present',
       value   => $_ntp_server,
       setting => 'NTP',
@@ -54,7 +53,7 @@ class systemd::timesyncd (
     } else {
       $_fallback_ntp_server = join($fallback_ntp_server, ' ')
     }
-    ini_setting{'fallback_ntp_server':
+    ini_setting { 'fallback_ntp_server':
       ensure  => 'present',
       value   => $_fallback_ntp_server,
       setting => 'FallbackNTP',
