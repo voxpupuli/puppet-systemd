@@ -15,7 +15,7 @@ describe 'systemd::unit_file' do
             .with_ensure('file')
             .with_content(%r{#{params[:content]}})
             .with_mode('0444')
-            .that_notifies('Class[systemd::systemctl::daemon_reload]')
+            .that_notifies("Systemd::Systemctl::Daemon_reload[#{title}]")
         end
 
         context 'with a bad unit type' do
@@ -45,7 +45,7 @@ describe 'systemd::unit_file' do
               .with_enable(true)
               .with_provider('systemd')
               .that_subscribes_to("File[/etc/systemd/system/#{title}]")
-              .that_requires('Class[systemd::systemctl::daemon_reload]')
+              .that_requires("Systemd::Systemctl::Daemon_reload[#{title}]")
           end
         end
 
@@ -81,6 +81,29 @@ describe 'systemd::unit_file' do
                 .that_comes_before("File[/etc/systemd/system/#{title}]")
             end
           end
+        end
+
+        context 'used multiple times in different classes' do
+          let(:pre_condition) do
+            "class a {
+              systemd::unit_file { 'test1.service':
+                content => 'foobar',
+                active => true,
+                enable => true,
+              }
+            }
+            class b {
+              systemd::unit_file { 'test2.service':
+                content => 'barfoo',
+                active => true,
+                enable => true,
+              }
+            }
+            include a,b
+            Class['a'] -> Class['b']"
+          end
+
+          it { is_expected.to compile.with_all_deps }
         end
       end
     end

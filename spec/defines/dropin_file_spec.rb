@@ -45,7 +45,7 @@ describe 'systemd::dropin_file' do
         end
 
         context 'with daemon_reload => lazy (default)' do
-          it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").that_notifies('Class[systemd::systemctl::daemon_reload]') }
+          it { is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").that_notifies("Systemd::Systemctl::Daemon_reload[#{title}]") }
 
           it { is_expected.not_to create_exec("#{params[:unit]}-systemctl-daemon-reload") }
         end

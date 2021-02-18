@@ -97,7 +97,8 @@ define systemd::dropin_file (
   }
 
   if $daemon_reload == 'lazy' {
-    File["${path}/${unit}.d/${filename}"] ~> Class['systemd::systemctl::daemon_reload']
+    systemd::systemctl::daemon_reload { $title: }
+    File["${path}/${unit}.d/${filename}"] ~> Systemd::Systemctl::Daemon_reload[$title]
   } else {
     File["${path}/${unit}.d/${filename}"] ~> Exec["${unit}-systemctl-daemon-reload"]
 

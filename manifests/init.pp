@@ -150,8 +150,6 @@ class systemd (
   Hash                                                   $dropin_files = {},
   Hash                                                   $udev_rules = {},
 ) {
-  contain systemd::systemctl::daemon_reload
-
   create_resources('systemd::service_limits', $service_limits)
 
   if $manage_resolved and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-resolved.service'] {

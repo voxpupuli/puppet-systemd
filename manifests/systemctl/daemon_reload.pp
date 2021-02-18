@@ -1,9 +1,9 @@
 # Reload the systemctl daemon
 #
 # @api public
-class systemd::systemctl::daemon_reload {
-  exec { 'systemctl-daemon-reload':
-    command     => 'systemctl daemon-reload',
+define systemd::systemctl::daemon_reload {
+  exec { "systemctl-daemon-reload # ${title}":
+    command     => "systemctl daemon-reload # ${title}",
     refreshonly => true,
     path        => $facts['path'],
   }

@@ -70,12 +70,13 @@ define systemd::service_limits (
   }
 
   if $restart_service {
+    systemd::systemctl::daemon_reload { $name: }
     exec { "restart ${name} because limits":
       command     => "systemctl restart ${name}",
       path        => $::path,
       refreshonly => true,
       subscribe   => File["${path}/${name}.d/90-limits.conf"],
-      require     => Class['systemd::systemctl::daemon_reload'],
+      require     => Systemd::Systemctl::Daemon_reload[$name],
     }
   }
 }

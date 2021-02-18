@@ -76,6 +76,7 @@ define systemd::unit_file (
     }
   }
 
+  systemd::systemctl::daemon_reload { $name: }
   file { "${path}/${name}":
     ensure    => $_ensure,
     content   => $content,
@@ -85,7 +86,7 @@ define systemd::unit_file (
     group     => $group,
     mode      => $mode,
     show_diff => $show_diff,
-    notify    => Class['systemd::systemctl::daemon_reload'],
+    notify    => Systemd::Systemctl::Daemon_reload[$name],
   }
 
   if $enable != undef or $active != undef {
@@ -103,7 +104,7 @@ define systemd::unit_file (
       }
       Service[$name] -> File["${path}/${name}"]
     } else {
-      Class['systemd::systemctl::daemon_reload'] -> Service[$name]
+      Systemd::Systemctl::Daemon_reload[$name] -> Service[$name]
       File["${path}/${name}"] ~> Service[$name]
     }
   }

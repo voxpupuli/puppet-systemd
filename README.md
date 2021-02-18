@@ -32,7 +32,7 @@ systemd::unit_file { 'foo.service':
 Or handle file creation yourself and trigger systemd.
 
 ```puppet
-include systemd::systemctl::daemon_reload
+systemd::systemctl::daemon_reload { 'foo': }
 
 file { '/usr/lib/systemd/system/foo.service':
   ensure => file,
@@ -41,7 +41,7 @@ file { '/usr/lib/systemd/system/foo.service':
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.service",
 }
-~> Class['systemd::systemctl::daemon_reload']
+~> Systemd::Systemctl::Daemon_reload['foo']
 
 service {'foo':
   ensure    => 'running',
@@ -78,7 +78,7 @@ systemd::dropin_file { 'foo.conf':
 Or handle file and directory creation yourself and trigger systemd:
 
 ```puppet
-include systemd::systemctl::daemon_reload
+systemd::systemctl::daemon_reload { 'foo': }
 
 file { '/etc/systemd/system/foo.service.d':
   ensure => directory,
@@ -93,7 +93,7 @@ file { '/etc/systemd/system/foo.service.d/foo.conf':
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.conf",
 }
-~> Class['systemd::systemctl::daemon_reload']
+~> Systemd::Systemctl::Daemon_reload['foo']
 
 service {'foo':
   ensure    => 'running',
