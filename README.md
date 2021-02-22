@@ -225,7 +225,7 @@ systemd::service_limits { 'foo.service':
 
 Systemd caches unit files and their relations. This means it needs to reload, typically done via `systemctl daemon-reload`. Since Puppet 6.1.0 ([PUP-3483](https://tickets.puppetlabs.com/browse/PUP-3483)) takes care of this by calling `systemctl show $SERVICE -- --property=NeedDaemonReload` to determine if a reload is needed. Typically this works well and removes the need for `systemd::systemctl::daemon_reload` as provided prior to camptocamp/systemd 3.0.0. This avoids common circular dependencies.
 
-There are still edge cases such as [PUP-9473](https://tickets.puppetlabs.com/browse/PUP-9473). The module makes no effort to work around that. It is recommended to work around this by manually creating an exec if a unit file is ensured absent and created in a new place.
+It does contain a workaround for [PUP-9473](https://tickets.puppetlabs.com/browse/PUP-9473) but there's no guarantee that this works in every case.
 
 ### network
 

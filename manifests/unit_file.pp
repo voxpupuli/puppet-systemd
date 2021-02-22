@@ -104,5 +104,13 @@ define systemd::unit_file (
     } else {
       File["${path}/${name}"] ~> Service[$name]
     }
+  } elsif $ensure == 'absent' {
+    # Work around https://tickets.puppetlabs.com/browse/PUP-9473
+    exec { "${name}-systemctl-daemon-reload":
+      command     => 'systemctl daemon-reload',
+      refreshonly => true,
+      path        => $facts['path'],
+      subscribe   => File["${path}/${name}"],
+    }
   }
 }
