@@ -15,7 +15,6 @@ describe 'systemd::unit_file' do
             .with_ensure('file')
             .with_content(%r{#{params[:content]}})
             .with_mode('0444')
-            .that_notifies('Class[systemd::systemctl::daemon_reload]')
         end
 
         context 'with a bad unit type' do
@@ -45,7 +44,6 @@ describe 'systemd::unit_file' do
               .with_enable(true)
               .with_provider('systemd')
               .that_subscribes_to("File[/etc/systemd/system/#{title}]")
-              .that_requires('Class[systemd::systemctl::daemon_reload]')
           end
         end
 

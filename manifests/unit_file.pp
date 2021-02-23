@@ -85,7 +85,6 @@ define systemd::unit_file (
     group     => $group,
     mode      => $mode,
     show_diff => $show_diff,
-    notify    => Class['systemd::systemctl::daemon_reload'],
   }
 
   if $enable != undef or $active != undef {
@@ -103,8 +102,15 @@ define systemd::unit_file (
       }
       Service[$name] -> File["${path}/${name}"]
     } else {
-      Class['systemd::systemctl::daemon_reload'] -> Service[$name]
       File["${path}/${name}"] ~> Service[$name]
+    }
+  } elsif $ensure == 'absent' {
+    # Work around https://tickets.puppetlabs.com/browse/PUP-9473
+    exec { "${name}-systemctl-daemon-reload":
+      command     => 'systemctl daemon-reload',
+      refreshonly => true,
+      path        => $facts['path'],
+      subscribe   => File["${path}/${name}"],
     }
   }
 }

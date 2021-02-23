@@ -8,7 +8,6 @@ describe 'systemd' do
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('systemd') }
-        it { is_expected.to create_class('systemd::systemctl::daemon_reload') }
         it { is_expected.to contain_class('systemd::journald') }
         it { is_expected.to create_service('systemd-journald') }
         it { is_expected.to have_ini_setting_resource_count(0) }

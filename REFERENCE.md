@@ -9,7 +9,6 @@
 #### Public Classes
 
 * [`systemd`](#systemd): This module allows triggering systemd commands once for all modules
-* [`systemd::systemctl::daemon_reload`](#systemdsystemctldaemon_reload): Reload the systemctl daemon
 * [`systemd::tmpfiles`](#systemdtmpfiles): Update the systemd temp files
 
 #### Private Classes
@@ -238,10 +237,6 @@ Data type: `Boolean`
 
 
 
-### `systemd::systemctl::daemon_reload`
-
-Reload the systemctl daemon
-
 ### `systemd::tmpfiles`
 
 Update the systemd temp files
@@ -370,14 +365,6 @@ Data type: `Boolean`
 
 
 Default value: ``true``
-
-##### `daemon_reload`
-
-Data type: `Enum['lazy', 'eager']`
-
-
-
-Default value: `'lazy'`
 
 ### `systemd::network`
 

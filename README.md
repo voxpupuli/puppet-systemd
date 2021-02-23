@@ -18,7 +18,7 @@ There are two ways to use this module.
 
 ### unit files
 
-Let this module handle file creation and systemd reloading.
+Let this module handle file creation.
 
 ```puppet
 systemd::unit_file { 'foo.service':
@@ -29,11 +29,9 @@ systemd::unit_file { 'foo.service':
 }
 ```
 
-Or handle file creation yourself and trigger systemd.
+This is equivalent to:
 
 ```puppet
-include systemd::systemctl::daemon_reload
-
 file { '/usr/lib/systemd/system/foo.service':
   ensure => file,
   owner  => 'root',
@@ -41,11 +39,8 @@ file { '/usr/lib/systemd/system/foo.service':
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.service",
 }
-~> Class['systemd::systemctl::daemon_reload']
-
-service {'foo':
-  ensure    => 'running',
-  subscribe => File['/usr/lib/systemd/system/foo.service'],
+~> service {'foo':
+  ensure => 'running',
 }
 ```
 
@@ -63,7 +58,7 @@ systemd::unit_file { 'foo.service':
 
 Drop-in files are used to add or alter settings of a unit without modifying the
 unit itself. As for the unit files, the module can handle the file and
-directory creation and systemd reloading:
+directory creation:
 
 ```puppet
 systemd::dropin_file { 'foo.conf':
@@ -75,11 +70,9 @@ systemd::dropin_file { 'foo.conf':
 }
 ```
 
-Or handle file and directory creation yourself and trigger systemd:
+This is equivalent to:
 
 ```puppet
-include systemd::systemctl::daemon_reload
-
 file { '/etc/systemd/system/foo.service.d':
   ensure => directory,
   owner  => 'root',
@@ -93,29 +86,18 @@ file { '/etc/systemd/system/foo.service.d/foo.conf':
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.conf",
 }
-~> Class['systemd::systemctl::daemon_reload']
-
-service {'foo':
-  ensure    => 'running',
-  subscribe => File['/etc/systemd/system/foo.service.d/foo.conf'],
+~> service {'foo':
+  ensure => 'running',
 }
 ```
-
-Sometimes it's desirable to reload the systemctl daemon before a service is refreshed (for example:
-when overriding `ExecStart` or adding environment variables to the drop-in file).  In that case,
-use `daemon_reload => 'eager'` instead of the default `'lazy'`.  Be aware that the daemon could be
-reloaded multiple times if you have multiple `systemd::dropin_file` resources and any one of them
-is using `'eager'`.
 
 dropin-files can also be generated via hiera:
 
 ```yaml
-
 systemd::dropin_files:
   my-foo.conf:
     unit: foo.service
     source: puppet:///modules/${module_name}/foo.conf
-
 ```
 
 ### tmpfiles
@@ -148,7 +130,6 @@ Create a systemd timer unit and a systemd service unit to execute from
 that timer
 
 The following will create a timer unit and a service unit file.
-The execution of `systemctl daemon-reload` will occur.
 When `active` and `enable` are set to `true` the puppet service `runoften.timer` will be
 declared, started and enabled.
 
@@ -239,6 +220,12 @@ systemd::service_limits { 'foo.service':
   source => "puppet:///modules/${module_name}/foo.conf",
 }
 ```
+
+### Daemon reloads
+
+Systemd caches unit files and their relations. This means it needs to reload, typically done via `systemctl daemon-reload`. Since Puppet 6.1.0 ([PUP-3483](https://tickets.puppetlabs.com/browse/PUP-3483)) takes care of this by calling `systemctl show $SERVICE -- --property=NeedDaemonReload` to determine if a reload is needed. Typically this works well and removes the need for `systemd::systemctl::daemon_reload` as provided prior to camptocamp/systemd 3.0.0. This avoids common circular dependencies.
+
+It does contain a workaround for [PUP-9473](https://tickets.puppetlabs.com/browse/PUP-9473) but there's no guarantee that this works in every case.
 
 ### network
 
