@@ -6,20 +6,25 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.12.0...3.0.0)
 
-### Changed
+**Breaking changes:**
 
 - Drop Puppet 4 and 5 support + daemon-reload code [\#171](https://github.com/camptocamp/puppet-systemd/pull/171) ([ekohl](https://github.com/ekohl))
 
-### Fixed
-
-- Correct path in use\_stub\_resolver documentation [\#177](https://github.com/camptocamp/puppet-systemd/pull/177) ([ekohl](https://github.com/ekohl))
-
-### UNCATEGORIZED PRS; GO LABEL THEM
+**Implemented enhancements:**
 
 - add ubuntu2004 [\#187](https://github.com/camptocamp/puppet-systemd/pull/187) ([GervaisdeM](https://github.com/GervaisdeM))
-- Bump version to 3.0.0-rc0 [\#186](https://github.com/camptocamp/puppet-systemd/pull/186) ([ekohl](https://github.com/ekohl))
 - allow Puppet 7 and add to Travis testing; remove Puppet 5 from Travis testing [\#183](https://github.com/camptocamp/puppet-systemd/pull/183) ([kenyon](https://github.com/kenyon))
 - metadata: allow stdlib 7.0.0 and inifile 5.0.0 [\#182](https://github.com/camptocamp/puppet-systemd/pull/182) ([kenyon](https://github.com/kenyon))
+
+**Closed issues:**
+
+- Static units cannot be enabled [\#180](https://github.com/camptocamp/puppet-systemd/issues/180)
+- Cyclic dependency error when using systemd::unit\_file in multiple classes [\#178](https://github.com/camptocamp/puppet-systemd/issues/178)
+
+**Merged pull requests:**
+
+- Bump version to 3.0.0-rc0 [\#186](https://github.com/camptocamp/puppet-systemd/pull/186) ([ekohl](https://github.com/ekohl))
+- Correct path in use\_stub\_resolver documentation [\#177](https://github.com/camptocamp/puppet-systemd/pull/177) ([ekohl](https://github.com/ekohl))
 
 ## [2.12.0](https://github.com/camptocamp/puppet-systemd/tree/2.12.0) (2021-02-10)
 
