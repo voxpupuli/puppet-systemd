@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [3.0.0](https://github.com/camptocamp/puppet-systemd/tree/3.0.0) (2021-04-16)
+
+[Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.12.0...3.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 4 and 5 support + daemon-reload code [\#171](https://github.com/camptocamp/puppet-systemd/pull/171) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- add ubuntu2004 [\#187](https://github.com/camptocamp/puppet-systemd/pull/187) ([GervaisdeM](https://github.com/GervaisdeM))
+- allow Puppet 7 and add to Travis testing; remove Puppet 5 from Travis testing [\#183](https://github.com/camptocamp/puppet-systemd/pull/183) ([kenyon](https://github.com/kenyon))
+- metadata: allow stdlib 7.0.0 and inifile 5.0.0 [\#182](https://github.com/camptocamp/puppet-systemd/pull/182) ([kenyon](https://github.com/kenyon))
+
+**Closed issues:**
+
+- Static units cannot be enabled [\#180](https://github.com/camptocamp/puppet-systemd/issues/180)
+- Cyclic dependency error when using systemd::unit\_file in multiple classes [\#178](https://github.com/camptocamp/puppet-systemd/issues/178)
+
+**Merged pull requests:**
+
+- Bump version to 3.0.0-rc0 [\#186](https://github.com/camptocamp/puppet-systemd/pull/186) ([ekohl](https://github.com/ekohl))
+- Correct path in use\_stub\_resolver documentation [\#177](https://github.com/camptocamp/puppet-systemd/pull/177) ([ekohl](https://github.com/ekohl))
+
 ## [2.12.0](https://github.com/camptocamp/puppet-systemd/tree/2.12.0) (2021-02-10)
 
 [Full Changelog](https://github.com/camptocamp/puppet-systemd/compare/2.11.0...2.12.0)
@@ -96,7 +120,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Allow for lazy/eager systemctl daemon reloading [\#111](https://github.com/camptocamp/puppet-systemd/pull/111) ([JohnLyman](https://github.com/JohnLyman))
-- Remove stray `v` from Changelog `config.future\_release` [\#110](https://github.com/camptocamp/puppet-systemd/pull/110) ([alexjfisher](https://github.com/alexjfisher))
+- Remove stray `v` from Changelog `config.future_release` [\#110](https://github.com/camptocamp/puppet-systemd/pull/110) ([alexjfisher](https://github.com/alexjfisher))
 
 ## [2.5.1](https://github.com/camptocamp/puppet-systemd/tree/2.5.1) (2019-05-29)
 
@@ -104,7 +128,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Pin `public\_suffix` to `3.0.3` on rvm 2.1.9 builds [\#108](https://github.com/camptocamp/puppet-systemd/pull/108) ([alexjfisher](https://github.com/alexjfisher))
+- Pin `public_suffix` to `3.0.3` on rvm 2.1.9 builds [\#108](https://github.com/camptocamp/puppet-systemd/pull/108) ([alexjfisher](https://github.com/alexjfisher))
 - run CI jobs on xenial instead of trusty [\#107](https://github.com/camptocamp/puppet-systemd/pull/107) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [2.5.0](https://github.com/camptocamp/puppet-systemd/tree/2.5.0) (2019-05-29)
