@@ -40,6 +40,9 @@
 # @param show_diff
 #   Whether to show the diff when updating dropin file
 #
+# @param notify_service
+#   Notify a service for the unit, if it exists
+#
 define systemd::dropin_file (
   Systemd::Unit                               $unit,
   Systemd::Dropin                             $filename                = $name,
@@ -53,6 +56,7 @@ define systemd::dropin_file (
   String                                      $group                   = 'root',
   String                                      $mode                    = '0444',
   Boolean                                     $show_diff               = true,
+  Boolean                                     $notify_service          = false,
 ) {
   include systemd
 
@@ -65,8 +69,10 @@ define systemd::dropin_file (
     }
   }
 
+  $full_filename = "${path}/${unit}.d/${filename}"
+
   if $ensure != 'absent' {
-    ensure_resource('file', "${path}/${unit}.d", {
+    ensure_resource('file', dirname($full_filename), {
         ensure                  => directory,
         owner                   => 'root',
         group                   => 'root',
@@ -76,7 +82,7 @@ define systemd::dropin_file (
     })
   }
 
-  file { "${path}/${unit}.d/${filename}":
+  file { $full_filename:
     ensure                  => $_ensure,
     content                 => $content,
     source                  => $source,
@@ -86,5 +92,13 @@ define systemd::dropin_file (
     mode                    => $mode,
     selinux_ignore_defaults => $selinux_ignore_defaults,
     show_diff               => $show_diff,
+  }
+
+  if $notify_service {
+    File[$full_filename] ~> Service <| title == $unit or name == $unit |>
+    if $unit =~ /\.service$/ {
+      $short_service_name = regsubst($unit, /\.service$/, '')
+      File[$full_filename] ~> Service <| title == $short_service_name or name == $short_service_name |>
+    }
   }
 }

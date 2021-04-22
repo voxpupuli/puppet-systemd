@@ -374,6 +374,7 @@ The following parameters are available in the `systemd::dropin_file` defined typ
 * [`group`](#group)
 * [`mode`](#mode)
 * [`show_diff`](#show_diff)
+* [`notify_service`](#notify_service)
 * [`unit`](#unit)
 * [`filename`](#filename)
 * [`ensure`](#ensure)
@@ -461,6 +462,14 @@ Data type: `Boolean`
 Whether to show the diff when updating dropin file
 
 Default value: ``true``
+
+##### <a name="notify_service"></a>`notify_service`
+
+Data type: `Boolean`
+
+Notify a service for the unit, if it exists
+
+Default value: ``false``
 
 ##### <a name="unit"></a>`unit`
 
