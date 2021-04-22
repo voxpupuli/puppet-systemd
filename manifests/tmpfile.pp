@@ -4,10 +4,10 @@
 #
 # @see systemd-tmpfiles(8)
 #
-# @attr name [Pattern['^[^/]+\.conf$']] (filename)
+# @param name [Pattern['^[^/]+\.conf$']] (filename)
 #   The name of the tmpfile to create
 #
-# @param $ensure
+# @param ensure
 #   Whether to drop a file or remove it
 #
 # @param path
@@ -21,7 +21,7 @@
 # @param source
 #   A ``File`` resource compatible ``source``
 #
-#  * Mutually exclusive with ``$limits``
+#   * Mutually exclusive with ``$limits``
 #
 define systemd::tmpfile (
   Enum['present', 'absent', 'file'] $ensure   = 'file',

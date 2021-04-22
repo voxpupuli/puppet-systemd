@@ -1,5 +1,4 @@
-# -- Define: systemd::network
-# Creates network config for systemd-networkd
+# @summary Creates network config for systemd-networkd
 define systemd::network (
   Enum['file', 'absent']         $ensure          = file,
   Stdlib::Absolutepath           $path            = '/etc/systemd/network',

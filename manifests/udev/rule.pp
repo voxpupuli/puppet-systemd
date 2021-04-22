@@ -4,10 +4,10 @@
 #
 # @see udev(7)
 #
-# @attr name [Pattern['^.+\.rules$']]
+# @param name [Pattern['^.+\.rules$']]
 #   The name of the udev rules to create
 #
-# @param $ensure
+# @param ensure
 #   Whether to drop a file or remove it
 #
 # @param path
