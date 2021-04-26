@@ -35,6 +35,36 @@ describe 'systemd::dropin_file' do
           )
         }
 
+        context 'notifies services' do
+          let(:params) do
+            super().merge(notify_service: true)
+          end
+          let(:filename) { "/etc/systemd/system/#{params[:unit]}.d/#{title}" }
+          let(:pre_condition) do
+            <<-PUPPET
+            service { ['test', 'test.service']:
+            }
+            PUPPET
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_service('test').that_subscribes_to("File[#{filename}]") }
+          it { is_expected.to contain_service('test.service').that_subscribes_to("File[#{filename}]") }
+
+          context 'with overridden name' do
+            let(:pre_condition) do
+              <<-PUPPET
+              service { 'myservice':
+                name => 'test',
+              }
+              PUPPET
+            end
+
+            it { is_expected.to compile.with_all_deps }
+            it { is_expected.to contain_service('myservice').that_subscribes_to("File[#{filename}]") }
+          end
+        end
+
         context 'with selinux_ignore_defaults set to true' do
           let(:params) do
             super().merge(selinux_ignore_defaults: true)
