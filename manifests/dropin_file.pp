@@ -4,40 +4,40 @@
 #
 # @see systemd.unit(5)
 #
-# @attr name [Pattern['^[^/]+\.conf$']]
+# @param name [Pattern['^[^/]+\.conf$']]
 #   The target unit file to create
 #
-# @attr path
+# @param path
 #   The main systemd configuration path
 #
-# @attr selinux_ignore_defaults
+# @param selinux_ignore_defaults
 #   If Puppet should ignore the default SELinux labels.
 #
-# @attr content
+# @param content
 #   The full content of the unit file
 #
 #   * Mutually exclusive with ``$source``
 #
-# @attr source
+# @param source
 #   The ``File`` resource compatible ``source``
 #
 #   * Mutually exclusive with ``$content``
 #
-# @attr target
+# @param target
 #   If set, will force the file to be a symlink to the given target
 #
 #   * Mutually exclusive with both ``$source`` and ``$content``
 #
-# @attr owner
+# @param owner
 #   The owner to set on the dropin file
 #
-# @attr group
+# @param group
 #   The group to set on the dropin file
 #
-# @attr mode
+# @param mode
 #   The mode to set on the dropin file
 #
-# @attr show_diff
+# @param show_diff
 #   Whether to show the diff when updating dropin file
 #
 define systemd::dropin_file (

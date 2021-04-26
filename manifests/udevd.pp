@@ -1,8 +1,6 @@
 # @api private
-#
-# This class manages systemd's udev config
-#
-# https://www.freedesktop.org/software/systemd/man/udev.conf.html
+# @summary This class manages systemd's udev config
+# @see https://www.freedesktop.org/software/systemd/man/udev.conf.html
 class systemd::udevd {
   assert_private()
 

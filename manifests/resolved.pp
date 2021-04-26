@@ -1,8 +1,8 @@
 # @api private
 #
-# This class provides an abstract way to trigger resolved.
-# Each parameters correspond to resolved.conf(5):
-# https://www.freedesktop.org/software/systemd/man/resolved.conf.html
+# @summary This class provides an abstract way to trigger resolved.
+# Each parameters correspond to resolved.conf(5)
+# @see https://www.freedesktop.org/software/systemd/man/resolved.conf.html
 #
 # @param ensure
 #   The state that the ``resolved`` service should be in

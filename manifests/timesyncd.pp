@@ -5,7 +5,7 @@
 # @param ensure
 #   The state that the ``networkd`` service should be in
 #
-# @param $ntp_server
+# @param ntp_server
 #   A space-separated list of NTP servers, will be combined with interface specific
 #   addresses from systemd-networkd. requires puppetlabs-inifile
 #

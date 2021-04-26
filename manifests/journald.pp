@@ -1,8 +1,6 @@
 # @api private
-#
-# This class manages and configures journald.
-#
-# https://www.freedesktop.org/software/systemd/man/journald.conf.html
+# @summary This class manages and configures journald.
+# @see https://www.freedesktop.org/software/systemd/man/journald.conf.html
 class systemd::journald {
   assert_private()
 
