@@ -26,16 +26,12 @@
 #
 #   * Mutually exclusive with ``$limits``
 #
-# @param restart_service
-#   Restart the managed service after setting the limits
-#
 define systemd::service_limits (
   Enum['present', 'absent', 'file'] $ensure                  = 'present',
   Stdlib::Absolutepath              $path                    = '/etc/systemd/system',
   Boolean                           $selinux_ignore_defaults = false,
   Optional[Systemd::ServiceLimits]  $limits                  = undef,
   Optional[String]                  $source                  = undef,
-  Boolean                           $restart_service         = true
 ) {
   include systemd
 
@@ -67,15 +63,6 @@ define systemd::service_limits (
     selinux_ignore_defaults => $selinux_ignore_defaults,
     content                 => $_content,
     source                  => $source,
-  }
-
-  if $restart_service {
-    exec { "restart ${name} because limits":
-      command     => "systemctl restart ${name}",
-      path        => $facts['path'],
-      refreshonly => true,
-    }
-
-    Systemd::Dropin_file["${name}-90-limits.conf"] ~> Exec["restart ${name} because limits"]
+    notify_service          => true,
   }
 }
