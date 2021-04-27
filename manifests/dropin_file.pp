@@ -32,7 +32,7 @@ define systemd::dropin_file (
   String                                      $group                   = 'root',
   String                                      $mode                    = '0444',
   Boolean                                     $show_diff               = true,
-  Boolean                                     $notify_service          = false,
+  Boolean                                     $notify_service          = true,
   Boolean                                     $daemon_reload           = true,
 ) {
   include systemd
