@@ -101,7 +101,7 @@ describe 'systemd' do
           it {
             is_expected.to contain_ini_setting('cache').with(
               path: '/etc/systemd/resolved.conf',
-              value: 'yes',
+              value: 'yes'
             )
           }
           it { is_expected.to contain_ini_setting('dns_stub_listener') }
@@ -120,7 +120,7 @@ describe 'systemd' do
           it {
             is_expected.to contain_ini_setting('cache').with(
               path: '/etc/systemd/resolved.conf',
-              value: 'no-negative',
+              value: 'no-negative'
             )
           }
         end
@@ -190,13 +190,13 @@ describe 'systemd' do
 
           case facts[:os]['family']
           when 'Archlinux'
-            accounting = ['DefaultCPUAccounting', 'DefaultIOAccounting', 'DefaultIPAccounting', 'DefaultBlockIOAccounting', 'DefaultMemoryAccounting', 'DefaultTasksAccounting']
+            accounting = %w[DefaultCPUAccounting DefaultIOAccounting DefaultIPAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
           when 'Debian'
-            accounting = ['DefaultCPUAccounting', 'DefaultBlockIOAccounting', 'DefaultMemoryAccounting']
+            accounting = %w[DefaultCPUAccounting DefaultBlockIOAccounting DefaultMemoryAccounting]
           when 'RedHat'
-            accounting = ['DefaultCPUAccounting', 'DefaultBlockIOAccounting', 'DefaultMemoryAccounting', 'DefaultTasksAccounting']
+            accounting = %w[DefaultCPUAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
           when 'Suse'
-            accounting = ['DefaultCPUAccounting', 'DefaultBlockIOAccounting', 'DefaultMemoryAccounting', 'DefaultTasksAccounting']
+            accounting = %w[DefaultCPUAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
           end
           accounting.each do |account|
             it { is_expected.to contain_ini_setting(account) }
@@ -220,7 +220,7 @@ describe 'systemd' do
           it { is_expected.to compile.with_all_deps }
           it {
             is_expected.to contain_service('systemd-journald').with(
-              ensure: 'running',
+              ensure: 'running'
             )
           }
           it { is_expected.to have_ini_setting_resource_count(3) }
@@ -229,7 +229,7 @@ describe 'systemd' do
               path: '/etc/systemd/journald.conf',
               section: 'Journal',
               notify: 'Service[systemd-journald]',
-              value: 'auto',
+              value: 'auto'
             )
           }
           it {
@@ -237,7 +237,7 @@ describe 'systemd' do
               path: '/etc/systemd/journald.conf',
               section: 'Journal',
               notify: 'Service[systemd-journald]',
-              value: '5day',
+              value: '5day'
             )
           }
           it {
@@ -245,7 +245,7 @@ describe 'systemd' do
               path: '/etc/systemd/journald.conf',
               section: 'Journal',
               notify: 'Service[systemd-journald]',
-              ensure: 'absent',
+              ensure: 'absent'
             )
           }
         end
@@ -288,22 +288,22 @@ describe 'systemd' do
 
           it { is_expected.to compile.with_all_deps }
           it {
-            is_expected.to contain_service('systemd-udevd')
-              .with(enable: true,
-                    ensure: 'running')
+            is_expected.to contain_service('systemd-udevd').
+              with(enable: true,
+                   ensure: 'running')
           }
           it {
-            is_expected.to contain_file('/etc/udev/udev.conf')
-              .with(ensure: 'file',
-                    owner: 'root',
-                    group: 'root',
-                    mode: '0444')
-              .with_content(%r{^udev_log=daemon$})
-              .with_content(%r{^children_max=1$})
-              .with_content(%r{^exec_delay=2$})
-              .with_content(%r{^event_timeout=3$})
-              .with_content(%r{^resolve_names=early$})
-              .with_content(%r{^timeout_signal=SIGKILL$})
+            is_expected.to contain_file('/etc/udev/udev.conf').
+              with(ensure: 'file',
+                   owner: 'root',
+                   group: 'root',
+                   mode: '0444').
+              with_content(%r{^udev_log=daemon$}).
+              with_content(%r{^children_max=1$}).
+              with_content(%r{^exec_delay=2$}).
+              with_content(%r{^event_timeout=3$}).
+              with_content(%r{^resolve_names=early$}).
+              with_content(%r{^timeout_signal=SIGKILL$})
           }
         end
 
@@ -330,30 +330,30 @@ describe 'systemd' do
 
           it { is_expected.to compile.with_all_deps }
           it {
-            is_expected.to contain_service('systemd-udevd')
-              .with(enable: true,
-                    ensure: 'running')
+            is_expected.to contain_service('systemd-udevd').
+              with(enable: true,
+                   ensure: 'running')
           }
           it {
-            is_expected.to contain_file('/etc/udev/udev.conf')
-              .with(ensure: 'file',
-                    owner: 'root',
-                    group: 'root',
-                    mode: '0444')
-              .with_content(%r{^udev_log=daemon$})
-              .with_content(%r{^children_max=1$})
-              .with_content(%r{^exec_delay=2$})
-              .with_content(%r{^event_timeout=3$})
-              .with_content(%r{^resolve_names=early$})
-              .with_content(%r{^timeout_signal=SIGKILL$})
+            is_expected.to contain_file('/etc/udev/udev.conf').
+              with(ensure: 'file',
+                   owner: 'root',
+                   group: 'root',
+                   mode: '0444').
+              with_content(%r{^udev_log=daemon$}).
+              with_content(%r{^children_max=1$}).
+              with_content(%r{^exec_delay=2$}).
+              with_content(%r{^event_timeout=3$}).
+              with_content(%r{^resolve_names=early$}).
+              with_content(%r{^timeout_signal=SIGKILL$})
           }
           it {
-            is_expected.to contain_systemd__udev__rule('example_raw.rules')
-              .with(rules: [
-                      '# I am a comment',
-                      'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"',
-                      'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
-                    ])
+            is_expected.to contain_systemd__udev__rule('example_raw.rules').
+              with(rules: [
+                     '# I am a comment',
+                     'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"',
+                     'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
+                   ])
           }
         end
 
@@ -364,7 +364,7 @@ describe 'systemd' do
               logind_settings: {
                 'HandleSuspendKey'  => 'ignore',
                 'KillUserProcesses' => 'no',
-                'KillExcludeUsers'  => ['a', 'b'],
+                'KillExcludeUsers'  => %w[a b],
                 'RemoveIPC'         => {
                   'ensure' => 'absent',
                 },
@@ -379,7 +379,7 @@ describe 'systemd' do
           it { is_expected.to compile.with_all_deps }
           it {
             is_expected.to contain_service('systemd-logind').with(
-              ensure: 'running',
+              ensure: 'running'
             )
           }
           it { is_expected.to have_ini_setting_resource_count(5) }
@@ -388,7 +388,7 @@ describe 'systemd' do
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
-              value: 'ignore',
+              value: 'ignore'
             )
           }
           it {
@@ -396,7 +396,7 @@ describe 'systemd' do
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
-              value: 'no',
+              value: 'no'
             )
           }
           it {
@@ -404,7 +404,7 @@ describe 'systemd' do
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
-              value: 'a b',
+              value: 'a b'
             )
           }
           it {
@@ -412,7 +412,7 @@ describe 'systemd' do
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
-              ensure: 'absent',
+              ensure: 'absent'
             )
           }
           it {
@@ -420,7 +420,7 @@ describe 'systemd' do
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
-              value: '10000',
+              value: '10000'
             )
           }
           it { is_expected.to contain_loginctl_user('foo').with(linger: 'enabled') }

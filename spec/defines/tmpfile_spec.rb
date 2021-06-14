@@ -13,7 +13,7 @@ describe 'systemd::tmpfile' do
           is_expected.to create_file("/etc/tmpfiles.d/#{title}").with(
             ensure: 'file',
             content: %r{#{params[:content]}},
-            mode: '0444',
+            mode: '0444'
           )
         }
 
@@ -21,9 +21,9 @@ describe 'systemd::tmpfile' do
           let(:title) { 'test.badtype' }
 
           it {
-            expect {
+            expect do
               is_expected.to compile.with_all_deps
-            }.to raise_error(%r{expects a match for Systemd::Dropin})
+            end.to raise_error(%r{expects a match for Systemd::Dropin})
           }
         end
 
@@ -31,9 +31,9 @@ describe 'systemd::tmpfile' do
           let(:title) { 'test/foo.conf' }
 
           it {
-            expect {
+            expect do
               is_expected.to compile.with_all_deps
-            }.to raise_error(%r{expects a match for Systemd::Dropin})
+            end.to raise_error(%r{expects a match for Systemd::Dropin})
           }
         end
 
@@ -50,7 +50,7 @@ describe 'systemd::tmpfile' do
             is_expected.to create_file('/etc/tmpfiles.d/goodname.conf').with(
               ensure: 'file',
               content: %r{#{params[:content]}},
-              mode: '0444',
+              mode: '0444'
             )
           }
         end

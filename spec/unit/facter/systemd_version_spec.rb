@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe Facter.fact(:systemd_version) do
-  before(:each) do
+  before do
     Facter.clear
   end
 
   describe 'systemd_version' do
     context 'returns version when systemd fact present' do
-      before(:each) do
+      before do
         allow(Facter.fact(:systemd)).to receive(:value).and_return(true)
       end
       let(:facts) { { systemd: true } }
@@ -18,7 +18,7 @@ describe Facter.fact(:systemd_version) do
       end
     end
     context 'returns nil when systemd fact not present' do
-      before(:each) do
+      before do
         allow(Facter.fact(:systemd)).to receive(:value).and_return(false)
       end
       let(:facts) { { systemd: false } }

@@ -22,7 +22,7 @@ describe 'systemd::dropin_file' do
             ensure: 'directory',
             recurse: 'true',
             purge: 'true',
-            selinux_ignore_defaults: false,
+            selinux_ignore_defaults: false
           )
         }
 
@@ -31,7 +31,7 @@ describe 'systemd::dropin_file' do
             ensure: 'file',
             content: %r{#{params[:content]}},
             mode: '0444',
-            selinux_ignore_defaults: false,
+            selinux_ignore_defaults: false
           )
         }
 
@@ -78,9 +78,9 @@ describe 'systemd::dropin_file' do
           let(:title) { 'test.badtype' }
 
           it {
-            expect {
+            expect do
               is_expected.to compile.with_all_deps
-            }.to raise_error(%r{expects a match for Systemd::Dropin})
+            end.to raise_error(%r{expects a match for Systemd::Dropin})
           }
         end
 
@@ -88,9 +88,9 @@ describe 'systemd::dropin_file' do
           let(:title) { 'test/bad.conf' }
 
           it {
-            expect {
+            expect do
               is_expected.to compile.with_all_deps
-            }.to raise_error(%r{expects a match for Systemd::Dropin})
+            end.to raise_error(%r{expects a match for Systemd::Dropin})
           }
         end
 
@@ -120,7 +120,7 @@ describe 'systemd::dropin_file' do
             is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{params[:filename]}").with(
               ensure: 'file',
               content: %r{#{params[:content]}},
-              mode: '0444',
+              mode: '0444'
             )
           }
         end
@@ -136,7 +136,7 @@ describe 'systemd::dropin_file' do
           it {
             is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").with(
               ensure: 'file',
-              content: sensitive('TEST_CONTENT'),
+              content: sensitive('TEST_CONTENT')
             )
           }
         end

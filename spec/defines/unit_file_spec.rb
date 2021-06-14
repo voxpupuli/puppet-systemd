@@ -11,10 +11,10 @@ describe 'systemd::unit_file' do
         it { is_expected.to compile.with_all_deps }
 
         it do
-          is_expected.to create_file("/etc/systemd/system/#{title}")
-            .with_ensure('file')
-            .with_content(%r{#{params[:content]}})
-            .with_mode('0444')
+          is_expected.to create_file("/etc/systemd/system/#{title}").
+            with_ensure('file').
+            with_content(%r{#{params[:content]}}).
+            with_mode('0444')
         end
 
         context 'with a bad unit type' do
@@ -33,17 +33,17 @@ describe 'systemd::unit_file' do
           let(:params) do
             super().merge(
               enable: true,
-              active: true,
+              active: true
             )
           end
 
           it { is_expected.to compile.with_all_deps }
           it do
-            is_expected.to contain_service('test.service')
-              .with_ensure(true)
-              .with_enable(true)
-              .with_provider('systemd')
-              .that_subscribes_to("File[/etc/systemd/system/#{title}]")
+            is_expected.to contain_service('test.service').
+              with_ensure(true).
+              with_enable(true).
+              with_provider('systemd').
+              that_subscribes_to("File[/etc/systemd/system/#{title}]")
           end
         end
 
@@ -66,17 +66,17 @@ describe 'systemd::unit_file' do
             let(:params) do
               super().merge(
                 enable: false,
-                active: false,
+                active: false
               )
             end
 
             it { is_expected.to compile.with_all_deps }
             it do
-              is_expected.to contain_service('test.service')
-                .with_ensure(false)
-                .with_enable(false)
-                .with_provider('systemd')
-                .that_comes_before("File[/etc/systemd/system/#{title}]")
+              is_expected.to contain_service('test.service').
+                with_ensure(false).
+                with_enable(false).
+                with_provider('systemd').
+                that_comes_before("File[/etc/systemd/system/#{title}]")
             end
           end
         end

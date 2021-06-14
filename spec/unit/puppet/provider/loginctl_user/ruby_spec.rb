@@ -12,12 +12,12 @@ describe provider_class do
 
   context 'when listing instances' do
     it 'finds all entries' do
-      expect(provider_class).to receive(:loginctl)
-        .with('list-users', '--no-legend')
-        .and_return("0 root\n42 foo\n314 bar\n")
-      expect(provider_class).to receive(:loginctl)
-        .with('show-user', '-p', 'Name', '-p', 'Linger', 'root', 'foo', 'bar')
-        .and_return("Name=root\nLinger=no\n\nName=foo\nLinger=yes\n\nName=bar\nLinger=no\n")
+      expect(provider_class).to receive(:loginctl).
+        with('list-users', '--no-legend').
+        and_return("0 root\n42 foo\n314 bar\n")
+      expect(provider_class).to receive(:loginctl).
+        with('show-user', '-p', 'Name', '-p', 'Linger', 'root', 'foo', 'bar').
+        and_return("Name=root\nLinger=no\n\nName=foo\nLinger=yes\n\nName=bar\nLinger=no\n")
       inst = provider_class.instances.map do |p|
       end
 
