@@ -1,12 +1,12 @@
 {
-  "name": "camptocamp-systemd",
+  "name": "puppet-systemd",
   "version": "3.0.0",
-  "author": "camptocamp",
+  "author": "Vox Pupuli",
   "summary": "Puppet Systemd module",
   "license": "Apache-2.0",
-  "source": "https://github.com/camptocamp/puppet-systemd",
-  "project_page": "https://github.com/camptocamp/puppet-systemd",
-  "issues_url": "https://github.com/camptocamp/puppet-systemd/issues",
+  "source": "https://github.com/voxpupuli/puppet-systemd",
+  "project_page": "https://github.com/voxpupuli/puppet-systemd",
+  "issues_url": "https://github.com/voxpupuli/puppet-systemd/issues",
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
