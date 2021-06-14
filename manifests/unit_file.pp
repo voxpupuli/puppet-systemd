@@ -88,7 +88,6 @@ define systemd::unit_file (
   }
 
   if $enable != undef or $active != undef {
-
     service { $name:
       ensure   => $active,
       enable   => $enable,
