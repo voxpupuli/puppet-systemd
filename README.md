@@ -318,7 +318,7 @@ Additionally you can set custom udev rules with the `udev_rules` parameter.
 ```puppet
 class { 'systemd':
   manage_udevd => true,
-  udev_rules   => { 
+  udev_rules   => {
       'example_raw.rules' => {
       'rules'             => [
         'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"',
