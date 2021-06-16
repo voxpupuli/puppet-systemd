@@ -104,8 +104,9 @@ define systemd::unit_file (
     } else {
       File["${path}/${name}"] ~> Service[$name]
     }
-  } elsif $ensure == 'absent' {
+  } else {
     # Work around https://tickets.puppetlabs.com/browse/PUP-9473
+    # and react to changes on static unit files (ie: .service triggered by .timer)
     exec { "${name}-systemctl-daemon-reload":
       command     => 'systemctl daemon-reload',
       refreshonly => true,
