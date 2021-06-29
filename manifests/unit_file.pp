@@ -52,7 +52,7 @@
 define systemd::unit_file (
   Enum['present', 'absent', 'file']        $ensure    = 'present',
   Stdlib::Absolutepath                     $path      = '/etc/systemd/system',
-  Optional[String]                         $content   = undef,
+  Optional[Variant[String, Sensitive[String]]] $content = undef,
   Optional[String]                         $source    = undef,
   Optional[Stdlib::Absolutepath]           $target    = undef,
   String                                   $owner     = 'root',
