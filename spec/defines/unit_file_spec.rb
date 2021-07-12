@@ -10,11 +10,27 @@ describe 'systemd::unit_file' do
 
         it { is_expected.to compile.with_all_deps }
 
-        it do
-          is_expected.to create_file("/etc/systemd/system/#{title}").
-            with_ensure('file').
-            with_content(%r{#{params[:content]}}).
-            with_mode('0444')
+        context 'with non-sensitive Content' do
+          let(:params) { { content: 'non-sensitive Content' } }
+
+          it do
+            is_expected.to create_file("/etc/systemd/system/#{title}").
+              with_ensure('file').
+              with_content(params[:content]).
+              with_mode('0444')
+          end
+        end
+
+        context 'with sensitive Content' do
+          let(:params) { { content: sensitive('sensitive Content') } }
+
+          it do
+            resource = catalogue.resource("File[/etc/systemd/system/#{title}]")
+            expect(resource[:content]).to eq(params[:content].unwrap)
+
+            is_expected.to contain_file("/etc/systemd/system/#{title}").
+              with({ content: sensitive('sensitive Content') })
+          end
         end
 
         context 'with a bad unit type' do
