@@ -1,6 +1,6 @@
 {
   "name": "puppet-systemd",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "author": "Vox Pupuli",
   "summary": "Puppet Systemd module",
   "license": "Apache-2.0",

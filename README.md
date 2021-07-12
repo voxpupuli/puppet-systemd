@@ -1,9 +1,13 @@
 # Systemd
 
-[![Puppet Forge](http://img.shields.io/puppetforge/v/camptocamp/systemd.svg)](https://forge.puppetlabs.com/camptocamp/systemd)
-[![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/camptocamp/systemd.svg)](https://forge.puppetlabs.com/camptocamp/systemd)
-[![Build Status](https://travis-ci.org/camptocamp/puppet-systemd.png?branch=master)](https://travis-ci.org/camptocamp/puppet-systemd)
-[![Puppet Forge Endorsement](https://img.shields.io/puppetforge/e/camptocamp/systemd.svg)](https://forge.puppetlabs.com/camptocamp/systemd)
+[![Build Status](https://github.com/voxpupuli/puppet-systemd/workflows/CI/badge.svg)](https://github.com/voxpupuli/puppet-systemd/actions?query=workflow%3ACI)
+[![Release](https://github.com/voxpupuli/puppet-systemd/actions/workflows/release.yml/badge.svg)](https://github.com/voxpupuli/puppet-systemd/actions/workflows/release.yml)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/systemd.svg)](https://forge.puppetlabs.com/puppet/systemd)
+[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/systemd.svg)](https://forge.puppetlabs.com/puppet/systemd)
+[![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/systemd.svg)](https://forge.puppetlabs.com/puppet/systemd)
+[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/systemd.svg)](https://forge.puppetlabs.com/puppet/systemd)
+[![puppetmodule.info docs](http://www.puppetmodule.info/images/badge.png)](http://www.puppetmodule.info/m/puppet-systemd)
+[![Apache-2 License](https://img.shields.io/github/license/voxpupuli/puppet-systemd.svg)](LICENSE)
 [![Donated by Camptocamp](https://img.shields.io/badge/donated%20by-camptocamp-fb7047.svg)](#transfer-notice)
 
 
