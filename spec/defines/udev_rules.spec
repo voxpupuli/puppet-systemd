@@ -25,12 +25,12 @@ describe 'systemd::udev::rule' do
 
           it { is_expected.to compile.with_all_deps }
           it {
-            is_expected.to create_file("/etc/udev/rules.d/#{title}")
-              .with(ensure: 'file', mode: '0444', owner: 'root', group: 'root')
-              .with_content(%r{^# I am a comment$})
-              .with_content(%r{^ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"$})
-              .with_content(%r{^ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"$})
-              .that_notifies("Service['systemd-udevd']")
+            is_expected.to create_file("/etc/udev/rules.d/#{title}").
+              with(ensure: 'file', mode: '0444', owner: 'root', group: 'root').
+              with_content(%r{^# I am a comment$}).
+              with_content(%r{^ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"$}).
+              with_content(%r{^ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"$}).
+              that_notifies("Service['systemd-udevd']")
           }
         end
 
@@ -51,13 +51,13 @@ describe 'systemd::udev::rule' do
 
           it { is_expected.to compile.with_all_deps }
           it {
-            is_expected.to create_file("/etc/udev/rules.d/#{title}")
-              .with(ensure: 'file', mode: '0444', owner: 'root', group: 'root')
-              .with_content(%r{^# I am a comment$})
-              .with_content(%r{^ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"$})
-              .with_content(%r{^ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"$})
-              .that_notifies("Service['systemd-udevd']")
-              .that_notifies("Service['foo']")
+            is_expected.to create_file("/etc/udev/rules.d/#{title}").
+              with(ensure: 'file', mode: '0444', owner: 'root', group: 'root').
+              with_content(%r{^# I am a comment$}).
+              with_content(%r{^ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"$}).
+              with_content(%r{^ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"$}).
+              that_notifies("Service['systemd-udevd']").
+              that_notifies("Service['foo']")
           }
         end
 
@@ -66,9 +66,9 @@ describe 'systemd::udev::rule' do
 
           it { is_expected.to compile.with_all_deps }
           it do
-            is_expected.to create_file("/etc/udev/rules.d/#{title}")
-              .with_ensure('absent')
-              .that_notifies("Service['systemd-udevd']")
+            is_expected.to create_file("/etc/udev/rules.d/#{title}").
+              with_ensure('absent').
+              that_notifies("Service['systemd-udevd']")
           end
         end
       end

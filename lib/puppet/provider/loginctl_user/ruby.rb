@@ -17,9 +17,7 @@ Puppet::Type.type(:loginctl_user).provide(:ruby) do
 
   def self.prefetch(resources)
     instances.each do |prov|
-      if resources[prov.name]
-        resources[prov.name].provider = prov
-      end
+      resources[prov.name].provider = prov if resources[prov.name]
     end
   end
 

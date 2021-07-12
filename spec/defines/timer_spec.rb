@@ -20,13 +20,13 @@ describe 'systemd::timer' do
 
           it {
             is_expected.to contain_systemd__unit_file('foobar.timer').with(
-              content: "[Timer]\nOnCalendar=weekly",
+              content: "[Timer]\nOnCalendar=weekly"
             )
           }
 
           it {
             is_expected.to contain_systemd__unit_file('foobar.service').with(
-              content: "[Service]\nExecStart=/bin/touch /tmp/foobar",
+              content: "[Service]\nExecStart=/bin/touch /tmp/foobar"
             )
           }
         end
@@ -74,9 +74,9 @@ describe 'systemd::timer' do
           let(:title) { 'foobar' }
 
           it {
-            expect {
+            expect do
               is_expected.to compile.with_all_deps
-            }.to raise_error(%r{expects a match for})
+            end.to raise_error(%r{expects a match for})
           }
         end
       end

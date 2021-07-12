@@ -43,6 +43,6 @@ define systemd::udev::rule (
     path                    => join([$path, $name], '/'),
     notify                  => $notify_services,
     selinux_ignore_defaults => $selinux_ignore_defaults,
-    content                 => epp("${module_name}/udev_rule.epp", {'rules' => $rules}),
+    content                 => epp("${module_name}/udev_rule.epp", { 'rules' => $rules }),
   }
 }
