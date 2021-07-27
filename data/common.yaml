@@ -32,3 +32,5 @@ systemd::udev_timeout_signal: ~
 systemd::udev_resolve_names: ~
 systemd::manage_logind: false
 systemd::logind_settings: {}
+systemd::manage_all_network_files: false
+systemd::network_path: '/etc/systemd/network'

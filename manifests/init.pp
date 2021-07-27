@@ -112,6 +112,11 @@
 #
 # @param dropin_files
 #   Configure dropin files via hiera with factory pattern
+#
+# @param manage_all_network_files
+#
+# @param network_path
+#   where all networkd files are placed in
 class systemd (
   Hash[String,Hash[String, Any]]                         $service_limits,
   Boolean                                                $manage_resolved,
@@ -146,6 +151,8 @@ class systemd (
   Optional[Variant[Integer,String]]                      $udev_timeout_signal,
   Boolean                                                $manage_logind,
   Systemd::LogindSettings                                $logind_settings,
+  Boolean                                                $manage_all_network_files,
+  Stdlib::Absolutepath                                   $network_path,
   Hash                                                   $loginctl_users = {},
   Hash                                                   $dropin_files = {},
   Hash                                                   $udev_rules = {},

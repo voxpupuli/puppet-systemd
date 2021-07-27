@@ -88,6 +88,8 @@ The following parameters are available in the `systemd` class:
 * [`logind_settings`](#logind_settings)
 * [`loginctl_users`](#loginctl_users)
 * [`dropin_files`](#dropin_files)
+* [`manage_all_network_files`](#manage_all_network_files)
+* [`network_path`](#network_path)
 * [`manage_accounting`](#manage_accounting)
 * [`accounting`](#accounting)
 * [`purge_dropin_dirs`](#purge_dropin_dirs)
@@ -308,6 +310,18 @@ Data type: `Hash`
 Configure dropin files via hiera with factory pattern
 
 Default value: `{}`
+
+##### <a name="manage_all_network_files"></a>`manage_all_network_files`
+
+Data type: `Boolean`
+
+
+
+##### <a name="network_path"></a>`network_path`
+
+Data type: `Stdlib::Absolutepath`
+
+where all networkd files are placed in
 
 ##### <a name="manage_accounting"></a>`manage_accounting`
 

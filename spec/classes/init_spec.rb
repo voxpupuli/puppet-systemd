@@ -27,6 +27,7 @@ describe 'systemd' do
           it { is_expected.to create_service('systemd-resolved').with_enable(true) }
           it { is_expected.to create_service('systemd-networkd').with_ensure('running') }
           it { is_expected.to create_service('systemd-networkd').with_enable(true) }
+          it { is_expected.not_to contain_file('/etc/systemd/network') }
         end
 
         context 'when enabling resolved with DNS values (string)' do
@@ -438,6 +439,18 @@ describe 'systemd' do
           end
 
           it { is_expected.to contain_systemd__dropin_file('my-foo.conf').with_content('[Service]\nReadWritePaths=/') }
+        end
+        context 'with managed networkd directory' do
+          let :params do
+            {
+              manage_networkd: true,
+              manage_all_network_files: true
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_class('systemd::networkd') }
+          it { is_expected.to contain_file('/etc/systemd/network').with_ensure('directory') }
         end
       end
     end
