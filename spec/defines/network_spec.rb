@@ -62,7 +62,6 @@ describe 'systemd::network' do
           it { is_expected.to create_file("/etc/systemd/network/#{title}").that_notifies('Service[systemd-networkd]') }
         end
         context 'without content and without source' do
-          let(:title) { 'wg0.netdev' }
           let :params do
             {}
           end
