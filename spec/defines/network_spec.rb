@@ -61,6 +61,23 @@ describe 'systemd::network' do
 
           it { is_expected.to create_file("/etc/systemd/network/#{title}").that_notifies('Service[systemd-networkd]') }
         end
+        context 'without content and without source' do
+          let :params do
+            {}
+          end
+
+          it { is_expected.to compile.and_raise_error(%r{Either content or source must be set}) }
+        end
+        context 'with content and source' do
+          let :params do
+            {
+              content: 'bla',
+              source: 'foo'
+            }
+          end
+
+          it { is_expected.to compile.and_raise_error(%r{Either content or source must be set but not both}) }
+        end
       end
     end
   end
