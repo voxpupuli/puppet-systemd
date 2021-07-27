@@ -395,7 +395,7 @@ Default value: `'/etc/systemd/system'`
 
 ##### <a name="selinux_ignore_defaults"></a>`selinux_ignore_defaults`
 
-Data type: `Optional[Boolean]`
+Data type: `Boolean`
 
 If Puppet should ignore the default SELinux labels.
 
@@ -635,7 +635,7 @@ Default value: `'/etc/systemd/system'`
 
 ##### <a name="selinux_ignore_defaults"></a>`selinux_ignore_defaults`
 
-Data type: `Optional[Boolean]`
+Data type: `Boolean`
 
 If Puppet should ignore the default SELinux labels.
 
@@ -929,7 +929,7 @@ Default value: `'/etc/udev/rules.d'`
 
 ##### <a name="selinux_ignore_defaults"></a>`selinux_ignore_defaults`
 
-Data type: `Optional[Boolean]`
+Data type: `Boolean`
 
 If Puppet should ignore the default SELinux labels.
 
@@ -937,7 +937,7 @@ Default value: ``false``
 
 ##### <a name="notify_services"></a>`notify_services`
 
-Data type: `Optional[Variant[Array, String]]`
+Data type: `Variant[Array[String[1], String[1]]]`
 
 List of services to notify when this rule is updated
 
@@ -998,7 +998,7 @@ Default value: `'/etc/systemd/system'`
 
 ##### <a name="content"></a>`content`
 
-Data type: `Optional[String]`
+Data type: `Optional[Variant[String, Sensitive[String]]]`
 
 The full content of the unit file
 
