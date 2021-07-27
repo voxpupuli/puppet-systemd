@@ -24,7 +24,7 @@ define systemd::network (
       fail('Either content or source must be set but not both')
     }
     if $content =~ NotUndef and $source =~ NotUndef {
-      fail('you can only set $content or $source')
+      fail('Either content or source must be set')
     }
   }
   file { "${path}/${name}":
