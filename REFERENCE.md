@@ -516,7 +516,7 @@ The following parameters are available in the `systemd::network` defined type:
 
 Data type: `Enum['file', 'absent']`
 
-
+configure if the file should be configured or deleted
 
 Default value: `file`
 
@@ -524,7 +524,7 @@ Default value: `file`
 
 Data type: `Stdlib::Absolutepath`
 
-
+directory where the network configs are stored
 
 Default value: `'/etc/systemd/network'`
 
@@ -532,7 +532,7 @@ Default value: `'/etc/systemd/network'`
 
 Data type: `Optional[String]`
 
-
+the content of the file
 
 Default value: ``undef``
 
@@ -540,7 +540,7 @@ Default value: ``undef``
 
 Data type: `Optional[String]`
 
-
+a path to a file that's used as source
 
 Default value: ``undef``
 
@@ -548,7 +548,7 @@ Default value: ``undef``
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
-
+optional absolute path  in case the file should be stored somewhere else
 
 Default value: ``undef``
 
@@ -556,7 +556,7 @@ Default value: ``undef``
 
 Data type: `String`
 
-
+the user who owns the file
 
 Default value: `'root'`
 
@@ -564,7 +564,7 @@ Default value: `'root'`
 
 Data type: `String`
 
-
+the group that owns the file
 
 Default value: `'root'`
 
@@ -572,7 +572,7 @@ Default value: `'root'`
 
 Data type: `String`
 
-
+the mode of the file
 
 Default value: `'0444'`
 
@@ -580,7 +580,7 @@ Default value: `'0444'`
 
 Data type: `Boolean`
 
-
+whether the file diff should be shown on modifications
 
 Default value: ``true``
 
@@ -588,7 +588,7 @@ Default value: ``true``
 
 Data type: `Boolean`
 
-
+whether systemd-networkd should be restarted on changes, defaults to true. `$systemd::manage_networkd` needs to be true as well
 
 Default value: ``true``
 
@@ -937,7 +937,7 @@ Default value: ``false``
 
 ##### <a name="notify_services"></a>`notify_services`
 
-Data type: `Variant[Array[String[1], String[1]]]`
+Data type: `Variant[Array[String[1]], String[1]]`
 
 List of services to notify when this rule is updated
 
