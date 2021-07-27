@@ -23,7 +23,6 @@ group :release do
   gem 'puppet-strings', '>= 2.2',                 :require => false
 end
 
-gem 'puppetlabs_spec_helper', '~> 2.0', :require => false
 gem 'rake', :require => false
 gem 'facter', ENV['FACTER_GEM_VERSION'], :require => false, :groups => [:test]
 
