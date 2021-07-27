@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.2.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.2.0) (2021-07-27)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.1.0...v3.2.0)
+
+**Implemented enhancements:**
+
+- Add option to purge non-managed networkd files [\#209](https://github.com/voxpupuli/puppet-systemd/pull/209) ([bastelfreak](https://github.com/bastelfreak))
+- Allow `systemd::unit_file` `Deferred` `content` [\#208](https://github.com/voxpupuli/puppet-systemd/pull/208) ([alexjfisher](https://github.com/alexjfisher))
+- systemd::network: Validate if content/source are set for file resource [\#205](https://github.com/voxpupuli/puppet-systemd/pull/205) ([bastelfreak](https://github.com/bastelfreak))
+
+**Merged pull requests:**
+
+- Add puppet-strings documentation for systemd::network [\#207](https://github.com/voxpupuli/puppet-systemd/pull/207) ([bastelfreak](https://github.com/bastelfreak))
+- Fix `Optional` datatype for non-optional parameters [\#206](https://github.com/voxpupuli/puppet-systemd/pull/206) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v3.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.1.0) (2021-07-12)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/3.0.0...v3.1.0)
