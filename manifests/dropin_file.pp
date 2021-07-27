@@ -48,7 +48,7 @@ define systemd::dropin_file (
   Systemd::Dropin                             $filename                = $name,
   Enum['present', 'absent', 'file']           $ensure                  = 'present',
   Stdlib::Absolutepath                        $path                    = '/etc/systemd/system',
-  Optional[Boolean]                           $selinux_ignore_defaults = false,
+  Boolean                                     $selinux_ignore_defaults = false,
   Optional[Variant[String,Sensitive[String]]] $content                 = undef,
   Optional[String]                            $source                  = undef,
   Optional[Stdlib::Absolutepath]              $target                  = undef,
