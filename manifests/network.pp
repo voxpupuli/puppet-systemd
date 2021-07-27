@@ -19,6 +19,14 @@ define systemd::network (
     $notify = undef
   }
 
+  if $ensure == 'file' {
+    if $content =~ Undef and $source =~ Undef {
+      fail('you need to set content or source')
+    }
+    if $content =~ NotUndef and $source =~ NotUndef {
+      fail('you can only set $content or $source')
+    }
+  }
   file { "${path}/${name}":
     ensure    => $ensure,
     content   => $content,

@@ -61,6 +61,25 @@ describe 'systemd::network' do
 
           it { is_expected.to create_file("/etc/systemd/network/#{title}").that_notifies('Service[systemd-networkd]') }
         end
+        context 'without content and without source' do
+          let(:title) { 'wg0.netdev' }
+          let :params do
+            {}
+          end
+
+          it { is_expected.to compile.and_raise_error(%r{you need to set}) }
+        end
+        context 'with content and source' do
+          let(:title) { 'wg0.netdev' }
+          let :params do
+            {
+              content: 'bla',
+              source: 'foo'
+            }
+          end
+
+          it { is_expected.to compile.and_raise_error(%r{you can only set}) }
+        end
       end
     end
   end
