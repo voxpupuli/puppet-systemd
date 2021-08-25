@@ -157,9 +157,10 @@ Takes a boolean argument or "allow-downgrade".
 
 ##### <a name="dnsovertls"></a>`dnsovertls`
 
-Data type: `Optional[Variant[Boolean,Enum['opportunistic', 'no']]]`
+Data type: `Optional[Variant[Boolean,Enum['yes', 'opportunistic', 'no']]]`
 
-Takes a boolean argument or "opportunistic"
+Takes a boolean argument or one of "yes", "opportunistic" or "no". "true" corresponds to
+"opportunistic" and "false" (default) to "no".
 
 ##### <a name="cache"></a>`cache`
 
@@ -1012,7 +1013,7 @@ Default value: `'/etc/systemd/system'`
 
 ##### <a name="content"></a>`content`
 
-Data type: `Optional[Variant[String, Sensitive[String]]]`
+Data type: `Optional[Variant[String, Sensitive[String], Deferred]]`
 
 The full content of the unit file
 
