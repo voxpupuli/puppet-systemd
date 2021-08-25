@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.3.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.3.0) (2021-08-25)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.2.0...v3.3.0)
+
+**Implemented enhancements:**
+
+- Add support for strict mode for DNS over TLS [\#200](https://github.com/voxpupuli/puppet-systemd/pull/200) ([wobblesprout](https://github.com/wobblesprout))
+
+**Merged pull requests:**
+
+- Allow stdlib 8.0.0 [\#213](https://github.com/voxpupuli/puppet-systemd/pull/213) ([smortex](https://github.com/smortex))
+
 ## [v3.2.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.2.0) (2021-07-27)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.1.0...v3.2.0)
