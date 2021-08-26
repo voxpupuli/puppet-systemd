@@ -37,13 +37,13 @@
 
 ### Data types
 
-* [`Systemd::Dropin`](#systemddropin)
+* [`Systemd::Dropin`](#systemddropin): custom datatype that validates filenames/paths for valid systemd dropin files
 * [`Systemd::JournaldSettings`](#systemdjournaldsettings): Matches Systemd journald config Struct
-* [`Systemd::JournaldSettings::Ensure`](#systemdjournaldsettingsensure)
+* [`Systemd::JournaldSettings::Ensure`](#systemdjournaldsettingsensure): defines allowed ensure states for systemd-journald settings
 * [`Systemd::LogindSettings`](#systemdlogindsettings): Matches Systemd Login Manager Struct
-* [`Systemd::LogindSettings::Ensure`](#systemdlogindsettingsensure)
+* [`Systemd::LogindSettings::Ensure`](#systemdlogindsettingsensure): defines allowed ensure states for systemd-logind settings
 * [`Systemd::ServiceLimits`](#systemdservicelimits): Matches Systemd Service Limit Struct
-* [`Systemd::Unit`](#systemdunit)
+* [`Systemd::Unit`](#systemdunit): custom datatype that validates different filenames for systemd units
 
 ## Classes
 
@@ -328,19 +328,19 @@ where all networkd files are placed in
 
 Data type: `Boolean`
 
-
+when enabled, the different accounting options (network traffic, IO, CPU util...) are enabled for units
 
 ##### <a name="accounting"></a>`accounting`
 
 Data type: `Hash[String,String]`
 
-
+Hash of the different accounting options. This highly depends on the used systemd version. The module provides sane defaults.
 
 ##### <a name="purge_dropin_dirs"></a>`purge_dropin_dirs`
 
 Data type: `Boolean`
 
-
+When enabled, unused directories for dropin files will be purged
 
 ### <a name="systemdtmpfiles"></a>`systemd::tmpfiles`
 
@@ -379,7 +379,9 @@ Creates a drop-in file for a systemd unit
 
 The following parameters are available in the `systemd::dropin_file` defined type:
 
-* [`name`](#name)
+* [`unit`](#unit)
+* [`filename`](#filename)
+* [`ensure`](#ensure)
 * [`path`](#path)
 * [`selinux_ignore_defaults`](#selinux_ignore_defaults)
 * [`content`](#content)
@@ -390,15 +392,28 @@ The following parameters are available in the `systemd::dropin_file` defined typ
 * [`mode`](#mode)
 * [`show_diff`](#show_diff)
 * [`notify_service`](#notify_service)
-* [`unit`](#unit)
-* [`filename`](#filename)
-* [`ensure`](#ensure)
 
-##### <a name="name"></a>`name`
+##### <a name="unit"></a>`unit`
 
-Data type: `Pattern['^[^/]+\.conf$']`
+Data type: `Systemd::Unit`
+
+the The target unit file to create, the value will be set to the `filename` parameter as well
+
+##### <a name="filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
 
 The target unit file to create
+
+Default value: `$name`
+
+##### <a name="ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent', 'file']`
+
+the state of this dropin file
+
+Default value: `'present'`
 
 ##### <a name="path"></a>`path`
 
@@ -420,9 +435,7 @@ Default value: ``false``
 
 Data type: `Optional[Variant[String,Sensitive[String]]]`
 
-The full content of the unit file
-
-* Mutually exclusive with ``$source``
+The full content of the unit file (Mutually exclusive with `$source`)
 
 Default value: ``undef``
 
@@ -430,9 +443,7 @@ Default value: ``undef``
 
 Data type: `Optional[String]`
 
-The ``File`` resource compatible ``source``
-
-* Mutually exclusive with ``$content``
+The `File` resource compatible `source` Mutually exclusive with ``$content``
 
 Default value: ``undef``
 
@@ -440,9 +451,7 @@ Default value: ``undef``
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
-If set, will force the file to be a symlink to the given target
-
-* Mutually exclusive with both ``$source`` and ``$content``
+If set, will force the file to be a symlink to the given target (Mutually exclusive with both `$source` and `$content`
 
 Default value: ``undef``
 
@@ -485,28 +494,6 @@ Data type: `Boolean`
 Notify a service for the unit, if it exists
 
 Default value: ``false``
-
-##### <a name="unit"></a>`unit`
-
-Data type: `Systemd::Unit`
-
-
-
-##### <a name="filename"></a>`filename`
-
-Data type: `Systemd::Dropin`
-
-
-
-Default value: `$name`
-
-##### <a name="ensure"></a>`ensure`
-
-Data type: `Enum['present', 'absent', 'file']`
-
-
-
-Default value: `'present'`
 
 ### <a name="systemdnetwork"></a>`systemd::network`
 
@@ -829,7 +816,7 @@ Default value: ``undef``
 
 Data type: `Enum['present', 'absent', 'file']`
 
-
+Defines the desired state of the timer
 
 Default value: `'present'`
 
@@ -844,19 +831,19 @@ Creates a systemd tmpfile
 
 The following parameters are available in the `systemd::tmpfile` defined type:
 
-* [`name`](#name)
+* [`filename`](#filename)
 * [`ensure`](#ensure)
 * [`path`](#path)
 * [`content`](#content)
 * [`source`](#source)
-* [`filename`](#filename)
 
-##### <a name="name"></a>`name`
+##### <a name="filename"></a>`filename`
 
-Data type: `Pattern['^[^/]+\.conf$']`
+Data type: `Systemd::Dropin`
 
-(filename)
 The name of the tmpfile to create
+
+Default value: `$name`
 
 ##### <a name="ensure"></a>`ensure`
 
@@ -893,14 +880,6 @@ A ``File`` resource compatible ``source``
 * Mutually exclusive with ``$limits``
 
 Default value: ``undef``
-
-##### <a name="filename"></a>`filename`
-
-Data type: `Systemd::Dropin`
-
-
-
-Default value: `$name`
 
 ### <a name="systemdudevrule"></a>`systemd::udev::rule`
 
@@ -1137,7 +1116,7 @@ usually discover the appropriate provider for your platform.
 
 ### <a name="systemddropin"></a>`Systemd::Dropin`
 
-The Systemd::Dropin data type.
+custom datatype that validates filenames/paths for valid systemd dropin files
 
 Alias of
 
@@ -1188,7 +1167,7 @@ Struct[{
 
 ### <a name="systemdjournaldsettingsensure"></a>`Systemd::JournaldSettings::Ensure`
 
-The Systemd::JournaldSettings::Ensure data type.
+defines allowed ensure states for systemd-journald settings
 
 Alias of
 
@@ -1233,7 +1212,7 @@ Struct[{
 
 ### <a name="systemdlogindsettingsensure"></a>`Systemd::LogindSettings::Ensure`
 
-The Systemd::LogindSettings::Ensure data type.
+defines allowed ensure states for systemd-logind settings
 
 Alias of
 
@@ -1294,7 +1273,7 @@ Struct[{
 
 ### <a name="systemdunit"></a>`Systemd::Unit`
 
-The Systemd::Unit data type.
+custom datatype that validates different filenames for systemd units
 
 Alias of
 

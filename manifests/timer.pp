@@ -55,6 +55,9 @@
 # @param enable
 #   If set, will manage the state of the unit.
 #
+# @param ensure
+#   Defines the desired state of the timer
+#
 define systemd::timer (
   Enum['present', 'absent', 'file']        $ensure = 'present',
   Stdlib::Absolutepath                     $path = '/etc/systemd/system',

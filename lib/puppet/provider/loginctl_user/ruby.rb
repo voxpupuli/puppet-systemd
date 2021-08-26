@@ -1,4 +1,8 @@
+# @summary custom provider to manage systemd user sessions/linger
+# @see https://www.freedesktop.org/software/systemd/man/loginctl.html
+# @see https://wiki.archlinux.org/title/Systemd/User
 Puppet::Type.type(:loginctl_user).provide(:ruby) do
+  desc 'custom provider to manage systemd user sessions/linger'
   commands loginctl: 'loginctl'
 
   def self.instances
