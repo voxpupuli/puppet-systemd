@@ -4,7 +4,7 @@
 #
 # @see systemd-tmpfiles(8)
 #
-# @param name [Pattern['^[^/]+\.conf$']] (filename)
+# @param filename
 #   The name of the tmpfile to create
 #
 # @param ensure

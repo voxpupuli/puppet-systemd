@@ -4,44 +4,19 @@
 #
 # @see systemd.unit(5)
 #
-# @param name [Pattern['^[^/]+\.conf$']]
-#   The target unit file to create
-#
-# @param path
-#   The main systemd configuration path
-#
-# @param selinux_ignore_defaults
-#   If Puppet should ignore the default SELinux labels.
-#
-# @param content
-#   The full content of the unit file
-#
-#   * Mutually exclusive with ``$source``
-#
-# @param source
-#   The ``File`` resource compatible ``source``
-#
-#   * Mutually exclusive with ``$content``
-#
-# @param target
-#   If set, will force the file to be a symlink to the given target
-#
-#   * Mutually exclusive with both ``$source`` and ``$content``
-#
-# @param owner
-#   The owner to set on the dropin file
-#
-# @param group
-#   The group to set on the dropin file
-#
-# @param mode
-#   The mode to set on the dropin file
-#
-# @param show_diff
-#   Whether to show the diff when updating dropin file
-#
-# @param notify_service
-#   Notify a service for the unit, if it exists
+# @param unit the The target unit file to create, the value will be set to the `filename` parameter as well
+# @param filename The target unit file to create
+# @param ensure the state of this dropin file
+# @param path The main systemd configuration path
+# @param selinux_ignore_defaults If Puppet should ignore the default SELinux labels.
+# @param content The full content of the unit file (Mutually exclusive with `$source`)
+# @param source The `File` resource compatible `source` Mutually exclusive with ``$content``
+# @param target If set, will force the file to be a symlink to the given target (Mutually exclusive with both `$source` and `$content`
+# @param owner The owner to set on the dropin file
+# @param group The group to set on the dropin file
+# @param mode The mode to set on the dropin file
+# @param show_diff Whether to show the diff when updating dropin file
+# @param notify_service Notify a service for the unit, if it exists
 #
 define systemd::dropin_file (
   Systemd::Unit                               $unit,

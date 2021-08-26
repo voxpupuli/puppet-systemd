@@ -118,6 +118,16 @@
 #
 # @param network_path
 #   where all networkd files are placed in
+#
+# @param manage_accounting
+#   when enabled, the different accounting options (network traffic, IO, CPU util...) are enabled for units
+#
+# @param accounting
+#   Hash of the different accounting options. This highly depends on the used systemd version. The module provides sane defaults.
+#
+# @param purge_dropin_dirs
+#   When enabled, unused directories for dropin files will be purged
+#
 class systemd (
   Hash[String,Hash[String, Any]]                         $service_limits,
   Boolean                                                $manage_resolved,
