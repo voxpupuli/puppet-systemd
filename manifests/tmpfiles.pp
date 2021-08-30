@@ -18,6 +18,6 @@ class systemd::tmpfiles (
   exec { 'systemd-tmpfiles':
     command     => "systemd-tmpfiles ${_ops}",
     refreshonly => true,
-    path        => $::path,
+    path        => $facts['path'],
   }
 }
