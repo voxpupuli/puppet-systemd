@@ -72,7 +72,7 @@ define systemd::service_limits (
   if $restart_service {
     exec { "restart ${name} because limits":
       command     => "systemctl restart ${name}",
-      path        => $::path,
+      path        => $facts['path'],
       refreshonly => true,
       subscribe   => File["${path}/${name}.d/90-limits.conf"],
     }
