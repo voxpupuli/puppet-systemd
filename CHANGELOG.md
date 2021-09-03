@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.4.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.4.0) (2021-09-03)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.3.0...v3.4.0)
+
+**Implemented enhancements:**
+
+- CentOS 8: Enable more accounting options [\#218](https://github.com/voxpupuli/puppet-systemd/pull/218) ([bastelfreak](https://github.com/bastelfreak))
+
+**Merged pull requests:**
+
+- puppet-lint: fix top\_scope\_facts warnings [\#217](https://github.com/voxpupuli/puppet-systemd/pull/217) ([bastelfreak](https://github.com/bastelfreak))
+- add puppet-lint-param-docs [\#216](https://github.com/voxpupuli/puppet-systemd/pull/216) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v3.3.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.3.0) (2021-08-25)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.2.0...v3.3.0)
