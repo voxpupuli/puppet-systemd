@@ -4,3 +4,5 @@ systemd::accounting:
   DefaultBlockIOAccounting: 'yes'
   DefaultMemoryAccounting: 'yes'
   DefaultTasksAccounting: 'yes'
+  DefaultIOAccounting: 'yes'
+  DefaultIPAccounting: 'yes'
