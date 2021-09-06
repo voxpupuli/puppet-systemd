@@ -35,6 +35,10 @@
 
 * [`loginctl_user`](#loginctl_user): An arbitrary name used as the identity of the resource.
 
+### Functions
+
+* [`systemd::escape`](#systemdescape): Escape strings as systemd-escape does.
+
 ### Data types
 
 * [`Systemd::Dropin`](#systemddropin): custom datatype that validates filenames/paths for valid systemd dropin files
@@ -1111,6 +1115,60 @@ An arbitrary name used as the identity of the resource.
 
 The specific backend to use for this `loginctl_user` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
+
+## Functions
+
+### <a name="systemdescape"></a>`systemd::escape`
+
+Type: Puppet Language
+
+Escape strings as systemd-escape does.
+
+#### Examples
+
+##### Escaping a string
+
+```puppet
+$result = systemd::escape('foo::bar')
+```
+
+##### Escaping a path
+
+```puppet
+$result = systemd::escape('/mnt/foobar',true)
+```
+
+#### `systemd::escape(String[1] $input, Boolean $path = false)`
+
+The systemd::escape function.
+
+Returns: `String` String
+
+##### Examples
+
+###### Escaping a string
+
+```puppet
+$result = systemd::escape('foo::bar')
+```
+
+###### Escaping a path
+
+```puppet
+$result = systemd::escape('/mnt/foobar',true)
+```
+
+##### `input`
+
+Data type: `String[1]`
+
+Input string
+
+##### `path`
+
+Data type: `Boolean`
+
+Use path (-p) ornon-path  style escaping.
 
 ## Data types
 
