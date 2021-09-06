@@ -373,6 +373,20 @@ loginctl_user { 'foo':
 
 or as a hash via the `systemd::loginctl_users` parameter.
 
+### Systemd Escape Function
+Escapes strings as `systemd-escape` command does.
+
+```puppet
+$result = systemd::escape('foo::bar/')
+```
+`$result` would be `foo::bar-`
+
+or path escape as if with `-p` option.
+
+```puppet
+$result = systemd::escape('/mnt/foobar/', true)
+```
+`$result` would be `mnt-foobar`.
 
 ## Transfer Notice
 
