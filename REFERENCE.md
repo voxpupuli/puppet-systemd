@@ -60,6 +60,10 @@ This module allows triggering systemd commands once for all modules
 The following parameters are available in the `systemd` class:
 
 * [`service_limits`](#service_limits)
+* [`networks`](#networks)
+* [`timers`](#timers)
+* [`tmpfiles`](#tmpfiles)
+* [`unit_files`](#unit_files)
 * [`manage_resolved`](#manage_resolved)
 * [`resolved_ensure`](#resolved_ensure)
 * [`dns`](#dns)
@@ -100,10 +104,42 @@ The following parameters are available in the `systemd` class:
 
 ##### <a name="service_limits"></a>`service_limits`
 
-Data type: `Hash[String,Hash[String, Any]]`
+Data type: `Hash[String[1],Hash[String[1], Any]]`
 
 May be passed a resource hash suitable for passing directly into the
 ``create_resources()`` function as called on ``systemd::service_limits``
+
+Default value: `{}`
+
+##### <a name="networks"></a>`networks`
+
+Data type: `Hash[String[1],Hash[String[1], Any]]`
+
+Hash of `systemd::network` resources
+
+Default value: `{}`
+
+##### <a name="timers"></a>`timers`
+
+Data type: `Hash[String[1],Hash[String[1], Any]]`
+
+Hash of `systemd::timer` resources
+
+Default value: `{}`
+
+##### <a name="tmpfiles"></a>`tmpfiles`
+
+Data type: `Hash[String[1],Hash[String[1], Any]]`
+
+Hash of `systemd::tmpfile` resources
+
+Default value: `{}`
+
+##### <a name="unit_files"></a>`unit_files`
+
+Data type: `Hash[String[1],Hash[String[1], Any]]`
+
+Hash of `systemd::unit_file` resources
 
 Default value: `{}`
 

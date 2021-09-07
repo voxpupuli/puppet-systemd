@@ -6,6 +6,18 @@
 #   May be passed a resource hash suitable for passing directly into the
 #   ``create_resources()`` function as called on ``systemd::service_limits``
 #
+# @param networks
+#   Hash of `systemd::network` resources
+#
+# @param timers
+#   Hash of `systemd::timer` resources
+#
+# @param tmpfiles
+#   Hash of `systemd::tmpfile` resources
+#
+# @param unit_files
+#   Hash of `systemd::unit_file` resources
+#
 # @param manage_resolved
 #   Manage the systemd resolver
 #
@@ -130,7 +142,11 @@
 #
 class systemd (
   Hash[String,String]                                 $accounting,
-  Hash[String,Hash[String, Any]]                      $service_limits = {},
+  Hash[String[1],Hash[String[1], Any]]                $service_limits = {},
+  Hash[String[1],Hash[String[1], Any]]                $networks = {},
+  Hash[String[1],Hash[String[1], Any]]                $timers = {},
+  Hash[String[1],Hash[String[1], Any]]                $tmpfiles = {},
+  Hash[String[1],Hash[String[1], Any]]                $unit_files = {},
   Boolean                                             $manage_resolved = false,
   Enum['stopped','running']                           $resolved_ensure = 'running',
   Optional[Variant[Array[String],String]]             $dns = undef,
@@ -168,7 +184,31 @@ class systemd (
   Hash                                                $dropin_files = {},
   Hash                                                $udev_rules = {},
 ) {
-  create_resources('systemd::service_limits', $service_limits)
+  $service_limits.each |$service_limit, $service_limit_data| {
+    systemd::service_limits { $service_limit:
+      * => $service_limit_data,
+    }
+  }
+  $networks.each |$network, $network_data| {
+    systemd::network { $network:
+      * => $network_data,
+    }
+  }
+  $timers.each |$timer, $timer_data| {
+    systemd::timer { $timer:
+      * => $timer_data,
+    }
+  }
+  $tmpfiles.each |$tmpfile, $tmpfile_data| {
+    systemd::tmpfile { $tmpfile:
+      * => $tmpfile_data,
+    }
+  }
+  $unit_files.each |$unit_file, $unit_file_data| {
+    systemd::unit_file { $unit_file:
+      * => $unit_file_data,
+    }
+  }
 
   if $manage_resolved and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-resolved.service'] {
     contain systemd::resolved
