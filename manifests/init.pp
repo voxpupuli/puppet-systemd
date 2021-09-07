@@ -123,7 +123,7 @@
 #   when enabled, the different accounting options (network traffic, IO, CPU util...) are enabled for units
 #
 # @param accounting
-#   Hash of the different accounting options. This highly depends on the used systemd version. The module provides sane defaults per operating system.
+#   Hash of the different accounting options. This highly depends on the used systemd version. The module provides sane defaults per operating system using Hiera.
 #
 # @param purge_dropin_dirs
 #   When enabled, unused directories for dropin files will be purged
