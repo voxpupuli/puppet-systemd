@@ -105,17 +105,23 @@ Data type: `Hash[String,Hash[String, Any]]`
 May be passed a resource hash suitable for passing directly into the
 ``create_resources()`` function as called on ``systemd::service_limits``
 
+Default value: `{}`
+
 ##### <a name="manage_resolved"></a>`manage_resolved`
 
 Data type: `Boolean`
 
 Manage the systemd resolver
 
+Default value: ``false``
+
 ##### <a name="resolved_ensure"></a>`resolved_ensure`
 
 Data type: `Enum['stopped','running']`
 
 The state that the ``resolved`` service should be in
+
+Default value: `'running'`
 
 ##### <a name="dns"></a>`dns`
 
@@ -126,6 +132,8 @@ DNS requests are sent to one of the listed DNS servers in parallel to suitable
 per-link DNS servers acquired from systemd-networkd.service(8) or set at runtime
 by external applications. requires puppetlabs-inifile
 
+Default value: ``undef``
+
 ##### <a name="fallback_dns"></a>`fallback_dns`
 
 Data type: `Optional[Variant[Array[String],String]]`
@@ -134,6 +142,8 @@ A space-separated list of IPv4 and IPv6 addresses to use as the fallback DNS
 servers. Any per-link DNS servers obtained from systemd-networkd take
 precedence over this setting. requires puppetlabs-inifile
 
+Default value: ``undef``
+
 ##### <a name="domains"></a>`domains`
 
 Data type: `Optional[Variant[Array[String],String]]`
@@ -141,11 +151,15 @@ Data type: `Optional[Variant[Array[String],String]]`
 A space-separated list of domains host names or IP addresses to be used
 systemd-resolved take precedence over this setting.
 
+Default value: ``undef``
+
 ##### <a name="llmnr"></a>`llmnr`
 
 Data type: `Optional[Variant[Boolean,Enum['resolve']]]`
 
 Takes a boolean argument or "resolve".
+
+Default value: ``undef``
 
 ##### <a name="multicast_dns"></a>`multicast_dns`
 
@@ -153,30 +167,40 @@ Data type: `Optional[Variant[Boolean,Enum['resolve']]]`
 
 Takes a boolean argument or "resolve".
 
+Default value: ``undef``
+
 ##### <a name="dnssec"></a>`dnssec`
 
 Data type: `Optional[Variant[Boolean,Enum['allow-downgrade']]]`
 
 Takes a boolean argument or "allow-downgrade".
 
+Default value: ``undef``
+
 ##### <a name="dnsovertls"></a>`dnsovertls`
 
-Data type: `Optional[Variant[Boolean,Enum['yes', 'opportunistic', 'no']]]`
+Data type: `Variant[Boolean,Enum['yes', 'opportunistic', 'no']]`
 
 Takes a boolean argument or one of "yes", "opportunistic" or "no". "true" corresponds to
 "opportunistic" and "false" (default) to "no".
 
+Default value: ``false``
+
 ##### <a name="cache"></a>`cache`
 
-Data type: `Optional[Variant[Boolean,Enum['no-negative']]]`
+Data type: `Variant[Boolean,Enum['no-negative']]`
 
 Takes a boolean argument or "no-negative".
+
+Default value: ``false``
 
 ##### <a name="dns_stub_listener"></a>`dns_stub_listener`
 
 Data type: `Optional[Variant[Boolean,Enum['udp','tcp']]]`
 
 Takes a boolean argument or one of "udp" and "tcp".
+
+Default value: ``undef``
 
 ##### <a name="use_stub_resolver"></a>`use_stub_resolver`
 
@@ -185,11 +209,15 @@ Data type: `Boolean`
 Takes a boolean argument. When "false" (default) it uses /run/systemd/resolve/resolv.conf
 as /etc/resolv.conf. When "true", it uses /run/systemd/resolve/stub-resolv.conf
 
+Default value: ``false``
+
 ##### <a name="manage_networkd"></a>`manage_networkd`
 
 Data type: `Boolean`
 
 Manage the systemd network daemon
+
+Default value: ``false``
 
 ##### <a name="networkd_ensure"></a>`networkd_ensure`
 
@@ -197,11 +225,15 @@ Data type: `Enum['stopped','running']`
 
 The state that the ``networkd`` service should be in
 
+Default value: `'running'`
+
 ##### <a name="manage_timesyncd"></a>`manage_timesyncd`
 
 Data type: `Boolean`
 
 Manage the systemd tiemsyncd daemon
+
+Default value: ``false``
 
 ##### <a name="timesyncd_ensure"></a>`timesyncd_ensure`
 
@@ -209,12 +241,16 @@ Data type: `Enum['stopped','running']`
 
 The state that the ``timesyncd`` service should be in
 
+Default value: `'running'`
+
 ##### <a name="ntp_server"></a>`ntp_server`
 
 Data type: `Optional[Variant[Array,String]]`
 
 comma separated list of ntp servers, will be combined with interface specific
 addresses from systemd-networkd. requires puppetlabs-inifile
+
+Default value: ``undef``
 
 ##### <a name="fallback_ntp_server"></a>`fallback_ntp_server`
 
@@ -224,11 +260,15 @@ A space-separated list of NTP server host names or IP addresses to be used
 as the fallback NTP servers. Any per-interface NTP servers obtained from
 systemd-networkd take precedence over this setting. requires puppetlabs-inifile
 
+Default value: ``undef``
+
 ##### <a name="manage_journald"></a>`manage_journald`
 
 Data type: `Boolean`
 
 Manage the systemd journald
+
+Default value: ``true``
 
 ##### <a name="journald_settings"></a>`journald_settings`
 
@@ -236,11 +276,15 @@ Data type: `Systemd::JournaldSettings`
 
 Config Hash that is used to configure settings in journald.conf
 
+Default value: `{}`
+
 ##### <a name="manage_udevd"></a>`manage_udevd`
 
 Data type: `Boolean`
 
 Manage the systemd udev daemon
+
+Default value: ``false``
 
 ##### <a name="udev_log"></a>`udev_log`
 
@@ -248,11 +292,15 @@ Data type: `Optional[Variant[Integer,String]]`
 
 The value of /etc/udev/udev.conf udev_log
 
+Default value: ``undef``
+
 ##### <a name="udev_children_max"></a>`udev_children_max`
 
 Data type: `Optional[Integer]`
 
 The value of /etc/udev/udev.conf children_max
+
+Default value: ``undef``
 
 ##### <a name="udev_exec_delay"></a>`udev_exec_delay`
 
@@ -260,11 +308,15 @@ Data type: `Optional[Integer]`
 
 The value of /etc/udev/udev.conf exec_delay
 
+Default value: ``undef``
+
 ##### <a name="udev_event_timeout"></a>`udev_event_timeout`
 
 Data type: `Optional[Integer]`
 
 The value of /etc/udev/udev.conf event_timeout
+
+Default value: ``undef``
 
 ##### <a name="udev_resolve_names"></a>`udev_resolve_names`
 
@@ -272,11 +324,15 @@ Data type: `Optional[Enum['early', 'late', 'never']]`
 
 The value of /etc/udev/udev.conf resolve_names
 
+Default value: ``undef``
+
 ##### <a name="udev_timeout_signal"></a>`udev_timeout_signal`
 
 Data type: `Optional[Variant[Integer,String]]`
 
 The value of /etc/udev/udev.conf timeout_signal
+
+Default value: ``undef``
 
 ##### <a name="udev_rules"></a>`udev_rules`
 
@@ -293,11 +349,15 @@ Data type: `Boolean`
 
 Manage the systemd logind
 
+Default value: ``false``
+
 ##### <a name="logind_settings"></a>`logind_settings`
 
 Data type: `Systemd::LogindSettings`
 
 Config Hash that is used to configure settings in logind.conf
+
+Default value: `{}`
 
 ##### <a name="loginctl_users"></a>`loginctl_users`
 
@@ -322,11 +382,15 @@ Data type: `Boolean`
 
 
 
+Default value: ``false``
+
 ##### <a name="network_path"></a>`network_path`
 
 Data type: `Stdlib::Absolutepath`
 
 where all networkd files are placed in
+
+Default value: `'/etc/systemd/network'`
 
 ##### <a name="manage_accounting"></a>`manage_accounting`
 
@@ -334,17 +398,21 @@ Data type: `Boolean`
 
 when enabled, the different accounting options (network traffic, IO, CPU util...) are enabled for units
 
+Default value: ``false``
+
 ##### <a name="accounting"></a>`accounting`
 
 Data type: `Hash[String,String]`
 
-Hash of the different accounting options. This highly depends on the used systemd version. The module provides sane defaults.
+Hash of the different accounting options. This highly depends on the used systemd version. The module provides sane defaults per operating system using Hiera.
 
 ##### <a name="purge_dropin_dirs"></a>`purge_dropin_dirs`
 
 Data type: `Boolean`
 
 When enabled, unused directories for dropin files will be purged
+
+Default value: ``true``
 
 ### <a name="systemdtmpfiles"></a>`systemd::tmpfiles`
 
