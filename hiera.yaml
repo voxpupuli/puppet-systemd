@@ -8,5 +8,7 @@ hierarchy:
     path: '%{facts.os.name}-%{facts.os.release.major}.yaml'
   - name: 'Distribution Name'
     path: '%{facts.os.name}.yaml'
+  - name: 'OS Family Major Version'
+    path: '%{facts.os.family}-%{facts.os.release.major}.yaml'
   - name: 'common'
     path: 'common.yaml'
