@@ -252,6 +252,8 @@ describe 'systemd' do
             accounting = %w[DefaultCPUAccounting DefaultIOAccounting DefaultIPAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
           when 'Debian'
             accounting = %w[DefaultCPUAccounting DefaultBlockIOAccounting DefaultMemoryAccounting]
+          when 'Gentoo'
+            accounting = %w[DefaultCPUAccounting DefaultIOAccounting DefaultIPAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
           when 'RedHat'
             accounting = %w[DefaultCPUAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
           when 'Suse'
