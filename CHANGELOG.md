@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.5.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.5.0) (2021-09-13)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.4.0...v3.5.0)
+
+**Implemented enhancements:**
+
+- Add Gentoo support [\#227](https://github.com/voxpupuli/puppet-systemd/pull/227) ([bastelfreak](https://github.com/bastelfreak))
+- Add CentOS/RHEL 9 support [\#226](https://github.com/voxpupuli/puppet-systemd/pull/226) ([mbaldessari](https://github.com/mbaldessari))
+- Use os.family for RedHat based Hiera data [\#225](https://github.com/voxpupuli/puppet-systemd/pull/225) ([treydock](https://github.com/treydock))
+- Add additional hash parameters for defined types [\#223](https://github.com/voxpupuli/puppet-systemd/pull/223) ([bastelfreak](https://github.com/bastelfreak))
+- Add Debian 11 support [\#222](https://github.com/voxpupuli/puppet-systemd/pull/222) ([bastelfreak](https://github.com/bastelfreak))
+- Add systemd::escape function [\#220](https://github.com/voxpupuli/puppet-systemd/pull/220) ([traylenator](https://github.com/traylenator))
+
+**Merged pull requests:**
+
+- Migrate static data from hiera to init.pp [\#221](https://github.com/voxpupuli/puppet-systemd/pull/221) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v3.4.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.4.0) (2021-09-03)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.3.0...v3.4.0)
