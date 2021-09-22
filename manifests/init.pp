@@ -141,7 +141,7 @@
 #   When enabled, unused directories for dropin files will be purged
 #
 class systemd (
-  Hash[String,String]                                 $accounting,
+  Hash[String,String]                                 $accounting = {},
   Hash[String[1],Hash[String[1], Any]]                $service_limits = {},
   Hash[String[1],Hash[String[1], Any]]                $networks = {},
   Hash[String[1],Hash[String[1], Any]]                $timers = {},
