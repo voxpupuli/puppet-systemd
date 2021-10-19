@@ -80,6 +80,15 @@ describe 'systemd::unit_file' do
             end
           end
         end
+
+        context 'when using default values for enable and active' do
+          it {
+            is_expected.to create_exec("#{title}-systemctl-daemon-reload").with(
+              command: 'systemctl daemon-reload',
+              refreshonly: true
+            )
+          }
+        end
       end
     end
   end
