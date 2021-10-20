@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.5.1](https://github.com/voxpupuli/puppet-systemd/tree/v3.5.1) (2021-10-20)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.5.0...v3.5.1)
+
+**Fixed bugs:**
+
+- Declare a default for $accounting [\#229](https://github.com/voxpupuli/puppet-systemd/pull/229) ([ekohl](https://github.com/ekohl))
+- Do a daemon reload for static units [\#199](https://github.com/voxpupuli/puppet-systemd/pull/199) ([simondeziel](https://github.com/simondeziel))
+
+**Closed issues:**
+
+- provide sensible default for systemd::accounting [\#231](https://github.com/voxpupuli/puppet-systemd/issues/231)
+- daemon reload problem with 3.0.0 [\#190](https://github.com/voxpupuli/puppet-systemd/issues/190)
+
+**Merged pull requests:**
+
+- Correct use\_stub\_resolver example in README [\#230](https://github.com/voxpupuli/puppet-systemd/pull/230) ([traylenator](https://github.com/traylenator))
+
 ## [v3.5.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.5.0) (2021-09-13)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.4.0...v3.5.0)
