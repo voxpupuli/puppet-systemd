@@ -70,6 +70,27 @@ describe 'systemd::timer' do
           it { is_expected.to contain_systemd__unit_file('gamma.service').with_content("[Service]\nExecStart=/bin/touch /tmp/foobar") }
         end
 
+        context 'with timer activated service' do
+          let(:params) do
+            {
+              active: true,
+              enable: true,
+              timer_content: "[Timer]\nOnCalendar=hourly",
+              service_content: "[Service]\nExecStart=/bin/echo timer-fired",
+            }
+          end
+
+          it { is_expected.to contain_systemd__unit_file('foobar.timer').with_content("[Timer]\nOnCalendar=hourly") }
+          it { is_expected.to contain_systemd__unit_file('foobar.service').with_content("[Service]\nExecStart=/bin/echo timer-fired") }
+
+          it {
+            is_expected.to create_exec('foobar.service-systemctl-daemon-reload').with(
+              command: 'systemctl daemon-reload',
+              refreshonly: true
+            )
+          }
+        end
+
         context 'with a bad timer name' do
           let(:title) { 'foobar' }
 
