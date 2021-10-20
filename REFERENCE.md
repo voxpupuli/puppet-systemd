@@ -442,6 +442,8 @@ Data type: `Hash[String,String]`
 
 Hash of the different accounting options. This highly depends on the used systemd version. The module provides sane defaults per operating system using Hiera.
 
+Default value: `{}`
+
 ##### <a name="purge_dropin_dirs"></a>`purge_dropin_dirs`
 
 Data type: `Boolean`
