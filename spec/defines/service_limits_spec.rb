@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'systemd::service_limits' do
@@ -12,13 +14,13 @@ describe 'systemd::service_limits' do
           let(:params) do
             {
               limits: {
-                'LimitCPU'    => '10m',
-                'LimitFSIZE'  => 'infinity',
-                'LimitDATA'   => '10K',
+                'LimitCPU' => '10m',
+                'LimitFSIZE' => 'infinity',
+                'LimitDATA' => '10K',
                 'LimitNOFILE' => '20:infinity',
-                'LimitNICE'   => '-10',
+                'LimitNICE' => '-10',
                 'LimitRTPRIO' => 50,
-                'CPUQuota'    => '125%',
+                'CPUQuota' => '125%',
                 'IODeviceWeight' => [
                   { '/dev/weight' => 10 },
                   { '/dev/weight2' => 20 },
@@ -31,8 +33,9 @@ describe 'systemd::service_limits' do
           end
 
           it { is_expected.to compile.with_all_deps }
+
           it {
-            is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").
+            expect(subject).to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").
               with(ensure: 'file', mode: '0444').
               with_content(%r{LimitCPU=10m}).
               with_content(%r{LimitFSIZE=infinity}).
@@ -45,8 +48,9 @@ describe 'systemd::service_limits' do
               with_content(%r{IODeviceWeight=/dev/weight2 20}).
               with_content(%r{IOReadBandwidthMax=/bw/max 10K})
           }
+
           it {
-            is_expected.to create_exec("restart #{title} because limits").with(
+            expect(subject).to create_exec("restart #{title} because limits").with(
               command: "systemctl restart #{title}",
               refreshonly: true
             )
@@ -57,13 +61,15 @@ describe 'systemd::service_limits' do
           let(:params) { { ensure: 'absent' } }
 
           it { is_expected.to compile.with_all_deps }
+
           it do
-            is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").
+            expect(subject).to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").
               with_ensure('absent').
               that_notifies("Exec[restart #{title} because limits]")
           end
+
           it do
-            is_expected.to create_exec("restart #{title} because limits").
+            expect(subject).to create_exec("restart #{title} because limits").
               with_command("systemctl restart #{title}").
               with_refreshonly(true)
           end

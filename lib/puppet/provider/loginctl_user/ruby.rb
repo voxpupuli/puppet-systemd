@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # @summary custom provider to manage systemd user sessions/linger
 # @see https://www.freedesktop.org/software/systemd/man/loginctl.html
 # @see https://wiki.archlinux.org/title/Systemd/User

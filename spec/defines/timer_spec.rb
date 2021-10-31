@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'systemd::timer' do
@@ -19,13 +21,13 @@ describe 'systemd::timer' do
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__unit_file('foobar.timer').with(
+            expect(subject).to contain_systemd__unit_file('foobar.timer').with(
               content: "[Timer]\nOnCalendar=weekly"
             )
           }
 
           it {
-            is_expected.to contain_systemd__unit_file('foobar.service').with(
+            expect(subject).to contain_systemd__unit_file('foobar.service').with(
               content: "[Service]\nExecStart=/bin/touch /tmp/foobar"
             )
           }
@@ -84,7 +86,7 @@ describe 'systemd::timer' do
           it { is_expected.to contain_systemd__unit_file('foobar.service').with_content("[Service]\nExecStart=/bin/echo timer-fired") }
 
           it {
-            is_expected.to create_exec('foobar.service-systemctl-daemon-reload').with(
+            expect(subject).to create_exec('foobar.service-systemctl-daemon-reload').with(
               command: 'systemctl daemon-reload',
               refreshonly: true
             )
@@ -96,7 +98,7 @@ describe 'systemd::timer' do
 
           it {
             expect do
-              is_expected.to compile.with_all_deps
+              expect(subject).to compile.with_all_deps
             end.to raise_error(%r{expects a match for})
           }
         end

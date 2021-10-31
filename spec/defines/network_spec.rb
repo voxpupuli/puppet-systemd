@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'systemd::network' do
@@ -25,7 +27,7 @@ describe 'systemd::network' do
         it { is_expected.to compile.with_all_deps }
 
         it {
-          is_expected.to create_file("/etc/systemd/network/#{title}").with(
+          expect(subject).to create_file("/etc/systemd/network/#{title}").with(
             ensure: 'file',
             content: %r{#{params[:content]}},
             mode: '0444'
@@ -50,7 +52,7 @@ describe 'systemd::network' do
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to create_file("/etc/systemd/network/#{title}").with(
+            expect(subject).to create_file("/etc/systemd/network/#{title}").with(
               ensure: 'file',
               content: %r{#{params[:content]}},
               group: 'systemd-network',
@@ -61,6 +63,7 @@ describe 'systemd::network' do
 
           it { is_expected.to create_file("/etc/systemd/network/#{title}").that_notifies('Service[systemd-networkd]') }
         end
+
         context 'without content and without source' do
           let :params do
             {}
@@ -68,6 +71,7 @@ describe 'systemd::network' do
 
           it { is_expected.to compile.and_raise_error(%r{Either content or source must be set}) }
         end
+
         context 'with content and source' do
           let :params do
             {

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'systemd' do
@@ -99,12 +101,14 @@ describe 'systemd' do
           it { is_expected.to contain_ini_setting('llmnr') }
           it { is_expected.to contain_ini_setting('dnssec') }
           it { is_expected.to contain_ini_setting('dnsovertls') }
+
           it {
-            is_expected.to contain_ini_setting('cache').with(
+            expect(subject).to contain_ini_setting('cache').with(
               path: '/etc/systemd/resolved.conf',
               value: 'yes'
             )
           }
+
           it { is_expected.to contain_ini_setting('dns_stub_listener') }
         end
 
@@ -118,8 +122,9 @@ describe 'systemd' do
 
           it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
           it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+
           it {
-            is_expected.to contain_ini_setting('cache').with(
+            expect(subject).to contain_ini_setting('cache').with(
               path: '/etc/systemd/resolved.conf',
               value: 'no-negative'
             )
@@ -179,6 +184,7 @@ describe 'systemd' do
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_systemd__service_limits('openstack-nova-compute.service').with_limits('LimitNOFILE' => 32_768) }
         end
+
         context 'when passing networks' do
           let :params do
             {
@@ -193,6 +199,7 @@ describe 'systemd' do
           it { is_expected.to contain_file('/etc/systemd/network/uplink.netdev') }
           it { is_expected.to have_systemd__network_resource_count(2) }
         end
+
         context 'when passing timers' do
           let :params do
             {
@@ -210,6 +217,7 @@ describe 'systemd' do
           it { is_expected.to have_systemd__timer_resource_count(2) }
           it { is_expected.to have_systemd__unit_file_resource_count(2) }
         end
+
         context 'when passing tmpfiles' do
           let :params do
             {
@@ -224,6 +232,7 @@ describe 'systemd' do
           it { is_expected.to contain_file('/etc/tmpfiles.d/second_tmpfile.conf') }
           it { is_expected.to have_systemd__tmpfile_resource_count(2) }
         end
+
         context 'when passing unit_files' do
           let :params do
             {
@@ -238,6 +247,7 @@ describe 'systemd' do
           it { is_expected.to contain_file('/etc/systemd/system/second.service') }
           it { is_expected.to have_systemd__unit_file_resource_count(2) }
         end
+
         context 'when managing Accounting options' do
           let :params do
             {
@@ -248,15 +258,11 @@ describe 'systemd' do
           it { is_expected.to contain_class('systemd::system') }
 
           case facts[:os]['family']
-          when 'Archlinux'
+          when 'Archlinux', 'Gentoo'
             accounting = %w[DefaultCPUAccounting DefaultIOAccounting DefaultIPAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
           when 'Debian'
             accounting = %w[DefaultCPUAccounting DefaultBlockIOAccounting DefaultMemoryAccounting]
-          when 'Gentoo'
-            accounting = %w[DefaultCPUAccounting DefaultIOAccounting DefaultIPAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
-          when 'RedHat'
-            accounting = %w[DefaultCPUAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
-          when 'Suse'
+          when 'RedHat', 'Suse'
             accounting = %w[DefaultCPUAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
           end
           accounting.each do |account|
@@ -264,14 +270,15 @@ describe 'systemd' do
           end
           it { is_expected.to compile.with_all_deps }
         end
+
         context 'when enabling journald with options' do
           let(:params) do
             {
               manage_journald: true,
               journald_settings: {
-                'Storage'         => 'auto',
+                'Storage' => 'auto',
                 'MaxRetentionSec' => '5day',
-                'MaxLevelStore'   => {
+                'MaxLevelStore' => {
                   'ensure' => 'absent',
                 },
               },
@@ -279,30 +286,35 @@ describe 'systemd' do
           end
 
           it { is_expected.to compile.with_all_deps }
+
           it {
-            is_expected.to contain_service('systemd-journald').with(
+            expect(subject).to contain_service('systemd-journald').with(
               ensure: 'running'
             )
           }
+
           it { is_expected.to have_ini_setting_resource_count(3) }
+
           it {
-            is_expected.to contain_ini_setting('Storage').with(
+            expect(subject).to contain_ini_setting('Storage').with(
               path: '/etc/systemd/journald.conf',
               section: 'Journal',
               notify: 'Service[systemd-journald]',
               value: 'auto'
             )
           }
+
           it {
-            is_expected.to contain_ini_setting('MaxRetentionSec').with(
+            expect(subject).to contain_ini_setting('MaxRetentionSec').with(
               path: '/etc/systemd/journald.conf',
               section: 'Journal',
               notify: 'Service[systemd-journald]',
               value: '5day'
             )
           }
+
           it {
-            is_expected.to contain_ini_setting('MaxLevelStore').with(
+            expect(subject).to contain_ini_setting('MaxLevelStore').with(
               path: '/etc/systemd/journald.conf',
               section: 'Journal',
               notify: 'Service[systemd-journald]',
@@ -348,13 +360,15 @@ describe 'systemd' do
           end
 
           it { is_expected.to compile.with_all_deps }
+
           it {
-            is_expected.to contain_service('systemd-udevd').
+            expect(subject).to contain_service('systemd-udevd').
               with(enable: true,
                    ensure: 'running')
           }
+
           it {
-            is_expected.to contain_file('/etc/udev/udev.conf').
+            expect(subject).to contain_file('/etc/udev/udev.conf').
               with(ensure: 'file',
                    owner: 'root',
                    group: 'root',
@@ -390,13 +404,15 @@ describe 'systemd' do
           end
 
           it { is_expected.to compile.with_all_deps }
+
           it {
-            is_expected.to contain_service('systemd-udevd').
+            expect(subject).to contain_service('systemd-udevd').
               with(enable: true,
                    ensure: 'running')
           }
+
           it {
-            is_expected.to contain_file('/etc/udev/udev.conf').
+            expect(subject).to contain_file('/etc/udev/udev.conf').
               with(ensure: 'file',
                    owner: 'root',
                    group: 'root',
@@ -408,8 +424,9 @@ describe 'systemd' do
               with_content(%r{^resolve_names=early$}).
               with_content(%r{^timeout_signal=SIGKILL$})
           }
+
           it {
-            is_expected.to contain_systemd__udev__rule('example_raw.rules').
+            expect(subject).to contain_systemd__udev__rule('example_raw.rules').
               with(rules: [
                      '# I am a comment',
                      'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"',
@@ -423,10 +440,10 @@ describe 'systemd' do
             {
               manage_logind: true,
               logind_settings: {
-                'HandleSuspendKey'  => 'ignore',
+                'HandleSuspendKey' => 'ignore',
                 'KillUserProcesses' => 'no',
-                'KillExcludeUsers'  => %w[a b],
-                'RemoveIPC'         => {
+                'KillExcludeUsers' => %w[a b],
+                'RemoveIPC' => {
                   'ensure' => 'absent',
                 },
                 'UserTasksMax' => '10000',
@@ -438,60 +455,69 @@ describe 'systemd' do
           end
 
           it { is_expected.to compile.with_all_deps }
+
           it {
-            is_expected.to contain_service('systemd-logind').with(
+            expect(subject).to contain_service('systemd-logind').with(
               ensure: 'running'
             )
           }
+
           it { is_expected.to have_ini_setting_resource_count(5) }
+
           it {
-            is_expected.to contain_ini_setting('HandleSuspendKey').with(
+            expect(subject).to contain_ini_setting('HandleSuspendKey').with(
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
               value: 'ignore'
             )
           }
+
           it {
-            is_expected.to contain_ini_setting('KillUserProcesses').with(
+            expect(subject).to contain_ini_setting('KillUserProcesses').with(
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
               value: 'no'
             )
           }
+
           it {
-            is_expected.to contain_ini_setting('KillExcludeUsers').with(
+            expect(subject).to contain_ini_setting('KillExcludeUsers').with(
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
               value: 'a b'
             )
           }
+
           it {
-            is_expected.to contain_ini_setting('RemoveIPC').with(
+            expect(subject).to contain_ini_setting('RemoveIPC').with(
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
               ensure: 'absent'
             )
           }
+
           it {
-            is_expected.to contain_ini_setting('UserTasksMax').with(
+            expect(subject).to contain_ini_setting('UserTasksMax').with(
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
               value: '10000'
             )
           }
+
           it { is_expected.to contain_loginctl_user('foo').with(linger: 'enabled') }
         end
+
         context 'when passing dropin_files' do
           let(:params) do
             {
               dropin_files: {
                 'my-foo.conf' => {
-                  'unit'    => 'foo.service',
+                  'unit' => 'foo.service',
                   'content' => '[Service]\nReadWritePaths=/',
                 },
               },
@@ -500,6 +526,7 @@ describe 'systemd' do
 
           it { is_expected.to contain_systemd__dropin_file('my-foo.conf').with_content('[Service]\nReadWritePaths=/') }
         end
+
         context 'with managed networkd directory' do
           let :params do
             {
