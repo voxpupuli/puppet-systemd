@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'systemd::dropin_file' do
@@ -18,7 +20,7 @@ describe 'systemd::dropin_file' do
         it { is_expected.to compile.with_all_deps }
 
         it {
-          is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d").with(
+          expect(subject).to create_file("/etc/systemd/system/#{params[:unit]}.d").with(
             ensure: 'directory',
             recurse: 'true',
             purge: 'true',
@@ -27,7 +29,7 @@ describe 'systemd::dropin_file' do
         }
 
         it {
-          is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").with(
+          expect(subject).to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").with(
             ensure: 'file',
             content: %r{#{params[:content]}},
             mode: '0444',
@@ -79,7 +81,7 @@ describe 'systemd::dropin_file' do
 
           it {
             expect do
-              is_expected.to compile.with_all_deps
+              expect(subject).to compile.with_all_deps
             end.to raise_error(%r{expects a match for Systemd::Dropin})
           }
         end
@@ -89,7 +91,7 @@ describe 'systemd::dropin_file' do
 
           it {
             expect do
-              is_expected.to compile.with_all_deps
+              expect(subject).to compile.with_all_deps
             end.to raise_error(%r{expects a match for Systemd::Dropin})
           }
         end
@@ -117,13 +119,14 @@ describe 'systemd::dropin_file' do
           end
 
           it {
-            is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{params[:filename]}").with(
+            expect(subject).to create_file("/etc/systemd/system/#{params[:unit]}.d/#{params[:filename]}").with(
               ensure: 'file',
               content: %r{#{params[:content]}},
               mode: '0444'
             )
           }
         end
+
         context 'with sensitve content' do
           let(:title) { 'sensitive.conf' }
           let(:params) do
@@ -134,7 +137,7 @@ describe 'systemd::dropin_file' do
           end
 
           it {
-            is_expected.to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").with(
+            expect(subject).to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").with(
               ensure: 'file',
               content: sensitive('TEST_CONTENT')
             )

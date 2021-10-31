@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'systemd::unit_file' do
@@ -14,7 +16,7 @@ describe 'systemd::unit_file' do
           let(:params) { { content: 'non-sensitive Content' } }
 
           it do
-            is_expected.to create_file("/etc/systemd/system/#{title}").
+            expect(subject).to create_file("/etc/systemd/system/#{title}").
               with_ensure('file').
               with_content(params[:content]).
               with_mode('0444')
@@ -28,7 +30,7 @@ describe 'systemd::unit_file' do
             resource = catalogue.resource("File[/etc/systemd/system/#{title}]")
             expect(resource[:content]).to eq(params[:content].unwrap)
 
-            is_expected.to contain_file("/etc/systemd/system/#{title}").
+            expect(subject).to contain_file("/etc/systemd/system/#{title}").
               with({ content: sensitive('sensitive Content') })
           end
         end
@@ -54,8 +56,9 @@ describe 'systemd::unit_file' do
           end
 
           it { is_expected.to compile.with_all_deps }
+
           it do
-            is_expected.to contain_service('test.service').
+            expect(subject).to contain_service('test.service').
               with_ensure(true).
               with_enable(true).
               with_provider('systemd').
@@ -87,8 +90,9 @@ describe 'systemd::unit_file' do
             end
 
             it { is_expected.to compile.with_all_deps }
+
             it do
-              is_expected.to contain_service('test.service').
+              expect(subject).to contain_service('test.service').
                 with_ensure(false).
                 with_enable(false).
                 with_provider('systemd').
@@ -99,7 +103,7 @@ describe 'systemd::unit_file' do
 
         context 'when using default values for enable and active' do
           it {
-            is_expected.to create_exec("#{title}-systemctl-daemon-reload").with(
+            expect(subject).to create_exec("#{title}-systemctl-daemon-reload").with(
               command: 'systemctl daemon-reload',
               refreshonly: true
             )

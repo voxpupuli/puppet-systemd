@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 loginctl_user = Puppet::Type.type(:loginctl_user)
