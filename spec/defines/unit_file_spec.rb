@@ -101,6 +101,16 @@ describe 'systemd::unit_file' do
           end
         end
 
+        context 'enable => mask' do
+          let(:params) { { enable: 'mask' } }
+
+          it do
+            expect(subject).to create_file("/etc/systemd/system/#{title}").
+              with_ensure('link').
+              with_target('/dev/null')
+          end
+        end
+
         context 'when using default values for enable and active' do
           it {
             expect(subject).to create_exec("#{title}-systemctl-daemon-reload").with(
