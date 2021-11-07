@@ -127,6 +127,15 @@ describe 'systemd::dropin_file' do
           }
         end
 
+        context 'when using default values' do
+          it {
+            expect(subject).to create_exec("#{title}-dropin-systemctl-daemon-reload").with(
+              command: 'systemctl daemon-reload',
+              refreshonly: true
+            )
+          }
+        end
+
         context 'with sensitve content' do
           let(:title) { 'sensitive.conf' }
           let(:params) do
