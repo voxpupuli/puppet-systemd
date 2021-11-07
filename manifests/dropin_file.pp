@@ -69,11 +69,20 @@ define systemd::dropin_file (
     show_diff               => $show_diff,
   }
 
+  exec { "${name}-dropin-systemctl-daemon-reload":
+    command     => 'systemctl daemon-reload',
+    refreshonly => true,
+    path        => $facts['path'],
+    subscribe   => File[$full_filename],
+  }
+
   if $notify_service {
     File[$full_filename] ~> Service <| title == $unit or name == $unit |>
+    Exec["${name}-dropin-systemctl-daemon-reload"] -> Service <| title == $unit or name == $unit |>
     if $unit =~ /\.service$/ {
       $short_service_name = regsubst($unit, /\.service$/, '')
       File[$full_filename] ~> Service <| title == $short_service_name or name == $short_service_name |>
+      Exec["${name}-dropin-systemctl-daemon-reload"] -> Service <| title == $short_service_name or name == $short_service_name |>
     }
   }
 }
