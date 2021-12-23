@@ -67,7 +67,13 @@ define systemd::unit_file (
 
   assert_type(Systemd::Unit, $name)
 
-  if $target {
+  if $enable == 'mask' {
+    $_target = '/dev/null'
+  } else {
+    $_target = $target
+  }
+
+  if $_target {
     $_ensure = 'link'
   } else {
     $_ensure = $ensure ? {
@@ -80,7 +86,7 @@ define systemd::unit_file (
     ensure    => $_ensure,
     content   => $content,
     source    => $source,
-    target    => $target,
+    target    => $_target,
     owner     => $owner,
     group     => $group,
     mode      => $mode,
