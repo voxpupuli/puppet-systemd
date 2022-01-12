@@ -37,10 +37,17 @@ class systemd::timesyncd (
     } else {
       $_ntp_server = join($ntp_server, ' ')
     }
+    $setting = $facts['os']['family'] ? {
+      'Debian' => $facts['os']['release']['major'] ? {
+        '8'     => 'Servers',
+        default => 'NTP',
+      },
+      default  => 'NTP',
+    }
     ini_setting { 'ntp_server':
       ensure  => 'present',
       value   => $_ntp_server,
-      setting => 'NTP',
+      setting => $setting,
       section => 'Time',
       path    => '/etc/systemd/timesyncd.conf',
       notify  => Service['systemd-timesyncd'],
