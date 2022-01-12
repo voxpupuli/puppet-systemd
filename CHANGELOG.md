@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.5.2](https://github.com/voxpupuli/puppet-systemd/tree/v3.5.2) (2022-01-12)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.5.1...v3.5.2)
+
+**Fixed bugs:**
+
+- timesyncd compatibility with Debian 8 [\#239](https://github.com/voxpupuli/puppet-systemd/pull/239) ([tuxmea](https://github.com/tuxmea))
+- Link the unit file to /dev/null when "enable =\> mask" [\#236](https://github.com/voxpupuli/puppet-systemd/pull/236) ([simondeziel](https://github.com/simondeziel))
+
+**Closed issues:**
+
+- README refers to non-existent dns\_stub\_resolver parameter [\#195](https://github.com/voxpupuli/puppet-systemd/issues/195)
+- Parameter value 'mask' for 'enable' does not work [\#188](https://github.com/voxpupuli/puppet-systemd/issues/188)
+
 ## [v3.5.1](https://github.com/voxpupuli/puppet-systemd/tree/v3.5.1) (2021-10-20)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.5.0...v3.5.1)
