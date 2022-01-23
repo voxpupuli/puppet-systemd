@@ -10,7 +10,8 @@ Puppet::Functions.create_function(:'systemd::systemd_escape') do
     return_type 'String'
   end
 
-  def escape(input, path: false)
+  # rubocop:disable Style/OptionalBooleanParameter
+  def escape(input, path = false)
     args = []
 
     args.push('--path') if path
@@ -18,6 +19,7 @@ Puppet::Functions.create_function(:'systemd::systemd_escape') do
     args.push(input)
     exec_systemd(args)
   end
+  # rubocop:enable Style/OptionalBooleanParameter
 
   def exec_systemd(*args)
     exec_args = { failonfail: true, combine: true }
