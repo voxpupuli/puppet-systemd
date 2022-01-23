@@ -22,7 +22,7 @@ Puppet::Functions.create_function(:'systemd::systemd_escape') do
   # rubocop:enable Style/OptionalBooleanParameter
 
   def exec_systemd(*args)
-    exec_args = { failonfail: true, combine: true }
-    Puppet::Util::Execution.execute(['systemd-escape', args], **exec_args)
+    exec_args = { failonfail: true, combine: false }
+    Puppet::Util::Execution.execute(['systemd-escape', args], **exec_args).to_s.trim
   end
 end
