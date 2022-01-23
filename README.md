@@ -423,7 +423,9 @@ loginctl_user { 'foo':
 or as a hash via the `systemd::loginctl_users` parameter.
 
 ### Systemd Escape Function
-Escapes strings as `systemd-escape` command does.
+Partially escape strings as `systemd-escape` command does.
+
+This functions only escapes a subset of chars. Non ASCII character will not escape.
 
 ```puppet
 $result = systemd::escape('foo::bar/')
@@ -436,6 +438,23 @@ or path escape as if with `-p` option.
 $result = systemd::escape('/mnt/foobar/', true)
 ```
 `$result` would be `mnt-foobar`.
+
+### Systemd Escape Function (uses systemd-escape)
+Escape strings by call the `systemd-escape` command in the background.
+
+It's highly recommend running the function as [deferred function](https://puppet.com/docs/puppet/6/deferring_functions.html) since it executes the command on the agent.
+
+```puppet
+$result = Deferred('systemd::systemd_escape', ["foo::bar"])
+```
+`$result` would be `foo::bar-`
+
+or path escape as if with `-p` option.
+
+```puppet
+$result = Deferred('systemd::systemd_escape', ["/mnt/foo-bar/", true])
+```
+`$result` would be `mnt-foo\x2dbar`.
 
 ## Transfer Notice
 
