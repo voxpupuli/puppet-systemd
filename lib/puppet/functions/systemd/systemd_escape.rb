@@ -23,6 +23,7 @@ Puppet::Functions.create_function(:'systemd::systemd_escape') do
 
   def exec_systemd(*args)
     exec_args = { failonfail: true, combine: false }
-    Puppet::Util::Execution.execute(['systemd-escape', args], **exec_args).to_s.trim
+    escaped = Puppet::Util::Execution.execute(['systemd-escape', args], **exec_args)
+    escaped.strip
   end
 end
