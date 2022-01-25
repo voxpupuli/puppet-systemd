@@ -15,6 +15,7 @@
 
 * `systemd::journald`: This class manages and configures journald.
 * `systemd::logind`: This class manages systemd's login manager configuration.
+* `systemd::modules_loads`: Activate the modules contained in modules-loads.d
 * `systemd::networkd`: This class provides an abstract way to trigger systemd-networkd
 * `systemd::resolved`: This class provides an abstract way to trigger resolved.
 * `systemd::system`: This class provides a solution to enable accounting
@@ -24,6 +25,7 @@
 ### Defined types
 
 * [`systemd::dropin_file`](#systemddropin_file): Creates a drop-in file for a systemd unit
+* [`systemd::modules_load`](#systemdmodules_load): Creates a modules-load.d drop file
 * [`systemd::network`](#systemdnetwork): Creates network config for systemd-networkd
 * [`systemd::service_limits`](#systemdservice_limits): Adds a set of custom limits to the service
 * [`systemd::timer`](#systemdtimer): Create a timer and optionally a service unit to execute with the timer unit
@@ -604,6 +606,85 @@ Data type: `Boolean`
 Notify a service for the unit, if it exists
 
 Default value: ``false``
+
+### <a name="systemdmodules_load"></a>`systemd::modules_load`
+
+Creates a modules-load.d drop file
+
+* **See also**
+  * modules-load.d(5)
+
+#### Examples
+
+##### load a module
+
+```puppet
+systemd::modules_load{'impi.conf':
+   content => "ipmi\n",
+}
+```
+
+##### override /lib/modules-load.d/myservice.conf in /etc/modules-load.d/myservice.conf
+
+```puppet
+systemd::modules_load{'myservice.conf':
+   content => "# Cancel system version of the file\n",
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `systemd::modules_load` defined type:
+
+* [`filename`](#filename)
+* [`ensure`](#ensure)
+* [`path`](#path)
+* [`content`](#content)
+* [`source`](#source)
+
+##### <a name="filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The name of the modules-load.d file to create
+
+Default value: `$name`
+
+##### <a name="ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent', 'file']`
+
+Whether to drop a file or remove it
+
+Default value: `'file'`
+
+##### <a name="path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The path to the main systemd modules-load.d directory
+
+Default value: `'/etc/modules-load.d'`
+
+##### <a name="content"></a>`content`
+
+Data type: `Optional[String[1]]`
+
+The literal content to write to the file
+
+* Mutually exclusive with ``$source``
+
+Default value: ``undef``
+
+##### <a name="source"></a>`source`
+
+Data type: `Optional[String[1]]`
+
+A ``File`` resource compatible ``source``
+
+* Mutually exclusive with ``$content``
+
+Default value: ``undef``
 
 ### <a name="systemdnetwork"></a>`systemd::network`
 
