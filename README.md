@@ -425,7 +425,7 @@ or as a hash via the `systemd::loginctl_users` parameter.
 ### Systemd Escape Function
 Partially escape strings as `systemd-escape` command does.
 
-This functions only escapes a subset of chars. Non ASCII character will not escape.
+This functions only escapes a subset of chars. Non-ASCII character will not escape.
 
 ```puppet
 $result = systemd::escape('foo::bar/')
