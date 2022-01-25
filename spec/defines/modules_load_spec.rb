@@ -4,9 +4,9 @@ require 'spec_helper'
 
 describe 'systemd::modules_load' do
   context 'supported operating systems' do
-    on_supported_os.each do |os, facts|
+    on_supported_os.each do |os, os_facts|
       context "on #{os}" do
-        let(:facts) { facts }
+        let(:facts) { os_facts }
         let(:title) { 'random_module.conf' }
         let(:params) { { content: 'random stuff' } }
 
