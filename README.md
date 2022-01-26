@@ -105,6 +105,17 @@ systemd::dropin_files:
     source: puppet:///modules/${module_name}/foo.conf
 ```
 
+### modules-load.d
+
+Create a file entry for modules-loads directory and start
+`systemd-modules-load.service`
+
+```puppet
+systemd::modules_load{'impi.conf':
+  content => "ipmi\n",
+}
+```
+
 ### tmpfiles
 
 Let this module handle file creation and systemd reloading
