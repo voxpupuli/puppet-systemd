@@ -34,6 +34,7 @@ function systemd::escape(String[1] $input, Boolean $path = false) >> String {
       }
       '/': { $_escaped = '-' }
       ',': { $_escaped = '\x2c' }
+      '-': { $_escaped = '\x2d' }
       default: { $_escaped = $_token }
     }
     $_escaped
