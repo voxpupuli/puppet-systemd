@@ -13,6 +13,7 @@
 
 #### Private Classes
 
+* `systemd::install`: Install any systemd sub packages
 * `systemd::journald`: This class manages and configures journald.
 * `systemd::logind`: This class manages systemd's login manager configuration.
 * `systemd::modules_loads`: Activate the modules contained in modules-loads.d
@@ -68,6 +69,7 @@ The following parameters are available in the `systemd` class:
 * [`unit_files`](#unit_files)
 * [`manage_resolved`](#manage_resolved)
 * [`resolved_ensure`](#resolved_ensure)
+* [`resolved_package`](#resolved_package)
 * [`dns`](#dns)
 * [`fallback_dns`](#fallback_dns)
 * [`domains`](#domains)
@@ -160,6 +162,14 @@ Data type: `Enum['stopped','running']`
 The state that the ``resolved`` service should be in
 
 Default value: `'running'`
+
+##### <a name="resolved_package"></a>`resolved_package`
+
+Data type: `Optional[Enum['systemd-resolved']]`
+
+The name of a systemd sub package needed for systemd-resolved if one needs to be installed.
+
+Default value: ``undef``
 
 ##### <a name="dns"></a>`dns`
 

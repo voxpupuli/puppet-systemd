@@ -24,6 +24,9 @@
 # @param resolved_ensure
 #   The state that the ``resolved`` service should be in
 #
+# @param resolved_package
+#   The name of a systemd sub package needed for systemd-resolved if one needs to be installed.
+#
 # @param dns
 #   A space-separated list of IPv4 and IPv6 addresses to use as system DNS servers.
 #   DNS requests are sent to one of the listed DNS servers in parallel to suitable
@@ -148,6 +151,7 @@ class systemd (
   Hash[String[1],Hash[String[1], Any]]                $tmpfiles = {},
   Hash[String[1],Hash[String[1], Any]]                $unit_files = {},
   Boolean                                             $manage_resolved = false,
+  Optional[Enum['systemd-resolved']]                  $resolved_package = undef,
   Enum['stopped','running']                           $resolved_ensure = 'running',
   Optional[Variant[Array[String],String]]             $dns = undef,
   Optional[Variant[Array[String],String]]             $fallback_dns = undef,
@@ -184,6 +188,8 @@ class systemd (
   Hash                                                $dropin_files = {},
   Hash                                                $udev_rules = {},
 ) {
+  contain systemd::install
+
   $service_limits.each |$service_limit, $service_limit_data| {
     systemd::service_limits { $service_limit:
       * => $service_limit_data,
@@ -212,6 +218,7 @@ class systemd (
 
   if $manage_resolved and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-resolved.service'] {
     contain systemd::resolved
+    Class['systemd::install'] -> Class['systemd::resolved']
   }
 
   if $manage_networkd and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-networkd.service'] {

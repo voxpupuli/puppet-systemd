@@ -16,6 +16,7 @@ describe 'systemd' do
         it { is_expected.not_to create_service('systemd-resolved') }
         it { is_expected.not_to create_service('systemd-networkd') }
         it { is_expected.not_to create_service('systemd-timesyncd') }
+        it { is_expected.not_to contain_package('systemd-resolved') }
 
         context 'when enabling resolved and networkd' do
           let(:params) do
@@ -30,6 +31,13 @@ describe 'systemd' do
           it { is_expected.to create_service('systemd-networkd').with_ensure('running') }
           it { is_expected.to create_service('systemd-networkd').with_enable(true) }
           it { is_expected.not_to contain_file('/etc/systemd/network') }
+
+          case [facts[:os]['family'], facts[:os]['release']['major']]
+          when %w[RedHat 8], %w[RedHat 9]
+            it { is_expected.to contain_package('systemd-resolved') }
+          else
+            it { is_expected.not_to contain_package('systemd-resolved') }
+          end
         end
 
         context 'when enabling resolved with DNS values (string)' do
