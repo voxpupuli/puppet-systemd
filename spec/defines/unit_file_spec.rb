@@ -62,6 +62,74 @@ describe 'systemd::unit_file' do
               with_ensure(true).
               with_enable(true).
               with_provider('systemd').
+              with_hasstatus(true).
+              without_hasrestart.
+              that_subscribes_to("File[/etc/systemd/system/#{title}]")
+          end
+        end
+
+        context 'hasrestart => true' do
+          let(:params) do
+            super().merge(
+              enable: true,
+              active: true,
+              hasrestart: true
+            )
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            expect(subject).to contain_service('test.service').
+              with_ensure(true).
+              with_enable(true).
+              with_provider('systemd').
+              with_hasstatus(true).
+              with_hasrestart(true).
+              that_subscribes_to("File[/etc/systemd/system/#{title}]")
+          end
+        end
+
+        context 'hasrestart => false' do
+          let(:params) do
+            super().merge(
+              enable: true,
+              active: true,
+              hasrestart: false
+            )
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            expect(subject).to contain_service('test.service').
+              with_ensure(true).
+              with_enable(true).
+              with_provider('systemd').
+              with_hasstatus(true).
+              with_hasrestart(false).
+              that_subscribes_to("File[/etc/systemd/system/#{title}]")
+          end
+        end
+
+        context 'hasstatus => false' do
+          let(:params) do
+            super().merge(
+              enable: true,
+              active: true,
+              hasstatus: false
+            )
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            expect(subject).to contain_service('test.service').
+              with_ensure(true).
+              with_enable(true).
+              with_provider('systemd').
+              with_hasstatus(false).
+              without_hasrestart.
               that_subscribes_to("File[/etc/systemd/system/#{title}]")
           end
         end

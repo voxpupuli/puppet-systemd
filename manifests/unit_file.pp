@@ -49,6 +49,12 @@
 # @param restart
 #   Specify a restart command manually. If left unspecified, a standard Puppet service restart happens.
 #
+# @param hasrestart
+#   maps to the same param on the service resource. Optional in the module because it's optional in the service resource type
+#
+# @param hasstatus
+#   maps to the same param on the service resource. true in the module because it's true in the service resource type
+#
 define systemd::unit_file (
   Enum['present', 'absent', 'file']        $ensure    = 'present',
   Stdlib::Absolutepath                     $path      = '/etc/systemd/system',
@@ -62,6 +68,8 @@ define systemd::unit_file (
   Optional[Variant[Boolean, Enum['mask']]] $enable    = undef,
   Optional[Boolean]                        $active    = undef,
   Optional[String]                         $restart   = undef,
+  Optional[Boolean]                        $hasrestart = undef,
+  Boolean                                  $hasstatus = true,
 ) {
   include systemd
 
@@ -95,10 +103,12 @@ define systemd::unit_file (
 
   if $enable != undef or $active != undef {
     service { $name:
-      ensure   => $active,
-      enable   => $enable,
-      restart  => $restart,
-      provider => 'systemd',
+      ensure     => $active,
+      enable     => $enable,
+      restart    => $restart,
+      provider   => 'systemd',
+      hasrestart => $hasrestart,
+      hasstatus  => $hasstatus,
     }
 
     if $ensure == 'absent' {
