@@ -55,6 +55,9 @@
 # @param hasstatus
 #   maps to the same param on the service resource. true in the module because it's true in the service resource type
 #
+# @param selinux_ignore_defaults
+#   maps to the same param on the file resource for the unit. false in the module because it's false in the file resource type
+#
 define systemd::unit_file (
   Enum['present', 'absent', 'file']        $ensure    = 'present',
   Stdlib::Absolutepath                     $path      = '/etc/systemd/system',
@@ -70,6 +73,7 @@ define systemd::unit_file (
   Optional[String]                         $restart   = undef,
   Optional[Boolean]                        $hasrestart = undef,
   Boolean                                  $hasstatus = true,
+  Boolean                                  $selinux_ignore_defaults = false,
 ) {
   include systemd
 
@@ -91,14 +95,15 @@ define systemd::unit_file (
   }
 
   file { "${path}/${name}":
-    ensure    => $_ensure,
-    content   => $content,
-    source    => $source,
-    target    => $_target,
-    owner     => $owner,
-    group     => $group,
-    mode      => $mode,
-    show_diff => $show_diff,
+    ensure                  => $_ensure,
+    content                 => $content,
+    source                  => $source,
+    target                  => $_target,
+    owner                   => $owner,
+    group                   => $group,
+    mode                    => $mode,
+    show_diff               => $show_diff,
+    selinux_ignore_defaults => $selinux_ignore_defaults,
   }
 
   if $enable != undef or $active != undef {

@@ -1169,7 +1169,8 @@ The following parameters are available in the `systemd::unit_file` defined type:
 * [`active`](#active)
 * [`restart`](#restart)
 * [`hasrestart`](#hasrestart)
-* [`hastatus`](#hastatus)
+* [`hasstatus`](#hasstatus)
+* [`selinux_ignore_defaults`](#selinux_ignore_defaults)
 
 ##### <a name="name"></a>`name`
 
@@ -1287,13 +1288,21 @@ maps to the same param on the service resource. Optional in the module because i
 
 Default value: ``undef``
 
-##### <a name="hastatus"></a>`hastatus`
+##### <a name="hasstatus"></a>`hasstatus`
 
 Data type: `Boolean`
 
 maps to the same param on the service resource. true in the module because it's true in the service resource type
 
 Default value: ``true``
+
+##### <a name="selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Boolean`
+
+maps to the same param on the file resource for the unit. false in the module because it's false in the file resource type
+
+Default value: ``false``
 
 ## Resource types
 

@@ -12,6 +12,31 @@ describe 'systemd::unit_file' do
 
         it { is_expected.to compile.with_all_deps }
 
+        context 'with defaults' do
+          it do
+            expect(subject).to contain_file("/etc/systemd/system/#{title}").
+              with_selinux_ignore_defaults(false)
+          end
+        end
+
+        context 'selinux_ignore_defaults => false' do
+          let(:params) { { selinux_ignore_defaults: false } }
+
+          it do
+            expect(subject).to contain_file("/etc/systemd/system/#{title}").
+              with_selinux_ignore_defaults(false)
+          end
+        end
+
+        context 'selinux_ignore_defaults => true' do
+          let(:params) { { selinux_ignore_defaults: true } }
+
+          it do
+            expect(subject).to contain_file("/etc/systemd/system/#{title}").
+              with_selinux_ignore_defaults(true)
+          end
+        end
+
         context 'with non-sensitive Content' do
           let(:params) { { content: 'non-sensitive Content' } }
 
