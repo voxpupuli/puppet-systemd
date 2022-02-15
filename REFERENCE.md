@@ -1168,6 +1168,8 @@ The following parameters are available in the `systemd::unit_file` defined type:
 * [`enable`](#enable)
 * [`active`](#active)
 * [`restart`](#restart)
+* [`hasrestart`](#hasrestart)
+* [`hastatus`](#hastatus)
 
 ##### <a name="name"></a>`name`
 
@@ -1276,6 +1278,22 @@ Data type: `Optional[String]`
 Specify a restart command manually. If left unspecified, a standard Puppet service restart happens.
 
 Default value: ``undef``
+
+##### <a name="hasrestart"></a>`hasrestart`
+
+Data type: `Optional[Boolean]`
+
+maps to the same param on the service resource. Optional in the module because it's optional in the service resource type
+
+Default value: ``undef``
+
+##### <a name="hastatus"></a>`hastatus`
+
+Data type: `Boolean`
+
+maps to the same param on the service resource. true in the module because it's true in the service resource type
+
+Default value: ``true``
 
 ## Resource types
 
