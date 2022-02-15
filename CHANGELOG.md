@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.6.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.6.0) (2022-02-15)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.5.2...v3.6.0)
+
+**Implemented enhancements:**
+
+- unit\_file: Implement selinux\_ignore\_defaults [\#248](https://github.com/voxpupuli/puppet-systemd/pull/248) ([bastelfreak](https://github.com/bastelfreak))
+- unit\_file: Implement hasrestart/hasstatus [\#247](https://github.com/voxpupuli/puppet-systemd/pull/247) ([bastelfreak](https://github.com/bastelfreak))
+- Install systemd-resolved on CentOS 8 and 9 [\#246](https://github.com/voxpupuli/puppet-systemd/pull/246) ([traylenator](https://github.com/traylenator))
+- Manage entries in modules-load.d directory [\#244](https://github.com/voxpupuli/puppet-systemd/pull/244) ([traylenator](https://github.com/traylenator))
+
+**Fixed bugs:**
+
+- systemd::escape: Also escape - \(dash\) [\#245](https://github.com/voxpupuli/puppet-systemd/pull/245) ([weaselp](https://github.com/weaselp))
+
 ## [v3.5.2](https://github.com/voxpupuli/puppet-systemd/tree/v3.5.2) (2022-01-12)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.5.1...v3.5.2)
