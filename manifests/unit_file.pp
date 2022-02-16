@@ -58,6 +58,13 @@
 # @param selinux_ignore_defaults
 #   maps to the same param on the file resource for the unit. false in the module because it's false in the file resource type
 #
+# @example manage unit file + service
+#   systemd::unit_file { 'foo.service':
+#     content => file("${module_name}/foo.service"),
+#     enable  => true,
+#     active  => true,
+#   }
+#
 define systemd::unit_file (
   Enum['present', 'absent', 'file']        $ensure    = 'present',
   Stdlib::Absolutepath                     $path      = '/etc/systemd/system',

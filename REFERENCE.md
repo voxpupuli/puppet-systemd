@@ -1151,6 +1151,18 @@ Creates a systemd unit file
 * **See also**
   * systemd.unit(5)
 
+#### Examples
+
+##### manage unit file + service
+
+```puppet
+systemd::unit_file { 'foo.service':
+  content => file("${module_name}/foo.service"),
+  enable  => true,
+  active  => true,
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `systemd::unit_file` defined type:
