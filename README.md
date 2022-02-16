@@ -53,9 +53,9 @@ You can also use this module to more fully manage the new unit. This example dep
 
 ```puppet
 systemd::unit_file { 'foo.service':
- source => "puppet:///modules/${module_name}/foo.service",
- enable => true,
- active => true,
+  content => file("${module_name}/foo.service"),
+  enable => true,
+  active => true,
 }
 ```
 
