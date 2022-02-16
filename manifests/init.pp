@@ -143,6 +143,15 @@
 # @param purge_dropin_dirs
 #   When enabled, unused directories for dropin files will be purged
 #
+# @param manage_coredump
+#   Should systemd-coredump configuration be managed
+#
+# @param coredump_settings
+#   Hash of systemd-coredump configurations for coredump.conf
+#
+# @param coredump_backtrace
+#   Add --backtrace to systemd-coredump call systemd-coredump@.service unit
+#
 class systemd (
   Hash[String,String]                                 $accounting = {},
   Hash[String[1],Hash[String[1], Any]]                $service_limits = {},
@@ -187,6 +196,9 @@ class systemd (
   Hash                                                $loginctl_users = {},
   Hash                                                $dropin_files = {},
   Hash                                                $udev_rules = {},
+  Boolean                                             $manage_coredump = false,
+  Systemd::CoredumpSettings                           $coredump_settings = {},
+  Boolean                                             $coredump_backtrace = false,
 ) {
   contain systemd::install
 
@@ -243,6 +255,10 @@ class systemd (
 
   if $manage_logind {
     contain systemd::logind
+  }
+
+  if $manage_coredump {
+    contain systemd::coredump
   }
 
   $dropin_files.each |$name, $resource| {
