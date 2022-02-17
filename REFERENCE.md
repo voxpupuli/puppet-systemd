@@ -13,6 +13,7 @@
 
 #### Private Classes
 
+* `systemd::coredump`: This class manages the systemd-coredump configuration.
 * `systemd::install`: Install any systemd sub packages
 * `systemd::journald`: This class manages and configures journald.
 * `systemd::logind`: This class manages systemd's login manager configuration.
@@ -44,6 +45,7 @@
 
 ### Data types
 
+* [`Systemd::CoredumpSettings`](#systemdcoredumpsettings): Configurations for coredump.conf
 * [`Systemd::Dropin`](#systemddropin): custom datatype that validates filenames/paths for valid systemd dropin files
 * [`Systemd::JournaldSettings`](#systemdjournaldsettings): Matches Systemd journald config Struct
 * [`Systemd::JournaldSettings::Ensure`](#systemdjournaldsettingsensure): defines allowed ensure states for systemd-journald settings
@@ -105,6 +107,9 @@ The following parameters are available in the `systemd` class:
 * [`manage_accounting`](#manage_accounting)
 * [`accounting`](#accounting)
 * [`purge_dropin_dirs`](#purge_dropin_dirs)
+* [`manage_coredump`](#manage_coredump)
+* [`coredump_settings`](#coredump_settings)
+* [`coredump_backtrace`](#coredump_backtrace)
 
 ##### <a name="service_limits"></a>`service_limits`
 
@@ -463,6 +468,30 @@ Data type: `Boolean`
 When enabled, unused directories for dropin files will be purged
 
 Default value: ``true``
+
+##### <a name="manage_coredump"></a>`manage_coredump`
+
+Data type: `Boolean`
+
+Should systemd-coredump configuration be managed
+
+Default value: ``false``
+
+##### <a name="coredump_settings"></a>`coredump_settings`
+
+Data type: `Systemd::CoredumpSettings`
+
+Hash of systemd-coredump configurations for coredump.conf
+
+Default value: `{}`
+
+##### <a name="coredump_backtrace"></a>`coredump_backtrace`
+
+Data type: `Boolean`
+
+Add --backtrace to systemd-coredump call in the kernel.core_pattern setting.
+
+Default value: ``false``
 
 ### <a name="systemdtmpfiles"></a>`systemd::tmpfiles`
 
@@ -1407,6 +1436,27 @@ Data type: `Boolean`
 Use path (-p) ornon-path  style escaping.
 
 ## Data types
+
+### <a name="systemdcoredumpsettings"></a>`Systemd::CoredumpSettings`
+
+Configurations for coredump.conf
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/coredump.conf.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['Storage']         => Enum['none', 'external', 'journal'],
+    Optional['Compress']        => Enum['yes','no'],
+    Optional['ProcessSizeMax']  => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
+    Optional['ExternalSizeMax'] => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
+    Optional['JournalSizeMax']  => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
+    Optional['MaxUse']          => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
+    Optional['MaxFree']         => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
+  }]
+```
 
 ### <a name="systemddropin"></a>`Systemd::Dropin`
 

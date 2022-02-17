@@ -260,7 +260,8 @@ systemd::network{'eth0.network':
 ### Services
 
 Systemd provides multiple services. Currently you can manage `systemd-resolved`,
-`systemd-timesyncd`, `systemd-networkd`, `systemd-journald` and `systemd-logind`
+`systemd-timesyncd`, `systemd-networkd`, `systemd-journald`, `systemd-coredump`
+and `systemd-logind`
 via the main class:
 
 ```puppet
@@ -271,6 +272,7 @@ class{'systemd':
   manage_journald  => true,
   manage_udevd     => true,
   manage_logind    => true,
+  manage_coredump  => true,
 }
 ```
 
@@ -360,6 +362,25 @@ systemd::udev::rule:
   rules:
     - 'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"'
     - 'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
+```
+
+### coredump configuration
+The `systemd-coredump `system can be configured.
+
+```puppet
+class{'systemd':
+  manage_coredump    => true,
+  coredump_backtrace => true,
+  coredump_settings  => {
+    'Storage'         => 'external',
+    'Compress'        => 'yes',
+    'ProcessSizeMax'  => '2G',
+    'ExternalSizeMax' => '10G',
+    'JournalSizeMax'  => '20T',
+    'MaxUse'          => '1E',
+    "MaxFree'         => '1P',
+  }
+}
 ```
 
 ### logind configuration

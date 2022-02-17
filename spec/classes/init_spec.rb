@@ -17,6 +17,7 @@ describe 'systemd' do
         it { is_expected.not_to create_service('systemd-networkd') }
         it { is_expected.not_to create_service('systemd-timesyncd') }
         it { is_expected.not_to contain_package('systemd-resolved') }
+        it { is_expected.not_to contain_class('systemd::coredump') }
 
         context 'when enabling resolved and networkd' do
           let(:params) do
@@ -546,6 +547,85 @@ describe 'systemd' do
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_class('systemd::networkd') }
           it { is_expected.to contain_file('/etc/systemd/network').with_ensure('directory') }
+        end
+
+        context 'when not managing systemd-coredump' do
+          let :params do
+            {
+              manage_coredump: false,
+              coredump_settings: { 'Storage' => 'none' },
+            }
+          end
+
+          it { is_expected.not_to contain_class('systemd::coredump') }
+        end
+
+        context 'when managing systemd-coredump' do
+          let :params do
+            {
+              manage_coredump: true,
+              coredump_settings: {
+                'Storage' => 'none',
+                'ProcessSizeMax' => '5000E',
+                'Compress' => 'yes',
+              }
+            }
+          end
+
+          it { is_expected.to contain_class('systemd::coredump') }
+          it { is_expected.to contain_systemd__dropin_file('coredump_backtrace.conf').with_ensure('absent') }
+
+          it { is_expected.to contain_ini_setting('coredump_Storage') }
+
+          it {
+            is_expected.to contain_ini_setting('coredump_Storage').with(
+              {
+                path: '/etc/systemd/coredump.conf',
+                section: 'Coredump',
+                setting: 'Storage',
+                value: 'none',
+              }
+            )
+          }
+
+          it {
+            is_expected.to contain_ini_setting('coredump_ProcessSizeMax').with(
+              {
+                path: '/etc/systemd/coredump.conf',
+                section: 'Coredump',
+                setting: 'ProcessSizeMax',
+                value: '5000E',
+              }
+            )
+          }
+
+          it {
+            is_expected.to contain_ini_setting('coredump_Compress').with(
+              {
+                path: '/etc/systemd/coredump.conf',
+                section: 'Coredump',
+                setting: 'Compress',
+                value: 'yes',
+              }
+            )
+          }
+
+          context 'with backtrace false' do
+            let :params do
+              super().merge({ coredump_backtrace: false })
+            end
+
+            it { is_expected.to contain_systemd__dropin_file('coredump_backtrace.conf').with_ensure('absent') }
+          end
+
+          context 'with coredump_sysctl_manage true and backtrace true' do
+            let :params do
+              super().merge({ coredump_backtrace: true })
+            end
+
+            it { is_expected.to contain_systemd__dropin_file('coredump_backtrace.conf').with_ensure('file') }
+            it { is_expected.to contain_systemd__dropin_file('coredump_backtrace.conf').with_content(%r{^ExecStart=.*--backtrace$}) }
+          end
         end
       end
     end
