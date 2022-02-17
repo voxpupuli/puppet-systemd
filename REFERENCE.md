@@ -165,7 +165,9 @@ Default value: ``false``
 
 Data type: `Enum['stopped','running']`
 
-The state that the ``resolved`` service should be in
+The state that the ``resolved`` service should be in. When migrating from 'running' to
+'stopped' an attempt will be made to restore a working `/etc/resolv.conf` using
+`/run/systemd/resolved/resolv.conf`.
 
 Default value: `'running'`
 
@@ -270,6 +272,7 @@ Data type: `Boolean`
 
 Takes a boolean argument. When "false" (default) it uses /run/systemd/resolve/resolv.conf
 as /etc/resolv.conf. When "true", it uses /run/systemd/resolve/stub-resolv.conf
+When `resolved_ensure` is `stopped` this parameter is ignored.
 
 Default value: ``false``
 

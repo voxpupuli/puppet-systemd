@@ -284,6 +284,18 @@ When configuring `systemd::resolved` you could set `use_stub_resolver` to false 
 
 Systemd has introduced `DNS Over TLS` in the release 239. Currently three states are supported `yes` (since systemd 243), `opportunistic` (true) and `no` (false, default). When enabled with `yes` or `opportunistic` `systemd-resolved` will start a TCP-session to a DNS server with `DNS Over TLS` support. When enabled with `yes` (strict mode), queries will fail if the configured DNS servers do not support `DNS Over TLS`. Note that there will be no host checking for `DNS Over TLS` due to missing implementation in `systemd-resolved`.
 
+Stopping `systemd-resolved` once running can be problematic and care should be taken.
+
+```puppet
+class{'systemd':
+  manage_resolved => true,
+  resolved_ensure => false,
+}
+```
+
+will stop the service and should also copy `/run/systemd/resolve/resolv.conf` to `/etc/resolve.conf`.
+* Writing your own file to `/etc/resolv.conf` is also possible.
+
 It is possible to configure the default ntp servers in `/etc/systemd/timesyncd.conf`:
 
 ```puppet
@@ -298,6 +310,8 @@ when `manage_systemd` is true any required sub package, e.g. `systemd-resolved` 
 systemd-resolved will only occur on second puppet run after that installation.
 
 This requires [puppetlabs-inifile](https://forge.puppet.com/puppetlabs/inifile), which is only a soft dependency in this module (you need to explicitly install it). Both parameters accept a string or an array.
+
+
 
 ### Resource Accounting
 
