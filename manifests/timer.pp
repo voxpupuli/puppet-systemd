@@ -91,6 +91,7 @@ define systemd::timer (
       group     => $group,
       mode      => $mode,
       show_diff => $show_diff,
+      before    => Systemd::Unit_File[$name],
     }
   }
 
