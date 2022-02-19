@@ -29,7 +29,7 @@ describe 'systemd::timer' do
           it {
             expect(subject).to contain_systemd__unit_file('foobar.service').with(
               content: "[Service]\nExecStart=/bin/touch /tmp/foobar"
-            )
+            ).that_comes_before('Systemd::Unit_file[foobar.timer]')
           }
         end
 
@@ -43,7 +43,7 @@ describe 'systemd::timer' do
 
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_systemd__unit_file('foobar.timer').with_source('puppet:///timer') }
-          it { is_expected.to contain_systemd__unit_file('foobar.service').with_source('puppet:///source') }
+          it { is_expected.to contain_systemd__unit_file('foobar.service').with_source('puppet:///source').that_comes_before('Systemd::Unit_file[foobar.timer]') }
         end
 
         context('with timer_source only set') do
@@ -69,7 +69,7 @@ describe 'systemd::timer' do
 
           it { is_expected.to contain_systemd__unit_file('foobar.timer').with_content("[Timer]\nOnCalendar=weekly") }
 
-          it { is_expected.to contain_systemd__unit_file('gamma.service').with_content("[Service]\nExecStart=/bin/touch /tmp/foobar") }
+          it { is_expected.to contain_systemd__unit_file('gamma.service').with_content("[Service]\nExecStart=/bin/touch /tmp/foobar").that_comes_before('Systemd::Unit_file[foobar.timer]') }
         end
 
         context 'with timer activated service' do
@@ -83,7 +83,7 @@ describe 'systemd::timer' do
           end
 
           it { is_expected.to contain_systemd__unit_file('foobar.timer').with_content("[Timer]\nOnCalendar=hourly") }
-          it { is_expected.to contain_systemd__unit_file('foobar.service').with_content("[Service]\nExecStart=/bin/echo timer-fired") }
+          it { is_expected.to contain_systemd__unit_file('foobar.service').with_content("[Service]\nExecStart=/bin/echo timer-fired").that_comes_before('Systemd::Unit_file[foobar.timer]') }
 
           it {
             expect(subject).to create_exec('foobar.service-systemctl-daemon-reload').with(
