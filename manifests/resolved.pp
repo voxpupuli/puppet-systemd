@@ -72,14 +72,25 @@ class systemd::resolved (
   }
 
   if $systemd::manage_resolv_conf {
-    $_resolv_conf_target = $use_stub_resolver ? {
-      true    => '/run/systemd/resolve/stub-resolv.conf',
-      default => '/run/systemd/resolve/resolv.conf',
-    }
-    file { '/etc/resolv.conf':
-      ensure  => 'symlink',
-      target  => $_resolv_conf_target,
-      require => Service['systemd-resolved'],
+    if $ensure == 'running' {
+      $_resolv_conf_target = $use_stub_resolver ? {
+        true    => '/run/systemd/resolve/stub-resolv.conf',
+        default => '/run/systemd/resolve/resolv.conf',
+      }
+      file { '/etc/resolv.conf':
+        ensure  => 'symlink',
+        target  => $_resolv_conf_target,
+        require => Service['systemd-resolved'],
+      }
+    } else {
+      # If systemd not running make a last ditch attempt to restore
+      # /etc/resolv.conf to something that might actually work on
+      # reboot.
+      exec { 'restore_resolv.conf_if_possible':
+        command => 'cp --remove-destination -f /run/systemd/resolve/resolv.conf /etc/resolv.conf',
+        onlyif  => 'test "$(readlink /etc/resolv.conf)" = "/run/systemd/resolve/resolv.conf"  || test "$(readlink /etc/resolv.conf)" = "/run/systemd/resolve/stub-resolv.conf"',
+        path    => $facts['path'],
+      }
     }
   }
 

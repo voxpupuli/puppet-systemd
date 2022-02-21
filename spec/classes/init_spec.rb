@@ -29,7 +29,8 @@ describe 'systemd' do
 
           it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
           it { is_expected.to create_service('systemd-resolved').with_enable(true) }
-          it { is_expected.to contain_file('/etc/resolv.conf') }
+          it { is_expected.to contain_file('/etc/resolv.conf').with_ensure('symlink') }
+          it { is_expected.not_to contain_exec('restore_resolv.conf_if_possible') }
           it { is_expected.to create_service('systemd-networkd').with_ensure('running') }
           it { is_expected.to create_service('systemd-networkd').with_enable(true) }
           it { is_expected.not_to contain_file('/etc/systemd/network') }
@@ -50,6 +51,34 @@ describe 'systemd' do
             let(:params) { super().merge(manage_resolv_conf: true) }
 
             it { is_expected.to contain_file('/etc/resolv.conf') }
+          end
+        end
+
+        context 'when resolved_ensure is stopped' do
+          let(:params) do
+            {
+              manage_resolved: true,
+              resolved_ensure: 'stopped',
+            }
+          end
+
+          it { is_expected.to create_service('systemd-resolved').with_ensure('stopped') }
+          it { is_expected.to create_service('systemd-resolved').with_enable(false) }
+          it { is_expected.not_to contain_file('/etc/resolv.conf') }
+          it { is_expected.to contain_exec('restore_resolv.conf_if_possible') }
+
+          context 'with manage_resolv_conf false' do
+            let(:params) { super().merge(manage_resolv_conf: false) }
+
+            it { is_expected.not_to contain_file('/etc/resolv.conf') }
+            it { is_expected.not_to contain_exec('restore_resolv.conf_if_possible') }
+          end
+
+          context 'with manage_resolv_conf true' do
+            let(:params) { super().merge(manage_resolv_conf: true) }
+
+            it { is_expected.not_to contain_file('/etc/resolv.conf') }
+            it { is_expected.to contain_exec('restore_resolv.conf_if_possible') }
           end
         end
 

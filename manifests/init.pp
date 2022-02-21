@@ -22,7 +22,9 @@
 #   Manage the systemd resolver
 #
 # @param resolved_ensure
-#   The state that the ``resolved`` service should be in
+#   The state that the ``resolved`` service should be in. When migrating from 'running' to
+#   'stopped' an attempt will be made to restore a working `/etc/resolv.conf` using
+#   `/run/systemd/resolved/resolv.conf`.
 #
 # @param resolved_package
 #   The name of a systemd sub package needed for systemd-resolved if one needs to be installed.
@@ -67,6 +69,8 @@
 # @param use_stub_resolver
 #   Takes a boolean argument. When "false" (default) it uses /run/systemd/resolve/resolv.conf
 #   as /etc/resolv.conf. When "true", it uses /run/systemd/resolve/stub-resolv.conf
+#   When `resolved_ensure` is `stopped` this parameter is ignored.
+#
 # @param manage_networkd
 #   Manage the systemd network daemon
 #
