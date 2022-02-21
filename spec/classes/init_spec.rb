@@ -29,6 +29,7 @@ describe 'systemd' do
 
           it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
           it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_file('/etc/resolv.conf') }
           it { is_expected.to create_service('systemd-networkd').with_ensure('running') }
           it { is_expected.to create_service('systemd-networkd').with_enable(true) }
           it { is_expected.not_to contain_file('/etc/systemd/network') }
@@ -38,6 +39,17 @@ describe 'systemd' do
             it { is_expected.to contain_package('systemd-resolved') }
           else
             it { is_expected.not_to contain_package('systemd-resolved') }
+          end
+          context 'with manage_resolv_conf false' do
+            let(:params) { super().merge(manage_resolv_conf: false) }
+
+            it { is_expected.not_to contain_file('/etc/resolv.conf') }
+          end
+
+          context 'with manage_resolv_conf true' do
+            let(:params) { super().merge(manage_resolv_conf: true) }
+
+            it { is_expected.to contain_file('/etc/resolv.conf') }
           end
         end
 

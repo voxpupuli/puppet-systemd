@@ -71,14 +71,16 @@ class systemd::resolved (
     enable => $_enable_resolved,
   }
 
-  $_resolv_conf_target = $use_stub_resolver ? {
-    true    => '/run/systemd/resolve/stub-resolv.conf',
-    default => '/run/systemd/resolve/resolv.conf',
-  }
-  file { '/etc/resolv.conf':
-    ensure  => 'symlink',
-    target  => $_resolv_conf_target,
-    require => Service['systemd-resolved'],
+  if $systemd::manage_resolv_conf {
+    $_resolv_conf_target = $use_stub_resolver ? {
+      true    => '/run/systemd/resolve/stub-resolv.conf',
+      default => '/run/systemd/resolve/resolv.conf',
+    }
+    file { '/etc/resolv.conf':
+      ensure  => 'symlink',
+      target  => $_resolv_conf_target,
+      require => Service['systemd-resolved'],
+    }
   }
 
   if $dns {

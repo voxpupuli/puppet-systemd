@@ -61,6 +61,9 @@
 # @param dns_stub_listener
 #   Takes a boolean argument or one of "udp" and "tcp".
 #
+# @param manage_resolv_conf
+#   For when `manage_resolved` is `true` should the file `/etc/resolv.conf` be managed.
+#
 # @param use_stub_resolver
 #   Takes a boolean argument. When "false" (default) it uses /run/systemd/resolve/resolv.conf
 #   as /etc/resolv.conf. When "true", it uses /run/systemd/resolve/stub-resolv.conf
@@ -171,6 +174,7 @@ class systemd (
   Variant[Boolean,Enum['yes', 'opportunistic', 'no']] $dnsovertls = false,
   Variant[Boolean,Enum['no-negative']]                $cache = false,
   Optional[Variant[Boolean,Enum['udp','tcp']]]        $dns_stub_listener = undef,
+  Boolean                                             $manage_resolv_conf = true,
   Boolean                                             $use_stub_resolver = false,
   Boolean                                             $manage_networkd = false,
   Enum['stopped','running']                           $networkd_ensure = 'running',
