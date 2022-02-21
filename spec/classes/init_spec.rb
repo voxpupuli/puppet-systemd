@@ -36,7 +36,7 @@ describe 'systemd' do
           it { is_expected.not_to contain_file('/etc/systemd/network') }
 
           case [facts[:os]['family'], facts[:os]['release']['major']]
-          when %w[RedHat 9]
+          when %w[RedHat 7], %w[RedHat 9]
             it { is_expected.to contain_package('systemd-resolved') }
           else
             it { is_expected.not_to contain_package('systemd-resolved') }
