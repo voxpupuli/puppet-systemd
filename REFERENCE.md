@@ -81,6 +81,7 @@ The following parameters are available in the `systemd` class:
 * [`dnsovertls`](#dnsovertls)
 * [`cache`](#cache)
 * [`dns_stub_listener`](#dns_stub_listener)
+* [`manage_resolv_conf`](#manage_resolv_conf)
 * [`use_stub_resolver`](#use_stub_resolver)
 * [`manage_networkd`](#manage_networkd)
 * [`networkd_ensure`](#networkd_ensure)
@@ -254,6 +255,14 @@ Data type: `Optional[Variant[Boolean,Enum['udp','tcp']]]`
 Takes a boolean argument or one of "udp" and "tcp".
 
 Default value: ``undef``
+
+##### <a name="manage_resolv_conf"></a>`manage_resolv_conf`
+
+Data type: `Boolean`
+
+For when `manage_resolved` is `true` should the file `/etc/resolv.conf` be managed.
+
+Default value: ``true``
 
 ##### <a name="use_stub_resolver"></a>`use_stub_resolver`
 
@@ -489,7 +498,7 @@ Default value: `{}`
 
 Data type: `Boolean`
 
-Add --backtrace to systemd-coredump call in the kernel.core_pattern setting.
+Add --backtrace to systemd-coredump call systemd-coredump@.service unit
 
 Default value: ``false``
 
