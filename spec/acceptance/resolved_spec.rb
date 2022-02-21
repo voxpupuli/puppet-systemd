@@ -12,13 +12,12 @@ describe 'systemd with manage_resolved true' do
       }
       PUPPET
       apply_manifest(pp, catch_failures: true)
-      # RedHat 9 and newer installs package first run before fact  $facts['internal_services'] is set
-      apply_manifest(pp, catch_failures: true) if Gem::Version.new(fact('os.release.major')) >= Gem::Version.new('9') && (fact('os.family') == 'RedHat')
+      # RedHat 7, 9 and newer installs package first run before fact $facts['internal_services'] is set
+      apply_manifest(pp, catch_failures: true) if fact('os.release.major') != '8' && (fact('os.family') == 'RedHat')
       apply_manifest(pp, catch_changes: true)
     end
 
-    # RedHat 7 does not have systemd-resolved available at all.
-    describe service('systemd-resolved'), unless: (fact('os.release.major') == '7' and fact('os.family') == 'RedHat') do
+    describe service('systemd-resolved') do
       it { is_expected.to be_running }
       it { is_expected.to be_enabled }
     end
@@ -34,8 +33,6 @@ describe 'systemd with manage_resolved true' do
       }
       PUPPET
       apply_manifest(pp, catch_failures: true)
-      # RedHat 9 and newer installs package first run before fact  $facts['internal_services'] is set
-      apply_manifest(pp, catch_failures: true) if Gem::Version.new(fact('os.release.major')) >= Gem::Version.new('9') && (fact('os.family') == 'RedHat')
       apply_manifest(pp, catch_changes: true)
     end
 

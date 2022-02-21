@@ -1,4 +1,6 @@
 ---
+systemd::resolved_package: 'systemd-resolved'
+
 systemd::accounting:
   DefaultCPUAccounting: 'yes'
   DefaultBlockIOAccounting: 'yes'
