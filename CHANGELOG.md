@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.7.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.7.0) (2022-02-22)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.6.0...v3.7.0)
+
+**Implemented enhancements:**
+
+- Install systemd-resolved on RedHat 7 [\#257](https://github.com/voxpupuli/puppet-systemd/pull/257) ([traylenator](https://github.com/traylenator))
+- New parmater manage\_resolv\_conf for /etc/resolv.conf [\#256](https://github.com/voxpupuli/puppet-systemd/pull/256) ([traylenator](https://github.com/traylenator))
+- Manage systemd-coredump config and setup [\#251](https://github.com/voxpupuli/puppet-systemd/pull/251) ([traylenator](https://github.com/traylenator))
+
+**Fixed bugs:**
+
+- systemd-resolved cannot be fully disabled because /etc/resolv.conf is managed [\#203](https://github.com/voxpupuli/puppet-systemd/issues/203)
+- Do not install  systemd-resolved RedHat 8 [\#254](https://github.com/voxpupuli/puppet-systemd/pull/254) ([traylenator](https://github.com/traylenator))
+- timer: timer unit must depend on service unit. [\#253](https://github.com/voxpupuli/puppet-systemd/pull/253) ([olifre](https://github.com/olifre))
+- Don't manage /etc/resolv.conf if systemd-resolved is stopped [\#252](https://github.com/voxpupuli/puppet-systemd/pull/252) ([traylenator](https://github.com/traylenator))
+
+**Closed issues:**
+
+- missing hiera lookup\_options [\#196](https://github.com/voxpupuli/puppet-systemd/issues/196)
+
+**Merged pull requests:**
+
+- Addition of Trivial Acceptance Tests [\#255](https://github.com/voxpupuli/puppet-systemd/pull/255) ([traylenator](https://github.com/traylenator))
+- document systemd::unit\_file example with puppet-strings [\#250](https://github.com/voxpupuli/puppet-systemd/pull/250) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v3.6.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.6.0) (2022-02-15)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.5.2...v3.6.0)
