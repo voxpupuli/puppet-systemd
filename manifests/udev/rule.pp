@@ -38,12 +38,11 @@ define systemd::udev::rule (
     fail("systemd::udev::rule - ${name}: param rules is empty, you need to pass rules")
   }
 
-  file { $filename:
+  file { join([$path, $name], '/'):
     ensure                  => $ensure,
     owner                   => 'root',
     group                   => 'root',
     mode                    => '0444',
-    path                    => join([$path, $name], '/'),
     notify                  => $notify_services,
     selinux_ignore_defaults => $selinux_ignore_defaults,
     content                 => epp("${module_name}/udev_rule.epp", { 'rules' => $rules }),
