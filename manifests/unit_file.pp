@@ -58,6 +58,9 @@
 # @param selinux_ignore_defaults
 #   maps to the same param on the file resource for the unit. false in the module because it's false in the file resource type
 #
+# @param service_parameters
+#   hash that will be passed with the splat operator to the service resource
+#
 # @example manage unit file + service
 #   systemd::unit_file { 'foo.service':
 #     content => file("${module_name}/foo.service"),
@@ -81,6 +84,7 @@ define systemd::unit_file (
   Optional[Boolean]                        $hasrestart = undef,
   Boolean                                  $hasstatus = true,
   Boolean                                  $selinux_ignore_defaults = false,
+  Hash[String[1], Any]                     $service_parameters = {},
 ) {
   include systemd
 
@@ -121,6 +125,7 @@ define systemd::unit_file (
       provider   => 'systemd',
       hasrestart => $hasrestart,
       hasstatus  => $hasstatus,
+      *          => $service_parameters,
     }
 
     if $ensure == 'absent' {
