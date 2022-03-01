@@ -20,7 +20,7 @@ describe 'systemd::udev::rule' do
         describe 'with all options (one notify)' do
           let(:params) do
             {
-              ensure: 'present',
+              ensure: 'file',
               path: '/etc/udev/rules.d',
               selinux_ignore_defaults: false,
               notify_services: 'Service[systemd-udevd]',
@@ -54,7 +54,7 @@ describe 'systemd::udev::rule' do
         describe 'with all options (array notify)' do
           let(:params) do
             {
-              ensure: 'present',
+              ensure: 'file',
               path: '/etc/udev/rules.d',
               selinux_ignore_defaults: false,
               notify_services: ['Service[systemd-udevd]', 'Service[foo]'],

@@ -24,7 +24,7 @@
 #
 define systemd::udev::rule (
   Array                             $rules                   = [],
-  Enum['present', 'absent', 'file'] $ensure                  = 'present',
+  Enum['present', 'absent', 'file'] $ensure                  = 'file',
   Stdlib::Absolutepath              $path                    = '/etc/udev/rules.d',
   Variant[Array[String[1]], String[1]] $notify_services      = [],
   Boolean                           $selinux_ignore_defaults = false,
