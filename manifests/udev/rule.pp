@@ -23,7 +23,7 @@
 #   The literal udev rules you want to deploy
 #
 define systemd::udev::rule (
-  Array                             $rules,
+  Array                             $rules                   = [],
   Enum['present', 'absent', 'file'] $ensure                  = 'present',
   Stdlib::Absolutepath              $path                    = '/etc/udev/rules.d',
   Variant[Array[String[1]], String[1]] $notify_services      = [],
@@ -33,6 +33,9 @@ define systemd::udev::rule (
 
   $filename = assert_type(Pattern['^.+\.rules$'], $name) |$expected, $actual| {
     fail("The \$name should match \'${expected}\', you passed \'${actual}\'")
+  }
+  if $ensure in ['file', 'present'] and empty($rules) {
+    fail("systemd::udev::rule - ${name}: param rules is empty, you need to pass rules")
   }
 
   file { $filename:
