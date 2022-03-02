@@ -87,7 +87,7 @@ describe 'systemd::unit_file' do
               with_ensure(true).
               with_enable(true).
               with_provider('systemd').
-              with_hasstatus(true).
+              without_hasstatus.
               without_hasrestart.
               without_flags.
               without_timeout.
@@ -114,7 +114,7 @@ describe 'systemd::unit_file' do
               with_ensure(true).
               with_enable(true).
               with_provider('systemd').
-              with_hasstatus(true).
+              without_hasstatus.
               without_hasrestart.
               with_flags('--awesome').
               with_timeout(1337).
@@ -155,7 +155,7 @@ describe 'systemd::unit_file' do
               with_ensure(true).
               with_enable(true).
               with_provider('systemd').
-              with_hasstatus(true).
+              without_hasstatus.
               with_hasrestart(true).
               that_subscribes_to("File[/etc/systemd/system/#{title}]")
           end
@@ -177,7 +177,7 @@ describe 'systemd::unit_file' do
               with_ensure(true).
               with_enable(true).
               with_provider('systemd').
-              with_hasstatus(true).
+              without_hasstatus.
               with_hasrestart(false).
               that_subscribes_to("File[/etc/systemd/system/#{title}]")
           end

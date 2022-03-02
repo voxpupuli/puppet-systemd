@@ -50,10 +50,10 @@
 #   Specify a restart command manually. If left unspecified, a standard Puppet service restart happens.
 #
 # @param hasrestart
-#   maps to the same param on the service resource. Optional in the module because it's optional in the service resource type
+#   maps to the same param on the service resource. Optional in the module because it's optional in the service resource type. This param is deprecated. Set it via $service_parameters.
 #
 # @param hasstatus
-#   maps to the same param on the service resource. true in the module because it's true in the service resource type
+#   maps to the same param on the service resource. true in the module because it's true in the service resource type. This param is deprecated. Set it via $service_parameters.
 #
 # @param selinux_ignore_defaults
 #   maps to the same param on the file resource for the unit. false in the module because it's false in the file resource type
@@ -82,13 +82,21 @@ define systemd::unit_file (
   Optional[Boolean]                        $active    = undef,
   Optional[String]                         $restart   = undef,
   Optional[Boolean]                        $hasrestart = undef,
-  Boolean                                  $hasstatus = true,
+  Optional[Boolean]                        $hasstatus = undef,
   Boolean                                  $selinux_ignore_defaults = false,
   Hash[String[1], Any]                     $service_parameters = {},
 ) {
   include systemd
 
   assert_type(Systemd::Unit, $name)
+
+  if $hasrestart =~ NotUndef {
+    deprecation("systemd::unit_file - ${title}", 'hasrestart is deprecated and will be removed in Version 4 of the module')
+  }
+
+  if $hasstatus =~ NotUndef {
+    deprecation("systemd::unit_file - ${title}", 'hasstatus is deprecated and will be removed in Version 4 of the module')
+  }
 
   if $enable == 'mask' {
     $_target = '/dev/null'
