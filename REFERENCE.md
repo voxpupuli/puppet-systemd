@@ -1153,7 +1153,7 @@ Data type: `Enum['present', 'absent', 'file']`
 
 Whether to drop a file or remove it
 
-Default value: `'present'`
+Default value: `'file'`
 
 ##### <a name="path"></a>`path`
 
@@ -1184,6 +1184,8 @@ Default value: `[]`
 Data type: `Array`
 
 The literal udev rules you want to deploy
+
+Default value: `[]`
 
 ### <a name="systemdunit_file"></a>`systemd::unit_file`
 
@@ -1338,7 +1340,7 @@ Default value: ``undef``
 
 Data type: `Optional[Boolean]`
 
-maps to the same param on the service resource. Optional in the module because it's optional in the service resource type
+maps to the same param on the service resource. Optional in the module because it's optional in the service resource type. This param is deprecated. Set it via $service_parameters.
 
 Default value: ``undef``
 
@@ -1346,7 +1348,7 @@ Default value: ``undef``
 
 Data type: `Boolean`
 
-maps to the same param on the service resource. true in the module because it's true in the service resource type
+maps to the same param on the service resource. true in the module because it's true in the service resource type. This param is deprecated. Set it via $service_parameters.
 
 Default value: ``true``
 
@@ -1360,7 +1362,7 @@ Default value: ``false``
 
 ##### <a name="service_parameters"></a>`service_parameters`
 
-Data type: `Hash`
+Data type: `Hash[String[1], Any]`
 
 hash that will be passed with the splat operator to the service resource
 
