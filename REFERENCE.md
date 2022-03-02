@@ -1346,11 +1346,11 @@ Default value: ``undef``
 
 ##### <a name="hasstatus"></a>`hasstatus`
 
-Data type: `Boolean`
+Data type: `Optional[Boolean]`
 
 maps to the same param on the service resource. true in the module because it's true in the service resource type. This param is deprecated. Set it via $service_parameters.
 
-Default value: ``true``
+Default value: ``undef``
 
 ##### <a name="selinux_ignore_defaults"></a>`selinux_ignore_defaults`
 
