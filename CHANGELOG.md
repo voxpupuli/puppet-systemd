@@ -4,7 +4,23 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v3.7.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.7.0) (2022-02-22)
+## [v3.8.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.8.0) (2022-03-02)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.7.0...v3.8.0)
+
+**Implemented enhancements:**
+
+- dropin\_file: Implement service\_parameters hash [\#259](https://github.com/voxpupuli/puppet-systemd/pull/259) ([bastelfreak](https://github.com/bastelfreak))
+
+**Fixed bugs:**
+
+- systemd::udev::rule: param rules now defaults to `[]` / fix broken tests [\#260](https://github.com/voxpupuli/puppet-systemd/pull/260) ([bastelfreak](https://github.com/bastelfreak))
+
+**Merged pull requests:**
+
+- unit\_file: deprecate hasrestart/hasstatus params [\#261](https://github.com/voxpupuli/puppet-systemd/pull/261) ([bastelfreak](https://github.com/bastelfreak))
+
+## [v3.7.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.7.0) (2022-02-23)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.6.0...v3.7.0)
 
