@@ -1224,6 +1224,7 @@ The following parameters are available in the `systemd::unit_file` defined type:
 * [`hasrestart`](#hasrestart)
 * [`hasstatus`](#hasstatus)
 * [`selinux_ignore_defaults`](#selinux_ignore_defaults)
+* [`service_parameters`](#service_parameters)
 
 ##### <a name="name"></a>`name`
 
@@ -1356,6 +1357,14 @@ Data type: `Boolean`
 maps to the same param on the file resource for the unit. false in the module because it's false in the file resource type
 
 Default value: ``false``
+
+##### <a name="service_parameters"></a>`service_parameters`
+
+Data type: `Hash`
+
+hash that will be passed with the splat operator to the service resource
+
+Default value: `{}`
 
 ## Resource types
 

@@ -89,8 +89,54 @@ describe 'systemd::unit_file' do
               with_provider('systemd').
               with_hasstatus(true).
               without_hasrestart.
+              without_flags.
+              without_timeout.
               that_subscribes_to("File[/etc/systemd/system/#{title}]")
           end
+        end
+
+        context 'with enable => true and active => true and service_parameters' do
+          let(:params) do
+            super().merge(
+              enable: true,
+              active: true,
+              service_parameters: {
+                flags: '--awesome',
+                timeout: 1337
+              }
+            )
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            expect(subject).to contain_service('test.service').
+              with_ensure(true).
+              with_enable(true).
+              with_provider('systemd').
+              with_hasstatus(true).
+              without_hasrestart.
+              with_flags('--awesome').
+              with_timeout(1337).
+              that_subscribes_to("File[/etc/systemd/system/#{title}]")
+          end
+        end
+
+        context 'with enable => true and active => true and service_parameters and duplicate param' do
+          let(:params) do
+            super().merge(
+              enable: true,
+              active: true,
+              hasrestart: true,
+              service_parameters: {
+                flags: '--awesome',
+                timeout: 1337,
+                hasrestart: false
+              }
+            )
+          end
+
+          it { is_expected.not_to compile }
         end
 
         context 'hasrestart => true' do
