@@ -2,6 +2,9 @@
 #
 # @api public
 #
+# @param default_target
+#   The default systemd boot target, unmanaged if set to undef.
+#
 # @param service_limits
 #   May be passed a resource hash suitable for passing directly into the
 #   ``create_resources()`` function as called on ``systemd::service_limits``
@@ -160,6 +163,7 @@
 #   Add --backtrace to systemd-coredump call systemd-coredump@.service unit
 #
 class systemd (
+  Optional[Pattern['^.+\.target$']]                   $default_target = undef,
   Hash[String,String]                                 $accounting = {},
   Hash[String[1],Hash[String[1], Any]]                $service_limits = {},
   Hash[String[1],Hash[String[1], Any]]                $networks = {},
@@ -209,6 +213,20 @@ class systemd (
   Boolean                                             $coredump_backtrace = false,
 ) {
   contain systemd::install
+
+  if $default_target {
+    $target = shell_escape($default_target)
+    service { $target:
+      ensure => 'running',
+      enable => true,
+    }
+
+    exec { "systemctl set-default ${target}":
+      command => "systemctl set-default ${target}",
+      unless  => "test $(systemctl get-default) = ${target}",
+      path    => $facts['path'],
+    }
+  }
 
   $service_limits.each |$service_limit, $service_limit_data| {
     systemd::service_limits { $service_limit:
