@@ -259,6 +259,8 @@ systemd::network{'eth0.network':
 
 ### Services
 
+The default target is managed via the `default_target` parameter.  If this is left at its default value (`undef`), the default-target will be unmanaged by puppet.
+
 Systemd provides multiple services. Currently you can manage `systemd-resolved`,
 `systemd-timesyncd`, `systemd-networkd`, `systemd-journald`, `systemd-coredump`
 and `systemd-logind`

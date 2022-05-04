@@ -18,6 +18,7 @@ describe 'systemd' do
         it { is_expected.not_to create_service('systemd-timesyncd') }
         it { is_expected.not_to contain_package('systemd-resolved') }
         it { is_expected.not_to contain_class('systemd::coredump') }
+        it { is_expected.not_to contain_exec('systemctl set-default multi-user.target') }
 
         context 'when enabling resolved and networkd' do
           let(:params) do
@@ -179,6 +180,17 @@ describe 'systemd' do
               value: 'no-negative'
             )
           }
+        end
+
+        context 'with alternate target' do
+          let(:params) do
+            {
+              default_target: 'example.target',
+            }
+          end
+
+          it { is_expected.to contain_exec('systemctl set-default example.target') }
+          it { is_expected.to contain_service('example.target').with_enable(true).with_ensure('running') }
         end
 
         context 'when enabling timesyncd' do
