@@ -18,6 +18,7 @@ describe 'systemd' do
         it { is_expected.not_to create_service('systemd-timesyncd') }
         it { is_expected.not_to contain_package('systemd-resolved') }
         it { is_expected.not_to contain_class('systemd::coredump') }
+        it { is_expected.not_to contain_class('systemd::oomd') }
         it { is_expected.not_to contain_exec('systemctl set-default multi-user.target') }
 
         context 'when enabling resolved and networkd' do
@@ -191,6 +192,61 @@ describe 'systemd' do
 
           it { is_expected.to contain_exec('systemctl set-default example.target') }
           it { is_expected.to contain_service('example.target').with_enable(true).with_ensure('running') }
+        end
+
+        context 'when enabling oomd without settings' do
+          let(:params) do
+            {
+              manage_oomd: true,
+            }
+          end
+
+          it { is_expected.to create_service('systemd-oomd').with_ensure('running') }
+          it { is_expected.to create_service('systemd-oomd').with_enable(true) }
+        end
+
+        context 'when enabling oomd with settings' do
+          let(:params) do
+            {
+              manage_oomd: true,
+              oomd_settings: {
+                'SwapUsedLimit' => '10‰',
+                'DefaultMemoryPressureLimit' => '10%',
+                'DefaultMemoryPressureDurationSec' => 10,
+              },
+            }
+          end
+
+          it { is_expected.to create_service('systemd-oomd').with_ensure('running') }
+          it { is_expected.to create_service('systemd-oomd').with_enable(true) }
+          it { is_expected.to have_ini_setting_resource_count(3) }
+
+          it {
+            expect(subject).to contain_ini_setting('SwapUsedLimit').with(
+              path: '/etc/systemd/oomd.conf',
+              section: 'OOM',
+              notify: 'Service[systemd-oomd]',
+              value: '10‰'
+            )
+          }
+
+          it {
+            expect(subject).to contain_ini_setting('DefaultMemoryPressureLimit').with(
+              path: '/etc/systemd/oomd.conf',
+              section: 'OOM',
+              notify: 'Service[systemd-oomd]',
+              value: '10%'
+            )
+          }
+
+          it {
+            expect(subject).to contain_ini_setting('DefaultMemoryPressureDurationSec').with(
+              path: '/etc/systemd/oomd.conf',
+              section: 'OOM',
+              notify: 'Service[systemd-oomd]',
+              value: 10
+            )
+          }
         end
 
         context 'when enabling timesyncd' do

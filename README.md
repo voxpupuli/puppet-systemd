@@ -380,6 +380,21 @@ systemd::udev::rule:
     - 'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
 ```
 
+### oomd configuration
+The `systemd-oomd `system can be configured.
+
+```puppet
+class{'systemd':
+  manage_oomd   => true,
+  oomd_ensure   => 'running'
+  oomd_settings => {
+    'SwapUsedLimit' => '90%',
+    'DefaultMemoryPressureLimit' => '60%',
+    'DefaultMemoryPressureDurationSec' => 30,
+  }
+}
+```
+
 ### coredump configuration
 The `systemd-coredump `system can be configured.
 

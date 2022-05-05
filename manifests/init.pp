@@ -162,6 +162,15 @@
 # @param coredump_backtrace
 #   Add --backtrace to systemd-coredump call systemd-coredump@.service unit
 #
+# @param manage_oomd
+#   Should systemd-oomd configuration be managed
+#
+# @param oomd_ensure
+#   The state that the ``oomd`` service should be in
+#
+# @param oomd_settings
+#   Hash of systemd-oomd configurations for oomd.conf
+#
 class systemd (
   Optional[Pattern['^.+\.target$']]                   $default_target = undef,
   Hash[String,String]                                 $accounting = {},
@@ -211,6 +220,9 @@ class systemd (
   Boolean                                             $manage_coredump = false,
   Systemd::CoredumpSettings                           $coredump_settings = {},
   Boolean                                             $coredump_backtrace = false,
+  Boolean                                             $manage_oomd = false,
+  Enum['stopped','running']                           $oomd_ensure = 'running',
+  Systemd::OomdSettings                               $oomd_settings = {},
 ) {
   contain systemd::install
 
@@ -285,6 +297,10 @@ class systemd (
 
   if $manage_coredump {
     contain systemd::coredump
+  }
+
+  if $manage_oomd {
+    contain systemd::oomd
   }
 
   $dropin_files.each |$name, $resource| {
