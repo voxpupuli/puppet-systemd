@@ -126,6 +126,9 @@
 #   Config Hash that is used to generate instances of our
 #   `udev::rule` define.
 #
+# @param machine_info_settings
+#   Settings to place into /etc/machine-info (hostnamectl)
+#
 # @param manage_logind
 #   Manage the systemd logind
 #
@@ -194,6 +197,7 @@ class systemd (
   Boolean                                             $purge_dropin_dirs = true,
   Boolean                                             $manage_journald = true,
   Systemd::JournaldSettings                           $journald_settings = {},
+  Systemd::MachineInfoSettings                        $machine_info_settings = {},
   Boolean                                             $manage_udevd = false,
   Optional[Variant[Integer,String]]                   $udev_log = undef,
   Optional[Integer]                                   $udev_children_max = undef,
@@ -273,6 +277,10 @@ class systemd (
 
   if $manage_accounting {
     contain systemd::system
+  }
+
+  unless empty($machine_info_settings) {
+    contain systemd::machine_info
   }
 
   if $manage_journald {

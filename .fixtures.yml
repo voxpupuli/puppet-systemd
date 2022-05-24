@@ -3,3 +3,5 @@ fixtures:
   repositories:
     stdlib: https://github.com/puppetlabs/puppetlabs-stdlib
     inifile: https://github.com/puppetlabs/puppetlabs-inifile
+    augeasproviders_shellvar: https://github.com/voxpupuli/puppet-augeasproviders_shellvar
+    augeasproviders_core: https://github.com/voxpupuli/puppet-augeasproviders_core

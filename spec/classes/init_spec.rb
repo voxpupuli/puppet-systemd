@@ -13,6 +13,7 @@ describe 'systemd' do
         it { is_expected.to contain_class('systemd::journald') }
         it { is_expected.to create_service('systemd-journald') }
         it { is_expected.to have_ini_setting_resource_count(0) }
+        it { is_expected.not_to contain_class('systemd::machine_info') }
         it { is_expected.not_to create_service('systemd-resolved') }
         it { is_expected.not_to create_service('systemd-networkd') }
         it { is_expected.not_to create_service('systemd-timesyncd') }
@@ -495,6 +496,19 @@ describe 'systemd' do
                      'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
                    ])
           }
+        end
+
+        context 'with machine-info' do
+          let(:params) do
+            {
+              machine_info_settings: {
+                'PRETTY_HOSTNAME' => 'example hostname',
+              }
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_shellvar('PRETTY_HOSTNAME').with(value: 'example hostname') }
         end
 
         context 'when enabling logind with options' do

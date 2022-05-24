@@ -237,6 +237,12 @@ systemd::service_limits { 'foo.service':
 }
 ```
 
+### machine-info (hostnamectl)
+
+You can set elements of `/etc/machine-info` via the `machine_info_settings` parameter.  These values are read by `hostnamectl`.
+
+To manage these, you'll need to add an additional module, [augeasproviders\_shellvar](https://forge.puppet.com/modules/herculesteam/augeasproviders_shellvar), to your environment.
+
 ### Daemon reloads
 
 Systemd caches unit files and their relations. This means it needs to reload, typically done via `systemctl daemon-reload`. Since Puppet 6.1.0 ([PUP-3483](https://tickets.puppetlabs.com/browse/PUP-3483)) takes care of this by calling `systemctl show $SERVICE -- --property=NeedDaemonReload` to determine if a reload is needed. Typically this works well and removes the need for `systemd::systemctl::daemon_reload` as provided prior to camptocamp/systemd 3.0.0. This avoids common circular dependencies.
