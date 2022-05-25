@@ -17,8 +17,10 @@
 * `systemd::install`: Install any systemd sub packages
 * `systemd::journald`: This class manages and configures journald.
 * `systemd::logind`: This class manages systemd's login manager configuration.
+* `systemd::machine_info`: This class manages systemd's machine-info file (hostnamectl)
 * `systemd::modules_loads`: Activate the modules contained in modules-loads.d
 * `systemd::networkd`: This class provides an abstract way to trigger systemd-networkd
+* `systemd::oomd`: This class manages and configures oomd.
 * `systemd::resolved`: This class provides an abstract way to trigger resolved.
 * `systemd::system`: This class provides a solution to enable accounting
 * `systemd::timesyncd`: This class provides an abstract way to trigger systemd-timesyncd
@@ -42,6 +44,7 @@
 ### Functions
 
 * [`systemd::escape`](#systemdescape): Escape strings as systemd-escape does.
+* [`systemd::systemd_escape`](#systemdsystemd_escape): Escape strings by call the `systemd-escape` command in the background.
 
 ### Data types
 
@@ -51,6 +54,8 @@
 * [`Systemd::JournaldSettings::Ensure`](#systemdjournaldsettingsensure): defines allowed ensure states for systemd-journald settings
 * [`Systemd::LogindSettings`](#systemdlogindsettings): Matches Systemd Login Manager Struct
 * [`Systemd::LogindSettings::Ensure`](#systemdlogindsettingsensure): defines allowed ensure states for systemd-logind settings
+* [`Systemd::MachineInfoSettings`](#systemdmachineinfosettings): Matches Systemd machine-info (hostnamectl) file Struct
+* [`Systemd::OomdSettings`](#systemdoomdsettings): Configurations for oomd.conf
 * [`Systemd::ServiceLimits`](#systemdservicelimits): Matches Systemd Service Limit Struct
 * [`Systemd::Unit`](#systemdunit): custom datatype that validates different filenames for systemd units
 
@@ -64,6 +69,7 @@ This module allows triggering systemd commands once for all modules
 
 The following parameters are available in the `systemd` class:
 
+* [`default_target`](#default_target)
 * [`service_limits`](#service_limits)
 * [`networks`](#networks)
 * [`timers`](#timers)
@@ -99,6 +105,7 @@ The following parameters are available in the `systemd` class:
 * [`udev_resolve_names`](#udev_resolve_names)
 * [`udev_timeout_signal`](#udev_timeout_signal)
 * [`udev_rules`](#udev_rules)
+* [`machine_info_settings`](#machine_info_settings)
 * [`manage_logind`](#manage_logind)
 * [`logind_settings`](#logind_settings)
 * [`loginctl_users`](#loginctl_users)
@@ -111,6 +118,17 @@ The following parameters are available in the `systemd` class:
 * [`manage_coredump`](#manage_coredump)
 * [`coredump_settings`](#coredump_settings)
 * [`coredump_backtrace`](#coredump_backtrace)
+* [`manage_oomd`](#manage_oomd)
+* [`oomd_ensure`](#oomd_ensure)
+* [`oomd_settings`](#oomd_settings)
+
+##### <a name="default_target"></a>`default_target`
+
+Data type: `Optional[Pattern['^.+\.target$']]`
+
+The default systemd boot target, unmanaged if set to undef.
+
+Default value: ``undef``
 
 ##### <a name="service_limits"></a>`service_limits`
 
@@ -408,6 +426,14 @@ Config Hash that is used to generate instances of our
 
 Default value: `{}`
 
+##### <a name="machine_info_settings"></a>`machine_info_settings`
+
+Data type: `Systemd::MachineInfoSettings`
+
+Settings to place into /etc/machine-info (hostnamectl)
+
+Default value: `{}`
+
 ##### <a name="manage_logind"></a>`manage_logind`
 
 Data type: `Boolean`
@@ -504,6 +530,30 @@ Data type: `Boolean`
 Add --backtrace to systemd-coredump call systemd-coredump@.service unit
 
 Default value: ``false``
+
+##### <a name="manage_oomd"></a>`manage_oomd`
+
+Data type: `Boolean`
+
+Should systemd-oomd configuration be managed
+
+Default value: ``false``
+
+##### <a name="oomd_ensure"></a>`oomd_ensure`
+
+Data type: `Enum['stopped','running']`
+
+The state that the ``oomd`` service should be in
+
+Default value: `'running'`
+
+##### <a name="oomd_settings"></a>`oomd_settings`
+
+Data type: `Systemd::OomdSettings`
+
+Hash of systemd-oomd configurations for oomd.conf
+
+Default value: `{}`
 
 ### <a name="systemdtmpfiles"></a>`systemd::tmpfiles`
 
@@ -1458,6 +1508,30 @@ Data type: `Boolean`
 
 Use path (-p) ornon-path  style escaping.
 
+### <a name="systemdsystemd_escape"></a>`systemd::systemd_escape`
+
+Type: Ruby 4.x API
+
+Escape strings by call the `systemd-escape` command in the background.
+
+#### `systemd::systemd_escape(String $input, Optional[Optional[Boolean]] $path)`
+
+The systemd::systemd_escape function.
+
+Returns: `String`
+
+##### `input`
+
+Data type: `String`
+
+Input string
+
+##### `path`
+
+Data type: `Optional[Optional[Boolean]]`
+
+Use path (-p) ornon-path  style escaping.
+
 ## Data types
 
 ### <a name="systemdcoredumpsettings"></a>`Systemd::CoredumpSettings`
@@ -1587,6 +1661,41 @@ Alias of
 Struct[{ 'ensure' => Enum['present','absent'] }]
 ```
 
+### <a name="systemdmachineinfosettings"></a>`Systemd::MachineInfoSettings`
+
+Matches Systemd machine-info (hostnamectl) file Struct
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['PRETTY_HOSTNAME'] => String[1],
+    Optional['ICON_NAME']       => String[1],
+    Optional['CHASSIS']         => String[1],
+    Optional['DEPLOYMENT']      => String[1],
+    Optional['LOCATION']        => String[1],
+    Optional['HARDWARE_VENDOR'] => String[1],
+    Optional['HARDWARE_MODEL']  => String[1],
+  }]
+```
+
+### <a name="systemdoomdsettings"></a>`Systemd::OomdSettings`
+
+Configurations for oomd.conf
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/oomd.conf.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['SwapUsedLimit']                    => Pattern[/^[0-9]+[%|‰|‱]$/],
+    Optional['DefaultMemoryPressureLimit']       => Pattern[/^[0-9]+%$/],
+    Optional['DefaultMemoryPressureDurationSec'] => Integer[0],
+  }]
+```
+
 ### <a name="systemdservicelimits"></a>`Systemd::ServiceLimits`
 
 Matches Systemd Service Limit Struct
@@ -1596,18 +1705,18 @@ Alias of
 ```puppet
 Struct[{
     Optional['LimitCPU']            => Pattern['^\d+(s|m|h|d|w|M|y)?(:\d+(s|m|h|d|w|M|y)?)?$'],
-    Optional['LimitFSIZE']          => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
-    Optional['LimitDATA']           => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
-    Optional['LimitSTACK']          => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
-    Optional['LimitCORE']           => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
-    Optional['LimitRSS']            => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
+    Optional['LimitFSIZE']          => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['LimitDATA']           => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['LimitSTACK']          => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['LimitCORE']           => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['LimitRSS']            => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
     Optional['LimitNOFILE']         => Variant[Integer[-1],Pattern['^(infinity|\d+(:(infinity|\d+))?)$']],
-    Optional['LimitAS']             => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
+    Optional['LimitAS']             => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
     Optional['LimitNPROC']          => Variant[Integer[-1],Pattern['^(infinity|\d+(:(infinity|\d+))?)$']],
-    Optional['LimitMEMLOCK']        => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
+    Optional['LimitMEMLOCK']        => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
     Optional['LimitLOCKS']          => Integer[1],
     Optional['LimitSIGPENDING']     => Integer[1],
-    Optional['LimitMSGQUEUE']       => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
+    Optional['LimitMSGQUEUE']       => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
     Optional['LimitNICE']           => Variant[Integer[0,40], Pattern['^(-\+([0-1]?[0-9]|20))|([0-3]?[0-9]|40)$']],
     Optional['LimitRTPRIO']         => Integer[0],
     Optional['LimitRTTIME']         => Pattern['^\d+(ms|s|m|h|d|w|M|y)?(:\d+(ms|s|m|h|d|w|M|y)?)?$'],
@@ -1616,10 +1725,11 @@ Struct[{
     Optional['StartupCPUShares']    => Integer[2,262144],
     Optional['CPUQuota']            => Pattern['^([1-9][0-9]*)%$'],
     Optional['MemoryAccounting']    => Boolean,
-    Optional['MemoryLow']           => Pattern['^(\d+(K|M|G|T)?)$'],
-    Optional['MemoryHigh']          => Pattern['^(\d+(K|M|G|T)?)$'],
-    Optional['MemoryMax']           => Pattern['^(\d+(K|M|G|T)?)$'],
-    Optional['MemoryLimit']         => Pattern['^(\d+(K|M|G|T)?)$'],
+    Optional['MemoryLow']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemoryMin']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemoryHigh']          => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemoryMax']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemoryLimit']         => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
     Optional['TasksAccounting']     => Boolean,
     Optional['TasksMax']            => Variant[Integer[1],Pattern['^(infinity|([1-9][0-9]?$|^100)%)$']],
     Optional['IOAccounting']        => Boolean,
