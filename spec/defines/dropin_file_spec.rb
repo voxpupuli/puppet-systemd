@@ -127,7 +127,7 @@ describe 'systemd::dropin_file' do
           }
         end
 
-        context 'with sensitve content' do
+        context 'with sensitive content' do
           let(:title) { 'sensitive.conf' }
           let(:params) do
             {
