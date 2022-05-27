@@ -1092,7 +1092,7 @@ Data type: `Optional[Boolean]`
 
 If set to true or false the timer service will be maintained.
 If true the timer service will be running and enabled, if false it will
-explictly stopped and disabled.
+explicitly stopped and disabled.
 
 Default value: ``undef``
 
