@@ -25,7 +25,7 @@ define systemd::daemon_reload (
     if $lazy_reload {
       exec { "${module_name}-${name}-global-systemctl-daemon-check":
         command => 'systemctl daemon-reload',
-        onlyif  => 'systemctl show "*" --property=NeedDaemonReload | grep -q "=yes"',
+        onlyif  => 'systemctl show "*" --property=NeedDaemonReload | grep -qxFm1 "NeedDaemonReload=yes"',
         path    => $facts['path'],
       }
 
