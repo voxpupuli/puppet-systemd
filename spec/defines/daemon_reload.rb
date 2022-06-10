@@ -44,7 +44,7 @@ describe 'systemd::daemon_reload' do
 
             expect(subject).to contain_exec("systemd-#{title}-global-systemctl-daemon-check").
               with_command('systemctl daemon-reload').
-              with_onlyif('systemctl show "*" --property=NeedDaemonReload | grep -q "=yes"').
+              with_onlyif('systemctl show "*" --property=NeedDaemonReload | grep -qxFm1 "NeedDaemonReload=yes"').
               that_comes_before('Service[test]')
           end
         end
