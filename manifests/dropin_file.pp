@@ -72,16 +72,16 @@ define systemd::dropin_file (
   }
 
   if $daemon_reload {
-    ensure_resource('systemd::daemon_reload', $name)
+    ensure_resource('systemd::daemon_reload', $unit)
 
-    File[$full_filename] ~> Systemd::Daemon_reload[$name]
+    File[$full_filename] ~> Systemd::Daemon_reload[$unit]
   }
 
   if $notify_service {
     File[$full_filename] ~> Service <| title == $unit or name == $unit |>
 
     if $daemon_reload {
-      Systemd::Daemon_reload[$name] ~> Service <| title == $unit or name == $unit |>
+      Systemd::Daemon_reload[$unit] ~> Service <| title == $unit or name == $unit |>
     }
 
     if $unit =~ /\.service$/ {
@@ -89,7 +89,7 @@ define systemd::dropin_file (
       File[$full_filename] ~> Service <| title == $short_service_name or name == $short_service_name |>
 
       if $daemon_reload {
-        Systemd::Daemon_reload[$name] ~> Service <| title == $short_service_name or name == $short_service_name |>
+        Systemd::Daemon_reload[$unit] ~> Service <| title == $short_service_name or name == $short_service_name |>
       }
     }
   }
