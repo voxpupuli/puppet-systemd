@@ -174,6 +174,9 @@
 # @param oomd_settings
 #   Hash of systemd-oomd configurations for oomd.conf
 #
+# @param lazy_daemon_reload
+#   Perform a check across all potentially overridden service files and trigger a daemon reload if necessary
+#
 class systemd (
   Optional[Pattern['^.+\.target$']]                   $default_target = undef,
   Hash[String,String]                                 $accounting = {},
@@ -227,6 +230,7 @@ class systemd (
   Boolean                                             $manage_oomd = false,
   Enum['stopped','running']                           $oomd_ensure = 'running',
   Systemd::OomdSettings                               $oomd_settings = {},
+  Boolean                                             $lazy_daemon_reload = false,
 ) {
   contain systemd::install
 
@@ -315,5 +319,9 @@ class systemd (
     systemd::dropin_file { $name:
       * => $resource,
     }
+  }
+
+  if $lazy_daemon_reload {
+    systemd::daemon_reload { 'global-lazy': lazy_reload => $lazy_daemon_reload }
   }
 }

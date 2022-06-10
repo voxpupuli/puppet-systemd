@@ -74,7 +74,8 @@ define systemd::service_limits (
       command     => "systemctl restart ${name}",
       path        => $facts['path'],
       refreshonly => true,
-      subscribe   => File["${path}/${name}.d/90-limits.conf"],
     }
+
+    Systemd::Dropin_file["${name}-90-limits.conf"] ~> Exec["restart ${name} because limits"]
   }
 }
