@@ -21,7 +21,6 @@ describe 'systemd' do
         it { is_expected.not_to contain_class('systemd::coredump') }
         it { is_expected.not_to contain_class('systemd::oomd') }
         it { is_expected.not_to contain_exec('systemctl set-default multi-user.target') }
-        it { is_expected.not_to contain_systemd__daemon_reload('global-lazy') }
 
         context 'when enabling resolved and networkd' do
           let(:params) do
