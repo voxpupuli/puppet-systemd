@@ -751,14 +751,6 @@ describe 'systemd' do
             it { is_expected.to contain_systemd__dropin_file('coredump_backtrace.conf').with_content(%r{^ExecStart=.*--backtrace$}) }
           end
         end
-
-        context 'with lazy daemon reloadin' do
-          let :params do
-            { lazy_daemon_reload: true }
-          end
-
-          it { is_expected.to contain_systemd__daemon_reload('global-lazy').with_lazy_reload(params[:lazy_daemon_reload]) }
-        end
       end
     end
   end
