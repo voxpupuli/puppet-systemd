@@ -29,12 +29,17 @@ describe 'systemd::dropin_file' do
         }
 
         it {
+          expect(subject).to create_systemd__daemon_reload(params[:unit])
+        }
+
+        it {
           expect(subject).to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").with(
             ensure: 'file',
             content: %r{#{params[:content]}},
             mode: '0444',
             selinux_ignore_defaults: false
-          )
+          ).
+            that_notifies("Systemd::Daemon_reload[#{params[:unit]}]")
         }
 
         context 'notifies services' do
@@ -64,6 +69,7 @@ describe 'systemd::dropin_file' do
 
             it { is_expected.to compile.with_all_deps }
             it { is_expected.to contain_service('myservice').that_subscribes_to("File[#{filename}]") }
+            it { is_expected.to contain_systemd__daemon_reload(params[:unit]).that_notifies('Service[myservice]') }
           end
         end
 
@@ -141,6 +147,18 @@ describe 'systemd::dropin_file' do
               ensure: 'file',
               content: sensitive('TEST_CONTENT')
             )
+          }
+        end
+
+        context 'with daemon_reload = false' do
+          let(:params) do
+            super().merge(daemon_reload: false)
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            expect(subject).not_to create_systemd__daemon_reload(params[:unit])
           }
         end
       end

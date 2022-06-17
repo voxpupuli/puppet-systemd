@@ -58,6 +58,9 @@
 # @param ensure
 #   Defines the desired state of the timer
 #
+# @param daemon_reload
+#   Call `systemd::daemon_reload`
+#
 define systemd::timer (
   Enum['present', 'absent', 'file']        $ensure = 'present',
   Stdlib::Absolutepath                     $path = '/etc/systemd/system',
@@ -72,6 +75,7 @@ define systemd::timer (
   Boolean                                  $show_diff = true,
   Optional[Variant[Boolean, Enum['mask']]] $enable = undef,
   Optional[Boolean]                        $active = undef,
+  Boolean                                  $daemon_reload = true,
 ) {
   assert_type(Pattern['^.+\.timer$'],$name)
 
@@ -83,28 +87,30 @@ define systemd::timer (
 
   if $service_content or $service_source {
     systemd::unit_file { $_service_unit:
-      ensure    => $ensure,
-      content   => $service_content,
-      source    => $service_source,
-      path      => $path,
-      owner     => $owner,
-      group     => $group,
-      mode      => $mode,
-      show_diff => $show_diff,
-      before    => Systemd::Unit_File[$name],
+      ensure        => $ensure,
+      content       => $service_content,
+      source        => $service_source,
+      path          => $path,
+      owner         => $owner,
+      group         => $group,
+      mode          => $mode,
+      show_diff     => $show_diff,
+      before        => Systemd::Unit_File[$name],
+      daemon_reload => $daemon_reload,
     }
   }
 
   systemd::unit_file { $name:
-    ensure    => $ensure,
-    content   => $timer_content,
-    source    => $timer_source,
-    path      => $path,
-    owner     => $owner,
-    group     => $group,
-    mode      => $mode,
-    show_diff => $show_diff,
-    enable    => $enable,
-    active    => $active,
+    ensure        => $ensure,
+    content       => $timer_content,
+    source        => $timer_source,
+    path          => $path,
+    owner         => $owner,
+    group         => $group,
+    mode          => $mode,
+    show_diff     => $show_diff,
+    enable        => $enable,
+    active        => $active,
+    daemon_reload => $daemon_reload,
   }
 }
