@@ -75,13 +75,9 @@ define systemd::timer (
 ) {
   assert_type(Pattern['^.+\.timer$'],$name)
 
-  if $service_unit {
-    $_service_unit = $service_unit
-  } else {
-    $_service_unit = "${basename($name,'.timer')}.service"
-  }
-
   if $service_content or $service_source {
+    $_service_unit = pick($service_unit, "${basename($name,'.timer')}.service")
+
     systemd::unit_file { $_service_unit:
       ensure    => $ensure,
       content   => $service_content,
