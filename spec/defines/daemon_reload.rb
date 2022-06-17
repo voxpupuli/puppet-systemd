@@ -16,8 +16,6 @@ describe 'systemd::daemon_reload' do
             expect(subject).to contain_exec("systemd-#{title}-systemctl-daemon-reload").
               with_command('systemctl daemon-reload').
               with_refreshonly(true)
-
-            expect(subject).not_to contain_exec("systemd-#{title}-global-systemctl-daemon-check")
           end
         end
 
