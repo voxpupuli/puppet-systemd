@@ -19,10 +19,6 @@ These should not affect the functionality of the module.
 
 - systemd::dropin\_file doesn't cause a systemd daemon-reload [\#234](https://github.com/voxpupuli/puppet-systemd/issues/234)
 
-**Closed issues:**
-
-- Missing dependency in metadata.json [\#281](https://github.com/voxpupuli/puppet-systemd/issues/281)
-
 **Merged pull requests:**
 
 - Minor wordsmithing in README [\#283](https://github.com/voxpupuli/puppet-systemd/pull/283) ([op-ct](https://github.com/op-ct))
