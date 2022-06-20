@@ -28,6 +28,7 @@
 
 ### Defined types
 
+* [`systemd::daemon_reload`](#systemddaemon_reload): Run systemctl daemon-reload
 * [`systemd::dropin_file`](#systemddropin_file): Creates a drop-in file for a systemd unit
 * [`systemd::modules_load`](#systemdmodules_load): Creates a modules-load.d drop file
 * [`systemd::network`](#systemdnetwork): Creates network config for systemd-networkd
@@ -581,6 +582,31 @@ Default value: `['create']`
 
 ## Defined types
 
+### <a name="systemddaemon_reload"></a>`systemd::daemon_reload`
+
+Run systemctl daemon-reload
+
+#### Parameters
+
+The following parameters are available in the `systemd::daemon_reload` defined type:
+
+* [`name`](#name)
+* [`enable`](#enable)
+
+##### <a name="name"></a>`name`
+
+A globally unique name for the resource
+
+##### <a name="enable"></a>`enable`
+
+Data type: `Boolean`
+
+Enable the reload exec
+
+* Added in case users want to disable the reload globally using a resource collector
+
+Default value: ``true``
+
 ### <a name="systemddropin_file"></a>`systemd::dropin_file`
 
 Creates a drop-in file for a systemd unit
@@ -605,6 +631,7 @@ The following parameters are available in the `systemd::dropin_file` defined typ
 * [`mode`](#mode)
 * [`show_diff`](#show_diff)
 * [`notify_service`](#notify_service)
+* [`daemon_reload`](#daemon_reload)
 
 ##### <a name="unit"></a>`unit`
 
@@ -707,6 +734,14 @@ Data type: `Boolean`
 Notify a service for the unit, if it exists
 
 Default value: ``false``
+
+##### <a name="daemon_reload"></a>`daemon_reload`
+
+Data type: `Boolean`
+
+Call systemd::daemon_reload
+
+Default value: ``true``
 
 ### <a name="systemdmodules_load"></a>`systemd::modules_load`
 
@@ -989,6 +1024,7 @@ The following parameters are available in the `systemd::timer` defined type:
 * [`active`](#active)
 * [`enable`](#enable)
 * [`ensure`](#ensure)
+* [`daemon_reload`](#daemon_reload)
 
 ##### <a name="name"></a>`name`
 
@@ -1111,6 +1147,14 @@ Data type: `Enum['present', 'absent', 'file']`
 Defines the desired state of the timer
 
 Default value: `'present'`
+
+##### <a name="daemon_reload"></a>`daemon_reload`
+
+Data type: `Boolean`
+
+Call `systemd::daemon_reload`
+
+Default value: ``true``
 
 ### <a name="systemdtmpfile"></a>`systemd::tmpfile`
 
@@ -1277,6 +1321,7 @@ The following parameters are available in the `systemd::unit_file` defined type:
 * [`hasstatus`](#hasstatus)
 * [`selinux_ignore_defaults`](#selinux_ignore_defaults)
 * [`service_parameters`](#service_parameters)
+* [`daemon_reload`](#daemon_reload)
 
 ##### <a name="name"></a>`name`
 
@@ -1417,6 +1462,14 @@ Data type: `Hash[String[1], Any]`
 hash that will be passed with the splat operator to the service resource
 
 Default value: `{}`
+
+##### <a name="daemon_reload"></a>`daemon_reload`
+
+Data type: `Boolean`
+
+call `systemd::daemon-reload` to ensure that the modified unit file is loaded
+
+Default value: ``true``
 
 ## Resource types
 
