@@ -1,0 +1,14 @@
+<%- |
+  Optional[String[1]] $description = undef,
+  Optional[Array[String[1]]] $after = undef,
+  String[1] $command,
+|-%>
+[Unit]
+Description=Puppet configured service<% if $description { %> : <%= $description %><% } %>
+<% if $after { -%>
+After=<%= $after.join(', ') %>
+<%- } -%>
+
+[Service]
+Type=oneshot
+ExecStart=<%= $command %>

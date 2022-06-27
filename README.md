@@ -216,6 +216,22 @@ systemd::timer{'daily.timer':
 }
 ```
 
+### simple timer units
+
+For the simple cases of timers such as running a command once per day
+
+```puppet
+systemd::simpletimer { 'onceperday.timer':
+  enusre  => present,
+  command => '/usr/bin/touch /tmp/today',
+  timings => {
+    'OnCalendar' => 'daily',
+  },
+}
+```
+
+can be used. The service and timer unit files will be generated from templates.
+
 ### service limits
 
 Manage soft and hard limits on various resources for executed processes.

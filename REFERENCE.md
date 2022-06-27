@@ -33,6 +33,7 @@
 * [`systemd::modules_load`](#systemdmodules_load): Creates a modules-load.d drop file
 * [`systemd::network`](#systemdnetwork): Creates network config for systemd-networkd
 * [`systemd::service_limits`](#systemdservice_limits): Adds a set of custom limits to the service
+* [`systemd::simpletimer`](#systemdsimpletimer): Configures oneshot service and timer for trivial commands
 * [`systemd::timer`](#systemdtimer): Create a timer and optionally a service unit to execute with the timer unit
 * [`systemd::tmpfile`](#systemdtmpfile): Creates a systemd tmpfile
 * [`systemd::udev::rule`](#systemdudevrule): Adds a custom udev rule
@@ -997,6 +998,119 @@ Data type: `Boolean`
 Restart the managed service after setting the limits
 
 Default value: ``true``
+
+### <a name="systemdsimpletimer"></a>`systemd::simpletimer`
+
+Configures oneshot service and timer for trivial commands
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.timer.html
+    * systemd.timer(5)
+
+#### Examples
+
+##### Run a command on boot and once per hour thereafter
+
+```puppet
+systemd::simpletimer { 'create-file.timer':
+  ensure              => present,
+  command             => '/usr/bin/touch /tmp/file',
+  timings             => {
+    'OnBootsec'       => 0,
+    'OnUnitActiveSec' => '1h',
+  }
+  enable              => true,
+  active              => true,
+```
+
+##### Run a command weekly only after the network is up
+
+```puppet
+systemd::simpletimer { 'create-file-weekly.timer':
+  ensure              => present,
+  command             => '/usr/bin/touch /tmp/weekly',
+  description         => 'Touch a file',
+  timings             => {
+    'OnCalendar' => 'weekly',
+  },
+  enable              => true,
+  active              => true,
+  after               => ['network-online.target'],
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `systemd::simpletimer` defined type:
+
+* [`name`](#name)
+* [`description`](#description)
+* [`command`](#command)
+* [`timings`](#timings)
+* [`ensure`](#ensure)
+* [`active`](#active)
+* [`enable`](#enable)
+* [`after`](#after)
+
+##### <a name="name"></a>`name`
+
+Data type: `Pattern['^.+\.timer$]`
+
+The target of the timer unit to create
+
+##### <a name="description"></a>`description`
+
+Data type: `Optional[String[1]]`
+
+Specity a timer description to add to service and timer unit files
+
+Default value: ``undef``
+
+##### <a name="command"></a>`command`
+
+Data type: `String[1]`
+
+Command line and options to run
+
+##### <a name="timings"></a>`timings`
+
+Data type: `Hash[Enum['OnActiveSec', 'OnBootSec', 'OnStartupSec', 'OnUnitActiveSec', 'OnUnitInactiveSec', 'OnCalendar'],Variant[String[1],Integer],1]`
+
+Specify timing parameters for timer unit as to when the timer should run
+
+##### <a name="ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+Defines the desired state of the timer
+
+Default value: `'present'`
+
+##### <a name="active"></a>`active`
+
+Data type: `Optional[Boolean]`
+
+If set to true or false the timer service will be maintained.
+If true the timer service will be running and enabled, if false it will
+explicitly stopped and disabled.
+
+Default value: ``undef``
+
+##### <a name="enable"></a>`enable`
+
+Data type: `Optional[Variant[Boolean, Enum['mask']]]`
+
+If set, will manage the state of the unit.
+
+Default value: ``undef``
+
+##### <a name="after"></a>`after`
+
+Data type: `Optional[Array[Systemd::Unit,1]]`
+
+List of systemd units the service will only run `After`
+
+Default value: ``undef``
 
 ### <a name="systemdtimer"></a>`systemd::timer`
 

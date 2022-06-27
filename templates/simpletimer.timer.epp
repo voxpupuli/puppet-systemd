@@ -1,0 +1,14 @@
+<%- |
+  Optional[String[1]] $description = undef,
+  Hash[String[1],Variant[String[1],Integer],1] $timings
+| %>
+[Unit]
+Description=Puppet configured timer<% if $description { %> : <%= $description %><% } %>
+
+[Timer]
+<% $timings.each | $_key, $_value | { -%>
+<%= $_key %>=<%= $_value %>
+<% } -%>
+
+[Install]
+WantedBy=timers.target
