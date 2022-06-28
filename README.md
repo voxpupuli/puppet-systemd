@@ -59,6 +59,30 @@ systemd::unit_file { 'foo.service':
 }
 ```
 
+### unit files from parameters
+
+Create a unit file from parameters
+
+```puppet
+systemd::manage_unit { 'myrunner.service':
+  $unit_entry    => {
+    'Description' => 'My great service',
+  },
+  $service_entry => {
+    'Type'       => 'oneshot',
+    'ExecStart' => '/usr/bin/doit.sh',
+  },
+  $install_entry => {
+    'WantedBy' => 'multi-user.target',
+  },
+  enable         => true,
+  active         => true,
+}
+```
+
+The parameters `unit_entry`, `service_entry` and `install_entry` populate the
+`[Unit]`, `[Service]` and `[Install]` sections of the generated unit file.
+
 ### drop-in files
 
 Drop-in files are used to add or alter settings of a unit without modifying the
@@ -104,6 +128,21 @@ systemd::dropin_files:
     unit: foo.service
     source: puppet:///modules/${module_name}/foo.conf
 ```
+
+### drop-in files from parameters
+
+```puppet
+systemd::manage_dropin { 'myconf.conf':
+  ensure        => present,
+  unit          => 'myservice.service',
+  service_entry => {
+    'Type'      => 'oneshot',
+    'ExecStart' => ['', '/usr/bin/doit.sh'],
+  },
+}
+```
+
+The filename of the drop in. The full path is determined using the path, unit and this filename.
 
 ### modules-load.d
 
