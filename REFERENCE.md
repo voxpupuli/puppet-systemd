@@ -58,7 +58,7 @@
 * [`Systemd::MachineInfoSettings`](#systemdmachineinfosettings): Matches Systemd machine-info (hostnamectl) file Struct
 * [`Systemd::OomdSettings`](#systemdoomdsettings): Configurations for oomd.conf
 * [`Systemd::ServiceLimits`](#systemdservicelimits): Matches Systemd Service Limit Struct
-* [`Systemd::Unit`](#systemdunit): custom datatype that validates different filenames for systemd units
+* [`Systemd::Unit`](#systemdunit): custom datatype that validates different filenames for systemd units and unit templates
 
 ## Classes
 
@@ -1803,11 +1803,14 @@ Struct[{
 
 ### <a name="systemdunit"></a>`Systemd::Unit`
 
-custom datatype that validates different filenames for systemd units
+custom datatype that validates different filenames for systemd units and unit templates
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
 
 Alias of
 
 ```puppet
-Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']
+Pattern[/^[[a-z][A-Z][0-9]:\-_.\\@]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$/]
 ```
 
