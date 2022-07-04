@@ -1811,6 +1811,6 @@ custom datatype that validates different filenames for systemd units and unit te
 Alias of
 
 ```puppet
-Pattern[/^[[a-z][A-Z][0-9]:\-_.\\@]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$/]
+Pattern[/^[a-zA-Z0-9:\-_.\\@]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$/]
 ```
 
