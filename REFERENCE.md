@@ -637,13 +637,13 @@ The following parameters are available in the `systemd::dropin_file` defined typ
 
 Data type: `Systemd::Unit`
 
-the The target unit file to create, the value will be set to the `filename` parameter as well
+The target unit file to create
 
 ##### <a name="filename"></a>`filename`
 
 Data type: `Systemd::Dropin`
 
-The target unit file to create
+The filename of the drop in. The full path is determined using the path, unit and this filename.
 
 Default value: `$name`
 

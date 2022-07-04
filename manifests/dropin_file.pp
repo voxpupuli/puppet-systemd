@@ -4,8 +4,8 @@
 #
 # @see systemd.unit(5)
 #
-# @param unit the The target unit file to create, the value will be set to the `filename` parameter as well
-# @param filename The target unit file to create
+# @param unit The target unit file to create
+# @param filename The filename of the drop in. The full path is determined using the path, unit and this filename.
 # @param ensure the state of this dropin file
 # @param path The main systemd configuration path
 # @param selinux_ignore_defaults If Puppet should ignore the default SELinux labels.
