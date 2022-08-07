@@ -30,6 +30,8 @@
 
 * [`systemd::daemon_reload`](#systemddaemon_reload): Run systemctl daemon-reload
 * [`systemd::dropin_file`](#systemddropin_file): Creates a drop-in file for a systemd unit
+* [`systemd::manage_dropin`](#systemdmanage_dropin): Creates a drop-in file for a systemd unit from a template
+* [`systemd::manage_unit`](#systemdmanage_unit): Generate unit file from template
 * [`systemd::modules_load`](#systemdmodules_load): Creates a modules-load.d drop file
 * [`systemd::network`](#systemdnetwork): Creates network config for systemd-networkd
 * [`systemd::service_limits`](#systemdservice_limits): Adds a set of custom limits to the service
@@ -59,6 +61,10 @@
 * [`Systemd::OomdSettings`](#systemdoomdsettings): Configurations for oomd.conf
 * [`Systemd::ServiceLimits`](#systemdservicelimits): Matches Systemd Service Limit Struct
 * [`Systemd::Unit`](#systemdunit): custom datatype that validates different filenames for systemd units and unit templates
+* [`Systemd::Unit::Install`](#systemdunitinstall): Possible keys for the [Install] section of a unit file
+* [`Systemd::Unit::Service`](#systemdunitservice): Possible keys for the [Service] section of a unit file
+* [`Systemd::Unit::Service::Exec`](#systemdunitserviceexec): Possible strings for ExecStart, ExecStartPrep, ...
+* [`Systemd::Unit::Unit`](#systemdunitunit): Possible keys for the [Unit] section of a unit file
 
 ## Classes
 
@@ -742,6 +748,326 @@ Data type: `Boolean`
 Call systemd::daemon_reload
 
 Default value: ``true``
+
+### <a name="systemdmanage_dropin"></a>`systemd::manage_dropin`
+
+Creates a drop-in file for a systemd unit from a template
+
+* **See also**
+  * systemd.unit(5)
+
+#### Examples
+
+##### drop in file to change Type and override ExecStart
+
+```puppet
+systemd::manage_dropin { 'myconf.conf':
+  ensure        => present,
+  unit          => 'myservice.service',
+  service_entry => {
+    'Type'      => 'oneshot',
+    'ExecStart' => ['', '/usr/bin/doit.sh'],
+  },
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `systemd::manage_dropin` defined type:
+
+* [`unit`](#unit)
+* [`filename`](#filename)
+* [`ensure`](#ensure)
+* [`path`](#path)
+* [`selinux_ignore_defaults`](#selinux_ignore_defaults)
+* [`owner`](#owner)
+* [`group`](#group)
+* [`mode`](#mode)
+* [`show_diff`](#show_diff)
+* [`notify_service`](#notify_service)
+* [`daemon_reload`](#daemon_reload)
+* [`unit_entry`](#unit_entry)
+* [`service_entry`](#service_entry)
+* [`install_entry`](#install_entry)
+
+##### <a name="unit"></a>`unit`
+
+Data type: `Systemd::Unit`
+
+The unit to create a dropfile for
+
+##### <a name="filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The target unit file to create. The filename of the drop in. The full path is determined using the path, unit and this filename.
+
+Default value: `$name`
+
+##### <a name="ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+The state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The main systemd configuration path
+
+Default value: `'/etc/systemd/system'`
+
+##### <a name="selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Boolean`
+
+If Puppet should ignore the default SELinux labels
+
+Default value: ``false``
+
+##### <a name="owner"></a>`owner`
+
+Data type: `String`
+
+The owner to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="group"></a>`group`
+
+Data type: `String`
+
+The group to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="mode"></a>`mode`
+
+Data type: `Stdlib::Filemode`
+
+The mode to set on the dropin file
+
+Default value: `'0444'`
+
+##### <a name="show_diff"></a>`show_diff`
+
+Data type: `Boolean`
+
+Whether to show the diff when updating dropin file
+
+Default value: ``true``
+
+##### <a name="notify_service"></a>`notify_service`
+
+Data type: `Boolean`
+
+Notify a service for the unit, if it exists
+
+Default value: ``false``
+
+##### <a name="daemon_reload"></a>`daemon_reload`
+
+Data type: `Boolean`
+
+Call systemd::daemon_reload
+
+Default value: ``true``
+
+##### <a name="unit_entry"></a>`unit_entry`
+
+Data type: `Optional[Systemd::Unit::Unit]`
+
+key value pairs for [Unit] section of the unit file
+
+Default value: ``undef``
+
+##### <a name="service_entry"></a>`service_entry`
+
+Data type: `Optional[Systemd::Unit::Service]`
+
+key value pairs for [Service] section of the unit file
+
+Default value: ``undef``
+
+##### <a name="install_entry"></a>`install_entry`
+
+Data type: `Optional[Systemd::Unit::Install]`
+
+key value pairs for [Install] section of the unit file
+
+Default value: ``undef``
+
+### <a name="systemdmanage_unit"></a>`systemd::manage_unit`
+
+Generate unit file from template
+
+* **See also**
+  * systemd.unit(5)
+
+#### Examples
+
+##### Generate a service
+
+```puppet
+systemd::manage_unit{ 'myrunner.service':
+  $unit_entry    => {
+    'Description' => 'My great service',
+  },
+  $service_entry => {
+    'Type'       => 'oneshot',
+    'ExecStart' => '/usr/bin/doit.sh',
+  },
+  $install_entry => {
+    WantedBy => 'multi-user.target',
+  },
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `systemd::manage_unit` defined type:
+
+* [`name`](#name)
+* [`ensure`](#ensure)
+* [`path`](#path)
+* [`owner`](#owner)
+* [`group`](#group)
+* [`mode`](#mode)
+* [`show_diff`](#show_diff)
+* [`enable`](#enable)
+* [`active`](#active)
+* [`restart`](#restart)
+* [`selinux_ignore_defaults`](#selinux_ignore_defaults)
+* [`service_parameters`](#service_parameters)
+* [`daemon_reload`](#daemon_reload)
+* [`unit_entry`](#unit_entry)
+* [`service_entry`](#service_entry)
+* [`install_entry`](#install_entry)
+
+##### <a name="name"></a>`name`
+
+Data type: `Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']`
+
+The target unit file to create
+
+##### <a name="ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+The state of the unit file to ensure
+
+Default value: `'present'`
+
+##### <a name="path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The main systemd configuration path
+
+Default value: `'/etc/systemd/system'`
+
+##### <a name="owner"></a>`owner`
+
+Data type: `String`
+
+The owner to set on the unit file
+
+Default value: `'root'`
+
+##### <a name="group"></a>`group`
+
+Data type: `String`
+
+The group to set on the unit file
+
+Default value: `'root'`
+
+##### <a name="mode"></a>`mode`
+
+Data type: `Stdlib::Filemode`
+
+The mode to set on the unit file
+
+Default value: `'0444'`
+
+##### <a name="show_diff"></a>`show_diff`
+
+Data type: `Boolean`
+
+Whether to show the diff when updating unit file
+
+Default value: ``true``
+
+##### <a name="enable"></a>`enable`
+
+Data type: `Optional[Variant[Boolean, Enum['mask']]]`
+
+If set, manage the unit enablement status
+
+Default value: ``undef``
+
+##### <a name="active"></a>`active`
+
+Data type: `Optional[Boolean]`
+
+If set, will manage the state of the unit
+
+Default value: ``undef``
+
+##### <a name="restart"></a>`restart`
+
+Data type: `Optional[String]`
+
+Specify a restart command manually. If left unspecified, a standard Puppet service restart happens
+
+Default value: ``undef``
+
+##### <a name="selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Boolean`
+
+maps to the same param on the file resource for the unit. false in the module because it's false in the file resource type
+
+Default value: ``false``
+
+##### <a name="service_parameters"></a>`service_parameters`
+
+Data type: `Hash[String[1], Any]`
+
+hash that will be passed with the splat operator to the service resource
+
+Default value: `{}`
+
+##### <a name="daemon_reload"></a>`daemon_reload`
+
+Data type: `Boolean`
+
+call `systemd::daemon-reload` to ensure that the modified unit file is loaded
+
+Default value: ``true``
+
+##### <a name="unit_entry"></a>`unit_entry`
+
+Data type: `Systemd::Unit::Unit`
+
+key value pairs for [Unit] section of the unit file.
+
+##### <a name="service_entry"></a>`service_entry`
+
+Data type: `Systemd::Unit::Service`
+
+key value pairs for [Service] section of the unit file.
+
+##### <a name="install_entry"></a>`install_entry`
+
+Data type: `Optional[Systemd::Unit::Install]`
+
+key value pairs for [Install] section of the unit file.
+
+Default value: ``undef``
 
 ### <a name="systemdmodules_load"></a>`systemd::modules_load`
 
@@ -1812,5 +2138,118 @@ Alias of
 
 ```puppet
 Pattern[/^[a-zA-Z0-9:\-_.\\@]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$/]
+```
+
+### <a name="systemdunitinstall"></a>`Systemd::Unit::Install`
+
+Possible keys for the [Install] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['Alias']      => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['WantedBy']   => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['RequiredBy'] => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['Also']       => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+  }]
+```
+
+### <a name="systemdunitservice"></a>`Systemd::Unit::Service`
+
+Possible keys for the [Service] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.service.html
+  * https://www.freedesktop.org/software/systemd/man/systemd.exec.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['Type']                      => Enum['simple', 'exec', 'forking', 'oneshot', 'dbus', 'notify', 'idle'],
+    Optional['ExitType']                  => Enum['main', 'cgroup'],
+    Optional['RemainAfterExit']           => Boolean,
+    Optional['GuessMainPID']              => Boolean,
+    Optional['PIDFile']                   => Stdlib::Unixpath,
+    Optional['BusName']                   => String[1],
+    Optional['ExecStart']                 => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecStartPre']              => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecStartPost']             => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecCondition']             => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecReload']                => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecStop']                  => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecStopPost']              => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['RestartSec']                => String,
+    Optional['TimeoutStartSec']           => String,
+    Optional['TimeoutStopSec']            => String,
+    Optional['TimeoutAbortSec']           => String,
+    Optional['TimeoutAbortSec']           => String,
+    Optional['TimeoutSec']                => String,
+    Optional['TimeoutStartFailureMode']   => Enum['terminate', 'abort', 'kill'],
+    Optional['TimeoutStopFailureMode']    => Enum['terminate', 'abort', 'kill'],
+    Optional['RuntimeMaxSec']             => String,
+    Optional['RuntimeRandomizedExtraSec'] => String,
+    Optional['WatchdogSec']               => String,
+    Optional['Restart']                   => Enum['no', 'on-success', 'on-failure', 'on-abnormal', 'on-watchdog', 'on-abort', 'always'],
+    Optional['SuccessExitStatus']         => String,
+    Optional['RestartPreventExitStatus']  => String,
+    Optional['RestartForceExitStatus']    => String,
+    Optional['RootDirectoryStartOnly']    => Boolean,
+    Optional['NonBlocking']               => Boolean,
+    Optional['NotifyAccess']              => Enum['none', 'default', 'main', 'exec',  'all'],
+    Optional['OOMPolicy']                 => Enum['continue', 'stop','kill'],
+    Optional['OOMScoreAdjust']            => Integer[-1000,1000],
+    Optional['Environment']               => String,
+    Optional['EnvironmentFile']           => Variant[Stdlib::Unixpath,Pattern[/-\/.*/]],
+  }]
+```
+
+### <a name="systemdunitserviceexec"></a>`Systemd::Unit::Service::Exec`
+
+Possible strings for ExecStart, ExecStartPrep, ...
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.service.html
+  * https://www.freedesktop.org/software/systemd/man/systemd.exec.html
+
+Alias of
+
+```puppet
+Variant[Enum[''], Pattern[/^[@\-:]*(\+|!|!!)?[@\-:]*\/.*/], Pattern[/^[@\-:]*(\+|!|!!)?[@\-:]*[^\/]*(\s.*)?$/]]
+```
+
+### <a name="systemdunitunit"></a>`Systemd::Unit::Unit`
+
+Possible keys for the [Unit] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['Description']              => Variant[String,Array[String,1]],
+    Optional['Documentation']            => Variant[String,Array[String,1]],
+    Optional['Wants']                    => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['Requires']                 => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['Requisite']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['PartOf']                   => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['Upholds']                  => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['Conflicts']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['Before']                   => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['After']                    => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['OnFailure']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['OnSuccess']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    # Conditions and Asserts
+    Optional['ConditionPathExists']      => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
+    Optional['ConditionPathIsDirectory'] => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
+    Optional['AssertPathExists']         => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
+    Optional['AssertPathIsDirectory']    => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
+  }]
 ```
 

@@ -1,0 +1,32 @@
+<%- |
+ Optional[Hash] $unit_entry,
+ Optional[Hash] $service_entry,
+ Optional[Hash] $install_entry,
+| -%>
+<% if $unit_entry { -%>
+
+[Unit]
+<% $unit_entry.each | $_key, $_value | { -%>
+<% Array($_value, true).each | $_subvalue | { -%>
+<%= $_key %>=<%= $_subvalue %>
+<% } -%>
+<% } -%>
+<% } -%>
+<% if $service_entry { -%>
+
+[Service]
+<% $service_entry.each | $_key, $_value | { -%>
+<% Array($_value, true).each | $_subvalue | { -%>
+<%= $_key %>=<%= $_subvalue %>
+<% } -%>
+<% } -%>
+<% } -%>
+<% if $install_entry { -%>
+
+[Install]
+<% $install_entry.each | $_key, $_value | { -%>
+<% Array($_value, true).each | $_subvalue | { -%>
+<%= $_key %>=<%= $_subvalue %>
+<% } -%>
+<% } -%>
+<% } -%>
