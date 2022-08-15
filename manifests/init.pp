@@ -27,7 +27,7 @@
 # @param resolved_ensure
 #   The state that the ``resolved`` service should be in. When migrating from 'running' to
 #   'stopped' an attempt will be made to restore a working `/etc/resolv.conf` using
-#   `/run/systemd/resolved/resolv.conf`.
+#   `/run/systemd/resolve/resolv.conf`.
 #
 # @param resolved_package
 #   The name of a systemd sub package needed for systemd-resolved if one needs to be installed.
