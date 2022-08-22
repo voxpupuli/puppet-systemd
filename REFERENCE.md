@@ -192,7 +192,7 @@ Data type: `Enum['stopped','running']`
 
 The state that the ``resolved`` service should be in. When migrating from 'running' to
 'stopped' an attempt will be made to restore a working `/etc/resolv.conf` using
-`/run/systemd/resolved/resolv.conf`.
+`/run/systemd/resolve/resolv.conf`.
 
 Default value: `'running'`
 
