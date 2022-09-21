@@ -267,6 +267,16 @@ describe 'systemd::unit_file' do
             expect(subject).not_to create_systemd__daemon_reload(title)
           }
         end
+
+        context 'notify_service => false' do
+          let(:params) { { enable: true, notify_service: false } }
+
+          it do
+            is_expected.not_to contain_service(title).with_subscribes_to(
+              "File[/etc/systemd/system/#{title}]"
+            )
+          end
+        end
       end
     end
   end
