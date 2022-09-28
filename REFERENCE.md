@@ -322,7 +322,7 @@ Default value: `'running'`
 
 Data type: `Boolean`
 
-Manage the systemd tiemsyncd daemon
+Manage the systemd timesyncd daemon
 
 Default value: `false`
 

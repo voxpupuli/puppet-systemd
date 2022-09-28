@@ -81,7 +81,7 @@
 #   The state that the ``networkd`` service should be in
 #
 # @param manage_timesyncd
-#   Manage the systemd tiemsyncd daemon
+#   Manage the systemd timesyncd daemon
 #
 # @param timesyncd_ensure
 #   The state that the ``timesyncd`` service should be in
