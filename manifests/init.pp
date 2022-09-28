@@ -86,6 +86,9 @@
 # @param timesyncd_ensure
 #   The state that the ``timesyncd`` service should be in
 #
+# @param timesyncd_package
+#   Name of the package required for systemd-timesyncd, if any
+#
 # @param ntp_server
 #   comma separated list of ntp servers, will be combined with interface specific
 #   addresses from systemd-networkd. requires puppetlabs-inifile
@@ -200,6 +203,7 @@ class systemd (
   Enum['stopped','running']                           $networkd_ensure = 'running',
   Boolean                                             $manage_timesyncd = false,
   Enum['stopped','running']                           $timesyncd_ensure = 'running',
+  Optional[String[1]]                                 $timesyncd_package = undef,
   Optional[Variant[Array,String]]                     $ntp_server = undef,
   Optional[Variant[Array,String]]                     $fallback_ntp_server = undef,
   Boolean                                             $manage_accounting = false,

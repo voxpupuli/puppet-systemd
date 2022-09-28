@@ -6,3 +6,5 @@ systemd::accounting:
   DefaultBlockIOAccounting: 'yes'
   DefaultMemoryAccounting: 'yes'
   DefaultTasksAccounting: 'yes'
+
+systemd::timesyncd_package: 'systemd-timesyncd'

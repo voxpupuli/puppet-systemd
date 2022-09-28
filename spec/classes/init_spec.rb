@@ -17,6 +17,7 @@ describe 'systemd' do
         it { is_expected.not_to create_service('systemd-resolved') }
         it { is_expected.not_to create_service('systemd-networkd') }
         it { is_expected.not_to create_service('systemd-timesyncd') }
+        it { is_expected.not_to contain_package('systemd-timesyncd') }
         it { is_expected.not_to contain_package('systemd-resolved') }
         it { is_expected.not_to contain_class('systemd::coredump') }
         it { is_expected.not_to contain_class('systemd::oomd') }
@@ -263,6 +264,12 @@ describe 'systemd' do
           it { is_expected.not_to create_service('systemd-resolved').with_enable(true) }
           it { is_expected.not_to create_service('systemd-networkd').with_ensure('running') }
           it { is_expected.not_to create_service('systemd-networkd').with_enable(true) }
+
+          if (facts[:os]['name'] == 'Ubuntu' && Puppet::Util::Package.versioncmp(facts[:os]['release']['full'], '20.04') >= 0) || (facts[:os]['name'] == 'Debian' && Puppet::Util::Package.versioncmp(facts[:os]['release']['major'], '11') >= 0)
+            it { is_expected.to contain_package('systemd-timesyncd') }
+          else
+            it { is_expected.not_to contain_package('systemd-timesyncd') }
+          end
         end
 
         context 'when enabling timesyncd with NTP values (string)' do
