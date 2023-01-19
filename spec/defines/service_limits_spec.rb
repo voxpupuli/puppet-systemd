@@ -20,6 +20,7 @@ describe 'systemd::service_limits' do
                 'LimitNOFILE' => '20:infinity',
                 'LimitNICE' => '-10',
                 'LimitRTPRIO' => 50,
+                'MemorySwapMax' => '0',
                 'CPUQuota' => '125%',
                 'IODeviceWeight' => [
                   { '/dev/weight' => 10 },
@@ -43,6 +44,7 @@ describe 'systemd::service_limits' do
               with_content(%r{LimitNOFILE=20:infinity}).
               with_content(%r{LimitNICE=-10}).
               with_content(%r{LimitRTPRIO=50}).
+              with_content(%r{MemorySwapMax=0}).
               with_content(%r{CPUQuota=125%}).
               with_content(%r{IODeviceWeight=/dev/weight 10}).
               with_content(%r{IODeviceWeight=/dev/weight2 20}).
