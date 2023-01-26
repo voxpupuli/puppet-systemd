@@ -33,9 +33,23 @@ Facter.add(:udev) do
         d.key?(:property) ? d[:property][key] = value : d[:property] = { key => value }
       when 'L'
         d[:priority] = data.to_i
+      when 'M'
+        d[:sysname] = data
+      when 'R'
+        d[:sysnum] = data # string in udevadm source
+      when 'U'
+        d[:subsystem] = data
+      when 'V'
+        d[:driver] = data
+      when 'D'
+        d[:devnum] = data
+      when 'T'
+        d[:devtype] = data
+      when 'Q'
+        d[:diskseq] = data.to_i
+      when 'I'
+        d[:ifindex] = data.to_i
       else
-        # the source defines several other letter codes -- they do not seem to
-        # be used on EL7/8
         raise "Unknown record: #{l}"
       end
     end

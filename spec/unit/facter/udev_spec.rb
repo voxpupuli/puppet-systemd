@@ -10,7 +10,9 @@ shared_examples 'a named device' do
       )
     )
   end
+end
 
+shared_examples 'a path device' do
   it do
     expect(fact.value).to include(
       'path' => include(
@@ -37,6 +39,63 @@ describe 'udev fact', type: :fact do
         allow(Facter::Core::Execution).to receive(:exec).with('/foo info -e').and_return(
           File.read(fixtures('udevdb', udevdb_fixture))
         )
+      end
+
+      context 'fedora37-supermicro-X10SRA-F' do
+        let(:udevdb_fixture) { 'fedora37-supermicro-X10SRA-F.txt' }
+
+        context 'eno1' do
+          let(:path) { '/devices/pci0000:00/0000:00:1c.2/0000:0a:00.0/net/eno1' }
+          let(:dev) do
+            include(
+              'path'      => '/devices/pci0000:00/0000:00:1c.2/0000:0a:00.0/net/eno1',
+              'ifindex'   => 2,
+              'subsystem' => 'net',
+              'sysname'   => 'eno1',
+              'sysnum'    => '1',
+              'property'  => include(
+                'DEVPATH'       => '/devices/pci0000:00/0000:00:1c.2/0000:0a:00.0/net/eno1',
+                'SYSTEMD_ALIAS' => '/sys/subsystem/net/devices/eno1'
+              )
+            )
+          end
+
+          it_behaves_like 'a path device'
+        end
+
+        context 'nvme0n1' do
+          let(:name) { 'nvme0n1' }
+          let(:path) { '/devices/pci0000:00/0000:00:01.0/0000:01:00.0/nvme/nvme0/nvme0n1' }
+          let(:dev) do
+            include(
+              'name'      => 'nvme0n1',
+              'path'      => '/devices/pci0000:00/0000:00:01.0/0000:01:00.0/nvme/nvme0/nvme0n1',
+              'symlink'   => include(
+                'disk/by-id/nvme-Samsung_SSD_960_EVO_1TB_S3ETNX0J208970A'
+              ),
+              'devnum'    => 'b 259:0',
+              'devtype'   => 'disk',
+              'diskseq'   => 3,
+              'subsystem' => 'block',
+              'sysname'   => 'nvme0n1',
+              'sysnum'    => '1',
+              'priority'  => 0,
+              'property'  => include(
+                'DEVNAME'   => '/dev/nvme0n1',
+                'ID_SERIAL' => 'Samsung_SSD_960_EVO_1TB_S3ETNX0J208970A',
+                'DEVLINKS'  => %w[
+                  /dev/disk/by-path/pci-0000:01:00.0-nvme-1
+                  /dev/disk/by-id/nvme-Samsung_SSD_960_EVO_1TB_S3ETNX0J208970A
+                  /dev/disk/by-diskseq/3
+                  /dev/disk/by-id/nvme-eui.0025385271b166c9
+                ]
+              )
+            )
+          end
+
+          it_behaves_like 'a named device'
+          it_behaves_like 'a path device'
+        end
       end
 
       context 'almalinux9-supermicro-1114S-WN10RT' do
@@ -91,6 +150,7 @@ describe 'udev fact', type: :fact do
           end
 
           it_behaves_like 'a named device'
+          it_behaves_like 'a path device'
         end
 
         context 'nvme2n1' do
@@ -117,6 +177,7 @@ describe 'udev fact', type: :fact do
           end
 
           it_behaves_like 'a named device'
+          it_behaves_like 'a path device'
         end
 
         context 'nvme3n1' do
@@ -143,6 +204,7 @@ describe 'udev fact', type: :fact do
           end
 
           it_behaves_like 'a named device'
+          it_behaves_like 'a path device'
         end
 
         context 'nvme4n1' do
@@ -168,6 +230,7 @@ describe 'udev fact', type: :fact do
           end
 
           it_behaves_like 'a named device'
+          it_behaves_like 'a path device'
         end
       end
 
@@ -197,6 +260,7 @@ describe 'udev fact', type: :fact do
           end
 
           it_behaves_like 'a named device'
+          it_behaves_like 'a path device'
         end
 
         context 'nvme1n1' do
@@ -222,6 +286,7 @@ describe 'udev fact', type: :fact do
           end
 
           it_behaves_like 'a named device'
+          it_behaves_like 'a path device'
         end
 
         context 'nvme2n1' do
@@ -247,6 +312,7 @@ describe 'udev fact', type: :fact do
           end
 
           it_behaves_like 'a named device'
+          it_behaves_like 'a path device'
         end
       end
 
@@ -276,6 +342,7 @@ describe 'udev fact', type: :fact do
           end
 
           it_behaves_like 'a named device'
+          it_behaves_like 'a path device'
         end
 
         context 'nvme1n1' do
@@ -302,6 +369,7 @@ describe 'udev fact', type: :fact do
           end
 
           it_behaves_like 'a named device'
+          it_behaves_like 'a path device'
         end
 
         context 'nvme2n1' do
@@ -328,6 +396,7 @@ describe 'udev fact', type: :fact do
           end
 
           it_behaves_like 'a named device'
+          it_behaves_like 'a path device'
         end
 
         context 'nvme3n1' do
@@ -353,6 +422,7 @@ describe 'udev fact', type: :fact do
           end
 
           it_behaves_like 'a named device'
+          it_behaves_like 'a path device'
         end
       end
     end
