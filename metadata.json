@@ -80,7 +80,9 @@
       "operatingsystem": "Fedora",
       "operatingsystemrelease": [
         "30",
-        "31"
+        "31",
+        "36",
+        "37"
       ]
     }
   ],
