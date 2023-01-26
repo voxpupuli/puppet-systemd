@@ -1273,7 +1273,6 @@ The following parameters are available in the `systemd::service_limits` defined 
 * [`selinux_ignore_defaults`](#-systemd--service_limits--selinux_ignore_defaults)
 * [`limits`](#-systemd--service_limits--limits)
 * [`source`](#-systemd--service_limits--source)
-* [`restart_service`](#-systemd--service_limits--restart_service)
 
 ##### <a name="-systemd--service_limits--name"></a>`name`
 
@@ -1324,14 +1323,6 @@ A ``File`` resource compatible ``source``
 * Mutually exclusive with ``$limits``
 
 Default value: `undef`
-
-##### <a name="-systemd--service_limits--restart_service"></a>`restart_service`
-
-Data type: `Boolean`
-
-Restart the managed service after setting the limits
-
-Default value: `true`
 
 ### <a name="systemd--timer"></a>`systemd::timer`
 
