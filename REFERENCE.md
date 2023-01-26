@@ -748,7 +748,7 @@ Data type: `Boolean`
 
 Notify a service for the unit, if it exists
 
-Default value: `false`
+Default value: `true`
 
 ##### <a name="-systemd--dropin_file--daemon_reload"></a>`daemon_reload`
 
