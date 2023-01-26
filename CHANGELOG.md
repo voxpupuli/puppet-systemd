@@ -4,6 +4,49 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.10.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.10.0) (2022-06-20)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.9.0...v3.10.0)
+
+**Implemented enhancements:**
+
+- systemd::timer: move variable definition close to where it is used [\#280](https://github.com/voxpupuli/puppet-systemd/pull/280) ([simondeziel](https://github.com/simondeziel))
+- Add comment hint about initrd for folks [\#279](https://github.com/voxpupuli/puppet-systemd/pull/279) ([jcpunk](https://github.com/jcpunk))
+- Fix systemctl daemon-reload after file additions [\#277](https://github.com/voxpupuli/puppet-systemd/pull/277) ([trevor-vaughan](https://github.com/trevor-vaughan))
+- systemd::resolved: save readlink's value to avoid calling it twice [\#276](https://github.com/voxpupuli/puppet-systemd/pull/276) ([simondeziel](https://github.com/simondeziel))
+
+**Fixed bugs:**
+
+- systemd::dropin\_file doesn't cause a systemd daemon-reload [\#234](https://github.com/voxpupuli/puppet-systemd/issues/234)
+
+**Merged pull requests:**
+
+- Minor wordsmithing in README [\#283](https://github.com/voxpupuli/puppet-systemd/pull/283) ([op-ct](https://github.com/op-ct))
+- Correct spelling mistakes [\#275](https://github.com/voxpupuli/puppet-systemd/pull/275) ([EdwardBetts](https://github.com/EdwardBetts))
+
+## [v3.9.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.9.0) (2022-05-25)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.8.0...v3.9.0)
+
+**Implemented enhancements:**
+
+- Add machine-info information management [\#272](https://github.com/voxpupuli/puppet-systemd/pull/272) ([jcpunk](https://github.com/jcpunk))
+- Add management of systemd-oomd [\#271](https://github.com/voxpupuli/puppet-systemd/pull/271) ([jcpunk](https://github.com/jcpunk))
+- Add parameter to manage default target [\#270](https://github.com/voxpupuli/puppet-systemd/pull/270) ([jcpunk](https://github.com/jcpunk))
+- Support Service Limits specified in Bytes [\#268](https://github.com/voxpupuli/puppet-systemd/pull/268) ([optiz0r](https://github.com/optiz0r))
+- Allows % and infinity for Memory Limits + Add MemoryMin [\#267](https://github.com/voxpupuli/puppet-systemd/pull/267) ([SeanHood](https://github.com/SeanHood))
+- Add CentOS 9 to supported operating systems [\#266](https://github.com/voxpupuli/puppet-systemd/pull/266) ([kajinamit](https://github.com/kajinamit))
+- Add function systemd::systemd\_escape [\#243](https://github.com/voxpupuli/puppet-systemd/pull/243) ([jkroepke](https://github.com/jkroepke))
+
+**Fixed bugs:**
+
+- Ensure systemd-networkd is available prior to notifying service [\#269](https://github.com/voxpupuli/puppet-systemd/pull/269) ([mat1010](https://github.com/mat1010))
+
+**Closed issues:**
+
+- systemd target support [\#265](https://github.com/voxpupuli/puppet-systemd/issues/265)
+- systemd::escape function is does not escape a lot of other characters [\#242](https://github.com/voxpupuli/puppet-systemd/issues/242)
+
 ## [v3.8.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.8.0) (2022-03-02)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.7.0...v3.8.0)

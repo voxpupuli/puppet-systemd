@@ -9,7 +9,7 @@
 #### Public Classes
 
 * [`systemd`](#systemd): This module allows triggering systemd commands once for all modules
-* [`systemd::tmpfiles`](#systemdtmpfiles): Update the systemd temp files
+* [`systemd::tmpfiles`](#systemd--tmpfiles): Update the systemd temp files
 
 #### Private Classes
 
@@ -17,8 +17,10 @@
 * `systemd::install`: Install any systemd sub packages
 * `systemd::journald`: This class manages and configures journald.
 * `systemd::logind`: This class manages systemd's login manager configuration.
+* `systemd::machine_info`: This class manages systemd's machine-info file (hostnamectl)
 * `systemd::modules_loads`: Activate the modules contained in modules-loads.d
 * `systemd::networkd`: This class provides an abstract way to trigger systemd-networkd
+* `systemd::oomd`: This class manages and configures oomd.
 * `systemd::resolved`: This class provides an abstract way to trigger resolved.
 * `systemd::system`: This class provides a solution to enable accounting
 * `systemd::timesyncd`: This class provides an abstract way to trigger systemd-timesyncd
@@ -26,14 +28,17 @@
 
 ### Defined types
 
-* [`systemd::dropin_file`](#systemddropin_file): Creates a drop-in file for a systemd unit
-* [`systemd::modules_load`](#systemdmodules_load): Creates a modules-load.d drop file
-* [`systemd::network`](#systemdnetwork): Creates network config for systemd-networkd
-* [`systemd::service_limits`](#systemdservice_limits): Adds a set of custom limits to the service
-* [`systemd::timer`](#systemdtimer): Create a timer and optionally a service unit to execute with the timer unit
-* [`systemd::tmpfile`](#systemdtmpfile): Creates a systemd tmpfile
-* [`systemd::udev::rule`](#systemdudevrule): Adds a custom udev rule
-* [`systemd::unit_file`](#systemdunit_file): Creates a systemd unit file
+* [`systemd::daemon_reload`](#systemd--daemon_reload): Run systemctl daemon-reload
+* [`systemd::dropin_file`](#systemd--dropin_file): Creates a drop-in file for a systemd unit
+* [`systemd::manage_dropin`](#systemd--manage_dropin): Creates a drop-in file for a systemd unit from a template
+* [`systemd::manage_unit`](#systemd--manage_unit): Generate unit file from template
+* [`systemd::modules_load`](#systemd--modules_load): Creates a modules-load.d drop file
+* [`systemd::network`](#systemd--network): Creates network config for systemd-networkd
+* [`systemd::service_limits`](#systemd--service_limits): Adds a set of custom limits to the service
+* [`systemd::timer`](#systemd--timer): Create a timer and optionally a service unit to execute with the timer unit
+* [`systemd::tmpfile`](#systemd--tmpfile): Creates a systemd tmpfile
+* [`systemd::udev::rule`](#systemd--udev--rule): Adds a custom udev rule
+* [`systemd::unit_file`](#systemd--unit_file): Creates a systemd unit file
 
 ### Resource types
 
@@ -41,18 +46,25 @@
 
 ### Functions
 
-* [`systemd::escape`](#systemdescape): Escape strings as systemd-escape does.
+* [`systemd::escape`](#systemd--escape): Escape strings as systemd-escape does.
+* [`systemd::systemd_escape`](#systemd--systemd_escape): Escape strings by call the `systemd-escape` command in the background.
 
 ### Data types
 
-* [`Systemd::CoredumpSettings`](#systemdcoredumpsettings): Configurations for coredump.conf
-* [`Systemd::Dropin`](#systemddropin): custom datatype that validates filenames/paths for valid systemd dropin files
-* [`Systemd::JournaldSettings`](#systemdjournaldsettings): Matches Systemd journald config Struct
-* [`Systemd::JournaldSettings::Ensure`](#systemdjournaldsettingsensure): defines allowed ensure states for systemd-journald settings
-* [`Systemd::LogindSettings`](#systemdlogindsettings): Matches Systemd Login Manager Struct
-* [`Systemd::LogindSettings::Ensure`](#systemdlogindsettingsensure): defines allowed ensure states for systemd-logind settings
-* [`Systemd::ServiceLimits`](#systemdservicelimits): Matches Systemd Service Limit Struct
-* [`Systemd::Unit`](#systemdunit): custom datatype that validates different filenames for systemd units
+* [`Systemd::CoredumpSettings`](#Systemd--CoredumpSettings): Configurations for coredump.conf
+* [`Systemd::Dropin`](#Systemd--Dropin): custom datatype that validates filenames/paths for valid systemd dropin files
+* [`Systemd::JournaldSettings`](#Systemd--JournaldSettings): Matches Systemd journald config Struct
+* [`Systemd::JournaldSettings::Ensure`](#Systemd--JournaldSettings--Ensure): defines allowed ensure states for systemd-journald settings
+* [`Systemd::LogindSettings`](#Systemd--LogindSettings): Matches Systemd Login Manager Struct
+* [`Systemd::LogindSettings::Ensure`](#Systemd--LogindSettings--Ensure): defines allowed ensure states for systemd-logind settings
+* [`Systemd::MachineInfoSettings`](#Systemd--MachineInfoSettings): Matches Systemd machine-info (hostnamectl) file Struct
+* [`Systemd::OomdSettings`](#Systemd--OomdSettings): Configurations for oomd.conf
+* [`Systemd::ServiceLimits`](#Systemd--ServiceLimits): Matches Systemd Service Limit Struct
+* [`Systemd::Unit`](#Systemd--Unit): custom datatype that validates different filenames for systemd units and unit templates
+* [`Systemd::Unit::Install`](#Systemd--Unit--Install): Possible keys for the [Install] section of a unit file
+* [`Systemd::Unit::Service`](#Systemd--Unit--Service): Possible keys for the [Service] section of a unit file
+* [`Systemd::Unit::Service::Exec`](#Systemd--Unit--Service--Exec): Possible strings for ExecStart, ExecStartPrep, ...
+* [`Systemd::Unit::Unit`](#Systemd--Unit--Unit): Possible keys for the [Unit] section of a unit file
 
 ## Classes
 
@@ -64,55 +76,69 @@ This module allows triggering systemd commands once for all modules
 
 The following parameters are available in the `systemd` class:
 
-* [`service_limits`](#service_limits)
-* [`networks`](#networks)
-* [`timers`](#timers)
-* [`tmpfiles`](#tmpfiles)
-* [`unit_files`](#unit_files)
-* [`manage_resolved`](#manage_resolved)
-* [`resolved_ensure`](#resolved_ensure)
-* [`resolved_package`](#resolved_package)
-* [`dns`](#dns)
-* [`fallback_dns`](#fallback_dns)
-* [`domains`](#domains)
-* [`llmnr`](#llmnr)
-* [`multicast_dns`](#multicast_dns)
-* [`dnssec`](#dnssec)
-* [`dnsovertls`](#dnsovertls)
-* [`cache`](#cache)
-* [`dns_stub_listener`](#dns_stub_listener)
-* [`manage_resolv_conf`](#manage_resolv_conf)
-* [`use_stub_resolver`](#use_stub_resolver)
-* [`manage_networkd`](#manage_networkd)
-* [`networkd_ensure`](#networkd_ensure)
-* [`manage_timesyncd`](#manage_timesyncd)
-* [`timesyncd_ensure`](#timesyncd_ensure)
-* [`ntp_server`](#ntp_server)
-* [`fallback_ntp_server`](#fallback_ntp_server)
-* [`manage_journald`](#manage_journald)
-* [`journald_settings`](#journald_settings)
-* [`manage_udevd`](#manage_udevd)
-* [`udev_log`](#udev_log)
-* [`udev_children_max`](#udev_children_max)
-* [`udev_exec_delay`](#udev_exec_delay)
-* [`udev_event_timeout`](#udev_event_timeout)
-* [`udev_resolve_names`](#udev_resolve_names)
-* [`udev_timeout_signal`](#udev_timeout_signal)
-* [`udev_rules`](#udev_rules)
-* [`manage_logind`](#manage_logind)
-* [`logind_settings`](#logind_settings)
-* [`loginctl_users`](#loginctl_users)
-* [`dropin_files`](#dropin_files)
-* [`manage_all_network_files`](#manage_all_network_files)
-* [`network_path`](#network_path)
-* [`manage_accounting`](#manage_accounting)
-* [`accounting`](#accounting)
-* [`purge_dropin_dirs`](#purge_dropin_dirs)
-* [`manage_coredump`](#manage_coredump)
-* [`coredump_settings`](#coredump_settings)
-* [`coredump_backtrace`](#coredump_backtrace)
+* [`default_target`](#-systemd--default_target)
+* [`service_limits`](#-systemd--service_limits)
+* [`networks`](#-systemd--networks)
+* [`timers`](#-systemd--timers)
+* [`tmpfiles`](#-systemd--tmpfiles)
+* [`unit_files`](#-systemd--unit_files)
+* [`manage_resolved`](#-systemd--manage_resolved)
+* [`resolved_ensure`](#-systemd--resolved_ensure)
+* [`resolved_package`](#-systemd--resolved_package)
+* [`dns`](#-systemd--dns)
+* [`fallback_dns`](#-systemd--fallback_dns)
+* [`domains`](#-systemd--domains)
+* [`llmnr`](#-systemd--llmnr)
+* [`multicast_dns`](#-systemd--multicast_dns)
+* [`dnssec`](#-systemd--dnssec)
+* [`dnsovertls`](#-systemd--dnsovertls)
+* [`cache`](#-systemd--cache)
+* [`dns_stub_listener`](#-systemd--dns_stub_listener)
+* [`manage_resolv_conf`](#-systemd--manage_resolv_conf)
+* [`use_stub_resolver`](#-systemd--use_stub_resolver)
+* [`manage_networkd`](#-systemd--manage_networkd)
+* [`networkd_ensure`](#-systemd--networkd_ensure)
+* [`manage_timesyncd`](#-systemd--manage_timesyncd)
+* [`timesyncd_ensure`](#-systemd--timesyncd_ensure)
+* [`timesyncd_package`](#-systemd--timesyncd_package)
+* [`ntp_server`](#-systemd--ntp_server)
+* [`fallback_ntp_server`](#-systemd--fallback_ntp_server)
+* [`manage_journald`](#-systemd--manage_journald)
+* [`journald_settings`](#-systemd--journald_settings)
+* [`manage_udevd`](#-systemd--manage_udevd)
+* [`udev_log`](#-systemd--udev_log)
+* [`udev_children_max`](#-systemd--udev_children_max)
+* [`udev_exec_delay`](#-systemd--udev_exec_delay)
+* [`udev_event_timeout`](#-systemd--udev_event_timeout)
+* [`udev_resolve_names`](#-systemd--udev_resolve_names)
+* [`udev_timeout_signal`](#-systemd--udev_timeout_signal)
+* [`udev_rules`](#-systemd--udev_rules)
+* [`machine_info_settings`](#-systemd--machine_info_settings)
+* [`manage_logind`](#-systemd--manage_logind)
+* [`logind_settings`](#-systemd--logind_settings)
+* [`loginctl_users`](#-systemd--loginctl_users)
+* [`dropin_files`](#-systemd--dropin_files)
+* [`manage_all_network_files`](#-systemd--manage_all_network_files)
+* [`network_path`](#-systemd--network_path)
+* [`manage_accounting`](#-systemd--manage_accounting)
+* [`accounting`](#-systemd--accounting)
+* [`purge_dropin_dirs`](#-systemd--purge_dropin_dirs)
+* [`manage_coredump`](#-systemd--manage_coredump)
+* [`coredump_settings`](#-systemd--coredump_settings)
+* [`coredump_backtrace`](#-systemd--coredump_backtrace)
+* [`manage_oomd`](#-systemd--manage_oomd)
+* [`oomd_ensure`](#-systemd--oomd_ensure)
+* [`oomd_settings`](#-systemd--oomd_settings)
 
-##### <a name="service_limits"></a>`service_limits`
+##### <a name="-systemd--default_target"></a>`default_target`
+
+Data type: `Optional[Pattern['^.+\.target$']]`
+
+The default systemd boot target, unmanaged if set to undef.
+
+Default value: `undef`
+
+##### <a name="-systemd--service_limits"></a>`service_limits`
 
 Data type: `Hash[String[1],Hash[String[1], Any]]`
 
@@ -121,7 +147,7 @@ May be passed a resource hash suitable for passing directly into the
 
 Default value: `{}`
 
-##### <a name="networks"></a>`networks`
+##### <a name="-systemd--networks"></a>`networks`
 
 Data type: `Hash[String[1],Hash[String[1], Any]]`
 
@@ -129,7 +155,7 @@ Hash of `systemd::network` resources
 
 Default value: `{}`
 
-##### <a name="timers"></a>`timers`
+##### <a name="-systemd--timers"></a>`timers`
 
 Data type: `Hash[String[1],Hash[String[1], Any]]`
 
@@ -137,7 +163,7 @@ Hash of `systemd::timer` resources
 
 Default value: `{}`
 
-##### <a name="tmpfiles"></a>`tmpfiles`
+##### <a name="-systemd--tmpfiles"></a>`tmpfiles`
 
 Data type: `Hash[String[1],Hash[String[1], Any]]`
 
@@ -145,7 +171,7 @@ Hash of `systemd::tmpfile` resources
 
 Default value: `{}`
 
-##### <a name="unit_files"></a>`unit_files`
+##### <a name="-systemd--unit_files"></a>`unit_files`
 
 Data type: `Hash[String[1],Hash[String[1], Any]]`
 
@@ -153,33 +179,33 @@ Hash of `systemd::unit_file` resources
 
 Default value: `{}`
 
-##### <a name="manage_resolved"></a>`manage_resolved`
+##### <a name="-systemd--manage_resolved"></a>`manage_resolved`
 
 Data type: `Boolean`
 
 Manage the systemd resolver
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="resolved_ensure"></a>`resolved_ensure`
+##### <a name="-systemd--resolved_ensure"></a>`resolved_ensure`
 
 Data type: `Enum['stopped','running']`
 
 The state that the ``resolved`` service should be in. When migrating from 'running' to
 'stopped' an attempt will be made to restore a working `/etc/resolv.conf` using
-`/run/systemd/resolved/resolv.conf`.
+`/run/systemd/resolve/resolv.conf`.
 
 Default value: `'running'`
 
-##### <a name="resolved_package"></a>`resolved_package`
+##### <a name="-systemd--resolved_package"></a>`resolved_package`
 
 Data type: `Optional[Enum['systemd-resolved']]`
 
 The name of a systemd sub package needed for systemd-resolved if one needs to be installed.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="dns"></a>`dns`
+##### <a name="-systemd--dns"></a>`dns`
 
 Data type: `Optional[Variant[Array[String],String]]`
 
@@ -188,9 +214,9 @@ DNS requests are sent to one of the listed DNS servers in parallel to suitable
 per-link DNS servers acquired from systemd-networkd.service(8) or set at runtime
 by external applications. requires puppetlabs-inifile
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="fallback_dns"></a>`fallback_dns`
+##### <a name="-systemd--fallback_dns"></a>`fallback_dns`
 
 Data type: `Optional[Variant[Array[String],String]]`
 
@@ -198,75 +224,75 @@ A space-separated list of IPv4 and IPv6 addresses to use as the fallback DNS
 servers. Any per-link DNS servers obtained from systemd-networkd take
 precedence over this setting. requires puppetlabs-inifile
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="domains"></a>`domains`
+##### <a name="-systemd--domains"></a>`domains`
 
 Data type: `Optional[Variant[Array[String],String]]`
 
 A space-separated list of domains host names or IP addresses to be used
 systemd-resolved take precedence over this setting.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="llmnr"></a>`llmnr`
-
-Data type: `Optional[Variant[Boolean,Enum['resolve']]]`
-
-Takes a boolean argument or "resolve".
-
-Default value: ``undef``
-
-##### <a name="multicast_dns"></a>`multicast_dns`
+##### <a name="-systemd--llmnr"></a>`llmnr`
 
 Data type: `Optional[Variant[Boolean,Enum['resolve']]]`
 
 Takes a boolean argument or "resolve".
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="dnssec"></a>`dnssec`
+##### <a name="-systemd--multicast_dns"></a>`multicast_dns`
+
+Data type: `Optional[Variant[Boolean,Enum['resolve']]]`
+
+Takes a boolean argument or "resolve".
+
+Default value: `undef`
+
+##### <a name="-systemd--dnssec"></a>`dnssec`
 
 Data type: `Optional[Variant[Boolean,Enum['allow-downgrade']]]`
 
 Takes a boolean argument or "allow-downgrade".
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="dnsovertls"></a>`dnsovertls`
+##### <a name="-systemd--dnsovertls"></a>`dnsovertls`
 
 Data type: `Variant[Boolean,Enum['yes', 'opportunistic', 'no']]`
 
 Takes a boolean argument or one of "yes", "opportunistic" or "no". "true" corresponds to
 "opportunistic" and "false" (default) to "no".
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="cache"></a>`cache`
+##### <a name="-systemd--cache"></a>`cache`
 
 Data type: `Variant[Boolean,Enum['no-negative']]`
 
 Takes a boolean argument or "no-negative".
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="dns_stub_listener"></a>`dns_stub_listener`
+##### <a name="-systemd--dns_stub_listener"></a>`dns_stub_listener`
 
 Data type: `Optional[Variant[Boolean,Enum['udp','tcp']]]`
 
 Takes a boolean argument or one of "udp" and "tcp".
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="manage_resolv_conf"></a>`manage_resolv_conf`
+##### <a name="-systemd--manage_resolv_conf"></a>`manage_resolv_conf`
 
 Data type: `Boolean`
 
 For when `manage_resolved` is `true` should the file `/etc/resolv.conf` be managed.
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="use_stub_resolver"></a>`use_stub_resolver`
+##### <a name="-systemd--use_stub_resolver"></a>`use_stub_resolver`
 
 Data type: `Boolean`
 
@@ -274,17 +300,17 @@ Takes a boolean argument. When "false" (default) it uses /run/systemd/resolve/re
 as /etc/resolv.conf. When "true", it uses /run/systemd/resolve/stub-resolv.conf
 When `resolved_ensure` is `stopped` this parameter is ignored.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="manage_networkd"></a>`manage_networkd`
+##### <a name="-systemd--manage_networkd"></a>`manage_networkd`
 
 Data type: `Boolean`
 
 Manage the systemd network daemon
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="networkd_ensure"></a>`networkd_ensure`
+##### <a name="-systemd--networkd_ensure"></a>`networkd_ensure`
 
 Data type: `Enum['stopped','running']`
 
@@ -292,15 +318,15 @@ The state that the ``networkd`` service should be in
 
 Default value: `'running'`
 
-##### <a name="manage_timesyncd"></a>`manage_timesyncd`
+##### <a name="-systemd--manage_timesyncd"></a>`manage_timesyncd`
 
 Data type: `Boolean`
 
-Manage the systemd tiemsyncd daemon
+Manage the systemd timesyncd daemon
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="timesyncd_ensure"></a>`timesyncd_ensure`
+##### <a name="-systemd--timesyncd_ensure"></a>`timesyncd_ensure`
 
 Data type: `Enum['stopped','running']`
 
@@ -308,16 +334,24 @@ The state that the ``timesyncd`` service should be in
 
 Default value: `'running'`
 
-##### <a name="ntp_server"></a>`ntp_server`
+##### <a name="-systemd--timesyncd_package"></a>`timesyncd_package`
+
+Data type: `Optional[String[1]]`
+
+Name of the package required for systemd-timesyncd, if any
+
+Default value: `undef`
+
+##### <a name="-systemd--ntp_server"></a>`ntp_server`
 
 Data type: `Optional[Variant[Array,String]]`
 
 comma separated list of ntp servers, will be combined with interface specific
 addresses from systemd-networkd. requires puppetlabs-inifile
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="fallback_ntp_server"></a>`fallback_ntp_server`
+##### <a name="-systemd--fallback_ntp_server"></a>`fallback_ntp_server`
 
 Data type: `Optional[Variant[Array,String]]`
 
@@ -325,17 +359,17 @@ A space-separated list of NTP server host names or IP addresses to be used
 as the fallback NTP servers. Any per-interface NTP servers obtained from
 systemd-networkd take precedence over this setting. requires puppetlabs-inifile
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="manage_journald"></a>`manage_journald`
+##### <a name="-systemd--manage_journald"></a>`manage_journald`
 
 Data type: `Boolean`
 
 Manage the systemd journald
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="journald_settings"></a>`journald_settings`
+##### <a name="-systemd--journald_settings"></a>`journald_settings`
 
 Data type: `Systemd::JournaldSettings`
 
@@ -343,63 +377,63 @@ Config Hash that is used to configure settings in journald.conf
 
 Default value: `{}`
 
-##### <a name="manage_udevd"></a>`manage_udevd`
+##### <a name="-systemd--manage_udevd"></a>`manage_udevd`
 
 Data type: `Boolean`
 
 Manage the systemd udev daemon
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="udev_log"></a>`udev_log`
+##### <a name="-systemd--udev_log"></a>`udev_log`
 
 Data type: `Optional[Variant[Integer,String]]`
 
 The value of /etc/udev/udev.conf udev_log
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="udev_children_max"></a>`udev_children_max`
+##### <a name="-systemd--udev_children_max"></a>`udev_children_max`
 
 Data type: `Optional[Integer]`
 
 The value of /etc/udev/udev.conf children_max
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="udev_exec_delay"></a>`udev_exec_delay`
+##### <a name="-systemd--udev_exec_delay"></a>`udev_exec_delay`
 
 Data type: `Optional[Integer]`
 
 The value of /etc/udev/udev.conf exec_delay
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="udev_event_timeout"></a>`udev_event_timeout`
+##### <a name="-systemd--udev_event_timeout"></a>`udev_event_timeout`
 
 Data type: `Optional[Integer]`
 
 The value of /etc/udev/udev.conf event_timeout
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="udev_resolve_names"></a>`udev_resolve_names`
+##### <a name="-systemd--udev_resolve_names"></a>`udev_resolve_names`
 
 Data type: `Optional[Enum['early', 'late', 'never']]`
 
 The value of /etc/udev/udev.conf resolve_names
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="udev_timeout_signal"></a>`udev_timeout_signal`
+##### <a name="-systemd--udev_timeout_signal"></a>`udev_timeout_signal`
 
 Data type: `Optional[Variant[Integer,String]]`
 
 The value of /etc/udev/udev.conf timeout_signal
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="udev_rules"></a>`udev_rules`
+##### <a name="-systemd--udev_rules"></a>`udev_rules`
 
 Data type: `Hash`
 
@@ -408,15 +442,23 @@ Config Hash that is used to generate instances of our
 
 Default value: `{}`
 
-##### <a name="manage_logind"></a>`manage_logind`
+##### <a name="-systemd--machine_info_settings"></a>`machine_info_settings`
+
+Data type: `Systemd::MachineInfoSettings`
+
+Settings to place into /etc/machine-info (hostnamectl)
+
+Default value: `{}`
+
+##### <a name="-systemd--manage_logind"></a>`manage_logind`
 
 Data type: `Boolean`
 
 Manage the systemd logind
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="logind_settings"></a>`logind_settings`
+##### <a name="-systemd--logind_settings"></a>`logind_settings`
 
 Data type: `Systemd::LogindSettings`
 
@@ -424,7 +466,7 @@ Config Hash that is used to configure settings in logind.conf
 
 Default value: `{}`
 
-##### <a name="loginctl_users"></a>`loginctl_users`
+##### <a name="-systemd--loginctl_users"></a>`loginctl_users`
 
 Data type: `Hash`
 
@@ -433,7 +475,7 @@ Config Hash that is used to generate instances of our type
 
 Default value: `{}`
 
-##### <a name="dropin_files"></a>`dropin_files`
+##### <a name="-systemd--dropin_files"></a>`dropin_files`
 
 Data type: `Hash`
 
@@ -441,15 +483,15 @@ Configure dropin files via hiera with factory pattern
 
 Default value: `{}`
 
-##### <a name="manage_all_network_files"></a>`manage_all_network_files`
+##### <a name="-systemd--manage_all_network_files"></a>`manage_all_network_files`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="network_path"></a>`network_path`
+##### <a name="-systemd--network_path"></a>`network_path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -457,15 +499,15 @@ where all networkd files are placed in
 
 Default value: `'/etc/systemd/network'`
 
-##### <a name="manage_accounting"></a>`manage_accounting`
+##### <a name="-systemd--manage_accounting"></a>`manage_accounting`
 
 Data type: `Boolean`
 
 when enabled, the different accounting options (network traffic, IO, CPU util...) are enabled for units
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="accounting"></a>`accounting`
+##### <a name="-systemd--accounting"></a>`accounting`
 
 Data type: `Hash[String,String]`
 
@@ -473,23 +515,23 @@ Hash of the different accounting options. This highly depends on the used system
 
 Default value: `{}`
 
-##### <a name="purge_dropin_dirs"></a>`purge_dropin_dirs`
+##### <a name="-systemd--purge_dropin_dirs"></a>`purge_dropin_dirs`
 
 Data type: `Boolean`
 
 When enabled, unused directories for dropin files will be purged
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="manage_coredump"></a>`manage_coredump`
+##### <a name="-systemd--manage_coredump"></a>`manage_coredump`
 
 Data type: `Boolean`
 
 Should systemd-coredump configuration be managed
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="coredump_settings"></a>`coredump_settings`
+##### <a name="-systemd--coredump_settings"></a>`coredump_settings`
 
 Data type: `Systemd::CoredumpSettings`
 
@@ -497,15 +539,39 @@ Hash of systemd-coredump configurations for coredump.conf
 
 Default value: `{}`
 
-##### <a name="coredump_backtrace"></a>`coredump_backtrace`
+##### <a name="-systemd--coredump_backtrace"></a>`coredump_backtrace`
 
 Data type: `Boolean`
 
 Add --backtrace to systemd-coredump call systemd-coredump@.service unit
 
-Default value: ``false``
+Default value: `false`
 
-### <a name="systemdtmpfiles"></a>`systemd::tmpfiles`
+##### <a name="-systemd--manage_oomd"></a>`manage_oomd`
+
+Data type: `Boolean`
+
+Should systemd-oomd configuration be managed
+
+Default value: `false`
+
+##### <a name="-systemd--oomd_ensure"></a>`oomd_ensure`
+
+Data type: `Enum['stopped','running']`
+
+The state that the ``oomd`` service should be in
+
+Default value: `'running'`
+
+##### <a name="-systemd--oomd_settings"></a>`oomd_settings`
+
+Data type: `Systemd::OomdSettings`
+
+Hash of systemd-oomd configurations for oomd.conf
+
+Default value: `{}`
+
+### <a name="systemd--tmpfiles"></a>`systemd::tmpfiles`
 
 Update the systemd temp files
 
@@ -516,9 +582,9 @@ Update the systemd temp files
 
 The following parameters are available in the `systemd::tmpfiles` class:
 
-* [`operations`](#operations)
+* [`operations`](#-systemd--tmpfiles--operations)
 
-##### <a name="operations"></a>`operations`
+##### <a name="-systemd--tmpfiles--operations"></a>`operations`
 
 Data type: `Array[Enum['create','clean','remove']]`
 
@@ -531,7 +597,32 @@ Default value: `['create']`
 
 ## Defined types
 
-### <a name="systemddropin_file"></a>`systemd::dropin_file`
+### <a name="systemd--daemon_reload"></a>`systemd::daemon_reload`
+
+Run systemctl daemon-reload
+
+#### Parameters
+
+The following parameters are available in the `systemd::daemon_reload` defined type:
+
+* [`name`](#-systemd--daemon_reload--name)
+* [`enable`](#-systemd--daemon_reload--enable)
+
+##### <a name="-systemd--daemon_reload--name"></a>`name`
+
+A globally unique name for the resource
+
+##### <a name="-systemd--daemon_reload--enable"></a>`enable`
+
+Data type: `Boolean`
+
+Enable the reload exec
+
+* Added in case users want to disable the reload globally using a resource collector
+
+Default value: `true`
+
+### <a name="systemd--dropin_file"></a>`systemd::dropin_file`
 
 Creates a drop-in file for a systemd unit
 
@@ -542,35 +633,36 @@ Creates a drop-in file for a systemd unit
 
 The following parameters are available in the `systemd::dropin_file` defined type:
 
-* [`unit`](#unit)
-* [`filename`](#filename)
-* [`ensure`](#ensure)
-* [`path`](#path)
-* [`selinux_ignore_defaults`](#selinux_ignore_defaults)
-* [`content`](#content)
-* [`source`](#source)
-* [`target`](#target)
-* [`owner`](#owner)
-* [`group`](#group)
-* [`mode`](#mode)
-* [`show_diff`](#show_diff)
-* [`notify_service`](#notify_service)
+* [`unit`](#-systemd--dropin_file--unit)
+* [`filename`](#-systemd--dropin_file--filename)
+* [`ensure`](#-systemd--dropin_file--ensure)
+* [`path`](#-systemd--dropin_file--path)
+* [`selinux_ignore_defaults`](#-systemd--dropin_file--selinux_ignore_defaults)
+* [`content`](#-systemd--dropin_file--content)
+* [`source`](#-systemd--dropin_file--source)
+* [`target`](#-systemd--dropin_file--target)
+* [`owner`](#-systemd--dropin_file--owner)
+* [`group`](#-systemd--dropin_file--group)
+* [`mode`](#-systemd--dropin_file--mode)
+* [`show_diff`](#-systemd--dropin_file--show_diff)
+* [`notify_service`](#-systemd--dropin_file--notify_service)
+* [`daemon_reload`](#-systemd--dropin_file--daemon_reload)
 
-##### <a name="unit"></a>`unit`
+##### <a name="-systemd--dropin_file--unit"></a>`unit`
 
 Data type: `Systemd::Unit`
 
-the The target unit file to create, the value will be set to the `filename` parameter as well
+The target unit file to create
 
-##### <a name="filename"></a>`filename`
+##### <a name="-systemd--dropin_file--filename"></a>`filename`
 
 Data type: `Systemd::Dropin`
 
-The target unit file to create
+The filename of the drop in. The full path is determined using the path, unit and this filename.
 
 Default value: `$name`
 
-##### <a name="ensure"></a>`ensure`
+##### <a name="-systemd--dropin_file--ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent', 'file']`
 
@@ -578,7 +670,7 @@ the state of this dropin file
 
 Default value: `'present'`
 
-##### <a name="path"></a>`path`
+##### <a name="-systemd--dropin_file--path"></a>`path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -586,39 +678,39 @@ The main systemd configuration path
 
 Default value: `'/etc/systemd/system'`
 
-##### <a name="selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+##### <a name="-systemd--dropin_file--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
 
 Data type: `Boolean`
 
 If Puppet should ignore the default SELinux labels.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="content"></a>`content`
+##### <a name="-systemd--dropin_file--content"></a>`content`
 
 Data type: `Optional[Variant[String,Sensitive[String]]]`
 
 The full content of the unit file (Mutually exclusive with `$source`)
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="source"></a>`source`
+##### <a name="-systemd--dropin_file--source"></a>`source`
 
 Data type: `Optional[String]`
 
 The `File` resource compatible `source` Mutually exclusive with ``$content``
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="target"></a>`target`
+##### <a name="-systemd--dropin_file--target"></a>`target`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 If set, will force the file to be a symlink to the given target (Mutually exclusive with both `$source` and `$content`
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="owner"></a>`owner`
+##### <a name="-systemd--dropin_file--owner"></a>`owner`
 
 Data type: `String`
 
@@ -626,7 +718,7 @@ The owner to set on the dropin file
 
 Default value: `'root'`
 
-##### <a name="group"></a>`group`
+##### <a name="-systemd--dropin_file--group"></a>`group`
 
 Data type: `String`
 
@@ -634,7 +726,7 @@ The group to set on the dropin file
 
 Default value: `'root'`
 
-##### <a name="mode"></a>`mode`
+##### <a name="-systemd--dropin_file--mode"></a>`mode`
 
 Data type: `String`
 
@@ -642,23 +734,351 @@ The mode to set on the dropin file
 
 Default value: `'0444'`
 
-##### <a name="show_diff"></a>`show_diff`
+##### <a name="-systemd--dropin_file--show_diff"></a>`show_diff`
 
 Data type: `Boolean`
 
 Whether to show the diff when updating dropin file
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="notify_service"></a>`notify_service`
+##### <a name="-systemd--dropin_file--notify_service"></a>`notify_service`
 
 Data type: `Boolean`
 
 Notify a service for the unit, if it exists
 
-Default value: ``false``
+Default value: `true`
 
-### <a name="systemdmodules_load"></a>`systemd::modules_load`
+##### <a name="-systemd--dropin_file--daemon_reload"></a>`daemon_reload`
+
+Data type: `Boolean`
+
+Call systemd::daemon_reload
+
+Default value: `true`
+
+### <a name="systemd--manage_dropin"></a>`systemd::manage_dropin`
+
+Creates a drop-in file for a systemd unit from a template
+
+* **See also**
+  * systemd.unit(5)
+
+#### Examples
+
+##### drop in file to change Type and override ExecStart
+
+```puppet
+systemd::manage_dropin { 'myconf.conf':
+  ensure        => present,
+  unit          => 'myservice.service',
+  service_entry => {
+    'Type'      => 'oneshot',
+    'ExecStart' => ['', '/usr/bin/doit.sh'],
+  },
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `systemd::manage_dropin` defined type:
+
+* [`unit`](#-systemd--manage_dropin--unit)
+* [`filename`](#-systemd--manage_dropin--filename)
+* [`ensure`](#-systemd--manage_dropin--ensure)
+* [`path`](#-systemd--manage_dropin--path)
+* [`selinux_ignore_defaults`](#-systemd--manage_dropin--selinux_ignore_defaults)
+* [`owner`](#-systemd--manage_dropin--owner)
+* [`group`](#-systemd--manage_dropin--group)
+* [`mode`](#-systemd--manage_dropin--mode)
+* [`show_diff`](#-systemd--manage_dropin--show_diff)
+* [`notify_service`](#-systemd--manage_dropin--notify_service)
+* [`daemon_reload`](#-systemd--manage_dropin--daemon_reload)
+* [`unit_entry`](#-systemd--manage_dropin--unit_entry)
+* [`service_entry`](#-systemd--manage_dropin--service_entry)
+* [`install_entry`](#-systemd--manage_dropin--install_entry)
+
+##### <a name="-systemd--manage_dropin--unit"></a>`unit`
+
+Data type: `Systemd::Unit`
+
+The unit to create a dropfile for
+
+##### <a name="-systemd--manage_dropin--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The target unit file to create. The filename of the drop in. The full path is determined using the path, unit and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--manage_dropin--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+The state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--manage_dropin--path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The main systemd configuration path
+
+Default value: `'/etc/systemd/system'`
+
+##### <a name="-systemd--manage_dropin--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Boolean`
+
+If Puppet should ignore the default SELinux labels
+
+Default value: `false`
+
+##### <a name="-systemd--manage_dropin--owner"></a>`owner`
+
+Data type: `String`
+
+The owner to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--manage_dropin--group"></a>`group`
+
+Data type: `String`
+
+The group to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--manage_dropin--mode"></a>`mode`
+
+Data type: `Stdlib::Filemode`
+
+The mode to set on the dropin file
+
+Default value: `'0444'`
+
+##### <a name="-systemd--manage_dropin--show_diff"></a>`show_diff`
+
+Data type: `Boolean`
+
+Whether to show the diff when updating dropin file
+
+Default value: `true`
+
+##### <a name="-systemd--manage_dropin--notify_service"></a>`notify_service`
+
+Data type: `Boolean`
+
+Notify a service for the unit, if it exists
+
+Default value: `false`
+
+##### <a name="-systemd--manage_dropin--daemon_reload"></a>`daemon_reload`
+
+Data type: `Boolean`
+
+Call systemd::daemon_reload
+
+Default value: `true`
+
+##### <a name="-systemd--manage_dropin--unit_entry"></a>`unit_entry`
+
+Data type: `Optional[Systemd::Unit::Unit]`
+
+key value pairs for [Unit] section of the unit file
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_dropin--service_entry"></a>`service_entry`
+
+Data type: `Optional[Systemd::Unit::Service]`
+
+key value pairs for [Service] section of the unit file
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_dropin--install_entry"></a>`install_entry`
+
+Data type: `Optional[Systemd::Unit::Install]`
+
+key value pairs for [Install] section of the unit file
+
+Default value: `undef`
+
+### <a name="systemd--manage_unit"></a>`systemd::manage_unit`
+
+Generate unit file from template
+
+* **See also**
+  * systemd.unit(5)
+
+#### Examples
+
+##### Generate a service
+
+```puppet
+systemd::manage_unit{ 'myrunner.service':
+  $unit_entry    => {
+    'Description' => 'My great service',
+  },
+  $service_entry => {
+    'Type'       => 'oneshot',
+    'ExecStart' => '/usr/bin/doit.sh',
+  },
+  $install_entry => {
+    WantedBy => 'multi-user.target',
+  },
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `systemd::manage_unit` defined type:
+
+* [`name`](#-systemd--manage_unit--name)
+* [`ensure`](#-systemd--manage_unit--ensure)
+* [`path`](#-systemd--manage_unit--path)
+* [`owner`](#-systemd--manage_unit--owner)
+* [`group`](#-systemd--manage_unit--group)
+* [`mode`](#-systemd--manage_unit--mode)
+* [`show_diff`](#-systemd--manage_unit--show_diff)
+* [`enable`](#-systemd--manage_unit--enable)
+* [`active`](#-systemd--manage_unit--active)
+* [`restart`](#-systemd--manage_unit--restart)
+* [`selinux_ignore_defaults`](#-systemd--manage_unit--selinux_ignore_defaults)
+* [`service_parameters`](#-systemd--manage_unit--service_parameters)
+* [`daemon_reload`](#-systemd--manage_unit--daemon_reload)
+* [`unit_entry`](#-systemd--manage_unit--unit_entry)
+* [`service_entry`](#-systemd--manage_unit--service_entry)
+* [`install_entry`](#-systemd--manage_unit--install_entry)
+
+##### <a name="-systemd--manage_unit--name"></a>`name`
+
+Data type: `Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']`
+
+The target unit file to create
+
+##### <a name="-systemd--manage_unit--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+The state of the unit file to ensure
+
+Default value: `'present'`
+
+##### <a name="-systemd--manage_unit--path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The main systemd configuration path
+
+Default value: `'/etc/systemd/system'`
+
+##### <a name="-systemd--manage_unit--owner"></a>`owner`
+
+Data type: `String`
+
+The owner to set on the unit file
+
+Default value: `'root'`
+
+##### <a name="-systemd--manage_unit--group"></a>`group`
+
+Data type: `String`
+
+The group to set on the unit file
+
+Default value: `'root'`
+
+##### <a name="-systemd--manage_unit--mode"></a>`mode`
+
+Data type: `Stdlib::Filemode`
+
+The mode to set on the unit file
+
+Default value: `'0444'`
+
+##### <a name="-systemd--manage_unit--show_diff"></a>`show_diff`
+
+Data type: `Boolean`
+
+Whether to show the diff when updating unit file
+
+Default value: `true`
+
+##### <a name="-systemd--manage_unit--enable"></a>`enable`
+
+Data type: `Optional[Variant[Boolean, Enum['mask']]]`
+
+If set, manage the unit enablement status
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_unit--active"></a>`active`
+
+Data type: `Optional[Boolean]`
+
+If set, will manage the state of the unit
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_unit--restart"></a>`restart`
+
+Data type: `Optional[String]`
+
+Specify a restart command manually. If left unspecified, a standard Puppet service restart happens
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_unit--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Boolean`
+
+maps to the same param on the file resource for the unit. false in the module because it's false in the file resource type
+
+Default value: `false`
+
+##### <a name="-systemd--manage_unit--service_parameters"></a>`service_parameters`
+
+Data type: `Hash[String[1], Any]`
+
+hash that will be passed with the splat operator to the service resource
+
+Default value: `{}`
+
+##### <a name="-systemd--manage_unit--daemon_reload"></a>`daemon_reload`
+
+Data type: `Boolean`
+
+call `systemd::daemon-reload` to ensure that the modified unit file is loaded
+
+Default value: `true`
+
+##### <a name="-systemd--manage_unit--unit_entry"></a>`unit_entry`
+
+Data type: `Systemd::Unit::Unit`
+
+key value pairs for [Unit] section of the unit file.
+
+##### <a name="-systemd--manage_unit--service_entry"></a>`service_entry`
+
+Data type: `Systemd::Unit::Service`
+
+key value pairs for [Service] section of the unit file.
+
+##### <a name="-systemd--manage_unit--install_entry"></a>`install_entry`
+
+Data type: `Optional[Systemd::Unit::Install]`
+
+key value pairs for [Install] section of the unit file.
+
+Default value: `undef`
+
+### <a name="systemd--modules_load"></a>`systemd::modules_load`
 
 Creates a modules-load.d drop file
 
@@ -687,13 +1107,13 @@ systemd::modules_load{'myservice.conf':
 
 The following parameters are available in the `systemd::modules_load` defined type:
 
-* [`filename`](#filename)
-* [`ensure`](#ensure)
-* [`path`](#path)
-* [`content`](#content)
-* [`source`](#source)
+* [`filename`](#-systemd--modules_load--filename)
+* [`ensure`](#-systemd--modules_load--ensure)
+* [`path`](#-systemd--modules_load--path)
+* [`content`](#-systemd--modules_load--content)
+* [`source`](#-systemd--modules_load--source)
 
-##### <a name="filename"></a>`filename`
+##### <a name="-systemd--modules_load--filename"></a>`filename`
 
 Data type: `Systemd::Dropin`
 
@@ -701,7 +1121,7 @@ The name of the modules-load.d file to create
 
 Default value: `$name`
 
-##### <a name="ensure"></a>`ensure`
+##### <a name="-systemd--modules_load--ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent', 'file']`
 
@@ -709,7 +1129,7 @@ Whether to drop a file or remove it
 
 Default value: `'file'`
 
-##### <a name="path"></a>`path`
+##### <a name="-systemd--modules_load--path"></a>`path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -717,7 +1137,7 @@ The path to the main systemd modules-load.d directory
 
 Default value: `'/etc/modules-load.d'`
 
-##### <a name="content"></a>`content`
+##### <a name="-systemd--modules_load--content"></a>`content`
 
 Data type: `Optional[String[1]]`
 
@@ -725,9 +1145,9 @@ The literal content to write to the file
 
 * Mutually exclusive with ``$source``
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="source"></a>`source`
+##### <a name="-systemd--modules_load--source"></a>`source`
 
 Data type: `Optional[String[1]]`
 
@@ -735,9 +1155,9 @@ A ``File`` resource compatible ``source``
 
 * Mutually exclusive with ``$content``
 
-Default value: ``undef``
+Default value: `undef`
 
-### <a name="systemdnetwork"></a>`systemd::network`
+### <a name="systemd--network"></a>`systemd::network`
 
 Creates network config for systemd-networkd
 
@@ -745,18 +1165,18 @@ Creates network config for systemd-networkd
 
 The following parameters are available in the `systemd::network` defined type:
 
-* [`ensure`](#ensure)
-* [`path`](#path)
-* [`content`](#content)
-* [`source`](#source)
-* [`target`](#target)
-* [`owner`](#owner)
-* [`group`](#group)
-* [`mode`](#mode)
-* [`show_diff`](#show_diff)
-* [`restart_service`](#restart_service)
+* [`ensure`](#-systemd--network--ensure)
+* [`path`](#-systemd--network--path)
+* [`content`](#-systemd--network--content)
+* [`source`](#-systemd--network--source)
+* [`target`](#-systemd--network--target)
+* [`owner`](#-systemd--network--owner)
+* [`group`](#-systemd--network--group)
+* [`mode`](#-systemd--network--mode)
+* [`show_diff`](#-systemd--network--show_diff)
+* [`restart_service`](#-systemd--network--restart_service)
 
-##### <a name="ensure"></a>`ensure`
+##### <a name="-systemd--network--ensure"></a>`ensure`
 
 Data type: `Enum['file', 'absent']`
 
@@ -764,7 +1184,7 @@ configure if the file should be configured or deleted
 
 Default value: `file`
 
-##### <a name="path"></a>`path`
+##### <a name="-systemd--network--path"></a>`path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -772,31 +1192,31 @@ directory where the network configs are stored
 
 Default value: `'/etc/systemd/network'`
 
-##### <a name="content"></a>`content`
+##### <a name="-systemd--network--content"></a>`content`
 
 Data type: `Optional[String]`
 
 the content of the file
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="source"></a>`source`
+##### <a name="-systemd--network--source"></a>`source`
 
 Data type: `Optional[String]`
 
 a path to a file that's used as source
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="target"></a>`target`
+##### <a name="-systemd--network--target"></a>`target`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 optional absolute path  in case the file should be stored somewhere else
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="owner"></a>`owner`
+##### <a name="-systemd--network--owner"></a>`owner`
 
 Data type: `String`
 
@@ -804,7 +1224,7 @@ the user who owns the file
 
 Default value: `'root'`
 
-##### <a name="group"></a>`group`
+##### <a name="-systemd--network--group"></a>`group`
 
 Data type: `String`
 
@@ -812,7 +1232,7 @@ the group that owns the file
 
 Default value: `'root'`
 
-##### <a name="mode"></a>`mode`
+##### <a name="-systemd--network--mode"></a>`mode`
 
 Data type: `String`
 
@@ -820,23 +1240,23 @@ the mode of the file
 
 Default value: `'0444'`
 
-##### <a name="show_diff"></a>`show_diff`
+##### <a name="-systemd--network--show_diff"></a>`show_diff`
 
 Data type: `Boolean`
 
 whether the file diff should be shown on modifications
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="restart_service"></a>`restart_service`
+##### <a name="-systemd--network--restart_service"></a>`restart_service`
 
 Data type: `Boolean`
 
 whether systemd-networkd should be restarted on changes, defaults to true. `$systemd::manage_networkd` needs to be true as well
 
-Default value: ``true``
+Default value: `true`
 
-### <a name="systemdservice_limits"></a>`systemd::service_limits`
+### <a name="systemd--service_limits"></a>`systemd::service_limits`
 
 Adds a set of custom limits to the service
 
@@ -847,21 +1267,20 @@ Adds a set of custom limits to the service
 
 The following parameters are available in the `systemd::service_limits` defined type:
 
-* [`name`](#name)
-* [`ensure`](#ensure)
-* [`path`](#path)
-* [`selinux_ignore_defaults`](#selinux_ignore_defaults)
-* [`limits`](#limits)
-* [`source`](#source)
-* [`restart_service`](#restart_service)
+* [`name`](#-systemd--service_limits--name)
+* [`ensure`](#-systemd--service_limits--ensure)
+* [`path`](#-systemd--service_limits--path)
+* [`selinux_ignore_defaults`](#-systemd--service_limits--selinux_ignore_defaults)
+* [`limits`](#-systemd--service_limits--limits)
+* [`source`](#-systemd--service_limits--source)
 
-##### <a name="name"></a>`name`
+##### <a name="-systemd--service_limits--name"></a>`name`
 
 Data type: `Pattern['^.+\.(service|socket|mount|swap)$']`
 
 The name of the service that you will be modifying
 
-##### <a name="ensure"></a>`ensure`
+##### <a name="-systemd--service_limits--ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent', 'file']`
 
@@ -869,7 +1288,7 @@ Whether to drop a file or remove it
 
 Default value: `'present'`
 
-##### <a name="path"></a>`path`
+##### <a name="-systemd--service_limits--path"></a>`path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -877,15 +1296,15 @@ The path to the main systemd settings directory
 
 Default value: `'/etc/systemd/system'`
 
-##### <a name="selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+##### <a name="-systemd--service_limits--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
 
 Data type: `Boolean`
 
 If Puppet should ignore the default SELinux labels.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="limits"></a>`limits`
+##### <a name="-systemd--service_limits--limits"></a>`limits`
 
 Data type: `Optional[Systemd::ServiceLimits]`
 
@@ -893,9 +1312,9 @@ A Hash of service limits matching the settings in ``systemd.exec(5)``
 
 * Mutually exclusive with ``$source``
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="source"></a>`source`
+##### <a name="-systemd--service_limits--source"></a>`source`
 
 Data type: `Optional[String]`
 
@@ -903,17 +1322,9 @@ A ``File`` resource compatible ``source``
 
 * Mutually exclusive with ``$limits``
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="restart_service"></a>`restart_service`
-
-Data type: `Boolean`
-
-Restart the managed service after setting the limits
-
-Default value: ``true``
-
-### <a name="systemdtimer"></a>`systemd::timer`
+### <a name="systemd--timer"></a>`systemd::timer`
 
 Create a timer and optionally a service unit to execute with the timer unit
 
@@ -925,28 +1336,29 @@ Create a timer and optionally a service unit to execute with the timer unit
 
 The following parameters are available in the `systemd::timer` defined type:
 
-* [`name`](#name)
-* [`path`](#path)
-* [`timer_content`](#timer_content)
-* [`timer_source`](#timer_source)
-* [`service_content`](#service_content)
-* [`service_source`](#service_source)
-* [`owner`](#owner)
-* [`group`](#group)
-* [`mode`](#mode)
-* [`show_diff`](#show_diff)
-* [`service_unit`](#service_unit)
-* [`active`](#active)
-* [`enable`](#enable)
-* [`ensure`](#ensure)
+* [`name`](#-systemd--timer--name)
+* [`path`](#-systemd--timer--path)
+* [`timer_content`](#-systemd--timer--timer_content)
+* [`timer_source`](#-systemd--timer--timer_source)
+* [`service_content`](#-systemd--timer--service_content)
+* [`service_source`](#-systemd--timer--service_source)
+* [`owner`](#-systemd--timer--owner)
+* [`group`](#-systemd--timer--group)
+* [`mode`](#-systemd--timer--mode)
+* [`show_diff`](#-systemd--timer--show_diff)
+* [`service_unit`](#-systemd--timer--service_unit)
+* [`active`](#-systemd--timer--active)
+* [`enable`](#-systemd--timer--enable)
+* [`ensure`](#-systemd--timer--ensure)
+* [`daemon_reload`](#-systemd--timer--daemon_reload)
 
-##### <a name="name"></a>`name`
+##### <a name="-systemd--timer--name"></a>`name`
 
 Data type: `Pattern['^.+\.timer$]`
 
 The target of the timer unit to create
 
-##### <a name="path"></a>`path`
+##### <a name="-systemd--timer--path"></a>`path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -954,7 +1366,7 @@ The main systemd configuration path
 
 Default value: `'/etc/systemd/system'`
 
-##### <a name="timer_content"></a>`timer_content`
+##### <a name="-systemd--timer--timer_content"></a>`timer_content`
 
 Data type: `Optional[String[1]]`
 
@@ -962,9 +1374,9 @@ The full content of the timer unit file
 
 * Mutually exclusive with ``$timer_source``
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="timer_source"></a>`timer_source`
+##### <a name="-systemd--timer--timer_source"></a>`timer_source`
 
 Data type: `Optional[String[1]]`
 
@@ -972,9 +1384,9 @@ The ``File`` resource compatible ``source``
 
 * Mutually exclusive with ``$timer_content``
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="service_content"></a>`service_content`
+##### <a name="-systemd--timer--service_content"></a>`service_content`
 
 Data type: `Optional[String[1]]`
 
@@ -982,9 +1394,9 @@ The full content of the service unit file
 
 * Mutually exclusive with ``$service_source``
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="service_source"></a>`service_source`
+##### <a name="-systemd--timer--service_source"></a>`service_source`
 
 Data type: `Optional[String[1]]`
 
@@ -992,9 +1404,9 @@ The ``File`` resource compatible ``source``
 
 * Mutually exclusive with ``$service_content``
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="owner"></a>`owner`
+##### <a name="-systemd--timer--owner"></a>`owner`
 
 Data type: `String[1]`
 
@@ -1002,7 +1414,7 @@ The owner to set on the dropin file
 
 Default value: `'root'`
 
-##### <a name="group"></a>`group`
+##### <a name="-systemd--timer--group"></a>`group`
 
 Data type: `String[1]`
 
@@ -1010,7 +1422,7 @@ The group to set on the dropin file
 
 Default value: `'root'`
 
-##### <a name="mode"></a>`mode`
+##### <a name="-systemd--timer--mode"></a>`mode`
 
 Data type: `Stdlib::Filemode`
 
@@ -1018,15 +1430,15 @@ The mode to set on the dropin file
 
 Default value: `'0444'`
 
-##### <a name="show_diff"></a>`show_diff`
+##### <a name="-systemd--timer--show_diff"></a>`show_diff`
 
 Data type: `Boolean`
 
 Whether to show the diff when updating dropin file
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="service_unit"></a>`service_unit`
+##### <a name="-systemd--timer--service_unit"></a>`service_unit`
 
 Data type: `Optional[Systemd::Unit]`
 
@@ -1034,27 +1446,27 @@ If set then the service_unit will have this name.
 If not set the service unit has the same name
 as the timer unit with s/.timer/.service/
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="active"></a>`active`
+##### <a name="-systemd--timer--active"></a>`active`
 
 Data type: `Optional[Boolean]`
 
 If set to true or false the timer service will be maintained.
 If true the timer service will be running and enabled, if false it will
-explictly stopped and disabled.
+explicitly stopped and disabled.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="enable"></a>`enable`
+##### <a name="-systemd--timer--enable"></a>`enable`
 
 Data type: `Optional[Variant[Boolean, Enum['mask']]]`
 
 If set, will manage the state of the unit.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="ensure"></a>`ensure`
+##### <a name="-systemd--timer--ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent', 'file']`
 
@@ -1062,7 +1474,15 @@ Defines the desired state of the timer
 
 Default value: `'present'`
 
-### <a name="systemdtmpfile"></a>`systemd::tmpfile`
+##### <a name="-systemd--timer--daemon_reload"></a>`daemon_reload`
+
+Data type: `Boolean`
+
+Call `systemd::daemon_reload`
+
+Default value: `true`
+
+### <a name="systemd--tmpfile"></a>`systemd::tmpfile`
 
 Creates a systemd tmpfile
 
@@ -1073,13 +1493,13 @@ Creates a systemd tmpfile
 
 The following parameters are available in the `systemd::tmpfile` defined type:
 
-* [`filename`](#filename)
-* [`ensure`](#ensure)
-* [`path`](#path)
-* [`content`](#content)
-* [`source`](#source)
+* [`filename`](#-systemd--tmpfile--filename)
+* [`ensure`](#-systemd--tmpfile--ensure)
+* [`path`](#-systemd--tmpfile--path)
+* [`content`](#-systemd--tmpfile--content)
+* [`source`](#-systemd--tmpfile--source)
 
-##### <a name="filename"></a>`filename`
+##### <a name="-systemd--tmpfile--filename"></a>`filename`
 
 Data type: `Systemd::Dropin`
 
@@ -1087,7 +1507,7 @@ The name of the tmpfile to create
 
 Default value: `$name`
 
-##### <a name="ensure"></a>`ensure`
+##### <a name="-systemd--tmpfile--ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent', 'file']`
 
@@ -1095,7 +1515,7 @@ Whether to drop a file or remove it
 
 Default value: `'file'`
 
-##### <a name="path"></a>`path`
+##### <a name="-systemd--tmpfile--path"></a>`path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1103,7 +1523,7 @@ The path to the main systemd tmpfiles directory
 
 Default value: `'/etc/tmpfiles.d'`
 
-##### <a name="content"></a>`content`
+##### <a name="-systemd--tmpfile--content"></a>`content`
 
 Data type: `Optional[String]`
 
@@ -1111,9 +1531,9 @@ The literal content to write to the file
 
 * Mutually exclusive with ``$source``
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="source"></a>`source`
+##### <a name="-systemd--tmpfile--source"></a>`source`
 
 Data type: `Optional[String]`
 
@@ -1121,9 +1541,9 @@ A ``File`` resource compatible ``source``
 
 * Mutually exclusive with ``$limits``
 
-Default value: ``undef``
+Default value: `undef`
 
-### <a name="systemdudevrule"></a>`systemd::udev::rule`
+### <a name="systemd--udev--rule"></a>`systemd::udev::rule`
 
 Adds a custom udev rule
 
@@ -1134,20 +1554,20 @@ Adds a custom udev rule
 
 The following parameters are available in the `systemd::udev::rule` defined type:
 
-* [`name`](#name)
-* [`ensure`](#ensure)
-* [`path`](#path)
-* [`selinux_ignore_defaults`](#selinux_ignore_defaults)
-* [`notify_services`](#notify_services)
-* [`rules`](#rules)
+* [`name`](#-systemd--udev--rule--name)
+* [`ensure`](#-systemd--udev--rule--ensure)
+* [`path`](#-systemd--udev--rule--path)
+* [`selinux_ignore_defaults`](#-systemd--udev--rule--selinux_ignore_defaults)
+* [`notify_services`](#-systemd--udev--rule--notify_services)
+* [`rules`](#-systemd--udev--rule--rules)
 
-##### <a name="name"></a>`name`
+##### <a name="-systemd--udev--rule--name"></a>`name`
 
 Data type: `Pattern['^.+\.rules$']`
 
 The name of the udev rules to create
 
-##### <a name="ensure"></a>`ensure`
+##### <a name="-systemd--udev--rule--ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent', 'file']`
 
@@ -1155,7 +1575,7 @@ Whether to drop a file or remove it
 
 Default value: `'file'`
 
-##### <a name="path"></a>`path`
+##### <a name="-systemd--udev--rule--path"></a>`path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1163,15 +1583,15 @@ The path to the main systemd settings directory
 
 Default value: `'/etc/udev/rules.d'`
 
-##### <a name="selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+##### <a name="-systemd--udev--rule--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
 
 Data type: `Boolean`
 
 If Puppet should ignore the default SELinux labels.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="notify_services"></a>`notify_services`
+##### <a name="-systemd--udev--rule--notify_services"></a>`notify_services`
 
 Data type: `Variant[Array[String[1]], String[1]]`
 
@@ -1179,7 +1599,7 @@ List of services to notify when this rule is updated
 
 Default value: `[]`
 
-##### <a name="rules"></a>`rules`
+##### <a name="-systemd--udev--rule--rules"></a>`rules`
 
 Data type: `Array`
 
@@ -1187,7 +1607,7 @@ The literal udev rules you want to deploy
 
 Default value: `[]`
 
-### <a name="systemdunit_file"></a>`systemd::unit_file`
+### <a name="systemd--unit_file"></a>`systemd::unit_file`
 
 Creates a systemd unit file
 
@@ -1210,29 +1630,32 @@ systemd::unit_file { 'foo.service':
 
 The following parameters are available in the `systemd::unit_file` defined type:
 
-* [`name`](#name)
-* [`ensure`](#ensure)
-* [`path`](#path)
-* [`content`](#content)
-* [`source`](#source)
-* [`target`](#target)
-* [`owner`](#owner)
-* [`group`](#group)
-* [`mode`](#mode)
-* [`show_diff`](#show_diff)
-* [`enable`](#enable)
-* [`active`](#active)
-* [`restart`](#restart)
-* [`selinux_ignore_defaults`](#selinux_ignore_defaults)
-* [`service_parameters`](#service_parameters)
+* [`name`](#-systemd--unit_file--name)
+* [`ensure`](#-systemd--unit_file--ensure)
+* [`path`](#-systemd--unit_file--path)
+* [`content`](#-systemd--unit_file--content)
+* [`source`](#-systemd--unit_file--source)
+* [`target`](#-systemd--unit_file--target)
+* [`owner`](#-systemd--unit_file--owner)
+* [`group`](#-systemd--unit_file--group)
+* [`mode`](#-systemd--unit_file--mode)
+* [`show_diff`](#-systemd--unit_file--show_diff)
+* [`enable`](#-systemd--unit_file--enable)
+* [`active`](#-systemd--unit_file--active)
+* [`restart`](#-systemd--unit_file--restart)
+* [`hasrestart`](#-systemd--unit_file--hasrestart)
+* [`hasstatus`](#-systemd--unit_file--hasstatus)
+* [`selinux_ignore_defaults`](#-systemd--unit_file--selinux_ignore_defaults)
+* [`service_parameters`](#-systemd--unit_file--service_parameters)
+* [`daemon_reload`](#-systemd--unit_file--daemon_reload)
 
-##### <a name="name"></a>`name`
+##### <a name="-systemd--unit_file--name"></a>`name`
 
 Data type: `Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']`
 
 The target unit file to create
 
-##### <a name="ensure"></a>`ensure`
+##### <a name="-systemd--unit_file--ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent', 'file']`
 
@@ -1240,7 +1663,7 @@ The state of the unit file to ensure
 
 Default value: `'present'`
 
-##### <a name="path"></a>`path`
+##### <a name="-systemd--unit_file--path"></a>`path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1248,7 +1671,7 @@ The main systemd configuration path
 
 Default value: `'/etc/systemd/system'`
 
-##### <a name="content"></a>`content`
+##### <a name="-systemd--unit_file--content"></a>`content`
 
 Data type: `Optional[Variant[String, Sensitive[String], Deferred]]`
 
@@ -1256,9 +1679,9 @@ The full content of the unit file
 
 * Mutually exclusive with ``$source``
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="source"></a>`source`
+##### <a name="-systemd--unit_file--source"></a>`source`
 
 Data type: `Optional[String]`
 
@@ -1266,9 +1689,9 @@ The ``File`` resource compatible ``source``
 
 * Mutually exclusive with ``$content``
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="target"></a>`target`
+##### <a name="-systemd--unit_file--target"></a>`target`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
@@ -1276,9 +1699,9 @@ If set, will force the file to be a symlink to the given target
 
 * Mutually exclusive with both ``$source`` and ``$content``
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="owner"></a>`owner`
+##### <a name="-systemd--unit_file--owner"></a>`owner`
 
 Data type: `String`
 
@@ -1286,7 +1709,7 @@ The owner to set on the unit file
 
 Default value: `'root'`
 
-##### <a name="group"></a>`group`
+##### <a name="-systemd--unit_file--group"></a>`group`
 
 Data type: `String`
 
@@ -1294,7 +1717,7 @@ The group to set on the unit file
 
 Default value: `'root'`
 
-##### <a name="mode"></a>`mode`
+##### <a name="-systemd--unit_file--mode"></a>`mode`
 
 Data type: `String`
 
@@ -1302,53 +1725,77 @@ The mode to set on the unit file
 
 Default value: `'0444'`
 
-##### <a name="show_diff"></a>`show_diff`
+##### <a name="-systemd--unit_file--show_diff"></a>`show_diff`
 
 Data type: `Boolean`
 
 Whether to show the diff when updating unit file
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="enable"></a>`enable`
+##### <a name="-systemd--unit_file--enable"></a>`enable`
 
 Data type: `Optional[Variant[Boolean, Enum['mask']]]`
 
 If set, will manage the unit enablement status.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="active"></a>`active`
+##### <a name="-systemd--unit_file--active"></a>`active`
 
 Data type: `Optional[Boolean]`
 
 If set, will manage the state of the unit.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="restart"></a>`restart`
+##### <a name="-systemd--unit_file--restart"></a>`restart`
 
 Data type: `Optional[String]`
 
 Specify a restart command manually. If left unspecified, a standard Puppet service restart happens.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+##### <a name="-systemd--unit_file--hasrestart"></a>`hasrestart`
+
+Data type: `Optional[Boolean]`
+
+maps to the same param on the service resource. Optional in the module because it's optional in the service resource type. This param is deprecated. Set it via $service_parameters.
+
+Default value: `undef`
+
+##### <a name="-systemd--unit_file--hasstatus"></a>`hasstatus`
+
+Data type: `Optional[Boolean]`
+
+maps to the same param on the service resource. true in the module because it's true in the service resource type. This param is deprecated. Set it via $service_parameters.
+
+Default value: `undef`
+
+##### <a name="-systemd--unit_file--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
 
 Data type: `Boolean`
 
 maps to the same param on the file resource for the unit. false in the module because it's false in the file resource type
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="service_parameters"></a>`service_parameters`
+##### <a name="-systemd--unit_file--service_parameters"></a>`service_parameters`
 
 Data type: `Hash[String[1], Any]`
 
 hash that will be passed with the splat operator to the service resource
 
 Default value: `{}`
+
+##### <a name="-systemd--unit_file--daemon_reload"></a>`daemon_reload`
+
+Data type: `Boolean`
+
+call `systemd::daemon-reload` to ensure that the modified unit file is loaded
+
+Default value: `true`
 
 ## Resource types
 
@@ -1372,23 +1819,23 @@ Default value: `disabled`
 
 The following parameters are available in the `loginctl_user` type.
 
-* [`name`](#name)
-* [`provider`](#provider)
+* [`name`](#-loginctl_user--name)
+* [`provider`](#-loginctl_user--provider)
 
-##### <a name="name"></a>`name`
+##### <a name="-loginctl_user--name"></a>`name`
 
 namevar
 
 An arbitrary name used as the identity of the resource.
 
-##### <a name="provider"></a>`provider`
+##### <a name="-loginctl_user--provider"></a>`provider`
 
 The specific backend to use for this `loginctl_user` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
 ## Functions
 
-### <a name="systemdescape"></a>`systemd::escape`
+### <a name="systemd--escape"></a>`systemd::escape`
 
 Type: Puppet Language
 
@@ -1440,9 +1887,33 @@ Data type: `Boolean`
 
 Use path (-p) ornon-path  style escaping.
 
+### <a name="systemd--systemd_escape"></a>`systemd::systemd_escape`
+
+Type: Ruby 4.x API
+
+Escape strings by call the `systemd-escape` command in the background.
+
+#### `systemd::systemd_escape(String $input, Optional[Optional[Boolean]] $path)`
+
+The systemd::systemd_escape function.
+
+Returns: `String`
+
+##### `input`
+
+Data type: `String`
+
+Input string
+
+##### `path`
+
+Data type: `Optional[Optional[Boolean]]`
+
+Use path (-p) ornon-path  style escaping.
+
 ## Data types
 
-### <a name="systemdcoredumpsettings"></a>`Systemd::CoredumpSettings`
+### <a name="Systemd--CoredumpSettings"></a>`Systemd::CoredumpSettings`
 
 Configurations for coredump.conf
 
@@ -1463,17 +1934,13 @@ Struct[{
   }]
 ```
 
-### <a name="systemddropin"></a>`Systemd::Dropin`
+### <a name="Systemd--Dropin"></a>`Systemd::Dropin`
 
 custom datatype that validates filenames/paths for valid systemd dropin files
 
-Alias of
+Alias of `Pattern['^[^/]+\.conf$']`
 
-```puppet
-Pattern['^[^/]+\.conf$']
-```
-
-### <a name="systemdjournaldsettings"></a>`Systemd::JournaldSettings`
+### <a name="Systemd--JournaldSettings"></a>`Systemd::JournaldSettings`
 
 Matches Systemd journald config Struct
 
@@ -1514,17 +1981,13 @@ Struct[{
   }]
 ```
 
-### <a name="systemdjournaldsettingsensure"></a>`Systemd::JournaldSettings::Ensure`
+### <a name="Systemd--JournaldSettings--Ensure"></a>`Systemd::JournaldSettings::Ensure`
 
 defines allowed ensure states for systemd-journald settings
 
-Alias of
+Alias of `Struct[{ 'ensure' => Enum['present','absent'] }]`
 
-```puppet
-Struct[{ 'ensure' => Enum['present','absent'] }]
-```
-
-### <a name="systemdlogindsettings"></a>`Systemd::LogindSettings`
+### <a name="Systemd--LogindSettings"></a>`Systemd::LogindSettings`
 
 Matches Systemd Login Manager Struct
 
@@ -1559,17 +2022,48 @@ Struct[{
   }]
 ```
 
-### <a name="systemdlogindsettingsensure"></a>`Systemd::LogindSettings::Ensure`
+### <a name="Systemd--LogindSettings--Ensure"></a>`Systemd::LogindSettings::Ensure`
 
 defines allowed ensure states for systemd-logind settings
+
+Alias of `Struct[{ 'ensure' => Enum['present','absent'] }]`
+
+### <a name="Systemd--MachineInfoSettings"></a>`Systemd::MachineInfoSettings`
+
+Matches Systemd machine-info (hostnamectl) file Struct
 
 Alias of
 
 ```puppet
-Struct[{ 'ensure' => Enum['present','absent'] }]
+Struct[{
+    Optional['PRETTY_HOSTNAME'] => String[1],
+    Optional['ICON_NAME']       => String[1],
+    Optional['CHASSIS']         => String[1],
+    Optional['DEPLOYMENT']      => String[1],
+    Optional['LOCATION']        => String[1],
+    Optional['HARDWARE_VENDOR'] => String[1],
+    Optional['HARDWARE_MODEL']  => String[1],
+  }]
 ```
 
-### <a name="systemdservicelimits"></a>`Systemd::ServiceLimits`
+### <a name="Systemd--OomdSettings"></a>`Systemd::OomdSettings`
+
+Configurations for oomd.conf
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/oomd.conf.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['SwapUsedLimit']                    => Pattern[/^[0-9]+[%|‰|‱]$/],
+    Optional['DefaultMemoryPressureLimit']       => Pattern[/^[0-9]+%$/],
+    Optional['DefaultMemoryPressureDurationSec'] => Integer[0],
+  }]
+```
+
+### <a name="Systemd--ServiceLimits"></a>`Systemd::ServiceLimits`
 
 Matches Systemd Service Limit Struct
 
@@ -1578,18 +2072,18 @@ Alias of
 ```puppet
 Struct[{
     Optional['LimitCPU']            => Pattern['^\d+(s|m|h|d|w|M|y)?(:\d+(s|m|h|d|w|M|y)?)?$'],
-    Optional['LimitFSIZE']          => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
-    Optional['LimitDATA']           => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
-    Optional['LimitSTACK']          => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
-    Optional['LimitCORE']           => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
-    Optional['LimitRSS']            => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
+    Optional['LimitFSIZE']          => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['LimitDATA']           => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['LimitSTACK']          => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['LimitCORE']           => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['LimitRSS']            => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
     Optional['LimitNOFILE']         => Variant[Integer[-1],Pattern['^(infinity|\d+(:(infinity|\d+))?)$']],
-    Optional['LimitAS']             => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
+    Optional['LimitAS']             => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
     Optional['LimitNPROC']          => Variant[Integer[-1],Pattern['^(infinity|\d+(:(infinity|\d+))?)$']],
-    Optional['LimitMEMLOCK']        => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
+    Optional['LimitMEMLOCK']        => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
     Optional['LimitLOCKS']          => Integer[1],
     Optional['LimitSIGPENDING']     => Integer[1],
-    Optional['LimitMSGQUEUE']       => Pattern['^(infinity|((\d+(K|M|G|T|P|E)(:\d+(K|M|G|T|P|E))?)))$'],
+    Optional['LimitMSGQUEUE']       => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
     Optional['LimitNICE']           => Variant[Integer[0,40], Pattern['^(-\+([0-1]?[0-9]|20))|([0-3]?[0-9]|40)$']],
     Optional['LimitRTPRIO']         => Integer[0],
     Optional['LimitRTTIME']         => Pattern['^\d+(ms|s|m|h|d|w|M|y)?(:\d+(ms|s|m|h|d|w|M|y)?)?$'],
@@ -1598,10 +2092,12 @@ Struct[{
     Optional['StartupCPUShares']    => Integer[2,262144],
     Optional['CPUQuota']            => Pattern['^([1-9][0-9]*)%$'],
     Optional['MemoryAccounting']    => Boolean,
-    Optional['MemoryLow']           => Pattern['^(\d+(K|M|G|T)?)$'],
-    Optional['MemoryHigh']          => Pattern['^(\d+(K|M|G|T)?)$'],
-    Optional['MemoryMax']           => Pattern['^(\d+(K|M|G|T)?)$'],
-    Optional['MemoryLimit']         => Pattern['^(\d+(K|M|G|T)?)$'],
+    Optional['MemoryLow']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemoryMin']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemoryHigh']          => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemoryMax']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemoryLimit']         => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemorySwapMax']       => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
     Optional['TasksAccounting']     => Boolean,
     Optional['TasksMax']            => Variant[Integer[1],Pattern['^(infinity|([1-9][0-9]?$|^100)%)$']],
     Optional['IOAccounting']        => Boolean,
@@ -1620,13 +2116,121 @@ Struct[{
   }]
 ```
 
-### <a name="systemdunit"></a>`Systemd::Unit`
+### <a name="Systemd--Unit"></a>`Systemd::Unit`
 
-custom datatype that validates different filenames for systemd units
+custom datatype that validates different filenames for systemd units and unit templates
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
+
+Alias of `Pattern[/^[a-zA-Z0-9:\-_.\\@]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$/]`
+
+### <a name="Systemd--Unit--Install"></a>`Systemd::Unit::Install`
+
+Possible keys for the [Install] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
 
 Alias of
 
 ```puppet
-Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']
+Struct[{
+    Optional['Alias']      => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['WantedBy']   => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['RequiredBy'] => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['Also']       => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+  }]
+```
+
+### <a name="Systemd--Unit--Service"></a>`Systemd::Unit::Service`
+
+Possible keys for the [Service] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.service.html
+  * https://www.freedesktop.org/software/systemd/man/systemd.exec.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['Type']                      => Enum['simple', 'exec', 'forking', 'oneshot', 'dbus', 'notify', 'idle'],
+    Optional['ExitType']                  => Enum['main', 'cgroup'],
+    Optional['RemainAfterExit']           => Boolean,
+    Optional['GuessMainPID']              => Boolean,
+    Optional['PIDFile']                   => Stdlib::Unixpath,
+    Optional['BusName']                   => String[1],
+    Optional['ExecStart']                 => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecStartPre']              => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecStartPost']             => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecCondition']             => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecReload']                => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecStop']                  => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecStopPost']              => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['RestartSec']                => String,
+    Optional['TimeoutStartSec']           => String,
+    Optional['TimeoutStopSec']            => String,
+    Optional['TimeoutAbortSec']           => String,
+    Optional['TimeoutAbortSec']           => String,
+    Optional['TimeoutSec']                => String,
+    Optional['TimeoutStartFailureMode']   => Enum['terminate', 'abort', 'kill'],
+    Optional['TimeoutStopFailureMode']    => Enum['terminate', 'abort', 'kill'],
+    Optional['RuntimeMaxSec']             => String,
+    Optional['RuntimeRandomizedExtraSec'] => String,
+    Optional['WatchdogSec']               => String,
+    Optional['Restart']                   => Enum['no', 'on-success', 'on-failure', 'on-abnormal', 'on-watchdog', 'on-abort', 'always'],
+    Optional['SuccessExitStatus']         => String,
+    Optional['RestartPreventExitStatus']  => String,
+    Optional['RestartForceExitStatus']    => String,
+    Optional['RootDirectoryStartOnly']    => Boolean,
+    Optional['NonBlocking']               => Boolean,
+    Optional['NotifyAccess']              => Enum['none', 'default', 'main', 'exec',  'all'],
+    Optional['OOMPolicy']                 => Enum['continue', 'stop','kill'],
+    Optional['OOMScoreAdjust']            => Integer[-1000,1000],
+    Optional['Environment']               => String,
+    Optional['EnvironmentFile']           => Variant[Stdlib::Unixpath,Pattern[/-\/.*/]],
+  }]
+```
+
+### <a name="Systemd--Unit--Service--Exec"></a>`Systemd::Unit::Service::Exec`
+
+Possible strings for ExecStart, ExecStartPrep, ...
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.service.html
+  * https://www.freedesktop.org/software/systemd/man/systemd.exec.html
+
+Alias of `Variant[Enum[''], Pattern[/^[@\-:]*(\+|!|!!)?[@\-:]*\/.*/], Pattern[/^[@\-:]*(\+|!|!!)?[@\-:]*[^\/]*(\s.*)?$/]]`
+
+### <a name="Systemd--Unit--Unit"></a>`Systemd::Unit::Unit`
+
+Possible keys for the [Unit] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['Description']              => Variant[String,Array[String,1]],
+    Optional['Documentation']            => Variant[String,Array[String,1]],
+    Optional['Wants']                    => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['Requires']                 => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['Requisite']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['PartOf']                   => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['Upholds']                  => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['Conflicts']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['Before']                   => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['After']                    => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['OnFailure']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['OnSuccess']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    # Conditions and Asserts
+    Optional['ConditionPathExists']      => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
+    Optional['ConditionPathIsDirectory'] => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
+    Optional['AssertPathExists']         => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
+    Optional['AssertPathIsDirectory']    => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
+  }]
 ```
 

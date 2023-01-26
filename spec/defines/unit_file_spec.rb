@@ -14,8 +14,13 @@ describe 'systemd::unit_file' do
 
         context 'with defaults' do
           it do
+            expect(subject).to create_systemd__daemon_reload(title)
+          end
+
+          it do
             expect(subject).to contain_file("/etc/systemd/system/#{title}").
-              with_selinux_ignore_defaults(false)
+              with_selinux_ignore_defaults(false).
+              that_notifies("Systemd::Daemon_reload[#{title}]")
           end
         end
 
@@ -91,7 +96,8 @@ describe 'systemd::unit_file' do
               without_hasrestart.
               without_flags.
               without_timeout.
-              that_subscribes_to("File[/etc/systemd/system/#{title}]")
+              that_subscribes_to("File[/etc/systemd/system/#{title}]").
+              that_subscribes_to("Systemd::Daemon_reload[#{title}]")
           end
         end
 
@@ -167,12 +173,15 @@ describe 'systemd::unit_file' do
           end
         end
 
-        context 'when using default values for enable and active' do
+        context 'with daemon_reload = false' do
+          let(:params) do
+            super().merge(daemon_reload: false)
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
           it {
-            expect(subject).to create_exec("#{title}-systemctl-daemon-reload").with(
-              command: 'systemctl daemon-reload',
-              refreshonly: true
-            )
+            expect(subject).not_to create_systemd__daemon_reload(title)
           }
         end
       end

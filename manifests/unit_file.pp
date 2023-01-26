@@ -55,6 +55,9 @@
 # @param service_parameters
 #   hash that will be passed with the splat operator to the service resource
 #
+# @param daemon_reload
+#   call `systemd::daemon-reload` to ensure that the modified unit file is loaded
+#
 # @example manage unit file + service
 #   systemd::unit_file { 'foo.service':
 #     content => file("${module_name}/foo.service"),
@@ -77,6 +80,7 @@ define systemd::unit_file (
   Optional[String]                         $restart   = undef,
   Boolean                                  $selinux_ignore_defaults = false,
   Hash[String[1], Any]                     $service_parameters = {},
+  Boolean                                  $daemon_reload = true
 ) {
   include systemd
 
@@ -109,6 +113,12 @@ define systemd::unit_file (
     selinux_ignore_defaults => $selinux_ignore_defaults,
   }
 
+  if $daemon_reload {
+    ensure_resource('systemd::daemon_reload', $name)
+
+    File["${path}/${name}"] ~> Systemd::Daemon_reload[$name]
+  }
+
   if $enable != undef or $active != undef {
     service { $name:
       ensure   => $active,
@@ -125,15 +135,10 @@ define systemd::unit_file (
       Service[$name] -> File["${path}/${name}"]
     } else {
       File["${path}/${name}"] ~> Service[$name]
-    }
-  } else {
-    # Work around https://tickets.puppetlabs.com/browse/PUP-9473
-    # and react to changes on static unit files (ie: .service triggered by .timer)
-    exec { "${name}-systemctl-daemon-reload":
-      command     => 'systemctl daemon-reload',
-      refreshonly => true,
-      path        => $facts['path'],
-      subscribe   => File["${path}/${name}"],
+
+      if $daemon_reload {
+        Systemd::Daemon_reload[$name] ~> Service[$name]
+      }
     }
   }
 }

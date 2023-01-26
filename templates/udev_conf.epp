@@ -8,6 +8,10 @@
 | -%>
 # This file managed by Puppet - DO NOT EDIT
 #
+# udevd is also started in the initrd.  When this file is modified you might
+# also want to rebuild the initrd, so that it will include the modified
+# configuration.  See udev.conf(5) for options and details.
+#
 # The initial syslog(3) priority: "err", "info", "debug" or its
 # numerical equivalent. For runtime debugging, the daemons internal
 # state can be changed with: "udevadm control --log-priority=<value>".

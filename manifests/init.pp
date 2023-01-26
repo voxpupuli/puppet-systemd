@@ -2,6 +2,9 @@
 #
 # @api public
 #
+# @param default_target
+#   The default systemd boot target, unmanaged if set to undef.
+#
 # @param service_limits
 #   May be passed a resource hash suitable for passing directly into the
 #   ``create_resources()`` function as called on ``systemd::service_limits``
@@ -24,7 +27,7 @@
 # @param resolved_ensure
 #   The state that the ``resolved`` service should be in. When migrating from 'running' to
 #   'stopped' an attempt will be made to restore a working `/etc/resolv.conf` using
-#   `/run/systemd/resolved/resolv.conf`.
+#   `/run/systemd/resolve/resolv.conf`.
 #
 # @param resolved_package
 #   The name of a systemd sub package needed for systemd-resolved if one needs to be installed.
@@ -78,10 +81,13 @@
 #   The state that the ``networkd`` service should be in
 #
 # @param manage_timesyncd
-#   Manage the systemd tiemsyncd daemon
+#   Manage the systemd timesyncd daemon
 #
 # @param timesyncd_ensure
 #   The state that the ``timesyncd`` service should be in
+#
+# @param timesyncd_package
+#   Name of the package required for systemd-timesyncd, if any
 #
 # @param ntp_server
 #   comma separated list of ntp servers, will be combined with interface specific
@@ -123,6 +129,9 @@
 #   Config Hash that is used to generate instances of our
 #   `udev::rule` define.
 #
+# @param machine_info_settings
+#   Settings to place into /etc/machine-info (hostnamectl)
+#
 # @param manage_logind
 #   Manage the systemd logind
 #
@@ -159,7 +168,17 @@
 # @param coredump_backtrace
 #   Add --backtrace to systemd-coredump call systemd-coredump@.service unit
 #
+# @param manage_oomd
+#   Should systemd-oomd configuration be managed
+#
+# @param oomd_ensure
+#   The state that the ``oomd`` service should be in
+#
+# @param oomd_settings
+#   Hash of systemd-oomd configurations for oomd.conf
+#
 class systemd (
+  Optional[Pattern['^.+\.target$']]                   $default_target = undef,
   Hash[String,String]                                 $accounting = {},
   Hash[String[1],Hash[String[1], Any]]                $service_limits = {},
   Hash[String[1],Hash[String[1], Any]]                $networks = {},
@@ -184,12 +203,14 @@ class systemd (
   Enum['stopped','running']                           $networkd_ensure = 'running',
   Boolean                                             $manage_timesyncd = false,
   Enum['stopped','running']                           $timesyncd_ensure = 'running',
+  Optional[String[1]]                                 $timesyncd_package = undef,
   Optional[Variant[Array,String]]                     $ntp_server = undef,
   Optional[Variant[Array,String]]                     $fallback_ntp_server = undef,
   Boolean                                             $manage_accounting = false,
   Boolean                                             $purge_dropin_dirs = true,
   Boolean                                             $manage_journald = true,
   Systemd::JournaldSettings                           $journald_settings = {},
+  Systemd::MachineInfoSettings                        $machine_info_settings = {},
   Boolean                                             $manage_udevd = false,
   Optional[Variant[Integer,String]]                   $udev_log = undef,
   Optional[Integer]                                   $udev_children_max = undef,
@@ -207,8 +228,25 @@ class systemd (
   Boolean                                             $manage_coredump = false,
   Systemd::CoredumpSettings                           $coredump_settings = {},
   Boolean                                             $coredump_backtrace = false,
+  Boolean                                             $manage_oomd = false,
+  Enum['stopped','running']                           $oomd_ensure = 'running',
+  Systemd::OomdSettings                               $oomd_settings = {},
 ) {
   contain systemd::install
+
+  if $default_target {
+    $target = shell_escape($default_target)
+    service { $target:
+      ensure => 'running',
+      enable => true,
+    }
+
+    exec { "systemctl set-default ${target}":
+      command => "systemctl set-default ${target}",
+      unless  => "test $(systemctl get-default) = ${target}",
+      path    => $facts['path'],
+    }
+  }
 
   $service_limits.each |$service_limit, $service_limit_data| {
     systemd::service_limits { $service_limit:
@@ -257,6 +295,10 @@ class systemd (
     contain systemd::system
   }
 
+  unless empty($machine_info_settings) {
+    contain systemd::machine_info
+  }
+
   if $manage_journald {
     contain systemd::journald
   }
@@ -267,6 +309,10 @@ class systemd (
 
   if $manage_coredump {
     contain systemd::coredump
+  }
+
+  if $manage_oomd {
+    contain systemd::oomd
   }
 
   $dropin_files.each |$name, $resource| {

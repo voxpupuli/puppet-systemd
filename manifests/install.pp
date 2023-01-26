@@ -7,4 +7,10 @@ class systemd::install {
       ensure => present,
     }
   }
+
+  if $systemd::manage_timesyncd and $systemd::timesyncd_package {
+    package { $systemd::timesyncd_package:
+      ensure => present,
+    }
+  }
 }

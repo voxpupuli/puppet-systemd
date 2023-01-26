@@ -1,6 +1,6 @@
 {
   "name": "puppet-systemd",
-  "version": "3.8.1-rc0",
+  "version": "3.10.1-rc0",
   "author": "Vox Pupuli",
   "summary": "Puppet Systemd module",
   "license": "Apache-2.0",
@@ -21,8 +21,6 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "8",
-        "9",
         "10",
         "11"
       ]
@@ -30,9 +28,9 @@
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "16.04",
         "18.04",
-        "20.04"
+        "20.04",
+        "22.04"
       ]
     },
     {
@@ -60,7 +58,8 @@
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "7",
-        "8"
+        "8",
+        "9"
       ]
     },
     {
@@ -79,8 +78,8 @@
     {
       "operatingsystem": "Fedora",
       "operatingsystemrelease": [
-        "30",
-        "31"
+        "36",
+        "37"
       ]
     }
   ],

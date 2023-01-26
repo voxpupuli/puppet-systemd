@@ -13,11 +13,15 @@ describe 'systemd' do
         it { is_expected.to contain_class('systemd::journald') }
         it { is_expected.to create_service('systemd-journald') }
         it { is_expected.to have_ini_setting_resource_count(0) }
+        it { is_expected.not_to contain_class('systemd::machine_info') }
         it { is_expected.not_to create_service('systemd-resolved') }
         it { is_expected.not_to create_service('systemd-networkd') }
         it { is_expected.not_to create_service('systemd-timesyncd') }
+        it { is_expected.not_to contain_package('systemd-timesyncd') }
         it { is_expected.not_to contain_package('systemd-resolved') }
         it { is_expected.not_to contain_class('systemd::coredump') }
+        it { is_expected.not_to contain_class('systemd::oomd') }
+        it { is_expected.not_to contain_exec('systemctl set-default multi-user.target') }
 
         context 'when enabling resolved and networkd' do
           let(:params) do
@@ -181,6 +185,72 @@ describe 'systemd' do
           }
         end
 
+        context 'with alternate target' do
+          let(:params) do
+            {
+              default_target: 'example.target',
+            }
+          end
+
+          it { is_expected.to contain_exec('systemctl set-default example.target') }
+          it { is_expected.to contain_service('example.target').with_enable(true).with_ensure('running') }
+        end
+
+        context 'when enabling oomd without settings' do
+          let(:params) do
+            {
+              manage_oomd: true,
+            }
+          end
+
+          it { is_expected.to create_service('systemd-oomd').with_ensure('running') }
+          it { is_expected.to create_service('systemd-oomd').with_enable(true) }
+        end
+
+        context 'when enabling oomd with settings' do
+          let(:params) do
+            {
+              manage_oomd: true,
+              oomd_settings: {
+                'SwapUsedLimit' => '10‰',
+                'DefaultMemoryPressureLimit' => '10%',
+                'DefaultMemoryPressureDurationSec' => 10,
+              },
+            }
+          end
+
+          it { is_expected.to create_service('systemd-oomd').with_ensure('running') }
+          it { is_expected.to create_service('systemd-oomd').with_enable(true) }
+          it { is_expected.to have_ini_setting_resource_count(3) }
+
+          it {
+            expect(subject).to contain_ini_setting('SwapUsedLimit').with(
+              path: '/etc/systemd/oomd.conf',
+              section: 'OOM',
+              notify: 'Service[systemd-oomd]',
+              value: '10‰'
+            )
+          }
+
+          it {
+            expect(subject).to contain_ini_setting('DefaultMemoryPressureLimit').with(
+              path: '/etc/systemd/oomd.conf',
+              section: 'OOM',
+              notify: 'Service[systemd-oomd]',
+              value: '10%'
+            )
+          }
+
+          it {
+            expect(subject).to contain_ini_setting('DefaultMemoryPressureDurationSec').with(
+              path: '/etc/systemd/oomd.conf',
+              section: 'OOM',
+              notify: 'Service[systemd-oomd]',
+              value: 10
+            )
+          }
+        end
+
         context 'when enabling timesyncd' do
           let(:params) do
             {
@@ -194,6 +264,12 @@ describe 'systemd' do
           it { is_expected.not_to create_service('systemd-resolved').with_enable(true) }
           it { is_expected.not_to create_service('systemd-networkd').with_ensure('running') }
           it { is_expected.not_to create_service('systemd-networkd').with_enable(true) }
+
+          if (facts[:os]['name'] == 'Ubuntu' && Puppet::Util::Package.versioncmp(facts[:os]['release']['full'], '20.04') >= 0) || (facts[:os]['name'] == 'Debian' && Puppet::Util::Package.versioncmp(facts[:os]['release']['major'], '11') >= 0)
+            it { is_expected.to contain_package('systemd-timesyncd') }
+          else
+            it { is_expected.not_to contain_package('systemd-timesyncd') }
+          end
         end
 
         context 'when enabling timesyncd with NTP values (string)' do
@@ -483,6 +559,19 @@ describe 'systemd' do
                      'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
                    ])
           }
+        end
+
+        context 'with machine-info' do
+          let(:params) do
+            {
+              machine_info_settings: {
+                'PRETTY_HOSTNAME' => 'example hostname',
+              }
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_shellvar('PRETTY_HOSTNAME').with(value: 'example hostname') }
         end
 
         context 'when enabling logind with options' do

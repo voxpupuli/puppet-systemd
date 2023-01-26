@@ -87,9 +87,10 @@ class systemd::resolved (
       # /etc/resolv.conf to something that might actually work on
       # reboot.
       exec { 'restore_resolv.conf_if_possible':
-        command => 'cp --remove-destination -f /run/systemd/resolve/resolv.conf /etc/resolv.conf',
-        onlyif  => 'test "$(readlink /etc/resolv.conf)" = "/run/systemd/resolve/resolv.conf"  || test "$(readlink /etc/resolv.conf)" = "/run/systemd/resolve/stub-resolv.conf"',
-        path    => $facts['path'],
+        command  => 'cp --remove-destination -f /run/systemd/resolve/resolv.conf /etc/resolv.conf',
+        onlyif   => 'l="$(readlink /etc/resolv.conf)"; test "$l" = "/run/systemd/resolve/resolv.conf" || test "$l" = "/run/systemd/resolve/stub-resolv.conf',
+        path     => $facts['path'],
+        provider => 'shell',
       }
     }
   }

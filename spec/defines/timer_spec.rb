@@ -84,13 +84,6 @@ describe 'systemd::timer' do
 
           it { is_expected.to contain_systemd__unit_file('foobar.timer').with_content("[Timer]\nOnCalendar=hourly") }
           it { is_expected.to contain_systemd__unit_file('foobar.service').with_content("[Service]\nExecStart=/bin/echo timer-fired").that_comes_before('Systemd::Unit_file[foobar.timer]') }
-
-          it {
-            expect(subject).to create_exec('foobar.service-systemctl-daemon-reload').with(
-              command: 'systemctl daemon-reload',
-              refreshonly: true
-            )
-          }
         end
 
         context 'with a bad timer name' do
