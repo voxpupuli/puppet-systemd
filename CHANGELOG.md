@@ -4,6 +4,39 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v4.0.0) (2023-01-27)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.10.0...v4.0.0)
+
+**Breaking changes:**
+
+- drop support for fedora 30 & 31 \(EOL\) [\#310](https://github.com/voxpupuli/puppet-systemd/pull/310) ([jhoblitt](https://github.com/jhoblitt))
+- drop support for ubuntu 16.04 \(EOL\) [\#308](https://github.com/voxpupuli/puppet-systemd/pull/308) ([jhoblitt](https://github.com/jhoblitt))
+- drop debian 9 support \(EOL\) [\#307](https://github.com/voxpupuli/puppet-systemd/pull/307) ([jhoblitt](https://github.com/jhoblitt))
+- Remove debian 8 support [\#305](https://github.com/voxpupuli/puppet-systemd/pull/305) ([traylenator](https://github.com/traylenator))
+- systemd::unit\_file: remove hasrestart/hasstatus params [\#264](https://github.com/voxpupuli/puppet-systemd/pull/264) ([bastelfreak](https://github.com/bastelfreak))
+- Remove restart\_service on service\_limits define [\#193](https://github.com/voxpupuli/puppet-systemd/pull/193) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Revisit setting daemon-reload to true by default [\#284](https://github.com/voxpupuli/puppet-systemd/issues/284)
+- The module should have the ability to reload services that have outdated unit dropin files [\#282](https://github.com/voxpupuli/puppet-systemd/issues/282)
+- Add restart\_service parameter on service\_limits for compatibility [\#313](https://github.com/voxpupuli/puppet-systemd/pull/313) ([ekohl](https://github.com/ekohl))
+- add support for fedora 36 & 37 [\#309](https://github.com/voxpupuli/puppet-systemd/pull/309) ([jhoblitt](https://github.com/jhoblitt))
+- Allow MemorySwapMax to be specified as service limit [\#304](https://github.com/voxpupuli/puppet-systemd/pull/304) ([traylenator](https://github.com/traylenator))
+- add udevadm & udev facts [\#292](https://github.com/voxpupuli/puppet-systemd/pull/292) ([jhoblitt](https://github.com/jhoblitt))
+- Make Systemd::Unit type stricter [\#290](https://github.com/voxpupuli/puppet-systemd/pull/290) ([traylenator](https://github.com/traylenator))
+- New systemd::manage\_unit, systemd::manage\_dropin types [\#288](https://github.com/voxpupuli/puppet-systemd/pull/288) ([traylenator](https://github.com/traylenator))
+- Add support for Ubuntu 22.04 [\#278](https://github.com/voxpupuli/puppet-systemd/pull/278) ([simondeziel](https://github.com/simondeziel))
+- Notify services by default on drop in files [\#194](https://github.com/voxpupuli/puppet-systemd/pull/194) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- systemd-timesyncd package should be managed, if required [\#294](https://github.com/voxpupuli/puppet-systemd/issues/294)
+- feat: manage timesyncd package on Debian \>= 11 and Ubuntu \>= 20.04 [\#296](https://github.com/voxpupuli/puppet-systemd/pull/296) ([saz](https://github.com/saz))
+- resolved: `onlyif` snippet requires shell support [\#293](https://github.com/voxpupuli/puppet-systemd/pull/293) ([simondeziel](https://github.com/simondeziel))
+- Correct docs for name var of systemd::dropin\_file [\#289](https://github.com/voxpupuli/puppet-systemd/pull/289) ([traylenator](https://github.com/traylenator))
+
 ## [v3.10.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.10.0) (2022-06-20)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.9.0...v3.10.0)
@@ -172,7 +205,7 @@ These should not affect the functionality of the module.
 
 **Implemented enhancements:**
 
-- Add support for strict mode for DNS over TLS [\#200](https://github.com/voxpupuli/puppet-systemd/pull/200) ([wobblesprout](https://github.com/wobblesprout))
+- Add support for strict mode for DNS over TLS [\#200](https://github.com/voxpupuli/puppet-systemd/pull/200) ([ghost](https://github.com/ghost))
 
 **Merged pull requests:**
 
