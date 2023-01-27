@@ -1273,6 +1273,7 @@ The following parameters are available in the `systemd::service_limits` defined 
 * [`selinux_ignore_defaults`](#-systemd--service_limits--selinux_ignore_defaults)
 * [`limits`](#-systemd--service_limits--limits)
 * [`source`](#-systemd--service_limits--source)
+* [`restart_service`](#-systemd--service_limits--restart_service)
 
 ##### <a name="-systemd--service_limits--name"></a>`name`
 
@@ -1323,6 +1324,14 @@ A ``File`` resource compatible ``source``
 * Mutually exclusive with ``$limits``
 
 Default value: `undef`
+
+##### <a name="-systemd--service_limits--restart_service"></a>`restart_service`
+
+Data type: `Boolean`
+
+Unused parameter for compatibility with older versions. Will fail if true is passed in.
+
+Default value: `false`
 
 ### <a name="systemd--timer"></a>`systemd::timer`
 
@@ -1643,8 +1652,6 @@ The following parameters are available in the `systemd::unit_file` defined type:
 * [`enable`](#-systemd--unit_file--enable)
 * [`active`](#-systemd--unit_file--active)
 * [`restart`](#-systemd--unit_file--restart)
-* [`hasrestart`](#-systemd--unit_file--hasrestart)
-* [`hasstatus`](#-systemd--unit_file--hasstatus)
 * [`selinux_ignore_defaults`](#-systemd--unit_file--selinux_ignore_defaults)
 * [`service_parameters`](#-systemd--unit_file--service_parameters)
 * [`daemon_reload`](#-systemd--unit_file--daemon_reload)
@@ -1754,22 +1761,6 @@ Default value: `undef`
 Data type: `Optional[String]`
 
 Specify a restart command manually. If left unspecified, a standard Puppet service restart happens.
-
-Default value: `undef`
-
-##### <a name="-systemd--unit_file--hasrestart"></a>`hasrestart`
-
-Data type: `Optional[Boolean]`
-
-maps to the same param on the service resource. Optional in the module because it's optional in the service resource type. This param is deprecated. Set it via $service_parameters.
-
-Default value: `undef`
-
-##### <a name="-systemd--unit_file--hasstatus"></a>`hasstatus`
-
-Data type: `Optional[Boolean]`
-
-maps to the same param on the service resource. true in the module because it's true in the service resource type. This param is deprecated. Set it via $service_parameters.
 
 Default value: `undef`
 

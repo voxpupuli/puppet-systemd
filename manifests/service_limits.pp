@@ -26,13 +26,21 @@
 #
 #   * Mutually exclusive with ``$limits``
 #
+# @param restart_service
+#   Unused parameter for compatibility with older versions. Will fail if true is passed in.
+#
 define systemd::service_limits (
   Enum['present', 'absent', 'file'] $ensure                  = 'present',
   Stdlib::Absolutepath              $path                    = '/etc/systemd/system',
   Boolean                           $selinux_ignore_defaults = false,
   Optional[Systemd::ServiceLimits]  $limits                  = undef,
   Optional[String]                  $source                  = undef,
+  Boolean                           $restart_service         = false,
 ) {
+  if $restart_service {
+    fail('The restart_service parameter is deprecated and only false is a valid value')
+  }
+
   include systemd
 
   if $name !~ Pattern['^.+\.(service|socket|mount|swap)$'] {
