@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.0.1](https://github.com/voxpupuli/puppet-systemd/tree/v4.0.1) (2023-01-31)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v4.0.0...v4.0.1)
+
+**Fixed bugs:**
+
+- Revert udevadm and udev facts from \#292 [\#316](https://github.com/voxpupuli/puppet-systemd/pull/316) ([jhoblitt](https://github.com/jhoblitt))
+- systemd::timer: fix before's argument to use the proper syntax [\#315](https://github.com/voxpupuli/puppet-systemd/pull/315) ([simondeziel](https://github.com/simondeziel))
+
 ## [v4.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v4.0.0) (2023-01-27)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.10.0...v4.0.0)
