@@ -39,5 +39,10 @@ type Systemd::Unit::Service = Struct[
     Optional['OOMScoreAdjust']            => Integer[-1000,1000],
     Optional['Environment']               => String,
     Optional['EnvironmentFile']           => Variant[Stdlib::Unixpath,Pattern[/-\/.*/]],
+    Optional['User']                      => String,
+    Optional['Group']                     => String,
+    Optional['StandardOutput']            => String,
+    Optional['StandardError']             => String,
+    Optional['WorkingDirectory']          => Stdlib::Unixpath,
   }
 ]

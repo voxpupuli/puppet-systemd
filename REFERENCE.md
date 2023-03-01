@@ -2181,6 +2181,11 @@ Struct[{
     Optional['OOMScoreAdjust']            => Integer[-1000,1000],
     Optional['Environment']               => String,
     Optional['EnvironmentFile']           => Variant[Stdlib::Unixpath,Pattern[/-\/.*/]],
+    Optional['User']                      => String,
+    Optional['Group']                     => String,
+    Optional['StandardOutput']            => String,
+    Optional['StandardError']             => String,
+    Optional['WorkingDirectory']          => Stdlib::Unixpath,
   }]
 ```
 
@@ -2217,6 +2222,7 @@ Struct[{
     Optional['After']                    => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['OnFailure']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['OnSuccess']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['RequiresMountsFor']        => Stdlib::Unixpath,
     # Conditions and Asserts
     Optional['ConditionPathExists']      => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['ConditionPathIsDirectory'] => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
