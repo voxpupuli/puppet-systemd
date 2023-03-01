@@ -2358,6 +2358,8 @@ Struct[{
       Stdlib::Unixpath,Pattern[/-\/.+/],
       Array[Variant[Stdlib::Unixpath,Pattern[/-\/.+/]],1],
     ],
+    Optional['StandardOutput']            => Variant[Enum['inherit','null','tty','journal','kmsg','journal+console','kmsg+console','socket'],Pattern[/\A(file:|append:|truncate:).+$\z/]],
+    Optional['StandardError']             => Variant[Enum['inherit','null','tty','journal','kmsg','journal+console','kmsg+console','socket'],Pattern[/\A(file:|append:|truncate:).+$\z/]],
   }]
 ```
 
@@ -2496,6 +2498,7 @@ Struct[{
     Optional['After']                    => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['OnFailure']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['OnSuccess']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['RequiresMountsFor']        => Variant[Enum[''],Stdlib::Unixpath,Array[Variant[Enum[''],Stdlib::Unixpath],1]],
     # Conditions and Asserts
     Optional['ConditionPathExists']      => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['ConditionPathIsDirectory'] => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
