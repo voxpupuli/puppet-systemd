@@ -23,7 +23,7 @@ describe 'systemd::manage_dropin' do
                 service_entry: {
                   Type:      'oneshot',
                   ExecStart: ['', '/usr/bin/doit.sh'],
-                },
+                }
               )
             end
 
@@ -60,6 +60,37 @@ describe 'systemd::manage_dropin' do
                 with_content(%r{^Type=oneshot$})
             }
           end
+
+          context 'with a timer entry' do
+            let(:params) do
+              super().merge(
+                timer_entry: {
+                  'OnCalendar' => 'soon',
+                }
+              )
+            end
+
+            it { is_expected.to compile.and_raise_error(%r{timer_entry is only valid for timer units}) }
+          end
+        end
+
+        context 'on a timer' do
+          let(:params) do
+            {
+              unit: 'special.timer',
+              timer_entry: {
+                'OnCalendar' => 'soon',
+              }
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__dropin_file('foobar.conf').
+              with_unit('special.timer').
+              with_content(%r{^OnCalendar=soon$})
+          }
         end
       end
     end
