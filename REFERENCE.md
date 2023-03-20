@@ -2203,7 +2203,10 @@ Struct[{
     Optional['OOMPolicy']                 => Enum['continue', 'stop','kill'],
     Optional['OOMScoreAdjust']            => Integer[-1000,1000],
     Optional['Environment']               => String,
-    Optional['EnvironmentFile']           => Variant[Stdlib::Unixpath,Pattern[/-\/.*/]],
+    Optional['EnvironmentFile']           => Variant[
+      Stdlib::Unixpath,Pattern[/-\/.+/],
+      Array[Variant[Stdlib::Unixpath,Pattern[/-\/.+/]],1],
+    ],
   }]
 ```
 
