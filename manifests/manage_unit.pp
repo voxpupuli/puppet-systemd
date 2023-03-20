@@ -39,6 +39,7 @@
 # @param unit_entry  key value pairs for [Unit] section of the unit file.
 # @param service_entry key value pairs for [Service] section of the unit file.
 # @param install_entry key value pairs for [Install] section of the unit file.
+# @param timer_entry key value pairs for [Timer] section of the unit file
 #
 define systemd::manage_unit (
   Enum['present', 'absent']                $ensure                  = 'present',
@@ -55,9 +56,18 @@ define systemd::manage_unit (
   Boolean                                  $daemon_reload           = true,
   Optional[Systemd::Unit::Install]         $install_entry           = undef,
   Systemd::Unit::Unit                      $unit_entry,
-  Systemd::Unit::Service                   $service_entry,
+  Optional[Systemd::Unit::Service]         $service_entry           = undef,
+  Optional[Systemd::Unit::Timer]           $timer_entry             = undef,
 ) {
   assert_type(Systemd::Unit, $name)
+
+  if $timer_entry and $name !~ Pattern['^[^/]+\.timer'] {
+    fail("Systemd::Manage_unit[${name}]: timer_entry is only valid for timer units")
+  }
+
+  if $name =~ Pattern['^[^/]+\.service'] and !$service_entry {
+    fail("Systemd::Manage_unit[${name}]: service_entry is only required for service units")
+  }
 
   systemd::unit_file { $name:
     ensure                  => $ensure,
@@ -75,6 +85,7 @@ define systemd::manage_unit (
         'unit_entry'    => $unit_entry,
         'service_entry' => $service_entry,
         'install_entry' => $install_entry,
+        'timer_entry'   => $timer_entry,
     }),
   }
 }

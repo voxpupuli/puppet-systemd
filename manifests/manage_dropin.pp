@@ -28,6 +28,7 @@
 # @param unit_entry key value pairs for [Unit] section of the unit file
 # @param service_entry key value pairs for [Service] section of the unit file
 # @param install_entry key value pairs for [Install] section of the unit file
+# @param timer_entry key value pairs for [Timer] section of the unit file
 #
 define systemd::manage_dropin (
   Systemd::Unit                    $unit,
@@ -44,7 +45,12 @@ define systemd::manage_dropin (
   Optional[Systemd::Unit::Install] $install_entry           = undef,
   Optional[Systemd::Unit::Unit]    $unit_entry              = undef,
   Optional[Systemd::Unit::Service] $service_entry           = undef,
+  Optional[Systemd::Unit::Timer]   $timer_entry             = undef,
 ) {
+  if $timer_entry and $unit !~ Pattern['^[^/]+\.timer'] {
+    fail("Systemd::Manage_unit[${name}]: timer_entry is only valid for timer units")
+  }
+
   systemd::dropin_file { $name:
     ensure                  => $ensure,
     filename                => $filename,
@@ -61,6 +67,7 @@ define systemd::manage_dropin (
         'unit_entry'    => $unit_entry,
         'service_entry' => $service_entry,
         'install_entry' => $install_entry,
+        'timer_entry'   => $timer_entry,
     }),
   }
 }

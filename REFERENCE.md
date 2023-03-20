@@ -64,6 +64,7 @@
 * [`Systemd::Unit::Install`](#Systemd--Unit--Install): Possible keys for the [Install] section of a unit file
 * [`Systemd::Unit::Service`](#Systemd--Unit--Service): Possible keys for the [Service] section of a unit file
 * [`Systemd::Unit::Service::Exec`](#Systemd--Unit--Service--Exec): Possible strings for ExecStart, ExecStartPrep, ...
+* [`Systemd::Unit::Timer`](#Systemd--Unit--Timer): Possible keys for the [Timer] section of a unit file
 * [`Systemd::Unit::Unit`](#Systemd--Unit--Unit): Possible keys for the [Unit] section of a unit file
 
 ## Classes
@@ -798,6 +799,7 @@ The following parameters are available in the `systemd::manage_dropin` defined t
 * [`unit_entry`](#-systemd--manage_dropin--unit_entry)
 * [`service_entry`](#-systemd--manage_dropin--service_entry)
 * [`install_entry`](#-systemd--manage_dropin--install_entry)
+* [`timer_entry`](#-systemd--manage_dropin--timer_entry)
 
 ##### <a name="-systemd--manage_dropin--unit"></a>`unit`
 
@@ -909,6 +911,14 @@ key value pairs for [Install] section of the unit file
 
 Default value: `undef`
 
+##### <a name="-systemd--manage_dropin--timer_entry"></a>`timer_entry`
+
+Data type: `Optional[Systemd::Unit::Timer]`
+
+key value pairs for [Timer] section of the unit file
+
+Default value: `undef`
+
 ### <a name="systemd--manage_unit"></a>`systemd::manage_unit`
 
 Generate unit file from template
@@ -955,6 +965,7 @@ The following parameters are available in the `systemd::manage_unit` defined typ
 * [`unit_entry`](#-systemd--manage_unit--unit_entry)
 * [`service_entry`](#-systemd--manage_unit--service_entry)
 * [`install_entry`](#-systemd--manage_unit--install_entry)
+* [`timer_entry`](#-systemd--manage_unit--timer_entry)
 
 ##### <a name="-systemd--manage_unit--name"></a>`name`
 
@@ -1066,15 +1077,25 @@ key value pairs for [Unit] section of the unit file.
 
 ##### <a name="-systemd--manage_unit--service_entry"></a>`service_entry`
 
-Data type: `Systemd::Unit::Service`
+Data type: `Optional[Systemd::Unit::Service]`
 
 key value pairs for [Service] section of the unit file.
+
+Default value: `undef`
 
 ##### <a name="-systemd--manage_unit--install_entry"></a>`install_entry`
 
 Data type: `Optional[Systemd::Unit::Install]`
 
 key value pairs for [Install] section of the unit file.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_unit--timer_entry"></a>`timer_entry`
+
+Data type: `Optional[Systemd::Unit::Timer]`
+
+key value pairs for [Timer] section of the unit file
 
 Default value: `undef`
 
@@ -2193,6 +2214,21 @@ Possible strings for ExecStart, ExecStartPrep, ...
   * https://www.freedesktop.org/software/systemd/man/systemd.exec.html
 
 Alias of `Variant[Enum[''], Pattern[/^[@\-:]*(\+|!|!!)?[@\-:]*\/.*/], Pattern[/^[@\-:]*(\+|!|!!)?[@\-:]*[^\/]*(\s.*)?$/]]`
+
+### <a name="Systemd--Unit--Timer"></a>`Systemd::Unit::Timer`
+
+Possible keys for the [Timer] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.timer.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['OnCalendar'] => Variant[String,Array[String,1]],
+  }]
+```
 
 ### <a name="Systemd--Unit--Unit"></a>`Systemd::Unit::Unit`
 
