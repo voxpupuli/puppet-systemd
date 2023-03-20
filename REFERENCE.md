@@ -2167,6 +2167,8 @@ Alias of
 
 ```puppet
 Struct[{
+    Optional['User']                      => String[1],
+    Optional['Group']                     => String[1],
     Optional['Type']                      => Enum['simple', 'exec', 'forking', 'oneshot', 'dbus', 'notify', 'idle'],
     Optional['ExitType']                  => Enum['main', 'cgroup'],
     Optional['RemainAfterExit']           => Boolean,
