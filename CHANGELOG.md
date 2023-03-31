@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v4.1.0) (2023-03-31)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v4.0.1...v4.1.0)
+
+**Implemented enhancements:**
+
+- Expand managed unit entry with User, Group + EnvironmentFile Array [\#323](https://github.com/voxpupuli/puppet-systemd/pull/323) ([ekohl](https://github.com/ekohl))
+- Add timer\_entry to manage\_{dropin,unit} [\#322](https://github.com/voxpupuli/puppet-systemd/pull/322) ([ekohl](https://github.com/ekohl))
+- add support for {AlmaLinux,Rocky} {8,9} [\#319](https://github.com/voxpupuli/puppet-systemd/pull/319) ([jhoblitt](https://github.com/jhoblitt))
+
+**Fixed bugs:**
+
+- Systemd::Unit::Service: missing User and Group [\#299](https://github.com/voxpupuli/puppet-systemd/issues/299)
+
 ## [v4.0.1](https://github.com/voxpupuli/puppet-systemd/tree/v4.0.1) (2023-01-31)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v4.0.0...v4.0.1)
