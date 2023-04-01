@@ -5,15 +5,15 @@
 # @see systemd.unit(5)
 #
 # @example Generate a service
-#   systemd::manage_unit{ 'myrunner.service':
-#     $unit_entry    => {
+#   systemd::manage_unit { 'myrunner.service':
+#     unit_entry    => {
 #       'Description' => 'My great service',
 #     },
-#     $service_entry => {
-#       'Type'       => 'oneshot',
+#     service_entry => {
+#       'Type'      => 'oneshot',
 #       'ExecStart' => '/usr/bin/doit.sh',
 #     },
-#     $install_entry => {
+#     install_entry => {
 #       WantedBy => 'multi-user.target',
 #     },
 #   }
