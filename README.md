@@ -65,18 +65,18 @@ Create a unit file from parameters
 
 ```puppet
 systemd::manage_unit { 'myrunner.service':
-  $unit_entry    => {
+  unit_entry      => {
     'Description' => 'My great service',
   },
-  $service_entry => {
-    'Type'       => 'oneshot',
-    'ExecStart' => '/usr/bin/doit.sh',
+  service_entry   => {
+    'Type'        => 'oneshot',
+    'ExecStart'   => '/usr/bin/doit.sh',
   },
-  $install_entry => {
-    'WantedBy' => 'multi-user.target',
+  install_entry   => {
+    'WantedBy'    => 'multi-user.target',
   },
-  enable         => true,
-  active         => true,
+  enable          => true,
+  active          => true,
 }
 ```
 
