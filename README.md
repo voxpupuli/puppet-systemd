@@ -27,9 +27,9 @@ Let this module handle file creation.
 
 ```puppet
 systemd::unit_file { 'foo.service':
- source => "puppet:///modules/${module_name}/foo.service",
+  source => "puppet:///modules/${module_name}/foo.service",
 }
-~> service {'foo':
+~> service { 'foo':
   ensure => 'running',
 }
 ```
@@ -44,7 +44,7 @@ file { '/usr/lib/systemd/system/foo.service':
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.service",
 }
-~> service {'foo':
+~> service { 'foo':
   ensure => 'running',
 }
 ```
@@ -54,8 +54,8 @@ You can also use this module to more fully manage the new unit. This example dep
 ```puppet
 systemd::unit_file { 'foo.service':
   content => file("${module_name}/foo.service"),
-  enable => true,
-  active => true,
+  enable  => true,
+  active  => true,
 }
 ```
 
@@ -65,18 +65,18 @@ Create a unit file from parameters
 
 ```puppet
 systemd::manage_unit { 'myrunner.service':
-  unit_entry      => {
+  unit_entry    => {
     'Description' => 'My great service',
   },
-  service_entry   => {
-    'Type'        => 'oneshot',
-    'ExecStart'   => '/usr/bin/doit.sh',
+  service_entry => {
+    'Type'      => 'oneshot',
+    'ExecStart' => '/usr/bin/doit.sh',
   },
-  install_entry   => {
-    'WantedBy'    => 'multi-user.target',
+  install_entry => {
+    'WantedBy' => 'multi-user.target',
   },
-  enable          => true,
-  active          => true,
+  enable        => true,
+  active        => true,
 }
 ```
 
@@ -94,8 +94,8 @@ systemd::dropin_file { 'foo.conf':
   unit   => 'foo.service',
   source => "puppet:///modules/${module_name}/foo.conf",
 }
-~> service {'foo':
-  ensure    => 'running',
+~> service { 'foo':
+  ensure => 'running',
 }
 ```
 
@@ -115,7 +115,7 @@ file { '/etc/systemd/system/foo.service.d/foo.conf':
   mode   => '0644',
   source => "puppet:///modules/${module_name}/foo.conf",
 }
-~> service {'foo':
+~> service { 'foo':
   ensure => 'running',
 }
 ```
@@ -150,7 +150,7 @@ Create a file entry for modules-loads directory and start
 `systemd-modules-load.service`
 
 ```puppet
-systemd::modules_load{'impi.conf':
+systemd::modules_load { 'impi.conf':
   content => "ipmi\n",
 }
 ```
@@ -189,7 +189,7 @@ When `active` and `enable` are set to `true` the puppet service `runoften.timer`
 declared, started and enabled.
 
 ```puppet
-systemd::timer{'runoften.timer':
+systemd::timer { 'runoften.timer':
   timer_source   => "puppet:///modules/${module_name}/runoften.timer",
   service_source => "puppet:///modules/${module_name}/runoften.service",
   active         => true,
@@ -214,16 +214,15 @@ Type=oneshot
 ExecStart=/usr/bin/touch /tmp/file
 EOT
 
-systemd::timer{'daily.timer':
+systemd::timer { 'daily.timer':
   timer_content   => $_timer,
   service_content => $_service,
 }
 
-service{'daily.timer':
+service { 'daily.timer':
   ensure    => running,
   subscribe => Systemd::Timer['daily.timer'],
 }
-
 ```
 
 If neither `service_content` or `service_source` are specified then no
@@ -245,8 +244,7 @@ Type=oneshot
 ExecStart=/usr/bin/touch /tmp/file
 EOT
 
-
-systemd::timer{'daily.timer':
+systemd::timer { 'daily.timer':
   timer_content   => $_timer,
   service_unit    => 'touch-me-today.service',
   service_content => $_service,
@@ -296,7 +294,7 @@ needs to be restarted to apply the configs. The defined resource can do this
 for you:
 
 ```puppet
-systemd::network{'eth0.network':
+systemd::network { 'eth0.network':
   source          => "puppet:///modules/${module_name}/eth0.network",
   restart_service => true,
 }
@@ -312,7 +310,7 @@ and `systemd-logind`
 via the main class:
 
 ```puppet
-class{'systemd':
+class { 'systemd':
   manage_resolved  => true,
   manage_networkd  => true,
   manage_timesyncd => true,
@@ -334,7 +332,7 @@ Systemd introduced `DNS Over TLS` in release 239. Currently three states are sup
 Stopping `systemd-resolved` once running can be problematic and care should be taken.
 
 ```puppet
-class{'systemd':
+class { 'systemd':
   manage_resolved => true,
   resolved_ensure => false,
 }
@@ -346,7 +344,7 @@ will stop the service and should also copy `/run/systemd/resolve/resolv.conf` to
 It is possible to configure the default ntp servers in `/etc/systemd/timesyncd.conf`:
 
 ```puppet
-class{'systemd':
+class { 'systemd':
   manage_timesyncd    => true,
   ntp_server          => ['0.pool.ntp.org', '1.pool.ntp.org'],
   fallback_ntp_server => ['2.pool.ntp.org', '3.pool.ntp.org'],
@@ -370,7 +368,7 @@ working accounting options per operating system, but you can still modify them
 with `$accounting`:
 
 ```puppet
-class{'systemd':
+class { 'systemd':
   manage_accounting => true,
   accounting        => {
     'DefaultCPUAccounting'    => 'yes',
@@ -400,8 +398,8 @@ Additionally you can set custom udev rules with the `udev_rules` parameter.
 class { 'systemd':
   manage_udevd => true,
   udev_rules   => {
-      'example_raw.rules' => {
-      'rules'             => [
+    'example_raw.rules' => {
+      'rules' => [
         'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"',
         'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
       ],
@@ -429,12 +427,12 @@ systemd::udev::rule:
 The `systemd-oomd `system can be configured.
 
 ```puppet
-class{'systemd':
+class { 'systemd':
   manage_oomd   => true,
   oomd_ensure   => 'running'
   oomd_settings => {
-    'SwapUsedLimit' => '90%',
-    'DefaultMemoryPressureLimit' => '60%',
+    'SwapUsedLimit'                    => '90%',
+    'DefaultMemoryPressureLimit'       => '60%',
     'DefaultMemoryPressureDurationSec' => 30,
   }
 }

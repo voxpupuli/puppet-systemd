@@ -931,15 +931,15 @@ Generate unit file from template
 ##### Generate a service
 
 ```puppet
-systemd::manage_unit{ 'myrunner.service':
-  $unit_entry    => {
+systemd::manage_unit { 'myrunner.service':
+  unit_entry    => {
     'Description' => 'My great service',
   },
-  $service_entry => {
-    'Type'       => 'oneshot',
+  service_entry => {
+    'Type'      => 'oneshot',
     'ExecStart' => '/usr/bin/doit.sh',
   },
-  $install_entry => {
+  install_entry => {
     WantedBy => 'multi-user.target',
   },
 }
@@ -1111,7 +1111,7 @@ Creates a modules-load.d drop file
 ##### load a module
 
 ```puppet
-systemd::modules_load{'impi.conf':
+systemd::modules_load { 'impi.conf':
    content => "ipmi\n",
 }
 ```
@@ -1119,7 +1119,7 @@ systemd::modules_load{'impi.conf':
 ##### override /lib/modules-load.d/myservice.conf in /etc/modules-load.d/myservice.conf
 
 ```puppet
-systemd::modules_load{'myservice.conf':
+systemd::modules_load { 'myservice.conf':
    content => "# Cancel system version of the file\n",
 }
 ```

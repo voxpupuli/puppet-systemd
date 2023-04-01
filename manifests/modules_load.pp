@@ -24,12 +24,12 @@
 #   * Mutually exclusive with ``$content``
 #
 # @example load a module
-#   systemd::modules_load{'impi.conf':
+#   systemd::modules_load { 'impi.conf':
 #      content => "ipmi\n",
 #   }
 #
 # @example override /lib/modules-load.d/myservice.conf in /etc/modules-load.d/myservice.conf
-#   systemd::modules_load{'myservice.conf':
+#   systemd::modules_load { 'myservice.conf':
 #      content => "# Cancel system version of the file\n",
 #   }
 #
