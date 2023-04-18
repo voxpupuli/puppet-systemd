@@ -2167,6 +2167,7 @@ Alias of
 
 ```puppet
 Struct[{
+    Optional['AmbientCapabilities']       => Variant[Pattern[/^CAP_[A-Z_]+$/],Array[Pattern[/^CAP_[A-Z_]+$/],1]],
     Optional['User']                      => String[1],
     Optional['Group']                     => String[1],
     Optional['Type']                      => Enum['simple', 'exec', 'forking', 'oneshot', 'dbus', 'notify', 'idle'],
