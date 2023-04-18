@@ -27,35 +27,14 @@ describe 'systemd::manage_unit' do
           end
 
           it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_systemd__unit_file('foobar.service') }
 
           it {
             is_expected.to contain_systemd__unit_file('foobar.service').
-              with_content(%r{^\[Unit\]$})
-          }
-
-          it {
-            is_expected.to contain_systemd__unit_file('foobar.service').
-              with_content(%r{^\[Service\]$})
-          }
-
-          it {
-            is_expected.to contain_systemd__unit_file('foobar.service').
-              with_content(%r{^\[Install\]$})
-          }
-
-          it {
-            is_expected.to contain_systemd__unit_file('foobar.service').
-              with_content(%r{^Description=My great service$})
-          }
-
-          it {
-            is_expected.to contain_systemd__unit_file('foobar.service').
-              with_content(%r{^Description=has two lines of description$})
-          }
-
-          it {
-            is_expected.to contain_systemd__unit_file('foobar.service').
+              with_content(%r{^\[Unit\]$}).
+              with_content(%r{^\[Service\]$}).
+              with_content(%r{^\[Install\]$}).
+              with_content(%r{^Description=My great service$}).
+              with_content(%r{^Description=has two lines of description$}).
               with_content(%r{^Type=oneshot$})
           }
 
