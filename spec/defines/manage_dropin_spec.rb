@@ -17,6 +17,9 @@ describe 'systemd::manage_dropin' do
             }
           end
 
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_systemd__dropin_file('foobar.conf').with_content(%r{^# Deployed with puppet$}) }
+
           context 'setting some parameters simply' do
             let(:params) do
               super().merge(
