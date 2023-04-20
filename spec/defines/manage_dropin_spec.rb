@@ -17,6 +17,21 @@ describe 'systemd::manage_dropin' do
             }
           end
 
+          context 'setting some parameters simply' do
+            let(:params) do
+              super().merge(
+                unit_entry: {
+                  DefaultDependencies: true
+                }
+              )
+            end
+
+            it {
+              is_expected.to contain_systemd__dropin_file('foobar.conf').
+                with_content(%r{^DefaultDependencies=true$})
+            }
+          end
+
           context 'drop file chaning Type and resetting ExecStart' do
             let(:params) do
               super().merge(

@@ -15,6 +15,7 @@ describe 'systemd::manage_unit' do
             {
               unit_entry: {
                 Description: ['My great service', 'has two lines of description'],
+                DefaultDependencies: true,
               },
               service_entry: {
                 Type:      'oneshot',
@@ -31,6 +32,7 @@ describe 'systemd::manage_unit' do
           it {
             is_expected.to contain_systemd__unit_file('foobar.service').
               with_content(%r{^\[Unit\]$}).
+              with_content(%r{^DefaultDependencies=true$}).
               with_content(%r{^\[Service\]$}).
               with_content(%r{^\[Install\]$}).
               with_content(%r{^Description=My great service$}).

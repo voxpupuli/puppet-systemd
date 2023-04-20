@@ -5,6 +5,7 @@ type Systemd::Unit::Unit = Struct[
   {
     Optional['Description']              => Variant[String,Array[String,1]],
     Optional['Documentation']            => Variant[String,Array[String,1]],
+    Optional['DefaultDependencies']      => Boolean,
     Optional['Wants']                    => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['Requires']                 => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['Requisite']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
