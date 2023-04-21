@@ -56,7 +56,18 @@ describe 'systemd::manage_unit' do
                 Description: 'Winter is coming',
               },
               timer_entry: {
+                'OnActiveSec' => '5min',
+                'OnBootSec' => ['', '1min 5s'],
+                'OnStartUpSec' => 10,
+                'OnUnitActiveSec' => '5s',
+                'OnUnitInactiveSec' => ['', 10],
                 'OnCalendar' => 'soon',
+                'AccuracySec' => '24h',
+                'RandomizedDelaySec' => '4min 20s',
+                'FixedRandomDelay' => true,
+                'OnClockChange' => false,
+                'OnTimezoneChange' => true,
+                'Unit' => 'summer.service',
               }
             }
           end
@@ -65,7 +76,21 @@ describe 'systemd::manage_unit' do
 
           it {
             is_expected.to contain_systemd__unit_file('winter.timer').
-              with_content(%r{^OnCalendar=soon$})
+              with_content(%r{^\[Timer\]$}).
+              with_content(%r{^OnActiveSec=5min$}).
+              with_content(%r{^OnBootSec=$}).
+              with_content(%r{^OnBootSec=1min 5s$}).
+              with_content(%r{^OnStartUpSec=10$}).
+              with_content(%r{^OnUnitActiveSec=5s$}).
+              with_content(%r{^OnUnitInactiveSec=$}).
+              with_content(%r{^OnUnitInactiveSec=10$}).
+              with_content(%r{^OnCalendar=soon$}).
+              with_content(%r{^AccuracySec=24h$}).
+              with_content(%r{^RandomizedDelaySec=4min 20s$}).
+              with_content(%r{^FixedRandomDelay=true$}).
+              with_content(%r{^OnClockChange=false$}).
+              with_content(%r{^OnTimezoneChange=true$}).
+              with_content(%r{^Unit=summer.service$})
           }
         end
       end
