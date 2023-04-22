@@ -28,35 +28,14 @@ describe 'systemd::manage_dropin' do
             end
 
             it { is_expected.to compile.with_all_deps }
-            it { is_expected.to contain_systemd__dropin_file('foobar.conf') }
 
             it {
               is_expected.to contain_systemd__dropin_file('foobar.conf').
-                with_content(%r{^\[Service\]$})
-            }
-
-            it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
-                without_content(%r{^\[Unit\]$})
-            }
-
-            it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
-                without_content(%r{^\[Install\]$})
-            }
-
-            it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
-                with_content(%r{^ExecStart=$})
-            }
-
-            it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
-                with_content(%r{^ExecStart=/usr/bin/doit.sh$})
-            }
-
-            it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
+                with_content(%r{^\[Service\]$}).
+                without_content(%r{^\[Unit\]$}).
+                without_content(%r{^\[Install\]$}).
+                with_content(%r{^ExecStart=$}).
+                with_content(%r{^ExecStart=/usr/bin/doit.sh$}).
                 with_content(%r{^Type=oneshot$})
             }
           end
