@@ -35,6 +35,16 @@ describe 'Systemd::Unit::Unit' do
     end
   end
 
+  # Booleans
+  %w[DefaultDependencies].each do |assert|
+    context "with a key of #{assert} can have values set to true" do
+      it { is_expected.to allow_value(assert.to_s => true) }
+      it { is_expected.to allow_value({ assert.to_s => false }) }
+    end
+  end
+
+  it { is_expected.not_to allow_value({ 'DefaultDependencies' => 'yes' }) }
+
   it { is_expected.not_to allow_value({ 'Description' => 10 }) }
   it { is_expected.not_to allow_value({ 'Wants' => '/unitwith.service' }) }
 
