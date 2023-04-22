@@ -59,7 +59,7 @@ define systemd::manage_dropin (
   Optional[Systemd::Unit::Path]    $path_entry              = undef,
 ) {
   if $timer_entry and $unit !~ Pattern['^[^/]+\.timer'] {
-    fail("Systemd::Manage_unit[${name}]: timer_entry is only valid for timer units")
+    fail("Systemd::Manage_dropin[${name}]: for unit ${unit} timer_entry is only valid for timer units")
   }
 
   if $path_entry and $unit !~ Pattern['^[^/]+\.path'] {
