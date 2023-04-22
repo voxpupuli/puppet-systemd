@@ -45,6 +45,14 @@ describe 'systemd::manage_unit' do
 
             it { is_expected.to compile.and_raise_error(%r{timer_entry is only valid for timer units}) }
           end
+
+          context 'with a path entry' do
+            let(:params) do
+              super().merge(path_entry: { 'PathExists' => '/etc/passwd' })
+            end
+
+            it { is_expected.to compile.and_raise_error(%r{path_entry is only valid for path units}) }
+          end
         end
 
         context 'on a timer' do
@@ -91,6 +99,49 @@ describe 'systemd::manage_unit' do
               with_content(%r{^OnClockChange=false$}).
               with_content(%r{^OnTimezoneChange=true$}).
               with_content(%r{^Unit=summer.service$})
+          }
+        end
+
+        context 'on a path unit' do
+          let(:title) { 'etc-passwd.path' }
+
+          let(:params) do
+            {
+              unit_entry: {
+                Description: 'Watch that passwd like a hawk',
+              },
+              path_entry: {
+                'PathExists'              => '/etc/passwd',
+                'PathExistsGlob'          => '/etc/krb5.conf.d/*.conf',
+                'PathChanged'             => '',
+                'PathModified'            => ['', '/etc/httpd/conf.d/*.conf'],
+                'DirectoryNotEmpty'       => '/tmp',
+                'Unit'                    => 'my.service',
+                'MakeDirectory'           => true,
+                'DirectoryMode'           => '0777',
+                'TriggerLimitIntervalSec' => '10s',
+                'TriggerLimitBurst'       => 100,
+              }
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__unit_file('etc-passwd.path').
+              without_content(%r{^\[Service\]$}).
+              with_content(%r{^\[Path\]$}).
+              with_content(%r{^PathExists=/etc/passwd$}).
+              with_content(%r{^PathExistsGlob=/etc/krb5.conf.d/\*.conf$}).
+              with_content(%r{^PathChanged=$}).
+              with_content(%r{^PathModified=$}).
+              with_content(%r{^PathModified=/etc/httpd/conf.d/\*.conf$}).
+              with_content(%r{^DirectoryNotEmpty=/tmp$}).
+              with_content(%r{^Unit=my.service$}).
+              with_content(%r{^MakeDirectory=true$}).
+              with_content(%r{^DirectoryMode=0777$}).
+              with_content(%r{^TriggerLimitIntervalSec=10s$}).
+              with_content(%r{^TriggerLimitBurst=100$})
           }
         end
       end

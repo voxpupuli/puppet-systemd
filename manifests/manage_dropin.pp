@@ -14,6 +14,15 @@
 #     },
 #   }
 #
+## @example drop in file to change a path unit and override TriggerLimitBurst
+#   systemd::manage_dropin { 'triggerlimit.conf':
+#     ensure     => present,
+#     unit       => 'passwd.path',
+#     path_entry => {
+#       'TriggerLimitBurst' => 100,
+#     },
+#   }
+#
 # @param unit The unit to create a dropfile for
 # @param filename The target unit file to create. The filename of the drop in. The full path is determined using the path, unit and this filename.
 # @param ensure The state of this dropin file
@@ -29,6 +38,7 @@
 # @param service_entry key value pairs for [Service] section of the unit file
 # @param install_entry key value pairs for [Install] section of the unit file
 # @param timer_entry key value pairs for [Timer] section of the unit file
+# @param path_entry key value pairs for [Path] section of the unit file
 #
 define systemd::manage_dropin (
   Systemd::Unit                    $unit,
@@ -46,9 +56,14 @@ define systemd::manage_dropin (
   Optional[Systemd::Unit::Unit]    $unit_entry              = undef,
   Optional[Systemd::Unit::Service] $service_entry           = undef,
   Optional[Systemd::Unit::Timer]   $timer_entry             = undef,
+  Optional[Systemd::Unit::Path]    $path_entry              = undef,
 ) {
   if $timer_entry and $unit !~ Pattern['^[^/]+\.timer'] {
     fail("Systemd::Manage_unit[${name}]: timer_entry is only valid for timer units")
+  }
+
+  if $path_entry and $unit !~ Pattern['^[^/]+\.path'] {
+    fail("Systemd::Manage_dropin[${name}]: for unit ${unit} path_entry is only valid for path units")
   }
 
   systemd::dropin_file { $name:
@@ -68,6 +83,7 @@ define systemd::manage_dropin (
         'service_entry' => $service_entry,
         'install_entry' => $install_entry,
         'timer_entry'   => $timer_entry,
+        'path_entry'    => $path_entry,
     }),
   }
 }

@@ -92,6 +92,26 @@ describe 'systemd::manage_dropin' do
               with_content(%r{^OnCalendar=soon$})
           }
         end
+
+        context 'on a path unit' do
+          let(:params) do
+            {
+              unit: 'special.path',
+              path_entry: {
+                'PathExists' => '/etc/hosts',
+              }
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__dropin_file('foobar.conf').
+              with_unit('special.path').
+              with_content(%r{^\[Path\]$}).
+              with_content(%r{^PathExists=/etc/hosts$})
+          }
+        end
       end
     end
   end
