@@ -970,7 +970,7 @@ systemd::manage_unit { 'myrunner.service':
 ##### Genenerate a path unit
 
 ```puppet
-systemd::manage_init { 'passwd-mon.path':
+systemd::manage_unit { 'passwd-mon.path':
   ensure        => present,
   unit_entry      => {
     'Description' => 'Monitor the passwd file',
