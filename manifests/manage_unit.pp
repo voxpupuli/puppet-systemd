@@ -17,6 +17,22 @@
 #       WantedBy => 'multi-user.target',
 #     },
 #   }
+#
+# @example Genenerate a path unit
+#   systemd::manage_unit { 'passwd-mon.path':
+#     ensure        => present,
+#     unit_entry      => {
+#       'Description' => 'Monitor the passwd file',
+#     },
+#     path_entry    => {
+#       'PathModified => '/etc/passwd',
+#       'Unit'        => 'passwd-mon.service',
+#     },
+#     install_entry => {
+#       'WantedBy'    => 'multi-user.target',
+#     },
+#   }
+#
 # @param name [Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']]
 #   The target unit file to create
 #
@@ -40,6 +56,7 @@
 # @param service_entry key value pairs for [Service] section of the unit file.
 # @param install_entry key value pairs for [Install] section of the unit file.
 # @param timer_entry key value pairs for [Timer] section of the unit file
+# @param path_entry key value pairs for [Path] section of the unit file.
 #
 define systemd::manage_unit (
   Enum['present', 'absent']                $ensure                  = 'present',
@@ -58,11 +75,16 @@ define systemd::manage_unit (
   Systemd::Unit::Unit                      $unit_entry,
   Optional[Systemd::Unit::Service]         $service_entry           = undef,
   Optional[Systemd::Unit::Timer]           $timer_entry             = undef,
+  Optional[Systemd::Unit::Path]            $path_entry              = undef,
 ) {
   assert_type(Systemd::Unit, $name)
 
   if $timer_entry and $name !~ Pattern['^[^/]+\.timer'] {
     fail("Systemd::Manage_unit[${name}]: timer_entry is only valid for timer units")
+  }
+
+  if $path_entry and $name !~ Pattern['^[^/]+\.path'] {
+    fail("Systemd::Manage_unit[${name}]: path_entry is only valid for path units")
   }
 
   if $name =~ Pattern['^[^/]+\.service'] and !$service_entry {
@@ -86,6 +108,7 @@ define systemd::manage_unit (
         'service_entry' => $service_entry,
         'install_entry' => $install_entry,
         'timer_entry'   => $timer_entry,
+        'path_entry'    => $path_entry,
     }),
   }
 }

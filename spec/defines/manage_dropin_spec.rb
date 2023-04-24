@@ -43,35 +43,14 @@ describe 'systemd::manage_dropin' do
             end
 
             it { is_expected.to compile.with_all_deps }
-            it { is_expected.to contain_systemd__dropin_file('foobar.conf') }
 
             it {
               is_expected.to contain_systemd__dropin_file('foobar.conf').
-                with_content(%r{^\[Service\]$})
-            }
-
-            it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
-                without_content(%r{^\[Unit\]$})
-            }
-
-            it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
-                without_content(%r{^\[Install\]$})
-            }
-
-            it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
-                with_content(%r{^ExecStart=$})
-            }
-
-            it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
-                with_content(%r{^ExecStart=/usr/bin/doit.sh$})
-            }
-
-            it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
+                with_content(%r{^\[Service\]$}).
+                without_content(%r{^\[Unit\]$}).
+                without_content(%r{^\[Install\]$}).
+                with_content(%r{^ExecStart=$}).
+                with_content(%r{^ExecStart=/usr/bin/doit.sh$}).
                 with_content(%r{^Type=oneshot$})
             }
           end
@@ -105,6 +84,26 @@ describe 'systemd::manage_dropin' do
             is_expected.to contain_systemd__dropin_file('foobar.conf').
               with_unit('special.timer').
               with_content(%r{^OnCalendar=soon$})
+          }
+        end
+
+        context 'on a path unit' do
+          let(:params) do
+            {
+              unit: 'special.path',
+              path_entry: {
+                'PathExists' => '/etc/hosts',
+              }
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__dropin_file('foobar.conf').
+              with_unit('special.path').
+              with_content(%r{^\[Path\]$}).
+              with_content(%r{^PathExists=/etc/hosts$})
           }
         end
       end

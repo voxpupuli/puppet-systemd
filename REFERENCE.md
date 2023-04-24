@@ -62,6 +62,7 @@
 * [`Systemd::ServiceLimits`](#Systemd--ServiceLimits): Matches Systemd Service Limit Struct
 * [`Systemd::Unit`](#Systemd--Unit): custom datatype that validates different filenames for systemd units and unit templates
 * [`Systemd::Unit::Install`](#Systemd--Unit--Install): Possible keys for the [Install] section of a unit file
+* [`Systemd::Unit::Path`](#Systemd--Unit--Path): Possible keys for the [Path] section of a unit file
 * [`Systemd::Unit::Service`](#Systemd--Unit--Service): Possible keys for the [Service] section of a unit file
 * [`Systemd::Unit::Service::Exec`](#Systemd--Unit--Service--Exec): Possible strings for ExecStart, ExecStartPrep, ...
 * [`Systemd::Unit::Timer`](#Systemd--Unit--Timer): Possible keys for the [Timer] section of a unit file
@@ -781,6 +782,18 @@ systemd::manage_dropin { 'myconf.conf':
 }
 ```
 
+##### drop in file to change a path unit and override TriggerLimitBurst
+
+```puppet
+systemd::manage_dropin { 'triggerlimit.conf':
+  ensure     => present,
+  unit       => 'passwd.path',
+  path_entry => {
+    'TriggerLimitBurst' => 100,
+  },
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `systemd::manage_dropin` defined type:
@@ -800,6 +813,7 @@ The following parameters are available in the `systemd::manage_dropin` defined t
 * [`service_entry`](#-systemd--manage_dropin--service_entry)
 * [`install_entry`](#-systemd--manage_dropin--install_entry)
 * [`timer_entry`](#-systemd--manage_dropin--timer_entry)
+* [`path_entry`](#-systemd--manage_dropin--path_entry)
 
 ##### <a name="-systemd--manage_dropin--unit"></a>`unit`
 
@@ -919,6 +933,14 @@ key value pairs for [Timer] section of the unit file
 
 Default value: `undef`
 
+##### <a name="-systemd--manage_dropin--path_entry"></a>`path_entry`
+
+Data type: `Optional[Systemd::Unit::Path]`
+
+key value pairs for [Path] section of the unit file
+
+Default value: `undef`
+
 ### <a name="systemd--manage_unit"></a>`systemd::manage_unit`
 
 Generate unit file from template
@@ -945,6 +967,24 @@ systemd::manage_unit { 'myrunner.service':
 }
 ```
 
+##### Genenerate a path unit
+
+```puppet
+systemd::manage_unit { 'passwd-mon.path':
+  ensure        => present,
+  unit_entry      => {
+    'Description' => 'Monitor the passwd file',
+  },
+  path_entry    => {
+    'PathModified => '/etc/passwd',
+    'Unit'        => 'passwd-mon.service',
+  },
+  install_entry => {
+    'WantedBy'    => 'multi-user.target',
+  },
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `systemd::manage_unit` defined type:
@@ -966,6 +1006,7 @@ The following parameters are available in the `systemd::manage_unit` defined typ
 * [`service_entry`](#-systemd--manage_unit--service_entry)
 * [`install_entry`](#-systemd--manage_unit--install_entry)
 * [`timer_entry`](#-systemd--manage_unit--timer_entry)
+* [`path_entry`](#-systemd--manage_unit--path_entry)
 
 ##### <a name="-systemd--manage_unit--name"></a>`name`
 
@@ -1096,6 +1137,14 @@ Default value: `undef`
 Data type: `Optional[Systemd::Unit::Timer]`
 
 key value pairs for [Timer] section of the unit file
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_unit--path_entry"></a>`path_entry`
+
+Data type: `Optional[Systemd::Unit::Path]`
+
+key value pairs for [Path] section of the unit file.
 
 Default value: `undef`
 
@@ -2152,6 +2201,30 @@ Struct[{
     Optional['WantedBy']   => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['RequiredBy'] => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['Also']       => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+  }]
+```
+
+### <a name="Systemd--Unit--Path"></a>`Systemd::Unit::Path`
+
+Possible keys for the [Path] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.path.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['PathExists']              => Variant[Enum[''],Stdlib::Unixpath,Array[Variant[Enum[''],Stdlib::Unixpath],1]],
+    Optional['PathExistsGlob']          => Variant[Enum[''],Stdlib::Unixpath,Array[Variant[Enum[''],Stdlib::Unixpath],1]],
+    Optional['PathChanged']             => Variant[Enum[''],Stdlib::Unixpath,Array[Variant[Enum[''],Stdlib::Unixpath],1]],
+    Optional['PathModified']            => Variant[Enum[''],Stdlib::Unixpath,Array[Variant[Enum[''],Stdlib::Unixpath],1]],
+    Optional['DirectoryNotEmpty']       => Variant[Enum[''],Stdlib::Unixpath,Array[Variant[Enum[''],Stdlib::Unixpath],1]],
+    Optional['Unit']                    => Systemd::Unit,
+    Optional['MakeDirectory']           => Boolean,
+    Optional['DirectoryMode']           => Pattern[/\A[0-7]{1,4}\z/],
+    Optional['TriggerLimitIntervalSec'] => String,
+    Optional['TriggerLimitBurst']       => Integer[0],
   }]
 ```
 

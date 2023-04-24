@@ -3,6 +3,7 @@
  Optional[Hash] $service_entry,
  Optional[Hash] $install_entry,
  Optional[Hash] $timer_entry,
+ Optional[Hash] $path_entry,
 | -%>
 <% if $unit_entry { -%>
 
@@ -26,6 +27,15 @@
 
 [Timer]
 <% $timer_entry.each | $_key, $_value | { -%>
+<% Array($_value, true).each | $_subvalue | { -%>
+<%= $_key %>=<%= $_subvalue %>
+<% } -%>
+<% } -%>
+<% } -%>
+<% if $path_entry { -%>
+
+[Path]
+<% $path_entry.each | $_key, $_value | { -%>
 <% Array($_value, true).each | $_subvalue | { -%>
 <%= $_key %>=<%= $_subvalue %>
 <% } -%>
