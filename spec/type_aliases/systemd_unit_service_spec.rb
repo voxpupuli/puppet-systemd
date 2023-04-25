@@ -14,6 +14,13 @@ describe 'Systemd::Unit::Service' do
     end
   end
 
+  %w[SyslogIdentifier].each do |depend|
+    context "with a key of #{depend} can have values of strings" do
+      it { is_expected.to allow_value({ depend.to_s => 'simple' }) }
+      it { is_expected.not_to allow_value({ depend.to_s => ['', 'simple'] }) }
+    end
+  end
+
   it { is_expected.to allow_value({ 'ExecStart' => 'notabsolute.sh' }) }
   it { is_expected.not_to allow_value({ 'ExecStart' => '*/wrongprefix.sh' }) }
 

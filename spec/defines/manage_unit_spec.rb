@@ -18,8 +18,9 @@ describe 'systemd::manage_unit' do
                 DefaultDependencies: true,
               },
               service_entry: {
-                Type:      'oneshot',
+                Type: 'oneshot',
                 ExecStart: '/usr/bin/doit.sh',
+                SyslogIdentifier: 'doit-backwards.sh',
               },
               install_entry: {
                 WantedBy: 'multi-user.target',
@@ -34,6 +35,7 @@ describe 'systemd::manage_unit' do
               with_content(%r{^\[Unit\]$}).
               with_content(%r{^DefaultDependencies=true$}).
               with_content(%r{^\[Service\]$}).
+              with_content(%r{^SyslogIdentifier=doit-backwards\.sh$}).
               with_content(%r{^\[Install\]$}).
               with_content(%r{^Description=My great service$}).
               with_content(%r{^Description=has two lines of description$}).

@@ -22,13 +22,17 @@ describe 'systemd::manage_dropin' do
               super().merge(
                 unit_entry: {
                   DefaultDependencies: true
+                },
+                service_entry: {
+                  SyslogIdentifier: 'simple'
                 }
               )
             end
 
             it {
               is_expected.to contain_systemd__dropin_file('foobar.conf').
-                with_content(%r{^DefaultDependencies=true$})
+                with_content(%r{^DefaultDependencies=true$}).
+                with_content(%r{^SyslogIdentifier=simple$})
             }
           end
 
