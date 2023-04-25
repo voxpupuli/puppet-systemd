@@ -21,6 +21,13 @@ describe 'Systemd::Unit::Service' do
     end
   end
 
+  it { is_expected.to allow_value({ 'KillMode' => 'mixed' }) }
+  it { is_expected.not_to allow_value({ 'KillMode' => 'wrong' }) }
+
+  it { is_expected.to allow_value({ 'KillSignal' => 'SIGTERM' }) }
+  it { is_expected.not_to allow_value({ 'KillSignal' => 'SIGterm' }) }
+  it { is_expected.not_to allow_value({ 'KillSignal' => 9 }) }
+
   it { is_expected.to allow_value({ 'ExecStart' => 'notabsolute.sh' }) }
   it { is_expected.not_to allow_value({ 'ExecStart' => '*/wrongprefix.sh' }) }
 
