@@ -24,44 +24,37 @@
 # @param group The group to set on the unit file
 # @param mode The mode to set on the unit file
 # @param show_diff Whether to show the diff when updating unit file
-# @param enable If set, manage the unit enablement status
-# @param active If set, will manage the state of the unit
-# @param restart Specify a restart command manually. If left unspecified, a standard Puppet service restart happens
-# @param daemon_reload
-#   call `systemd::daemon-reload` to ensure that the modified unit file is loaded
-#
+# @param restart_service if netword should be restarted.
 # @param match_entry key value pairs for [Match] section of the unit file
 # @param network_entry key value pairs for [Network] section of the unit file
-# @param link_entry key value pairs for [Link] section of the unit file
+# @param address_entry key value pairs for [Address] section of the unit file
 #
-define systemd::manage_unit (
-  Enum['present', 'absent']                $ensure                  = 'present',
+define systemd::manage_network (
+  Enum['file', 'absent']                   $ensure                  = 'file',
   Stdlib::Absolutepath                     $path                    = '/etc/systemd/system',
   String                                   $owner                   = 'root',
   String                                   $group                   = 'root',
   Stdlib::Filemode                         $mode                    = '0444',
   Boolean                                  $show_diff               = true,
-  Optional[Variant[Boolean, Enum['mask']]] $enable                  = undef,
-  Optional[Boolean]                        $active                  = undef,
-  Optional[String]                         $restart                 = undef,
-  Boolean                                  $daemon_reload           = true,
-  Optional[Systemd::Unit::Match]           $match_entry             = undef,
-  Optional[Systemd::Unit::Network]         $network_entry           = undef,
-  Optional[Systemd::Unit::Link]            $link_entry              = undef,
+  Boolean                                  $restart_service           = true,
+  Optional[Hash]                           $match_entry             = undef,
+  Optional[Hash]                           $network_entry           = undef,
+  Optional[Hash]                           $address_entry           = undef,
 ) {
   assert_type(Systemd::Network, $name)
 
   systemd::network { $name:
-    ensure    => $ensure,
-    path      => $path,
-    owner     => $owner,
-    group     => $group,
-    mode      => $mode,
-    show_diff => $show_diff,
-    content   => epp('systemd/network.epp', {
+    ensure          => $ensure,
+    path            => $path,
+    owner           => $owner,
+    group           => $group,
+    mode            => $mode,
+    show_diff       => $show_diff,
+    restart_service => $restart_service,
+    content         => epp('systemd/network.epp', {
         match_entry   => $match_entry,
         network_entry => $network_entry,
-        link_entry    => $link_entry,
+        address_entry => $address_entry,
     }),
   }
 }

@@ -300,6 +300,29 @@ systemd::network { 'eth0.network':
 }
 ```
 
+### network files from parameters
+
+Create a network file from parameters
+
+```puppet
+systemd::manage_network { 'myhome.network':
+  match_entry    => {
+    'Name' => 'enp1s0',
+  },
+  network_entry => {
+    'Address' => '10.1.1.1/24',
+    'Gateway' => '10.1.1.1',
+  },
+  address_entry => {
+    'Address' => '10.1.1.2',
+  },
+}
+```
+
+The parameters `match_entry`, `network_entry` and `address_entry` populate the
+`[Match]`, `[Network]` and `[Address]` sections of the generated network file.
+
+
 ### Services
 
 The default target is managed via the `default_target` parameter.  If this is left at its default value (`undef`), the default-target will be unmanaged by puppet.
