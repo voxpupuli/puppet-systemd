@@ -5,19 +5,19 @@ require 'spec_helper'
 describe 'Systemd::Unit::Service' do
   %w[ExecStart ExecStartPre ExecStartPost ExecCondition ExecReload ExecStop ExecStopPost].each do |depend|
     context "with a key of #{depend} can have values of commands" do
-      it { is_expected.to allow_value({ depend.to_s => '/usr/bin/doit.sh' }) }
-      it { is_expected.to allow_value({ depend.to_s => ['/usr/bin/doit.sh'] }) }
-      it { is_expected.to allow_value({ depend.to_s => ['-/usr/bin/doit.sh', ':/doit.sh', '+/doit.sh', '!/doit.sh', '!!/doit.sh'] }) }
-      it { is_expected.to allow_value({ depend.to_s => '' }) }
-      it { is_expected.to allow_value({ depend.to_s => [''] }) }
-      it { is_expected.to allow_value({ depend.to_s => ['', '/doit.sh'] }) }
+      it { is_expected.to allow_value({ depend => '/usr/bin/doit.sh' }) }
+      it { is_expected.to allow_value({ depend => ['/usr/bin/doit.sh'] }) }
+      it { is_expected.to allow_value({ depend => ['-/usr/bin/doit.sh', ':/doit.sh', '+/doit.sh', '!/doit.sh', '!!/doit.sh'] }) }
+      it { is_expected.to allow_value({ depend => '' }) }
+      it { is_expected.to allow_value({ depend => [''] }) }
+      it { is_expected.to allow_value({ depend => ['', '/doit.sh'] }) }
     end
   end
 
   %w[SyslogIdentifier].each do |depend|
     context "with a key of #{depend} can have values of strings" do
-      it { is_expected.to allow_value({ depend.to_s => 'simple' }) }
-      it { is_expected.not_to allow_value({ depend.to_s => ['', 'simple'] }) }
+      it { is_expected.to allow_value({ depend => 'simple' }) }
+      it { is_expected.not_to allow_value({ depend => ['', 'simple'] }) }
     end
   end
 
