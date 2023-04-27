@@ -14,12 +14,21 @@
 #     },
 #   }
 #
-## @example drop in file to change a path unit and override TriggerLimitBurst
+# @example drop in file to change a path unit and override TriggerLimitBurst
 #   systemd::manage_dropin { 'triggerlimit.conf':
 #     ensure     => present,
 #     unit       => 'passwd.path',
 #     path_entry => {
 #       'TriggerLimitBurst' => 100,
+#     },
+#   }
+#
+# @example drop in file to override the LimitCORE for a service
+#   systemd::manage_dropin { 'corelimit.conf':
+#     ensure     => present,
+#     unit       => 'rsyslog.conf',
+#     path_entry => {
+#       'LimitCORE' => 'infinity',
 #     },
 #   }
 #

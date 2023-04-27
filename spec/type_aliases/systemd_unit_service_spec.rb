@@ -27,6 +27,9 @@ describe 'Systemd::Unit::Service' do
   it { is_expected.to allow_value({ 'KillSignal' => 'SIGTERM' }) }
   it { is_expected.not_to allow_value({ 'KillSignal' => 'SIGterm' }) }
   it { is_expected.not_to allow_value({ 'KillSignal' => 9 }) }
+  it { is_expected.to allow_value({ 'LimitCORE' => 'infinity' }) }
+  it { is_expected.to allow_value({ 'LimitCORE' => '100M' }) }
+  it { is_expected.not_to allow_value({ 'LimitCORE' => 'random string' }) }
 
   it { is_expected.to allow_value({ 'ExecStart' => 'notabsolute.sh' }) }
   it { is_expected.not_to allow_value({ 'ExecStart' => '*/wrongprefix.sh' }) }

@@ -794,6 +794,18 @@ systemd::manage_dropin { 'triggerlimit.conf':
 }
 ```
 
+##### drop in file to override the LimitCORE for a service
+
+```puppet
+systemd::manage_dropin { 'corelimit.conf':
+  ensure     => present,
+  unit       => 'rsyslog.conf',
+  path_entry => {
+    'LimitCORE' => 'infinity',
+  },
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `systemd::manage_dropin` defined type:
@@ -2259,6 +2271,7 @@ Struct[{
     Optional['KillSignal']                => Pattern[/^SIG[A-Z]+$/],
     Optional['KillMode']                  => Enum['control-group', 'mixed', 'process', 'none'],
     Optional['SyslogIdentifier']          => String,
+    Optional['LimitCORE']                 => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
     Optional['RestartSec']                => String,
     Optional['TimeoutStartSec']           => String,
     Optional['TimeoutStopSec']            => String,

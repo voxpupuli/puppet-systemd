@@ -24,13 +24,15 @@ describe 'systemd::manage_dropin' do
                   DefaultDependencies: true
                 },
                 service_entry: {
-                  SyslogIdentifier: 'simple'
+                  SyslogIdentifier: 'simple',
+                  LimitCORE: 'infinity',
                 }
               )
             end
 
             it {
               is_expected.to contain_systemd__dropin_file('foobar.conf').
+                with_content(%r{^LimitCORE=infinity$}).
                 with_content(%r{^DefaultDependencies=true$}).
                 with_content(%r{^SyslogIdentifier=simple$})
             }
