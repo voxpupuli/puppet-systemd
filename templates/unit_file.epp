@@ -5,48 +5,34 @@
  Optional[Hash] $timer_entry,
  Optional[Hash] $path_entry,
 | -%>
-<% if $unit_entry { -%>
+<%-
 
-[Unit]
-<% $unit_entry.each | $_key, $_value | { -%>
-<% Array($_value, true).each | $_subvalue | { -%>
-<%= $_key %>=<%= $_subvalue %>
-<% } -%>
-<% } -%>
-<% } -%>
-<% if $service_entry { -%>
+ # List of possible of unit sections, should match the list of _entry variables
+ # above.
 
-[Service]
-<% $service_entry.each | $_key, $_value | { -%>
-<% Array($_value, true).each | $_subvalue | { -%>
-<%= $_key %>=<%= $_subvalue %>
-<% } -%>
-<% } -%>
-<% } -%>
-<% if $timer_entry { -%>
+ $_unit_sections = [
+   'Unit',
+   'Service',
+   'Timer',
+   'Path',
+   'Install',
+]
 
-[Timer]
-<% $timer_entry.each | $_key, $_value | { -%>
-<% Array($_value, true).each | $_subvalue | { -%>
-<%= $_key %>=<%= $_subvalue %>
-<% } -%>
-<% } -%>
-<% } -%>
-<% if $path_entry { -%>
+-%>
+<%-
+$_unit_sections.each | $_section | {
+  $_values = getvar("${downcase($_section)}_entry")
+  if $_values {
+-%>
 
-[Path]
-<% $path_entry.each | $_key, $_value | { -%>
-<% Array($_value, true).each | $_subvalue | { -%>
+[<%= $_section %>]
+<%-
+    $_values.each | $_key, $_value | {
+      Array($_value, true).each | $_subvalue | { -%>
 <%= $_key %>=<%= $_subvalue %>
-<% } -%>
-<% } -%>
-<% } -%>
-<% if $install_entry { -%>
-
-[Install]
-<% $install_entry.each | $_key, $_value | { -%>
-<% Array($_value, true).each | $_subvalue | { -%>
-<%= $_key %>=<%= $_subvalue %>
-<% } -%>
-<% } -%>
-<% } -%>
+<%-
+      }
+    }
+  }
+}
+-%>
