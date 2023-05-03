@@ -42,6 +42,24 @@ describe 'systemd::manage_unit' do
               with_content(%r{^Type=oneshot$})
           }
 
+          context 'with no service_entry' do
+            let(:params) do
+              {
+                ensure: 'present',
+              }
+            end
+
+            it { is_expected.to compile.and_raise_error(%r{service_entry is required for service units}) }
+
+            context 'with ensure absent' do
+              let(:params) do
+                super().merge(ensure: 'absent')
+              end
+
+              it { is_expected.to contain_systemd__unit_file('foobar.service').with_ensure('absent') }
+            end
+          end
+
           context 'with a timer entry' do
             let(:params) do
               super().merge(timer_entry: { 'OnCalendar' => 'something' })
