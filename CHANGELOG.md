@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v5.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v5.0.0) (2023-05-15)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v4.2.0...v5.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 6 support [\#342](https://github.com/voxpupuli/puppet-systemd/pull/342) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Refactor unit template [\#344](https://github.com/voxpupuli/puppet-systemd/pull/344) ([traylenator](https://github.com/traylenator))
+- Allow LimitCORE in \[Service\] for manage\_unit/dropin [\#341](https://github.com/voxpupuli/puppet-systemd/pull/341) ([traylenator](https://github.com/traylenator))
+- Allow SyslogIdentifier, KillMode and KillSignal to \[service\] section [\#339](https://github.com/voxpupuli/puppet-systemd/pull/339) ([traylenator](https://github.com/traylenator))
+- Addition of path directives to manage\_unit/dropin [\#337](https://github.com/voxpupuli/puppet-systemd/pull/337) ([traylenator](https://github.com/traylenator))
+- Addition of timer directives to manage\_unit and manage\_dropin [\#335](https://github.com/voxpupuli/puppet-systemd/pull/335) ([traylenator](https://github.com/traylenator))
+- Allow DefaultDependencies to be set in \[Unit\] section [\#334](https://github.com/voxpupuli/puppet-systemd/pull/334) ([traylenator](https://github.com/traylenator))
+
+**Closed issues:**
+
+- Increase inifile version in metadata to \< 7.0.0 [\#336](https://github.com/voxpupuli/puppet-systemd/issues/336)
+
+**Merged pull requests:**
+
+- Increase inifile dependency upper version to \< 7.0.0 [\#338](https://github.com/voxpupuli/puppet-systemd/pull/338) ([canihavethisone](https://github.com/canihavethisone))
+- Group spec expectations in a single example [\#331](https://github.com/voxpupuli/puppet-systemd/pull/331) ([ekohl](https://github.com/ekohl))
+
 ## [v4.2.0](https://github.com/voxpupuli/puppet-systemd/tree/v4.2.0) (2023-04-18)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v4.1.0...v4.2.0)
@@ -14,6 +40,7 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
+- Release 4.2.0 [\#332](https://github.com/voxpupuli/puppet-systemd/pull/332) ([ekohl](https://github.com/ekohl))
 - Stick to the Puppet language style guide in examples [\#327](https://github.com/voxpupuli/puppet-systemd/pull/327) ([smortex](https://github.com/smortex))
 - Fix `manage_unit` example in README.md [\#326](https://github.com/voxpupuli/puppet-systemd/pull/326) ([Enucatl](https://github.com/Enucatl))
 
