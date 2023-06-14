@@ -112,6 +112,26 @@ describe 'systemd::manage_dropin' do
               with_content(%r{^PathExists=/etc/hosts$})
           }
         end
+
+        context 'on a socket unit' do
+          let(:params) do
+            {
+              unit: 'special.socket',
+              socket_entry: {
+                'ListenMessageQueue' => '/panic',
+              }
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__dropin_file('foobar.conf').
+              with_unit('special.socket').
+              with_content(%r{^\[Socket\]$}).
+              with_content(%r{^ListenMessageQueue=/panic$})
+          }
+        end
       end
     end
   end

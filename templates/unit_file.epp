@@ -4,6 +4,7 @@
  Optional[Hash] $install_entry,
  Optional[Hash] $timer_entry,
  Optional[Hash] $path_entry,
+ Optional[Hash] $socket_entry,
 | -%>
 <%-
 
@@ -15,6 +16,7 @@
    'Service',
    'Timer',
    'Path',
+   'Socket',
    'Install',
 ]
 

@@ -21,7 +21,7 @@
 # @example Genenerate a path unit
 #   systemd::manage_unit { 'passwd-mon.path':
 #     ensure        => present,
-#     unit_entry      => {
+#     unit_entry    => {
 #       'Description' => 'Monitor the passwd file',
 #     },
 #     path_entry    => {
@@ -29,9 +29,39 @@
 #       'Unit'        => 'passwd-mon.service',
 #     },
 #     install_entry => {
-#       'WantedBy'    => 'multi-user.target',
+#       'WantedBy' => 'multi-user.target',
 #     },
 #   }
+#
+# @example Generate a socket and service (xinetd style)
+#  systemd::manage_unit {'arcd.socket':
+#    ensure        => 'present',
+#    unit_entry    => {
+#      'Description' => 'arcd.service',
+#    }
+#    socket_entry  => {
+#      'ListenStream' => 4241,
+#      'Accept'       => true,
+#      'BindIPv6Only' => 'both',
+#    install_entry => {
+#      'WantedBy' => 'sockets.target',
+#    }
+#  }
+#
+#  systemd::manage_unit{'arcd@.service':
+#    ensure        => 'present',
+#    enable        => true,
+#    active        => true,
+#    unit_entry    => {
+#      'Description'   => 'arc sever for %i',
+#    },
+#
+#    service_entry => {
+#      'Type'          => 'simple',
+#      'ExecStart'     => /usr/sbin/arcd /usr/libexec/arcd/arcd.pl,
+#      'StandardInput' => 'socket',
+#    }
+#  }
 #
 # @param name [Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']]
 #   The target unit file to create
@@ -57,6 +87,7 @@
 # @param install_entry key value pairs for [Install] section of the unit file.
 # @param timer_entry key value pairs for [Timer] section of the unit file
 # @param path_entry key value pairs for [Path] section of the unit file.
+# @param socket_entry kev value paors for [Socket] section of the unit file.
 #
 define systemd::manage_unit (
   Enum['present', 'absent']                $ensure                  = 'present',
@@ -76,6 +107,7 @@ define systemd::manage_unit (
   Optional[Systemd::Unit::Service]         $service_entry           = undef,
   Optional[Systemd::Unit::Timer]           $timer_entry             = undef,
   Optional[Systemd::Unit::Path]            $path_entry              = undef,
+  Optional[Systemd::Unit::Socket]          $socket_entry            = undef,
 ) {
   assert_type(Systemd::Unit, $name)
 
@@ -109,6 +141,7 @@ define systemd::manage_unit (
         'install_entry' => $install_entry,
         'timer_entry'   => $timer_entry,
         'path_entry'    => $path_entry,
+        'socket_entry'  => $socket_entry,
     }),
   }
 }
