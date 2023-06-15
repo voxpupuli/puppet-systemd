@@ -16,6 +16,7 @@ type Systemd::Unit::Unit = Struct[
     Optional['After']                    => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['OnFailure']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['OnSuccess']                => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+    Optional['RequiresMountsFor']        => Variant[Enum[''],Stdlib::Unixpath,Array[Variant[Enum[''],Stdlib::Unixpath],1]],
     # Conditions and Asserts
     Optional['ConditionPathExists']      => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['ConditionPathIsDirectory'] => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],

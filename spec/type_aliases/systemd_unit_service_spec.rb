@@ -39,4 +39,9 @@ describe 'Systemd::Unit::Service' do
   it { is_expected.to allow_value({ 'EnvironmentFile' => ['/etc/sysconfig/foo', '-/etc/sysconfig/foo-bar'] }) }
   it { is_expected.not_to allow_value({ 'EnvironmentFile' => '-/' }) }
   it { is_expected.not_to allow_value({ 'EnvironmentFile' => 'relative-path.sh' }) }
+
+  it { is_expected.to allow_value({ 'User' => 'root' }) }
+  it { is_expected.to allow_value({ 'Group' => 'root' }) }
+  it { is_expected.to allow_value({ 'StandardOutput' => 'null' }) }
+  it { is_expected.to allow_value({ 'StandardError' => 'null' }) }
 end

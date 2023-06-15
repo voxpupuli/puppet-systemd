@@ -52,4 +52,11 @@ describe 'Systemd::Unit::Unit' do
   it { is_expected.not_to allow_value({ 'Wants' => ['noextension'] }) }
   it { is_expected.not_to allow_value({ 'ConditionPathExists' => 'not/an/absolute/path' }) }
   it { is_expected.not_to allow_value({ 'ConditionPathExists' => ['not/an/absolute/path'] }) }
+
+  it { is_expected.to allow_value({ 'RequiresMountsFor' => '/an/absolute/path' }) }
+  it { is_expected.to allow_value({ 'RequiresMountsFor' => '' }) }
+  it { is_expected.to allow_value({ 'RequiresMountsFor' => ['', '/an/absolute/path'] }) }
+  it { is_expected.not_to allow_value({ 'RequiresMountsFor' => 'not/an/absolute/path' }) }
+  it { is_expected.not_to allow_value({ 'RequiresMountsFor' => ['not/a/path'] }) }
+  it { is_expected.not_to allow_value({ 'RequiresMountsFor' => [] }) }
 end

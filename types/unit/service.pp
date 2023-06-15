@@ -49,5 +49,7 @@ type Systemd::Unit::Service = Struct[
       Stdlib::Unixpath,Pattern[/-\/.+/],
       Array[Variant[Stdlib::Unixpath,Pattern[/-\/.+/]],1],
     ],
+    Optional['StandardOutput']            => Variant[Enum['inherit','null','tty','journal','kmsg','journal+console','kmsg+console','socket'],Pattern[/\A(file:|append:|truncate:).+$\z/]],
+    Optional['StandardError']             => Variant[Enum['inherit','null','tty','journal','kmsg','journal+console','kmsg+console','socket'],Pattern[/\A(file:|append:|truncate:).+$\z/]],
   }
 ]
