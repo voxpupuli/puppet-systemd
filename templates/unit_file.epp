@@ -21,6 +21,8 @@
 ]
 
 -%>
+# Deployed with puppet
+#
 <%-
 $_unit_sections.each | $_section | {
   $_values = getvar("${downcase($_section)}_entry")
