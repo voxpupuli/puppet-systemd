@@ -106,6 +106,32 @@ describe 'systemd::manage_unit' do
           }
         end
 
+        context 'on a socket unit' do
+          let(:title) { 'arcd.socket' }
+          let(:params) do
+            {
+              unit_entry: {
+                Description: 'A crazy socket',
+              },
+              socket_entry: {
+                'ListenStream' => 4241,
+                'Accept'       => true,
+                'BindIPv6Only' => 'both'
+              }
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__unit_file('arcd.socket').
+              with_content(%r{^\[Socket\]$}).
+              with_content(%r{^ListenStream=4241$}).
+              with_content(%r{^Accept=true$}).
+              with_content(%r{^BindIPv6Only=both$})
+          }
+        end
+
         context 'on a path unit' do
           let(:title) { 'etc-passwd.path' }
 

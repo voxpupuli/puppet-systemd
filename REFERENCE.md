@@ -65,6 +65,7 @@
 * [`Systemd::Unit::Path`](#Systemd--Unit--Path): Possible keys for the [Path] section of a unit file
 * [`Systemd::Unit::Service`](#Systemd--Unit--Service): Possible keys for the [Service] section of a unit file
 * [`Systemd::Unit::Service::Exec`](#Systemd--Unit--Service--Exec): Possible strings for ExecStart, ExecStartPrep, ...
+* [`Systemd::Unit::Socket`](#Systemd--Unit--Socket): Possible keys for the [Socket] section of a unit file
 * [`Systemd::Unit::Timer`](#Systemd--Unit--Timer): Possible keys for the [Timer] section of a unit file
 * [`Systemd::Unit::Unit`](#Systemd--Unit--Unit): Possible keys for the [Unit] section of a unit file
 
@@ -826,6 +827,7 @@ The following parameters are available in the `systemd::manage_dropin` defined t
 * [`install_entry`](#-systemd--manage_dropin--install_entry)
 * [`timer_entry`](#-systemd--manage_dropin--timer_entry)
 * [`path_entry`](#-systemd--manage_dropin--path_entry)
+* [`socket_entry`](#-systemd--manage_dropin--socket_entry)
 
 ##### <a name="-systemd--manage_dropin--unit"></a>`unit`
 
@@ -953,6 +955,14 @@ key value pairs for [Path] section of the unit file
 
 Default value: `undef`
 
+##### <a name="-systemd--manage_dropin--socket_entry"></a>`socket_entry`
+
+Data type: `Optional[Systemd::Unit::Socket]`
+
+key value pairs for the [Socket] section of the unit file
+
+Default value: `undef`
+
 ### <a name="systemd--manage_unit"></a>`systemd::manage_unit`
 
 Generate unit file from template
@@ -984,7 +994,7 @@ systemd::manage_unit { 'myrunner.service':
 ```puppet
 systemd::manage_unit { 'passwd-mon.path':
   ensure        => present,
-  unit_entry      => {
+  unit_entry    => {
     'Description' => 'Monitor the passwd file',
   },
   path_entry    => {
@@ -992,8 +1002,41 @@ systemd::manage_unit { 'passwd-mon.path':
     'Unit'        => 'passwd-mon.service',
   },
   install_entry => {
-    'WantedBy'    => 'multi-user.target',
+    'WantedBy' => 'multi-user.target',
   },
+}
+```
+
+##### Generate a socket and service (xinetd style)
+
+```puppet
+systemd::manage_unit {'arcd.socket':
+  ensure        => 'present',
+  unit_entry    => {
+    'Description' => 'arcd.service',
+  }
+  socket_entry  => {
+    'ListenStream' => 4241,
+    'Accept'       => true,
+    'BindIPv6Only' => 'both',
+  install_entry => {
+    'WantedBy' => 'sockets.target',
+  }
+}
+
+systemd::manage_unit{'arcd@.service':
+  ensure        => 'present',
+  enable        => true,
+  active        => true,
+  unit_entry    => {
+    'Description'   => 'arc sever for %i',
+  },
+
+  service_entry => {
+    'Type'          => 'simple',
+    'ExecStart'     => /usr/sbin/arcd /usr/libexec/arcd/arcd.pl,
+    'StandardInput' => 'socket',
+  }
 }
 ```
 
@@ -1019,6 +1062,7 @@ The following parameters are available in the `systemd::manage_unit` defined typ
 * [`install_entry`](#-systemd--manage_unit--install_entry)
 * [`timer_entry`](#-systemd--manage_unit--timer_entry)
 * [`path_entry`](#-systemd--manage_unit--path_entry)
+* [`socket_entry`](#-systemd--manage_unit--socket_entry)
 
 ##### <a name="-systemd--manage_unit--name"></a>`name`
 
@@ -1157,6 +1201,14 @@ Default value: `undef`
 Data type: `Optional[Systemd::Unit::Path]`
 
 key value pairs for [Path] section of the unit file.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_unit--socket_entry"></a>`socket_entry`
+
+Data type: `Optional[Systemd::Unit::Socket]`
+
+kev value paors for [Socket] section of the unit file.
 
 Default value: `undef`
 
@@ -2309,6 +2361,78 @@ Possible strings for ExecStart, ExecStartPrep, ...
   * https://www.freedesktop.org/software/systemd/man/systemd.exec.html
 
 Alias of `Variant[Enum[''], Pattern[/^[@\-:]*(\+|!|!!)?[@\-:]*\/.*/], Pattern[/^[@\-:]*(\+|!|!!)?[@\-:]*[^\/]*(\s.*)?$/]]`
+
+### <a name="Systemd--Unit--Socket"></a>`Systemd::Unit::Socket`
+
+Possible keys for the [Socket] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.socket.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['ListenStream']            => Variant[Stdlib::Port,String[1]],
+    Optional['ListenDatagram']          => Variant[Stdlib::Port,String[1]],
+    Optional['ListenSequentialPacket']  => Variant[Stdlib::Port,String[1]],
+    Optional['ListenFIFO']              => Stdlib::Unixpath,
+    Optional['ListenSpecial']           => Stdlib::Unixpath,
+    Optional['ListenNetlink']           => String[1],
+    Optional['ListenMessageQueue']      => Pattern[/\A\/.*\z/],
+    Optional['ListenUSBFunction']       => Stdlib::Unixpath,
+    Optional['SocketProtocol']          => Enum['udplite', 'sctp'],
+    Optional['BindIPv6Only']            => Enum['default', 'both', 'ipv6-only'],
+    Optional['Backlog']                 => Integer[0],
+    Optional['BindToDevice']            => String[1],
+    Optional['SocketUser']              => String[1],
+    Optional['SocketGroup']             => String[1],
+    Optional['SocketMode']              => Stdlib::Filemode,
+    Optional['DirectoryMode']           => Stdlib::Filemode,
+    Optional['Accept']                  => Boolean,
+    Optional['Writable']                => Boolean,
+    Optional['FlushPending']            => Boolean,
+    Optional['MaxConnections']          => Integer[0],
+    Optional['MaxConnectionsPerSource'] => Integer[0],
+    Optional['KeepAlive']               => Boolean,
+    Optional['KeepAliveTimeSec']        => Integer[0],
+    Optional['KeepAliveIntervalSec']    => Integer[0],
+    Optional['KeepAliveProbes']         => Integer[0],
+    Optional['NoDelay']                 => Boolean,
+    Optional['Priority']                => Integer,
+    Optional['DeferAcceptSec']          => Integer[0],
+    Optional['ReceiveBuffer']           => Variant[Integer[0],String[1]],
+    Optional['SendBuffer']              => Variant[Integer[0],String[1]],
+    Optional['IPTOS']                   => Variant[Integer,Enum['low-delay', 'throughput', 'reliability', 'low-cost']],
+    Optional['IPTTL']                   => Integer[0],
+    Optional['Mark']                    => String[1],
+    Optional['ReusePort']               => Boolean,
+    Optional['SmackLabel']              => String[1],
+    Optional['SmackLabelIPIn']          => String[1],
+    Optional['SmackLabelIPOut']         => String[1],
+    Optional['SELinuxContextFromNet']   => Boolean,
+    Optional['PipeSize']                => Variant[Integer[0],String[1]],
+    Optional['FreeBind']                => Boolean,
+    Optional['Transparent']             => Boolean,
+    Optional['Broadcast']               => Boolean,
+    Optional['PassCredentials']         => Boolean,
+    Optional['PassSecurity']            => Boolean,
+    Optional['PassPacketInfo']          => Boolean,
+    Optional['Timestamping']            => Enum['off', 'us', 'usec', 'ns'],
+    Optional['TCPCongestion']           => Enum['westwood', 'veno', 'cubic', 'lp'],
+    Optional['ExecStartPre']            => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecStartPost']           => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecStopPre']             => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['ExecStopPost']            => Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]],
+    Optional['TimeoutSec']              => String[1],
+    Optional['Service']                 => Systemd::Unit,
+    Optional['RemoveOnStop']            => Boolean,
+    Optional['Symlinks']                => Variant[Stdlib::Unixpath,Array[Stdlib::Unixpath,1]],
+    Optional['FileDescriptorName']      => String[1,255],
+    Optional['TriggerLimitIntervalSec'] => String[1],
+    Optional['TriggerLimitBurst']       => Integer[0],
+  }]
+```
 
 ### <a name="Systemd--Unit--Timer"></a>`Systemd::Unit::Timer`
 
