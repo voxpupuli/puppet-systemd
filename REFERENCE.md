@@ -1037,6 +1037,13 @@ systemd::manage_unit{'arcd@.service':
     'ExecStart'     => /usr/sbin/arcd /usr/libexec/arcd/arcd.pl,
     'StandardInput' => 'socket',
   }
+```
+
+##### Remove a unit file
+
+```puppet
+systemd::manage_unit { 'my.service':
+  ensure     => 'absent',
 }
 ```
 
@@ -1168,9 +1175,11 @@ Default value: `true`
 
 ##### <a name="-systemd--manage_unit--unit_entry"></a>`unit_entry`
 
-Data type: `Systemd::Unit::Unit`
+Data type: `Optional[Systemd::Unit::Unit]`
 
 key value pairs for [Unit] section of the unit file.
+
+Default value: `undef`
 
 ##### <a name="-systemd--manage_unit--service_entry"></a>`service_entry`
 

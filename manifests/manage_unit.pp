@@ -61,6 +61,10 @@
 #      'ExecStart'     => /usr/sbin/arcd /usr/libexec/arcd/arcd.pl,
 #      'StandardInput' => 'socket',
 #    }
+#
+# @example Remove a unit file
+#  systemd::manage_unit { 'my.service':
+#    ensure     => 'absent',
 #  }
 #
 # @param name [Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']]
@@ -103,7 +107,7 @@ define systemd::manage_unit (
   Hash[String[1], Any]                     $service_parameters      = {},
   Boolean                                  $daemon_reload           = true,
   Optional[Systemd::Unit::Install]         $install_entry           = undef,
-  Systemd::Unit::Unit                      $unit_entry,
+  Optional[Systemd::Unit::Unit]            $unit_entry              = undef,
   Optional[Systemd::Unit::Service]         $service_entry           = undef,
   Optional[Systemd::Unit::Timer]           $timer_entry             = undef,
   Optional[Systemd::Unit::Path]            $path_entry              = undef,
@@ -119,8 +123,8 @@ define systemd::manage_unit (
     fail("Systemd::Manage_unit[${name}]: path_entry is only valid for path units")
   }
 
-  if $name =~ Pattern['^[^/]+\.service'] and !$service_entry {
-    fail("Systemd::Manage_unit[${name}]: service_entry is only required for service units")
+  if $ensure != 'absent' and  $name =~ Pattern['^[^/]+\.service'] and !$service_entry {
+    fail("Systemd::Manage_unit[${name}]: service_entry is required for service units")
   }
 
   systemd::unit_file { $name:
