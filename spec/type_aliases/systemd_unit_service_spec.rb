@@ -44,4 +44,9 @@ describe 'Systemd::Unit::Service' do
   it { is_expected.to allow_value({ 'Group' => 'root' }) }
   it { is_expected.to allow_value({ 'StandardOutput' => 'null' }) }
   it { is_expected.to allow_value({ 'StandardError' => 'null' }) }
+
+  it { is_expected.to allow_value({ 'WorkingDirectory' => '/var/lib/here' }) }
+  it { is_expected.to allow_value({ 'WorkingDirectory' => '-/var/lib/here' }) }
+  it { is_expected.to allow_value({ 'WorkingDirectory' => '~' }) }
+  it { is_expected.to allow_value({ 'WorkingDirectory' => '' }) }
 end
