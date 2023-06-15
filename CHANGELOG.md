@@ -4,7 +4,25 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v5.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v5.0.0) (2023-05-15)
+## [v5.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v5.1.0) (2023-06-15)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v5.0.0...v5.1.0)
+
+**Implemented enhancements:**
+
+- Support StandardOutput, StandardError and RequiresMountsFor. [\#353](https://github.com/voxpupuli/puppet-systemd/pull/353) ([traylenator](https://github.com/traylenator))
+- Allow WorkingDirectory to be specified in \[Service\] [\#352](https://github.com/voxpupuli/puppet-systemd/pull/352) ([traylenator](https://github.com/traylenator))
+- Socket support for manage unit and dropin [\#350](https://github.com/voxpupuli/puppet-systemd/pull/350) ([traylenator](https://github.com/traylenator))
+- Relax stdlib dependency version requirements [\#349](https://github.com/voxpupuli/puppet-systemd/pull/349) ([smortex](https://github.com/smortex))
+- No insistence on unit\_entry ever or service\_entry with absent manage\_unit [\#345](https://github.com/voxpupuli/puppet-systemd/pull/345) ([traylenator](https://github.com/traylenator))
+- Add comment in manage\_unit deployed files [\#333](https://github.com/voxpupuli/puppet-systemd/pull/333) ([traylenator](https://github.com/traylenator))
+
+**Closed issues:**
+
+- Feature Request for socket unit files [\#348](https://github.com/voxpupuli/puppet-systemd/issues/348)
+- Module require an old version of puppetlabs-inifile [\#343](https://github.com/voxpupuli/puppet-systemd/issues/343)
+
+## [v5.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v5.0.0) (2023-06-01)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v4.2.0...v5.0.0)
 
@@ -40,7 +58,6 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- Release 4.2.0 [\#332](https://github.com/voxpupuli/puppet-systemd/pull/332) ([ekohl](https://github.com/ekohl))
 - Stick to the Puppet language style guide in examples [\#327](https://github.com/voxpupuli/puppet-systemd/pull/327) ([smortex](https://github.com/smortex))
 - Fix `manage_unit` example in README.md [\#326](https://github.com/voxpupuli/puppet-systemd/pull/326) ([Enucatl](https://github.com/Enucatl))
 
