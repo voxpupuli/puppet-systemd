@@ -49,4 +49,7 @@ describe 'Systemd::Unit::Service' do
   it { is_expected.to allow_value({ 'WorkingDirectory' => '-/var/lib/here' }) }
   it { is_expected.to allow_value({ 'WorkingDirectory' => '~' }) }
   it { is_expected.to allow_value({ 'WorkingDirectory' => '' }) }
+
+  it { is_expected.to allow_value({ 'LogLevelMax' => 'alert' }) }
+  it { is_expected.not_to allow_value({ 'LogLevelMax' => 'top' }) }
 end
