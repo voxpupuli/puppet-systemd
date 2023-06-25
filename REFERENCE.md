@@ -807,6 +807,18 @@ systemd::manage_dropin { 'corelimit.conf':
 }
 ```
 
+##### make a noisy unit less noisy
+
+```puppet
+systemd::manage_dropin { 'maxloglevel.conf':
+  ensure        => present,
+  unit          => 'chatty.service',
+  service_entry => {
+    'LogLevelMax' => 'warning',
+  }
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `systemd::manage_dropin` defined type:
@@ -2334,6 +2346,7 @@ Struct[{
     Optional['KillSignal']                => Pattern[/^SIG[A-Z]+$/],
     Optional['KillMode']                  => Enum['control-group', 'mixed', 'process', 'none'],
     Optional['SyslogIdentifier']          => String,
+    Optional['LogLevelMax']               => Enum['emerg','alert','crit','err','warning','notice','info','debug'],
     Optional['LimitCORE']                 => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
     Optional['RestartSec']                => String,
     Optional['TimeoutStartSec']           => String,

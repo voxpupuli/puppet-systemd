@@ -32,6 +32,15 @@
 #     },
 #   }
 #
+# @example make a noisy unit less noisy
+#   systemd::manage_dropin { 'maxloglevel.conf':
+#     ensure        => present,
+#     unit          => 'chatty.service',
+#     service_entry => {
+#       'LogLevelMax' => 'warning',
+#     }
+#   }
+#
 # @param unit The unit to create a dropfile for
 # @param filename The target unit file to create. The filename of the drop in. The full path is determined using the path, unit and this filename.
 # @param ensure The state of this dropin file

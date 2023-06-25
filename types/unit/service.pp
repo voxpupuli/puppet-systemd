@@ -24,6 +24,7 @@ type Systemd::Unit::Service = Struct[
     Optional['KillSignal']                => Pattern[/^SIG[A-Z]+$/],
     Optional['KillMode']                  => Enum['control-group', 'mixed', 'process', 'none'],
     Optional['SyslogIdentifier']          => String,
+    Optional['LogLevelMax']               => Enum['emerg','alert','crit','err','warning','notice','info','debug'],
     Optional['LimitCORE']                 => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
     Optional['RestartSec']                => String,
     Optional['TimeoutStartSec']           => String,
