@@ -12,8 +12,11 @@ describe 'systemd with manage_resolved true' do
       }
       PUPPET
       apply_manifest(pp, catch_failures: true)
-      # RedHat 7, 9 and newer installs package first run before fact $facts['internal_services'] is set
-      apply_manifest(pp, catch_failures: true) if fact('os.release.major') != '8' && (fact('os.family') == 'RedHat')
+      # RedHat 7, 9, Debian 12 and newer installs package first run before fact $facts['internal_services'] is set
+      if (fact('os.release.major') != '8' && (fact('os.family') == 'RedHat')) ||
+         ((fact('os.name') == 'Debian' && fact('os.release.major').to_i >= 12))
+        apply_manifest(pp, catch_failures: true)
+      end
       apply_manifest(pp, catch_changes: true)
     end
 

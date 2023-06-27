@@ -351,7 +351,7 @@ class { 'systemd':
 }
 ```
 
-when `manage_systemd` is true any required sub package, e.g. `systemd-resolved` on CentOS 9, will be installed. However configuration of
+when `manage_systemd` is true any required sub package, e.g. `systemd-resolved` on CentOS 9 or Debian 12, will be installed. However configuration of
 systemd-resolved will only occur on second puppet run after that installation.
 
 This requires [puppetlabs-inifile](https://forge.puppet.com/puppetlabs/inifile), which is only a soft dependency in this module (you need to explicitly install it). Both parameters accept a string or an array.
