@@ -45,6 +45,17 @@ describe 'Systemd::Unit::Service' do
   it { is_expected.to allow_value({ 'StandardOutput' => 'null' }) }
   it { is_expected.to allow_value({ 'StandardError' => 'null' }) }
 
+  it { is_expected.to allow_value({ 'DynamicUser' => false }) }
+  it { is_expected.to allow_value({ 'DynamicUser' => true }) }
+  it { is_expected.not_to allow_value({ 'DynamicUser' => 'maybe' }) }
+
+  it { is_expected.to allow_value({ 'SupplementaryGroups' => 'one' }) }
+  it { is_expected.to allow_value({ 'SupplementaryGroups' => %w[one two] }) }
+  it { is_expected.to allow_value({ 'SupplementaryGroups' => '' }) }
+  it { is_expected.to allow_value({ 'SupplementaryGroups' => [''] }) }
+  it { is_expected.to allow_value({ 'SupplementaryGroups' => ['', 'reset'] }) }
+  it { is_expected.not_to allow_value({ 'SupplementaryGroups' => [] }) }
+
   it { is_expected.to allow_value({ 'WorkingDirectory' => '/var/lib/here' }) }
   it { is_expected.to allow_value({ 'WorkingDirectory' => '-/var/lib/here' }) }
   it { is_expected.to allow_value({ 'WorkingDirectory' => '~' }) }

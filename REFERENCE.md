@@ -2329,6 +2329,8 @@ Struct[{
     Optional['AmbientCapabilities']       => Variant[Pattern[/^CAP_[A-Z_]+$/],Array[Pattern[/^CAP_[A-Z_]+$/],1]],
     Optional['User']                      => String[1],
     Optional['Group']                     => String[1],
+    Optional['DynamicUser']               => Boolean,
+    Optional['SupplementaryGroups']       => Variant[String[0],Array[String[0],1]],
     Optional['WorkingDirectory']          => String[0],
     Optional['Type']                      => Enum['simple', 'exec', 'forking', 'oneshot', 'dbus', 'notify', 'idle'],
     Optional['ExitType']                  => Enum['main', 'cgroup'],
