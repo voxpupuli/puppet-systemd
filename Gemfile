@@ -7,7 +7,7 @@ group :test do
   gem 'voxpupuli-test', '~> 6.0',   :require => false
   gem 'coveralls',                  :require => false
   gem 'simplecov-console',          :require => false
-  gem 'puppet_metadata', '~> 3.0',  :require => false
+  gem 'puppet_metadata', github: 'ekohl/puppet_metadata', branch: 'support-none-puppet-collection', require: false
 end
 
 group :development do
