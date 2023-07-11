@@ -49,7 +49,6 @@ describe 'Systemd::Unit::Service' do
   it { is_expected.to allow_value({ 'StandardInput' => 'file:/tmp/inputfile' }) }
   it { is_expected.not_to allow_value({ 'StandardInput' => '/tmp/inputfile' }) }
 
-
   it { is_expected.to allow_value({ 'DynamicUser' => false }) }
   it { is_expected.to allow_value({ 'DynamicUser' => true }) }
   it { is_expected.not_to allow_value({ 'DynamicUser' => 'maybe' }) }
