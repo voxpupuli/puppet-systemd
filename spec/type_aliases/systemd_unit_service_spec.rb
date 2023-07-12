@@ -67,4 +67,16 @@ describe 'Systemd::Unit::Service' do
 
   it { is_expected.to allow_value({ 'LogLevelMax' => 'alert' }) }
   it { is_expected.not_to allow_value({ 'LogLevelMax' => 'top' }) }
+
+  it { is_expected.to allow_value({ 'Nice' => -20 }) }
+  it { is_expected.to allow_value({ 'Nice' => 19 }) }
+  it { is_expected.not_to allow_value({ 'Nice' => '0' }) }
+
+  it { is_expected.to allow_value({ 'IOSchedulingClass' => 'best-effort' }) }
+  it { is_expected.to allow_value({ 'IOSchedulingClass' => '' }) }
+  it { is_expected.not_to allow_value({ 'IOSchedulingClass' => 'random' }) }
+
+  it { is_expected.to allow_value({ 'IOSchedulingPriority' => 7 }) }
+  it { is_expected.to allow_value({ 'IOSchedulingPriority' => '' }) }
+  it { is_expected.not_to allow_value({ 'IOSchedulingPriority' => '0' }) }
 end
