@@ -2381,6 +2381,8 @@ Struct[{
     Optional['StandardOutput']            => Variant[Enum['inherit','null','tty','journal','kmsg','journal+console','kmsg+console','socket'],Pattern[/\A(file:|append:|truncate:).+$\z/]],
     Optional['StandardError']             => Variant[Enum['inherit','null','tty','journal','kmsg','journal+console','kmsg+console','socket'],Pattern[/\A(file:|append:|truncate:).+$\z/]],
     Optional['StandardInput']             => Variant[Enum['null','tty','tty-force','tty-fail','data','socket'], Pattern[/\A(file:|fd:).+$\z/]],
+    Optional['PrivateTmp']                => Boolean,
+    Optional['RuntimeDirectory']          => String,
   }]
 ```
 
