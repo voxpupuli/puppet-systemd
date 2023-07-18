@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v5.2.0](https://github.com/voxpupuli/puppet-systemd/tree/v5.2.0) (2023-07-13)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v5.1.0...v5.2.0)
+
+**Implemented enhancements:**
+
+- Missing WorkingDirectory parameter on Systemd::Unit::Service [\#320](https://github.com/voxpupuli/puppet-systemd/issues/320)
+- Nice, IOSchedulingPriority and IOSchedulingClass [\#363](https://github.com/voxpupuli/puppet-systemd/pull/363) ([traylenator](https://github.com/traylenator))
+- allow to set StandardInput on service unit [\#362](https://github.com/voxpupuli/puppet-systemd/pull/362) ([oOHenry](https://github.com/oOHenry))
+- Allow SupplementaryGroups and DynamicUser [\#358](https://github.com/voxpupuli/puppet-systemd/pull/358) ([traylenator](https://github.com/traylenator))
+- Allow LogLevelMax to be set in \[Service\] [\#356](https://github.com/voxpupuli/puppet-systemd/pull/356) ([traylenator](https://github.com/traylenator))
+
+**Fixed bugs:**
+
+- Correct syntax in manage\_unit socket example [\#354](https://github.com/voxpupuli/puppet-systemd/pull/354) ([ekohl](https://github.com/ekohl))
+
 ## [v5.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v5.1.0) (2023-06-15)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v5.0.0...v5.1.0)
@@ -13,7 +29,7 @@ These should not affect the functionality of the module.
 - Support StandardOutput, StandardError and RequiresMountsFor. [\#353](https://github.com/voxpupuli/puppet-systemd/pull/353) ([traylenator](https://github.com/traylenator))
 - Allow WorkingDirectory to be specified in \[Service\] [\#352](https://github.com/voxpupuli/puppet-systemd/pull/352) ([traylenator](https://github.com/traylenator))
 - Socket support for manage unit and dropin [\#350](https://github.com/voxpupuli/puppet-systemd/pull/350) ([traylenator](https://github.com/traylenator))
-- Relax stdlib dependency version requirements [\#349](https://github.com/voxpupuli/puppet-systemd/pull/349) ([smortex](https://github.com/smortex))
+- Allow puppetlabs-stdlib 9.x [\#349](https://github.com/voxpupuli/puppet-systemd/pull/349) ([smortex](https://github.com/smortex))
 - No insistence on unit\_entry ever or service\_entry with absent manage\_unit [\#345](https://github.com/voxpupuli/puppet-systemd/pull/345) ([traylenator](https://github.com/traylenator))
 - Add comment in manage\_unit deployed files [\#333](https://github.com/voxpupuli/puppet-systemd/pull/333) ([traylenator](https://github.com/traylenator))
 

@@ -1,6 +1,6 @@
 {
   "name": "puppet-systemd",
-  "version": "5.1.1-rc0",
+  "version": "5.2.1-rc0",
   "author": "Vox Pupuli",
   "summary": "Puppet Systemd module",
   "license": "Apache-2.0",
@@ -28,7 +28,6 @@
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "18.04",
         "20.04",
         "22.04"
       ]
@@ -92,18 +91,15 @@
     {
       "operatingsystem": "Fedora",
       "operatingsystemrelease": [
-        "36",
-        "37"
+        "37",
+        "38"
       ]
     }
   ],
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 7.0.0 < 8.0.0"
+      "version_requirement": ">= 7.0.0 < 9.0.0"
     }
-  ],
-  "pdk-version": "1.18.0",
-  "template-url": "pdk-default#1.18.0",
-  "template-ref": "tags/1.18.0-0-g095317c"
+  ]
 }
