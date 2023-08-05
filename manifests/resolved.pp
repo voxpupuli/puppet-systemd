@@ -41,6 +41,9 @@
 # @param dns_stub_listener
 #   Takes a boolean argument or one of "udp" and "tcp".
 #
+# @param dns_stub_listener_extra
+#   Additional addresses for the DNS stub listener to listen on
+#
 # @param use_stub_resolver
 #   Takes a boolean argument. When "false" (default) it uses /run/systemd/resolve/resolv.conf
 #   as /etc/resolv.conf. When "true", it uses /run/systemd/resolve/stub-resolv.conf
@@ -56,6 +59,7 @@ class systemd::resolved (
   Optional[Variant[Boolean,Enum['yes', 'opportunistic', 'no']]] $dnsovertls = $systemd::dnsovertls,
   Optional[Variant[Boolean,Enum['no-negative']]] $cache              = $systemd::cache,
   Optional[Variant[Boolean,Enum['udp', 'tcp']]] $dns_stub_listener   = $systemd::dns_stub_listener,
+  Optional[Array[String[1]]] $dns_stub_listener_extra                = $systemd::dns_stub_listener_extra,
   Boolean $use_stub_resolver                                         = $systemd::use_stub_resolver,
 ) {
   assert_private()
@@ -240,6 +244,17 @@ class systemd::resolved (
       ensure  => 'present',
       value   => $_dns_stub_listener,
       setting => 'DNSStubListener',
+      section => 'Resolve',
+      path    => '/etc/systemd/resolved.conf',
+      notify  => Service['systemd-resolved'],
+    }
+  }
+
+  if $dns_stub_listener_extra {
+    ini_setting { 'dns_stub_listener_extra':
+      ensure  => 'present',
+      value   => $dns_stub_listener_extra,
+      setting => 'DNSStubListenerExtra',
       section => 'Resolve',
       path    => '/etc/systemd/resolved.conf',
       notify  => Service['systemd-resolved'],

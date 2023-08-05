@@ -143,6 +143,7 @@ describe 'systemd' do
               dnsovertls: 'no',
               cache: true,
               dns_stub_listener: 'udp',
+              dns_stub_listener_extra: ['192.0.2.1', '2001:db8::1'],
             }
           end
 
@@ -164,6 +165,7 @@ describe 'systemd' do
           }
 
           it { is_expected.to contain_ini_setting('dns_stub_listener') }
+          it { is_expected.to contain_ini_setting('dns_stub_listener_extra').with_value(['192.0.2.1', '2001:db8::1']) }
         end
 
         context 'when enabling resolved with no-negative cache variant' do

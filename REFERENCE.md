@@ -97,6 +97,7 @@ The following parameters are available in the `systemd` class:
 * [`dnsovertls`](#-systemd--dnsovertls)
 * [`cache`](#-systemd--cache)
 * [`dns_stub_listener`](#-systemd--dns_stub_listener)
+* [`dns_stub_listener_extra`](#-systemd--dns_stub_listener_extra)
 * [`manage_resolv_conf`](#-systemd--manage_resolv_conf)
 * [`use_stub_resolver`](#-systemd--use_stub_resolver)
 * [`manage_networkd`](#-systemd--manage_networkd)
@@ -284,6 +285,14 @@ Default value: `false`
 Data type: `Optional[Variant[Boolean,Enum['udp','tcp']]]`
 
 Takes a boolean argument or one of "udp" and "tcp".
+
+Default value: `undef`
+
+##### <a name="-systemd--dns_stub_listener_extra"></a>`dns_stub_listener_extra`
+
+Data type: `Optional[Array[String[1]]]`
+
+Additional addresses for the DNS stub listener to listen on
 
 Default value: `undef`
 
