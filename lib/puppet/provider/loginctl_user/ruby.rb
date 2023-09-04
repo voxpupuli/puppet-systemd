@@ -10,7 +10,7 @@ Puppet::Type.type(:loginctl_user).provide(:ruby) do
   def self.instances
     users = loginctl('list-users', '--no-legend').split("\n").map { |l| l.split[1] }
     loginctl('show-user', '-p', 'Name', '-p', 'Linger', *users).split("\n\n").map do |u|
-      user = u.split("\n").map { |f| f.split('=') }.to_h
+      user = u.split("\n").to_h { |f| f.split('=') }
       linger = if user['Linger'] == 'yes'
                  'enabled'
                else

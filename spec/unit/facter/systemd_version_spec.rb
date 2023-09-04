@@ -32,7 +32,7 @@ describe Facter.fact(:systemd_version) do
 
       it do
         expect(Facter::Util::Resolution).not_to receive(:exec).with("systemctl --version | awk '/systemd/{ print $2 }'")
-        expect(Facter.value(:systemd_version)).to eq(nil)
+        expect(Facter.value(:systemd_version)).to be_nil
       end
       # rubocop:enable RSpec/StubbedMock
       # rubocop:enable RSpec/MessageSpies
