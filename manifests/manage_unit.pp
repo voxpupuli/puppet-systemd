@@ -38,7 +38,7 @@
 #    ensure        => 'present',
 #    unit_entry    => {
 #      'Description' => 'arcd.service',
-#    }
+#    },
 #    socket_entry  => {
 #      'ListenStream' => 4241,
 #      'Accept'       => true,
@@ -46,7 +46,7 @@
 #    },
 #    install_entry => {
 #      'WantedBy' => 'sockets.target',
-#    }
+#    },
 #  }
 #
 #  systemd::manage_unit{'arcd@.service':
@@ -56,12 +56,12 @@
 #    unit_entry    => {
 #      'Description'   => 'arc sever for %i',
 #    },
-#
 #    service_entry => {
 #      'Type'          => 'simple',
 #      'ExecStart'     => /usr/sbin/arcd /usr/libexec/arcd/arcd.pl,
 #      'StandardInput' => 'socket',
-#    }
+#    },
+#  }
 #
 # @example Remove a unit file
 #  systemd::manage_unit { 'my.service':
