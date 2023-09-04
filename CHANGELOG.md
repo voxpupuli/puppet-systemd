@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v6.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.0.0) (2023-09-04)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v5.2.0...v6.0.0)
+
+**Breaking changes:**
+
+- Drop Ubuntu 18.04 which went out of standard support in May 2023 [\#365](https://github.com/voxpupuli/puppet-systemd/pull/365) ([simondeziel](https://github.com/simondeziel))
+
+**Implemented enhancements:**
+
+- Add ability to manage StopIdleSessionSec in logind.conf [\#369](https://github.com/voxpupuli/puppet-systemd/pull/369) ([jasonknudsen](https://github.com/jasonknudsen))
+- add PrivateTmp and RuntimeDirectory [\#368](https://github.com/voxpupuli/puppet-systemd/pull/368) ([oOHenry](https://github.com/oOHenry))
+- add ability to set limits with the systemd::manage\_unit resource [\#367](https://github.com/voxpupuli/puppet-systemd/pull/367) ([oOHenry](https://github.com/oOHenry))
+- Remove support for Fedora 36 and add support for Fedora 38 [\#366](https://github.com/voxpupuli/puppet-systemd/pull/366) ([simondeziel](https://github.com/simondeziel))
+- Add Puppet 8 support [\#359](https://github.com/voxpupuli/puppet-systemd/pull/359) ([bastelfreak](https://github.com/bastelfreak))
+
+**Fixed bugs:**
+
+- fix socket service example syntax [\#375](https://github.com/voxpupuli/puppet-systemd/pull/375) ([evgeni](https://github.com/evgeni))
+
 ## [v5.2.0](https://github.com/voxpupuli/puppet-systemd/tree/v5.2.0) (2023-07-13)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v5.1.0...v5.2.0)
