@@ -75,6 +75,14 @@ describe 'systemd::manage_unit' do
 
             it { is_expected.to compile.and_raise_error(%r{path_entry is only valid for path units}) }
           end
+
+          context 'with a socket entry' do
+            let(:params) do
+              super().merge(socket_entry: { 'ListenStream' => '1337' })
+            end
+
+            it { is_expected.to compile.and_raise_error(%r{socket_entry is only valid for socket units}) }
+          end
         end
 
         context 'on a timer' do

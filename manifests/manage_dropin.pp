@@ -86,6 +86,10 @@ define systemd::manage_dropin (
     fail("Systemd::Manage_dropin[${name}]: for unit ${unit} path_entry is only valid for path units")
   }
 
+  if $socket_entry and $unit !~ Pattern['^[^/]+\.socket'] {
+    fail("Systemd::Manage_dropin[${name}]: for unit ${unit} socket_entry is only valid for socket units")
+  }
+
   systemd::dropin_file { $name:
     ensure                  => $ensure,
     filename                => $filename,
