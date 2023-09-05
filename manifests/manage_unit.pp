@@ -124,6 +124,10 @@ define systemd::manage_unit (
     fail("Systemd::Manage_unit[${name}]: path_entry is only valid for path units")
   }
 
+  if $socket_entry and $name !~ Pattern['^[^/]+\.socket'] {
+    fail("Systemd::Manage_unit[${name}]: socket_entry is only valid for socket units")
+  }
+
   if $ensure != 'absent' and  $name =~ Pattern['^[^/]+\.service'] and !$service_entry {
     fail("Systemd::Manage_unit[${name}]: service_entry is required for service units")
   }
