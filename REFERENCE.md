@@ -102,6 +102,7 @@ The following parameters are available in the `systemd` class:
 * [`use_stub_resolver`](#-systemd--use_stub_resolver)
 * [`manage_networkd`](#-systemd--manage_networkd)
 * [`networkd_ensure`](#-systemd--networkd_ensure)
+* [`networkd_package`](#-systemd--networkd_package)
 * [`manage_timesyncd`](#-systemd--manage_timesyncd)
 * [`timesyncd_ensure`](#-systemd--timesyncd_ensure)
 * [`timesyncd_package`](#-systemd--timesyncd_package)
@@ -329,6 +330,14 @@ Data type: `Enum['stopped','running']`
 The state that the ``networkd`` service should be in
 
 Default value: `'running'`
+
+##### <a name="-systemd--networkd_package"></a>`networkd_package`
+
+Data type: `Optional[String[1]]`
+
+Name of the package required for systemd-networkd, if any
+
+Default value: `undef`
 
 ##### <a name="-systemd--manage_timesyncd"></a>`manage_timesyncd`
 

@@ -83,6 +83,9 @@
 # @param networkd_ensure
 #   The state that the ``networkd`` service should be in
 #
+# @param networkd_package
+#   Name of the package required for systemd-networkd, if any
+#
 # @param manage_timesyncd
 #   Manage the systemd timesyncd daemon
 #
@@ -205,6 +208,7 @@ class systemd (
   Boolean                                             $use_stub_resolver = false,
   Boolean                                             $manage_networkd = false,
   Enum['stopped','running']                           $networkd_ensure = 'running',
+  Optional[String[1]]                                 $networkd_package = undef,
   Boolean                                             $manage_timesyncd = false,
   Enum['stopped','running']                           $timesyncd_ensure = 'running',
   Optional[String[1]]                                 $timesyncd_package = undef,
@@ -285,6 +289,7 @@ class systemd (
 
   if $manage_networkd and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-networkd.service'] {
     contain systemd::networkd
+    Class['systemd::install'] -> Class['systemd::networkd']
   }
 
   if $manage_timesyncd and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-timesyncd.service'] {
