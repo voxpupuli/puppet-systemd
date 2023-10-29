@@ -17,6 +17,7 @@ describe 'systemd' do
         it { is_expected.not_to create_service('systemd-resolved') }
         it { is_expected.not_to create_service('systemd-networkd') }
         it { is_expected.not_to create_service('systemd-timesyncd') }
+        it { is_expected.not_to contain_package('systemd-networkd') }
         it { is_expected.not_to contain_package('systemd-timesyncd') }
         it { is_expected.not_to contain_package('systemd-resolved') }
         it { is_expected.not_to contain_class('systemd::coredump') }
@@ -38,6 +39,12 @@ describe 'systemd' do
           it { is_expected.to create_service('systemd-networkd').with_ensure('running') }
           it { is_expected.to create_service('systemd-networkd').with_enable(true) }
           it { is_expected.not_to contain_file('/etc/systemd/network') }
+
+          if facts[:os]['family'] == 'RedHat'
+            it { is_expected.to contain_package('systemd-networkd') }
+          else
+            it { is_expected.not_to contain_package('systemd-networkd') }
+          end
 
           case [facts[:os]['family'], facts[:os]['release']['major']]
           when %w[RedHat 7], %w[RedHat 9]

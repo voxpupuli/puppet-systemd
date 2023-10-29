@@ -2,6 +2,12 @@
 # @api private
 #
 class systemd::install {
+  if $systemd::manage_networkd and $systemd::networkd_package {
+    package { $systemd::networkd_package:
+      ensure => present,
+    }
+  }
+
   if $systemd::manage_resolved and $systemd::resolved_package {
     package { $systemd::resolved_package:
       ensure => present,
