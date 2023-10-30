@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v6.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.1.0) (2023-10-30)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.0.0...v6.1.0)
+
+**Implemented enhancements:**
+
+- Add Debian 12 support [\#386](https://github.com/voxpupuli/puppet-systemd/pull/386) ([bastelfreak](https://github.com/bastelfreak))
+- Add OracleLinux 9 support [\#385](https://github.com/voxpupuli/puppet-systemd/pull/385) ([bastelfreak](https://github.com/bastelfreak))
+- Install systemd-networkd package, if any [\#380](https://github.com/voxpupuli/puppet-systemd/pull/380) ([ekohl](https://github.com/ekohl))
+- Add more security related parameters to service [\#379](https://github.com/voxpupuli/puppet-systemd/pull/379) ([lkck24](https://github.com/lkck24))
+- only accept socket\_entry for socket units [\#376](https://github.com/voxpupuli/puppet-systemd/pull/376) ([evgeni](https://github.com/evgeni))
+- Implement DNSStubListenerExtra for resolved.conf [\#371](https://github.com/voxpupuli/puppet-systemd/pull/371) ([ekohl](https://github.com/ekohl))
+- Support Debian 12 [\#357](https://github.com/voxpupuli/puppet-systemd/pull/357) ([traylenator](https://github.com/traylenator))
+
+**Merged pull requests:**
+
+- Drop OracleLinux 7 from metadata.json [\#384](https://github.com/voxpupuli/puppet-systemd/pull/384) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v6.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.0.0) (2023-09-04)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v5.2.0...v6.0.0)
