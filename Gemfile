@@ -17,6 +17,7 @@ end
 
 group :system_tests do
   gem 'voxpupuli-acceptance', '~> 2.0',  :require => false
+  gem 'beaker-hcloud', git: 'https://github.com/bastelfreak/beaker-hcloud', branch: 'label2'
 end
 
 group :release do
