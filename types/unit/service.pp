@@ -103,6 +103,7 @@ type Systemd::Unit::Service = Struct[
     Optional['PrivateTmp']                => Boolean,
     Optional['RuntimeDirectory']          => String,
     Optional['RuntimeDirectoryMode']      => Stdlib::Filemode,
+    Optional['StateDirectory']            => String,
     Optional['LogsDirectory']             => String,
     Optional['LogsDirectoryMode']         => Stdlib::Filemode,
     Optional['ProtectSystem']             => Variant[Boolean, Enum['full', 'strict']],
