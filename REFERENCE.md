@@ -2346,6 +2346,7 @@ Alias of
 ```puppet
 Struct[{
     Optional['AmbientCapabilities']       => Variant[Pattern[/^CAP_[A-Z_]+$/],Array[Pattern[/^CAP_[A-Z_]+$/],1]],
+    Optional['UMask']                     => String[3,4],
     Optional['User']                      => String[1],
     Optional['Group']                     => String[1],
     Optional['DynamicUser']               => Boolean,
