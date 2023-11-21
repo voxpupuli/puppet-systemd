@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v6.2.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.2.0) (2023-11-21)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.1.0...v6.2.0)
+
+**Implemented enhancements:**
+
+- Add `UMask` to `Systemd::Unit::Service` [\#393](https://github.com/voxpupuli/puppet-systemd/pull/393) ([griggi-ws](https://github.com/griggi-ws))
+- Add `StateDirectory` to `Systemd::Unit::Service` [\#392](https://github.com/voxpupuli/puppet-systemd/pull/392) ([henrixh](https://github.com/henrixh))
+
 ## [v6.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.1.0) (2023-10-30)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.0.0...v6.1.0)
