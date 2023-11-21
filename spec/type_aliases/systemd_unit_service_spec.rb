@@ -42,6 +42,7 @@ describe 'Systemd::Unit::Service' do
 
   it { is_expected.to allow_value({ 'User' => 'root' }) }
   it { is_expected.to allow_value({ 'Group' => 'root' }) }
+  it { is_expected.to allow_value({ 'UMask' => '0022' }) }
   it { is_expected.to allow_value({ 'StandardOutput' => 'null' }) }
   it { is_expected.to allow_value({ 'StandardError' => 'null' }) }
 
