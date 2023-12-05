@@ -452,7 +452,7 @@ class{'systemd':
     'ExternalSizeMax' => '10G',
     'JournalSizeMax'  => '20T',
     'MaxUse'          => '1E',
-    "MaxFree'         => '1P',
+    "KeepFree'        => '1P',
   }
 }
 ```

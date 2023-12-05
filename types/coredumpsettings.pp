@@ -9,6 +9,6 @@ type Systemd::CoredumpSettings = Struct[
     Optional['ExternalSizeMax'] => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
     Optional['JournalSizeMax']  => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
     Optional['MaxUse']          => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
-    Optional['MaxFree']         => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
+    Optional['KeepFree']        => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
   }
 ]
