@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v6.3.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.3.0) (2023-12-06)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.2.0...v6.3.0)
+
+**Implemented enhancements:**
+
+- Add some missing `Unit` options [\#396](https://github.com/voxpupuli/puppet-systemd/pull/396) ([gcoxmoz](https://github.com/gcoxmoz))
+
+**Fixed bugs:**
+
+- Invalid option `MaxFree` in `cordedump.conf` [\#398](https://github.com/voxpupuli/puppet-systemd/issues/398)
+- Correct coredump parameter from `MaxFree` to `KeepFree` [\#399](https://github.com/voxpupuli/puppet-systemd/pull/399) ([traylenator](https://github.com/traylenator))
+
 ## [v6.2.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.2.0) (2023-11-21)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.1.0...v6.2.0)
