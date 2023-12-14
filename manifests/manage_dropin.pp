@@ -41,6 +41,15 @@
 #     }
 #   }
 #
+# @example have a unit instance auto run before user-<uid>.service
+#  systemd::manage_dropin { 'user-aklog.conf':
+#    unit => 'user@.service',
+#    unit_entry => {
+#      'After'    => 'user-aklog@%i.service',
+#      'Requires' => 'user-aklog@%i.service'
+#    }
+#  }
+#
 # @param unit The unit to create a dropfile for
 # @param filename The target unit file to create. The filename of the drop in. The full path is determined using the path, unit and this filename.
 # @param ensure The state of this dropin file

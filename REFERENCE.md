@@ -837,6 +837,18 @@ systemd::manage_dropin { 'maxloglevel.conf':
 }
 ```
 
+##### have a unit instance auto run before user-<uid>.service
+
+```puppet
+systemd::manage_dropin { 'user-aklog.conf':
+  unit => 'user@.service',
+  unit_entry => {
+    'After'    => 'user-aklog@%i.service',
+    'Requires' => 'user-aklog@%i.service'
+  }
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `systemd::manage_dropin` defined type:
@@ -2289,7 +2301,7 @@ custom datatype that validates different filenames for systemd units and unit te
 * **See also**
   * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
 
-Alias of `Pattern[/^[a-zA-Z0-9:\-_.\\@]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$/]`
+Alias of `Pattern[/^[a-zA-Z0-9:\-_.\\@%]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$/]`
 
 ### <a name="Systemd--Unit--Install"></a>`Systemd::Unit::Install`
 

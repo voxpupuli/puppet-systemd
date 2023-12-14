@@ -13,6 +13,7 @@ describe 'Systemd::Unit' do
       'extra.dot.scope',
       'a:colon.path',
       'an_underscore.device',
+      'a_referenced_template_instance@%i.service',
       'a-dash.slice',
     ].each do |unit|
       it { is_expected.to allow_value(unit.to_s) }

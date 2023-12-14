@@ -64,6 +64,23 @@ describe 'systemd::manage_dropin' do
             }
           end
 
+          context 'with an instance to instance relation' do
+            let(:params) do
+              super().merge(
+                unit_entry: {
+                  'After'    => ['user-runtime-dir@%i.service'],
+                  'Requires' => ['user-runtime-dir@%i.service'],
+                }
+              )
+            end
+
+            it {
+              is_expected.to contain_systemd__dropin_file('foobar.conf').
+                with_content(%r{^After=user-runtime-dir@%i.service$}).
+                with_content(%r{^Requires=user-runtime-dir@%i.service$})
+            }
+          end
+
           context 'with a timer entry' do
             let(:params) do
               super().merge(
