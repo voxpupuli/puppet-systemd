@@ -194,6 +194,25 @@ describe 'systemd' do
           }
         end
 
+        context 'when enabling resolved with false cache variant' do
+          let(:params) do
+            {
+              manage_resolved: true,
+              cache: false,
+            }
+          end
+
+          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+
+          it {
+            expect(subject).to contain_ini_setting('cache').with(
+              path: '/etc/systemd/resolved.conf',
+              value: 'no'
+            )
+          }
+        end
+
         context 'with alternate target' do
           let(:params) do
             {

@@ -61,7 +61,7 @@
 #   "opportunistic" and "false" (default) to "no".
 #
 # @param cache
-#   Takes a boolean argument or "no-negative".
+#   Takes a boolean argument or "no-negative". If left `undef` the cache setting will not be modified.
 #
 # @param dns_stub_listener
 #   Takes a boolean argument or one of "udp" and "tcp".
@@ -201,7 +201,7 @@ class systemd (
   Optional[Variant[Boolean,Enum['resolve']]]          $multicast_dns = undef,
   Optional[Variant[Boolean,Enum['allow-downgrade']]]  $dnssec = undef,
   Variant[Boolean,Enum['yes', 'opportunistic', 'no']] $dnsovertls = false,
-  Variant[Boolean,Enum['no-negative']]                $cache = false,
+  Optional[Variant[Boolean,Enum['no-negative']]]      $cache = undef,
   Optional[Variant[Boolean,Enum['udp','tcp']]]        $dns_stub_listener = undef,
   Optional[Array[String[1]]] $dns_stub_listener_extra = undef,
   Boolean                                             $manage_resolv_conf = true,

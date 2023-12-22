@@ -222,7 +222,7 @@ class systemd::resolved (
     default => $cache,
   }
 
-  if $cache {
+  if $_cache {
     ini_setting { 'cache':
       ensure  => 'present',
       value   => $_cache,
