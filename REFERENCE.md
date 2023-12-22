@@ -275,11 +275,11 @@ Default value: `false`
 
 ##### <a name="-systemd--cache"></a>`cache`
 
-Data type: `Variant[Boolean,Enum['no-negative']]`
+Data type: `Optional[Variant[Boolean,Enum['no-negative']]]`
 
-Takes a boolean argument or "no-negative".
+Takes a boolean argument or "no-negative". If left `undef` the cache setting will not be modified.
 
-Default value: `false`
+Default value: `undef`
 
 ##### <a name="-systemd--dns_stub_listener"></a>`dns_stub_listener`
 
