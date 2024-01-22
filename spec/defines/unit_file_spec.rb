@@ -184,6 +184,20 @@ describe 'systemd::unit_file' do
             expect(subject).not_to create_systemd__daemon_reload(title)
           }
         end
+
+        context 'with target => "/tmp/service-target" and ensure => absent' do
+          let(:params) do
+            { ensure: 'absent', target: '/tmp/service-target' }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            expect(subject).to create_file("/etc/systemd/system/#{title}").
+              with_ensure('absent').
+              with_target('/tmp/service-target')
+          end
+        end
       end
     end
   end

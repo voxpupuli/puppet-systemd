@@ -93,7 +93,10 @@ define systemd::unit_file (
   }
 
   if $_target {
-    $_ensure = 'link'
+    $_ensure = $ensure ? {
+      'absent' => 'absent',
+      default  => 'link',
+    }
   } else {
     $_ensure = $ensure ? {
       'present' => 'file',
