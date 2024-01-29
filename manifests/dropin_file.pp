@@ -81,7 +81,7 @@ define systemd::dropin_file (
     File[$full_filename] ~> Service <| title == $unit or name == $unit |>
 
     if $daemon_reload {
-      Systemd::Daemon_reload[$unit] ~> Service <| title == $unit or name == $unit |>
+      Systemd::Daemon_reload[$unit] -> Service <| title == $unit or name == $unit |>
     }
 
     if $unit =~ /\.service$/ {
@@ -89,7 +89,7 @@ define systemd::dropin_file (
       File[$full_filename] ~> Service <| title == $short_service_name or name == $short_service_name |>
 
       if $daemon_reload {
-        Systemd::Daemon_reload[$unit] ~> Service <| title == $short_service_name or name == $short_service_name |>
+        Systemd::Daemon_reload[$unit] -> Service <| title == $short_service_name or name == $short_service_name |>
       }
     }
   }
