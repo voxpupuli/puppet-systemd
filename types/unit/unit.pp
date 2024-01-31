@@ -37,10 +37,10 @@ type Systemd::Unit::Unit = Struct[
     Optional['FailureActionExitStatus']   => Variant[Enum[''],Integer[0, 255]],
     Optional['SuccessActionExitStatus']   => Variant[Enum[''],Integer[0, 255]],
     # Conditions and Asserts
-    Optional['ConditionPathExists']       => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
-    Optional['ConditionPathIsDirectory']  => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['AssertPathExists']          => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['AssertPathIsDirectory']     => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
+    Optional['ConditionPathExists']       => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
+    Optional['ConditionPathIsDirectory']  => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['ConditionPathIsMountPoint'] => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
   }
 ]
