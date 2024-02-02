@@ -34,6 +34,9 @@ describe 'Systemd::Unit::Service' do
   it { is_expected.to allow_value({ 'ExecStart' => 'notabsolute.sh' }) }
   it { is_expected.not_to allow_value({ 'ExecStart' => '*/wrongprefix.sh' }) }
 
+  it { is_expected.to allow_value({ 'Environment' => '' }) }
+  it { is_expected.to allow_value({ 'Environment' => 'FOO=BAR' }) }
+  it { is_expected.to allow_value({ 'Environment' => ['FOO=BAR', 'BAR=FOO'] }) }
   it { is_expected.to allow_value({ 'EnvironmentFile' => '/etc/sysconfig/foo' }) }
   it { is_expected.to allow_value({ 'EnvironmentFile' => '-/etc/sysconfig/foo' }) }
   it { is_expected.to allow_value({ 'EnvironmentFile' => ['/etc/sysconfig/foo', '-/etc/sysconfig/foo-bar'] }) }
