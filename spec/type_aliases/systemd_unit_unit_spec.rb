@@ -114,4 +114,9 @@ describe 'Systemd::Unit::Unit' do
   it { is_expected.not_to allow_value({ 'RequiresMountsFor' => 'not/an/absolute/path' }) }
   it { is_expected.not_to allow_value({ 'RequiresMountsFor' => ['not/a/path'] }) }
   it { is_expected.not_to allow_value({ 'RequiresMountsFor' => [] }) }
+
+  it { is_expected.to allow_value({ 'StartLimitIntervalSec' => '12 hours' }) }
+  it { is_expected.to allow_value({ 'StartLimitIntervalSec' => 'infinity' }) }
+  it { is_expected.to allow_value({ 'StartLimitBurst' => 5 }) }
+  it { is_expected.not_to allow_value({ 'StartLimitBurst' => '5' }) }
 end
