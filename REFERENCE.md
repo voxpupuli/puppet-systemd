@@ -2646,6 +2646,8 @@ Struct[{
     Optional['ConditionPathExists']       => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['ConditionPathIsDirectory']  => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['ConditionPathIsMountPoint'] => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
+    Optional['StartLimitIntervalSec']     => String[1],
+    Optional['StartLimitBurst']           => Integer[1],
   }]
 ```
 
