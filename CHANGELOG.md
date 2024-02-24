@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v6.4.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.4.0) (2024-02-24)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.3.0...v6.4.0)
+
+**Implemented enhancements:**
+
+- Support `StartLimitIntervalSec` and  `StartLimitBurst` [\#412](https://github.com/voxpupuli/puppet-systemd/pull/412) ([traylenator](https://github.com/traylenator))
+- unit type: add `ConditionPathIsMountPoint` [\#408](https://github.com/voxpupuli/puppet-systemd/pull/408) ([fragfutter](https://github.com/fragfutter))
+- Allow percent \(%\) character in unit names. [\#401](https://github.com/voxpupuli/puppet-systemd/pull/401) ([traylenator](https://github.com/traylenator))
+
+**Fixed bugs:**
+
+- Support multiple Environment Settings [\#409](https://github.com/voxpupuli/puppet-systemd/pull/409) ([traylenator](https://github.com/traylenator))
+- Deleting duplicate Key entries in types/unit/service.pp [\#407](https://github.com/voxpupuli/puppet-systemd/pull/407) ([C24-AK](https://github.com/C24-AK))
+- systemd::cache = false result was vague. [\#403](https://github.com/voxpupuli/puppet-systemd/pull/403) ([traylenator](https://github.com/traylenator))
+
 ## [v6.3.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.3.0) (2023-12-06)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.2.0...v6.3.0)
