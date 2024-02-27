@@ -1026,7 +1026,7 @@ systemd::manage_unit { 'myrunner.service':
     'ExecStart' => '/usr/bin/doit.sh',
   },
   install_entry => {
-    WantedBy => 'multi-user.target',
+    'WantedBy' => 'multi-user.target',
   },
 }
 ```
@@ -1040,8 +1040,8 @@ systemd::manage_unit { 'passwd-mon.path':
     'Description' => 'Monitor the passwd file',
   },
   path_entry    => {
-    'PathModified => '/etc/passwd',
-    'Unit'        => 'passwd-mon.service',
+    'PathModified' => '/etc/passwd',
+    'Unit'         => 'passwd-mon.service',
   },
   install_entry => {
     'WantedBy' => 'multi-user.target',
