@@ -3,12 +3,12 @@
 #
 type Systemd::Unit::Timer = Struct[
   {
-    Optional['OnActiveSec']        => Variant[Integer[0],String,Array[Variant[Integer[0],String]]],
-    Optional['OnBootSec']          => Variant[Integer[0],String,Array[Variant[Integer[0],String]]],
-    Optional['OnStartUpSec']       => Variant[Integer[0],String,Array[Variant[Integer[0],String]]],
-    Optional['OnUnitActiveSec']    => Variant[Integer[0],String,Array[Variant[Integer[0],String]]],
-    Optional['OnUnitInactiveSec']  => Variant[Integer[0],String,Array[Variant[Integer[0],String]]],
-    Optional['OnCalendar']         => Variant[Integer[0],String,Array[Variant[Integer[0],String]]],
+    Optional['OnActiveSec']        => Systemd::Unit::Timespan,
+    Optional['OnBootSec']          => Systemd::Unit::Timespan,
+    Optional['OnStartUpSec']       => Systemd::Unit::Timespan,
+    Optional['OnUnitActiveSec']    => Systemd::Unit::Timespan,
+    Optional['OnUnitInactiveSec']  => Systemd::Unit::Timespan,
+    Optional['OnCalendar']         => Systemd::Unit::Timespan,
     Optional['AccuracySec']        => Variant[Integer[0],String],
     Optional['RandomizedDelaySec'] => Variant[Integer[0],String],
     Optional['FixedRandomDelay']   => Boolean,
