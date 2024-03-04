@@ -61,8 +61,11 @@
 * [`Systemd::OomdSettings`](#Systemd--OomdSettings): Configurations for oomd.conf
 * [`Systemd::ServiceLimits`](#Systemd--ServiceLimits): Matches Systemd Service Limit Struct
 * [`Systemd::Unit`](#Systemd--Unit): custom datatype that validates different filenames for systemd units and unit templates
+* [`Systemd::Unit::Amount`](#Systemd--Unit--Amount): Systemd definition of amount, often bytes or united bytes
+* [`Systemd::Unit::AmountOrPercent`](#Systemd--Unit--AmountOrPercent): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::Install`](#Systemd--Unit--Install): Possible keys for the [Install] section of a unit file
 * [`Systemd::Unit::Path`](#Systemd--Unit--Path): Possible keys for the [Path] section of a unit file
+* [`Systemd::Unit::Percent`](#Systemd--Unit--Percent): Systemd definition of a percentage
 * [`Systemd::Unit::Service`](#Systemd--Unit--Service): Possible keys for the [Service] section of a unit file
 * [`Systemd::Unit::Service::Exec`](#Systemd--Unit--Service--Exec): Possible strings for ExecStart, ExecStartPrep, ...
 * [`Systemd::Unit::Slice`](#Systemd--Unit--Slice): Possible keys for the [Slice] section of a unit file
@@ -2334,6 +2337,26 @@ custom datatype that validates different filenames for systemd units and unit te
 
 Alias of `Pattern[/^[a-zA-Z0-9:\-_.\\@%]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$/]`
 
+### <a name="Systemd--Unit--Amount"></a>`Systemd::Unit::Amount`
+
+Systemd definition of amount, often bytes or united bytes
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.service.html
+  * https://www.freedesktop.org/software/systemd/man/systemd.slice.html
+
+Alias of `Variant[Integer[0], Pattern['\A(infinity|\d+(K|M|G|T)?(:\d+(K|M|G|T)?)?)\z']]`
+
+### <a name="Systemd--Unit--AmountOrPercent"></a>`Systemd::Unit::AmountOrPercent`
+
+Systemd definition of amount, often bytes or united bytes
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.service.html
+  * https://www.freedesktop.org/software/systemd/man/systemd.slice.html
+
+Alias of `Variant[Systemd::Unit::Amount, Systemd::Unit::Percent]`
+
 ### <a name="Systemd--Unit--Install"></a>`Systemd::Unit::Install`
 
 Possible keys for the [Install] section of a unit file
@@ -2375,6 +2398,16 @@ Struct[{
     Optional['TriggerLimitBurst']       => Integer[0],
   }]
 ```
+
+### <a name="Systemd--Unit--Percent"></a>`Systemd::Unit::Percent`
+
+Systemd definition of a percentage
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.service.html
+  * https://www.freedesktop.org/software/systemd/man/systemd.slice.html
+
+Alias of `Pattern['\A([0-9][0-9]?|100)%\z']`
 
 ### <a name="Systemd--Unit--Service"></a>`Systemd::Unit::Service`
 
@@ -2543,28 +2576,28 @@ Struct[{
     Optional['CPUShares']           => Integer[2,262144],
     Optional['CPUWeight']           => Variant[Enum['idle'],Integer[1,10000]],
     Optional['Delegate']            => Boolean,
-    Optional['DeviceAllow']         => String[1],
+    Optional['DeviceAllow']         => Pattern['^(/dev/)|(char-)|(block-).*$'],
     Optional['DevicePolicy']        => Enum['auto','closed','strict'],
     Optional['IOAccounting']        => Boolean,
     Optional['IODeviceWeight']      => Array[Hash[Stdlib::Absolutepath, Integer[1,10000], 1, 1]],
-    Optional['IOReadBandwidthMax']  => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
-    Optional['IOReadIOPSMax']       => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
+    Optional['IOReadBandwidthMax']  => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount], 1, 1],
+    Optional['IOReadIOPSMax']       => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount], 1, 1],
     Optional['IOWeight']            => Integer[1,10000],
-    Optional['IOWriteBandwidthMax'] => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
-    Optional['IOWriteIOPSMax']      => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
+    Optional['IOWriteBandwidthMax'] => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount], 1, 1],
+    Optional['IOWriteIOPSMax']      => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount], 1, 1],
     Optional['IPAccounting']        => Boolean,
     Optional['MemoryAccounting']    => Boolean,
-    Optional['MemoryHigh']          => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemoryLimit']         => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'], # dep'd in systemd
-    Optional['MemoryLow']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemoryMax']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemoryMin']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemorySwapMax']       => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemoryHigh']          => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryLimit']         => Systemd::Unit::AmountOrPercent, # depprecated in systemd
+    Optional['MemoryLow']           => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryMax']           => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryMin']           => Systemd::Unit::AmountOrPercent,
+    Optional['MemorySwapMax']       => Systemd::Unit::AmountOrPercent,
     Optional['Slice']               => String[1],
     Optional['StartupCPUShares']    => Integer[2,262144],
     Optional['StartupIOWeight']     => Integer[1,10000],
     Optional['TasksAccounting']     => Boolean,
-    Optional['TasksMax']            => Variant[Integer[1],Pattern['^(infinity|([1-9][0-9]?$|^100)%)$']],
+    Optional['TasksMax']            => Systemd::Unit::AmountOrPercent,
   }]
 ```
 

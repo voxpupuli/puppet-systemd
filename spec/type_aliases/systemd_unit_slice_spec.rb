@@ -10,6 +10,10 @@ describe 'Systemd::Unit::Slice' do
   it { is_expected.to allow_value({ 'IOAccounting' => false }) }
   it { is_expected.to allow_value({ 'IOWeight' => 100 }) }
 
+  it { is_expected.to allow_value({ 'DeviceAllow' => '/dev/sda1' }) }
+  it { is_expected.to allow_value({ 'DeviceAllow' => 'block-loop' }) }
+  it { is_expected.not_to allow_value({ 'DeviceAllow' => 'random' }) }
+
   it {
     is_expected.to allow_value(
       {
