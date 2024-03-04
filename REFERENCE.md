@@ -36,6 +36,7 @@
 * [`systemd::network`](#systemd--network): Creates network config for systemd-networkd
 * [`systemd::service_limits`](#systemd--service_limits): Adds a set of custom limits to the service
 * [`systemd::timer`](#systemd--timer): Create a timer and optionally a service unit to execute with the timer unit
+* [`systemd::timer_wrapper`](#systemd--timer_wrapper): Helper to define timer and accompanying services for a given task (cron like interface).
 * [`systemd::tmpfile`](#systemd--tmpfile): Creates a systemd tmpfile
 * [`systemd::udev::rule`](#systemd--udev--rule): Adds a custom udev rule
 * [`systemd::unit_file`](#systemd--unit_file): Creates a systemd unit file
@@ -67,6 +68,7 @@
 * [`Systemd::Unit::Service::Exec`](#Systemd--Unit--Service--Exec): Possible strings for ExecStart, ExecStartPrep, ...
 * [`Systemd::Unit::Socket`](#Systemd--Unit--Socket): Possible keys for the [Socket] section of a unit file
 * [`Systemd::Unit::Timer`](#Systemd--Unit--Timer): Possible keys for the [Timer] section of a unit file
+* [`Systemd::Unit::Timespan`](#Systemd--Unit--Timespan): Timer specification for systemd time spans, e.g. timers.
 * [`Systemd::Unit::Unit`](#Systemd--Unit--Unit): Possible keys for the [Unit] section of a unit file
 
 ## Classes
@@ -1677,6 +1679,166 @@ Call `systemd::daemon_reload`
 
 Default value: `true`
 
+### <a name="systemd--timer_wrapper"></a>`systemd::timer_wrapper`
+
+Helper to define timer and accompanying services for a given task (cron like interface).
+
+#### Examples
+
+##### Create a timer that runs every 5 minutes
+
+```puppet
+systemd::timer_wrapper { 'my_timer':
+  ensure        => 'present',
+  command       => '/usr/bin/echo "Hello World"',
+  on_calendar   => '*:0/5',
+}
+```
+
+##### Create a timer with overrides for the service and timer
+
+```puppet
+systemd::timer_wrapper { 'my_timer':
+  ensure             => 'present',
+  command            => '/usr/bin/echo "Hello World"',
+  on_calendar        => '*:0/5',
+  service_overrides => { 'Group' => 'nobody' },
+  timer_overrides   => { 'OnBootSec' => '10' },
+}
+```
+
+##### Create a timer with overrides for the service_unit and timer_unit
+
+```puppet
+systemd::timer_wrapper { 'my_timer':
+  ensure                 => 'present',
+  command                => '/usr/bin/echo "Hello World"',
+  on_calendar            => '*:0/5',
+  service_unit_overrides => { 'Wants' => 'network-online.target' },
+  timer_unit_overrides   => { 'Description' => 'Very special timer' },
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `systemd::timer_wrapper` defined type:
+
+* [`ensure`](#-systemd--timer_wrapper--ensure)
+* [`command`](#-systemd--timer_wrapper--command)
+* [`user`](#-systemd--timer_wrapper--user)
+* [`on_active_sec`](#-systemd--timer_wrapper--on_active_sec)
+* [`on_boot_sec`](#-systemd--timer_wrapper--on_boot_sec)
+* [`on_start_up_sec`](#-systemd--timer_wrapper--on_start_up_sec)
+* [`on_unit_active_sec`](#-systemd--timer_wrapper--on_unit_active_sec)
+* [`on_unit_inactive_sec`](#-systemd--timer_wrapper--on_unit_inactive_sec)
+* [`on_calendar`](#-systemd--timer_wrapper--on_calendar)
+* [`service_overrides`](#-systemd--timer_wrapper--service_overrides)
+* [`timer_overrides`](#-systemd--timer_wrapper--timer_overrides)
+* [`service_unit_overrides`](#-systemd--timer_wrapper--service_unit_overrides)
+* [`timer_unit_overrides`](#-systemd--timer_wrapper--timer_unit_overrides)
+
+##### <a name="-systemd--timer_wrapper--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+whether the timer and service should be present or absent
+
+##### <a name="-systemd--timer_wrapper--command"></a>`command`
+
+Data type: `Optional[Systemd::Unit::Service::Exec]`
+
+the command for the systemd servie to execute
+
+Default value: `undef`
+
+##### <a name="-systemd--timer_wrapper--user"></a>`user`
+
+Data type: `Optional[String[1]]`
+
+the user to run the command as
+
+Default value: `undef`
+
+##### <a name="-systemd--timer_wrapper--on_active_sec"></a>`on_active_sec`
+
+Data type: `Optional[Systemd::Unit::Timespan]`
+
+run service relative to the time when the timer was activated
+
+Default value: `undef`
+
+##### <a name="-systemd--timer_wrapper--on_boot_sec"></a>`on_boot_sec`
+
+Data type: `Optional[Systemd::Unit::Timespan]`
+
+run service relative to when the machine was booted
+
+Default value: `undef`
+
+##### <a name="-systemd--timer_wrapper--on_start_up_sec"></a>`on_start_up_sec`
+
+Data type: `Optional[Systemd::Unit::Timespan]`
+
+run service relative to when the service manager was started
+
+Default value: `undef`
+
+##### <a name="-systemd--timer_wrapper--on_unit_active_sec"></a>`on_unit_active_sec`
+
+Data type: `Optional[Systemd::Unit::Timespan]`
+
+run service relative to when the unit was last activated
+
+Default value: `undef`
+
+##### <a name="-systemd--timer_wrapper--on_unit_inactive_sec"></a>`on_unit_inactive_sec`
+
+Data type: `Optional[Systemd::Unit::Timespan]`
+
+run service relative to when the unit was last deactivated
+
+Default value: `undef`
+
+##### <a name="-systemd--timer_wrapper--on_calendar"></a>`on_calendar`
+
+Data type: `Optional[Systemd::Unit::Timespan]`
+
+the calendar event expressions time to run the service
+
+Default value: `undef`
+
+##### <a name="-systemd--timer_wrapper--service_overrides"></a>`service_overrides`
+
+Data type: `Systemd::Unit::Service`
+
+override for the`[Service]` section of the service
+
+Default value: `{}`
+
+##### <a name="-systemd--timer_wrapper--timer_overrides"></a>`timer_overrides`
+
+Data type: `Systemd::Unit::Timer`
+
+override for the`[Timer]` section of the timer
+
+Default value: `{}`
+
+##### <a name="-systemd--timer_wrapper--service_unit_overrides"></a>`service_unit_overrides`
+
+Data type: `Systemd::Unit::Unit`
+
+override for the`[Unit]` section of the service
+
+Default value: `{}`
+
+##### <a name="-systemd--timer_wrapper--timer_unit_overrides"></a>`timer_unit_overrides`
+
+Data type: `Systemd::Unit::Unit`
+
+override for the `[Unit]` section of the timer
+
+Default value: `{}`
+
 ### <a name="systemd--tmpfile"></a>`systemd::tmpfile`
 
 Creates a systemd tmpfile
@@ -2578,12 +2740,12 @@ Alias of
 
 ```puppet
 Struct[{
-    Optional['OnActiveSec']        => Variant[Integer[0],String,Array[Variant[Integer[0],String]]],
-    Optional['OnBootSec']          => Variant[Integer[0],String,Array[Variant[Integer[0],String]]],
-    Optional['OnStartUpSec']       => Variant[Integer[0],String,Array[Variant[Integer[0],String]]],
-    Optional['OnUnitActiveSec']    => Variant[Integer[0],String,Array[Variant[Integer[0],String]]],
-    Optional['OnUnitInactiveSec']  => Variant[Integer[0],String,Array[Variant[Integer[0],String]]],
-    Optional['OnCalendar']         => Variant[Integer[0],String,Array[Variant[Integer[0],String]]],
+    Optional['OnActiveSec']        => Systemd::Unit::Timespan,
+    Optional['OnBootSec']          => Systemd::Unit::Timespan,
+    Optional['OnStartUpSec']       => Systemd::Unit::Timespan,
+    Optional['OnUnitActiveSec']    => Systemd::Unit::Timespan,
+    Optional['OnUnitInactiveSec']  => Systemd::Unit::Timespan,
+    Optional['OnCalendar']         => Systemd::Unit::Timespan,
     Optional['AccuracySec']        => Variant[Integer[0],String],
     Optional['RandomizedDelaySec'] => Variant[Integer[0],String],
     Optional['FixedRandomDelay']   => Boolean,
@@ -2595,6 +2757,15 @@ Struct[{
     Optional['RemainAfterElapse']  => Boolean,
   }]
 ```
+
+### <a name="Systemd--Unit--Timespan"></a>`Systemd::Unit::Timespan`
+
+Timer specification for systemd time spans, e.g. timers.
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.time.html
+
+Alias of `Variant[Integer[0], String, Array[Variant[Integer[0],String]]]`
 
 ### <a name="Systemd--Unit--Unit"></a>`Systemd::Unit::Unit`
 
