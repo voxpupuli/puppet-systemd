@@ -68,7 +68,7 @@
 * [`Systemd::Unit::Service::Exec`](#Systemd--Unit--Service--Exec): Possible strings for ExecStart, ExecStartPrep, ...
 * [`Systemd::Unit::Socket`](#Systemd--Unit--Socket): Possible keys for the [Socket] section of a unit file
 * [`Systemd::Unit::Timer`](#Systemd--Unit--Timer): Possible keys for the [Timer] section of a unit file
-* [`Systemd::Unit::Timespan`](#Systemd--Unit--Timespan): Timer specification for systemd timers
+* [`Systemd::Unit::Timespan`](#Systemd--Unit--Timespan): Timer specification for systemd time spans, e.g. timers.
 * [`Systemd::Unit::Unit`](#Systemd--Unit--Unit): Possible keys for the [Unit] section of a unit file
 
 ## Classes
@@ -2760,10 +2760,10 @@ Struct[{
 
 ### <a name="Systemd--Unit--Timespan"></a>`Systemd::Unit::Timespan`
 
-Timer specification for systemd timers
+Timer specification for systemd time spans, e.g. timers.
 
 * **See also**
-  * https://www.freedesktop.org/software/systemd/man/systemd.timer.html
+  * https://www.freedesktop.org/software/systemd/man/systemd.time.html
 
 Alias of `Variant[Integer[0], String, Array[Variant[Integer[0],String]]]`
 
