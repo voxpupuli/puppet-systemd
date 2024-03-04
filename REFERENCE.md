@@ -65,6 +65,7 @@
 * [`Systemd::Unit::Path`](#Systemd--Unit--Path): Possible keys for the [Path] section of a unit file
 * [`Systemd::Unit::Service`](#Systemd--Unit--Service): Possible keys for the [Service] section of a unit file
 * [`Systemd::Unit::Service::Exec`](#Systemd--Unit--Service--Exec): Possible strings for ExecStart, ExecStartPrep, ...
+* [`Systemd::Unit::Slice`](#Systemd--Unit--Slice): Possible keys for the [Slice] section of a unit file
 * [`Systemd::Unit::Socket`](#Systemd--Unit--Socket): Possible keys for the [Socket] section of a unit file
 * [`Systemd::Unit::Timer`](#Systemd--Unit--Timer): Possible keys for the [Timer] section of a unit file
 * [`Systemd::Unit::Unit`](#Systemd--Unit--Unit): Possible keys for the [Unit] section of a unit file
@@ -849,6 +850,18 @@ systemd::manage_dropin { 'user-aklog.conf':
 }
 ```
 
+##### set memory limits on the user slices
+
+```puppet
+systemd::manage_dropin { 'userlimits.conf':
+  unit        => 'user-.slice',
+  slice_entry => {
+    MemoryMax        => '10G',
+    MemoryAccounting => true,
+  }
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `systemd::manage_dropin` defined type:
@@ -865,6 +878,7 @@ The following parameters are available in the `systemd::manage_dropin` defined t
 * [`notify_service`](#-systemd--manage_dropin--notify_service)
 * [`daemon_reload`](#-systemd--manage_dropin--daemon_reload)
 * [`unit_entry`](#-systemd--manage_dropin--unit_entry)
+* [`slice_entry`](#-systemd--manage_dropin--slice_entry)
 * [`service_entry`](#-systemd--manage_dropin--service_entry)
 * [`install_entry`](#-systemd--manage_dropin--install_entry)
 * [`timer_entry`](#-systemd--manage_dropin--timer_entry)
@@ -962,6 +976,14 @@ Default value: `true`
 Data type: `Optional[Systemd::Unit::Unit]`
 
 key value pairs for [Unit] section of the unit file
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_dropin--slice_entry"></a>`slice_entry`
+
+Data type: `Optional[Systemd::Unit::Slice]`
+
+key value pairs for [Slice] section of the unit file
 
 Default value: `undef`
 
@@ -1108,6 +1130,7 @@ The following parameters are available in the `systemd::manage_unit` defined typ
 * [`service_parameters`](#-systemd--manage_unit--service_parameters)
 * [`daemon_reload`](#-systemd--manage_unit--daemon_reload)
 * [`unit_entry`](#-systemd--manage_unit--unit_entry)
+* [`slice_entry`](#-systemd--manage_unit--slice_entry)
 * [`service_entry`](#-systemd--manage_unit--service_entry)
 * [`install_entry`](#-systemd--manage_unit--install_entry)
 * [`timer_entry`](#-systemd--manage_unit--timer_entry)
@@ -1221,6 +1244,14 @@ Default value: `true`
 Data type: `Optional[Systemd::Unit::Unit]`
 
 key value pairs for [Unit] section of the unit file.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_unit--slice_entry"></a>`slice_entry`
+
+Data type: `Optional[Systemd::Unit::Slice]`
+
+key value pairs for [Slice] section of the unit file
 
 Default value: `undef`
 
@@ -2494,6 +2525,48 @@ Possible strings for ExecStart, ExecStartPrep, ...
   * https://www.freedesktop.org/software/systemd/man/systemd.exec.html
 
 Alias of `Variant[Enum[''], Pattern[/^[@\-:]*(\+|!|!!)?[@\-:]*\/.*/], Pattern[/^[@\-:]*(\+|!|!!)?[@\-:]*[^\/]*(\s.*)?$/]]`
+
+### <a name="Systemd--Unit--Slice"></a>`Systemd::Unit::Slice`
+
+Possible keys for the [Slice] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.slice.html
+  * https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['CPUAccounting']       => Boolean,
+    Optional['CPUQuota']            => Pattern['^([1-9][0-9]*)%$'],
+    Optional['CPUShares']           => Integer[2,262144],
+    Optional['CPUWeight']           => Variant[Enum['idle'],Integer[1,10000]],
+    Optional['Delegate']            => Boolean,
+    Optional['DeviceAllow']         => String[1],
+    Optional['DevicePolicy']        => Enum['auto','closed','strict'],
+    Optional['IOAccounting']        => Boolean,
+    Optional['IODeviceWeight']      => Array[Hash[Stdlib::Absolutepath, Integer[1,10000], 1, 1]],
+    Optional['IOReadBandwidthMax']  => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
+    Optional['IOReadIOPSMax']       => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
+    Optional['IOWeight']            => Integer[1,10000],
+    Optional['IOWriteBandwidthMax'] => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
+    Optional['IOWriteIOPSMax']      => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
+    Optional['IPAccounting']        => Boolean,
+    Optional['MemoryAccounting']    => Boolean,
+    Optional['MemoryHigh']          => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemoryLimit']         => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'], # dep'd in systemd
+    Optional['MemoryLow']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemoryMax']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemoryMin']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemorySwapMax']       => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['Slice']               => String[1],
+    Optional['StartupCPUShares']    => Integer[2,262144],
+    Optional['StartupIOWeight']     => Integer[1,10000],
+    Optional['TasksAccounting']     => Boolean,
+    Optional['TasksMax']            => Variant[Integer[1],Pattern['^(infinity|([1-9][0-9]?$|^100)%)$']],
+  }]
+```
 
 ### <a name="Systemd--Unit--Socket"></a>`Systemd::Unit::Socket`
 
