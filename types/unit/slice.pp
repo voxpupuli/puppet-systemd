@@ -5,7 +5,7 @@
 type Systemd::Unit::Slice = Struct[
   {
     Optional['CPUAccounting']       => Boolean,
-    Optional['CPUQuota']            => Systemd::Unit::Percent,
+    Optional['CPUQuota']            => Pattern['^([1-9][0-9]*)%$'], # bigger than 100% is okay.
     Optional['CPUShares']           => Integer[2,262144],
     Optional['CPUWeight']           => Variant[Enum['idle'],Integer[1,10000]],
     Optional['Delegate']            => Boolean,
