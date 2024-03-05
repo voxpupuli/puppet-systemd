@@ -1,4 +1,4 @@
-# Adds a set of custom limits to the service
+# Deprecated - Adds a set of custom limits to the service
 #
 # @api public
 #
@@ -63,14 +63,44 @@ define systemd::service_limits (
     }
   }
 
-  systemd::dropin_file { "${name}-90-limits.conf":
-    ensure                  => $ensure,
-    unit                    => $name,
-    filename                => '90-limits.conf',
-    path                    => $path,
-    selinux_ignore_defaults => $selinux_ignore_defaults,
-    content                 => $_content,
-    source                  => $source,
-    notify_service          => true,
+  if $limits {
+    # Some typing changed between Systemd::ServiceLimits and Systemd::Unit::Service
+    $_now_tupled = [
+      'IODeviceWeight',
+      'IOReadBandwidthMax',
+      'IOWriteBandwidthMax',
+      'IOReadIOPSMax',
+      'IOWriteIOPSMax',
+    ]
+
+    $_my_limits = $limits.map | $_directive, $_value | {
+      if $_directive in $_now_tupled {
+        { $_directive => $_value.map | $_pair | { Array($_pair).flatten } }  # Convert { 'a' => 'b' } to ['a', b']
+      } else {
+        { $_directive => $_value }
+      }
+    }.reduce | $_memo, $_value | { $_memo + $_value }
+
+    deprecation("systemd::servicelimits - ${title}",'systemd::servicelimits is deprecated, use systemd::manage_dropin')
+    systemd::manage_dropin { '#{name}-90-limits.conf':
+      ensure                  => $ensure,
+      unit                    => $name,
+      filename                => '90-limits.conf',
+      path                    => $path,
+      selinux_ignore_defaults => $selinux_ignore_defaults,
+      service_entry           => $_my_limits,
+      notify_service          => true,
+    }
+  } else {
+    deprecation("systemd::servicelimits ${title}",'systemd::servicelimits is deprecated, use systemd::dropin_file or systemd::manage_dropin')
+    systemd::dropin_file { '#{name}-90-limits.conf':
+      ensure                  => $ensure,
+      unit                    => $name,
+      filename                => '90-limits.conf',
+      path                    => $path,
+      selinux_ignore_defaults => $selinux_ignore_defaults,
+      source                  => $source,
+      notify_service          => true,
+    }
   }
 }
