@@ -10,6 +10,11 @@ describe 'systemd::service_limits' do
 
         let(:title) { 'test.service' }
 
+        # Whole type is deprecated but check it still works.
+        before do
+          Puppet.settings[:strict] = :warning
+        end
+
         describe 'with limits and present' do
           let(:params) do
             {

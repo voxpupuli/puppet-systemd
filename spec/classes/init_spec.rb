@@ -335,6 +335,11 @@ describe 'systemd' do
             }
           end
 
+          # systemd::service_limits is deprecated
+          before do
+            Puppet.settings[:strict] = :warning
+          end
+
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_systemd__service_limits('openstack-nova-compute.service').with_limits('LimitNOFILE' => 32_768) }
         end

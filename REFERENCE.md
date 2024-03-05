@@ -34,7 +34,7 @@
 * [`systemd::manage_unit`](#systemd--manage_unit): Generate unit file from template
 * [`systemd::modules_load`](#systemd--modules_load): Creates a modules-load.d drop file
 * [`systemd::network`](#systemd--network): Creates network config for systemd-networkd
-* [`systemd::service_limits`](#systemd--service_limits): Adds a set of custom limits to the service
+* [`systemd::service_limits`](#systemd--service_limits): Deprecated - Adds a set of custom limits to the service
 * [`systemd::timer`](#systemd--timer): Create a timer and optionally a service unit to execute with the timer unit
 * [`systemd::timer_wrapper`](#systemd--timer_wrapper): Helper to define timer and accompanying services for a given task (cron like interface).
 * [`systemd::tmpfile`](#systemd--tmpfile): Creates a systemd tmpfile
@@ -60,7 +60,7 @@
 * [`Systemd::LogindSettings::Ensure`](#Systemd--LogindSettings--Ensure): defines allowed ensure states for systemd-logind settings
 * [`Systemd::MachineInfoSettings`](#Systemd--MachineInfoSettings): Matches Systemd machine-info (hostnamectl) file Struct
 * [`Systemd::OomdSettings`](#Systemd--OomdSettings): Configurations for oomd.conf
-* [`Systemd::ServiceLimits`](#Systemd--ServiceLimits): Matches Systemd Service Limit Struct
+* [`Systemd::ServiceLimits`](#Systemd--ServiceLimits): Deprecated - Matches Systemd Service Limit Struct
 * [`Systemd::Unit`](#Systemd--Unit): custom datatype that validates different filenames for systemd units and unit templates
 * [`Systemd::Unit::Amount`](#Systemd--Unit--Amount): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::AmountOrPercent`](#Systemd--Unit--AmountOrPercent): Systemd definition of amount, often bytes or united bytes
@@ -160,7 +160,7 @@ Default value: `undef`
 
 Data type: `Stdlib::CreateResources`
 
-Hash of `systemd::service_limits` resources
+Deprecated, use dropin_files - Hash of `systemd::service_limits` resources
 
 Default value: `{}`
 
@@ -1533,7 +1533,7 @@ Default value: `true`
 
 ### <a name="systemd--service_limits"></a>`systemd::service_limits`
 
-Adds a set of custom limits to the service
+Deprecated - Adds a set of custom limits to the service
 
 * **See also**
   * systemd.exec(5)
@@ -2501,7 +2501,7 @@ Struct[{
 
 ### <a name="Systemd--ServiceLimits"></a>`Systemd::ServiceLimits`
 
-Matches Systemd Service Limit Struct
+Deprecated - Matches Systemd Service Limit Struct
 
 Alias of
 

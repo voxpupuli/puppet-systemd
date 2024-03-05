@@ -6,7 +6,7 @@
 #   The default systemd boot target, unmanaged if set to undef.
 #
 # @param service_limits
-#   Hash of `systemd::service_limits` resources
+#   Deprecated, use dropin_files - Hash of `systemd::service_limits` resources
 #
 # @param networks
 #   Hash of `systemd::network` resources
