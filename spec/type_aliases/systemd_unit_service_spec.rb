@@ -100,5 +100,5 @@ describe 'Systemd::Unit::Service' do
     )
   }
 
-  it { is_expected.not_to allow_value({ 'MemoryHigh' => '1P' }) }
+  it { is_expected.not_to allow_value({ 'MemoryHigh' => '1Y' }) }
 end

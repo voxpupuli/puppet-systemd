@@ -26,5 +26,5 @@ describe 'Systemd::Unit::Slice' do
     )
   }
 
-  it { is_expected.not_to allow_value({ 'MemoryHigh' => '1P' }) }
+  it { is_expected.not_to allow_value({ 'MemoryHigh' => '1Y' }) }
 end

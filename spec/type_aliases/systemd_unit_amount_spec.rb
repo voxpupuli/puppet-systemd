@@ -7,8 +7,11 @@ describe 'Systemd::Unit::Amount' do
   it { is_expected.to allow_value('200') }
   it { is_expected.to allow_value('8G') }
   it { is_expected.to allow_value('1T') }
+  it { is_expected.to allow_value('10P') }
+  it { is_expected.to allow_value('100E') }
   it { is_expected.to allow_value('infinity') }
 
-  it { is_expected.not_to allow_value('1P') }
+  it { is_expected.not_to allow_value('100Y') }
+  it { is_expected.not_to allow_value('100Z') }
   it { is_expected.not_to allow_value('10%') }
 end

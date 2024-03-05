@@ -2299,11 +2299,11 @@ Alias of
 Struct[{
     Optional['Storage']         => Enum['none', 'external', 'journal'],
     Optional['Compress']        => Enum['yes','no'],
-    Optional['ProcessSizeMax']  => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
-    Optional['ExternalSizeMax'] => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
-    Optional['JournalSizeMax']  => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
-    Optional['MaxUse']          => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
-    Optional['KeepFree']        => Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],
+    Optional['ProcessSizeMax']  => Systemd::Unit::Amount,
+    Optional['ExternalSizeMax'] => Systemd::Unit::Amount,
+    Optional['JournalSizeMax']  => Systemd::Unit::Amount,
+    Optional['MaxUse']          => Systemd::Unit::Amount,
+    Optional['KeepFree']        => Systemd::Unit::Amount,
   }]
 ```
 
@@ -2322,19 +2322,19 @@ Alias of
 ```puppet
 Struct[{
     Optional['Storage']              => Variant[Enum['volatile','persistent','auto','none'],Systemd::JournaldSettings::Ensure],
-    Optional['Compress']             => Variant[Enum['yes','no'], Pattern[/^[0-9]+(K|M|G)?$/],Systemd::JournaldSettings::Ensure],
+    Optional['Compress']             => Variant[Enum['yes','no'], Systemd::Unit::Amount ,Systemd::JournaldSettings::Ensure],
     Optional['Seal']                 => Variant[Enum['yes','no'],Systemd::JournaldSettings::Ensure],
     Optional['SplitMode']            => Variant[Enum['uid','none'],Systemd::JournaldSettings::Ensure],
     Optional['RateLimitInterval']    => Variant[Pattern[/^[0-9]+(s|min|h|ms|us)?$/],Systemd::JournaldSettings::Ensure],
     Optional['RateLimitIntervalSec'] => Variant[Pattern[/^[0-9]+(s|min|h|ms|us)?$/],Systemd::JournaldSettings::Ensure],
     Optional['RateLimitBurst']       => Variant[Integer[0], Pattern[/^[0-9]+$/],Systemd::JournaldSettings::Ensure],
-    Optional['SystemMaxUse']         => Variant[Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],Systemd::JournaldSettings::Ensure],
-    Optional['SystemKeepFree']       => Variant[Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],Systemd::JournaldSettings::Ensure],
-    Optional['SystemMaxFileSize']    => Variant[Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],Systemd::JournaldSettings::Ensure],
+    Optional['SystemMaxUse']         => Variant[Systemd::Unit::AmountOrPercent,Systemd::JournaldSettings::Ensure],
+    Optional['SystemKeepFree']       => Variant[Systemd::Unit::AmountOrPercent,Systemd::JournaldSettings::Ensure],
+    Optional['SystemMaxFileSize']    => Variant[Systemd::Unit::AmountOrPercent,Systemd::JournaldSettings::Ensure],
     Optional['SystemMaxFiles']       => Variant[Integer[0], Pattern[/^[0-9]+$/],Systemd::JournaldSettings::Ensure],
-    Optional['RuntimeMaxUse']        => Variant[Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],Systemd::JournaldSettings::Ensure],
-    Optional['RuntimeKeepFree']      => Variant[Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],Systemd::JournaldSettings::Ensure],
-    Optional['RuntimeMaxFileSize']   => Variant[Pattern[/^[0-9]+(K|M|G|T|P|E)?$/],Systemd::JournaldSettings::Ensure],
+    Optional['RuntimeMaxUse']        => Variant[Systemd::Unit::AmountOrPercent ,Systemd::JournaldSettings::Ensure],
+    Optional['RuntimeKeepFree']      => Variant[Systemd::Unit::AmountOrPercent ,Systemd::JournaldSettings::Ensure],
+    Optional['RuntimeMaxFileSize']   => Variant[Systemd::Unit::AmountOrPercent ,Systemd::JournaldSettings::Ensure],
     Optional['RuntimeMaxFiles']      => Variant[Integer[0], Pattern[/^[0-9]+$/],Systemd::JournaldSettings::Ensure],
     Optional['MaxFileSec']           => Variant[Pattern[/^[0-9]+(year|month|week|day|h|m)?$/],Systemd::JournaldSettings::Ensure],
     Optional['MaxRetentionSec']      => Variant[Pattern[/^[0-9]+(year|month|week|day|h|m)?$/],Systemd::JournaldSettings::Ensure],
@@ -2350,7 +2350,7 @@ Struct[{
     Optional['MaxLevelWall']         => Variant[Enum['emerg','alert','crit','err','warning','notice','info','debug'],Integer[0,7],Systemd::JournaldSettings::Ensure],
     Optional['ReadKMsg']             => Variant[Enum['yes','no'],Systemd::JournaldSettings::Ensure],
     Optional['TTYPath']              => Variant[Stdlib::Absolutepath,Systemd::JournaldSettings::Ensure],
-    Optional['LineMax']              => Variant[Pattern[/^[0-9]+(K|M|G|T)?$/],Systemd::JournaldSettings::Ensure],
+    Optional['LineMax']              => Variant[Systemd::Unit::Amount,Systemd::JournaldSettings::Ensure],
   }]
 ```
 
@@ -2388,11 +2388,11 @@ Struct[{
     Optional['PowerKeyIgnoreInhibited']      => Variant[Enum['yes','no'],Systemd::LogindSettings::Ensure],
     Optional['RemoveIPC']                    => Variant[Enum['yes','no'],Systemd::LogindSettings::Ensure],
     Optional['ReserveVT']                    => Variant[Integer,Systemd::LogindSettings::Ensure],
-    Optional['RuntimeDirectorySize']         => Variant[Integer,Pattern['^(\d+(K|M|G|T|P|E|%)?)$'],Systemd::LogindSettings::Ensure],
-    Optional['SessionsMax']                  => Variant[Integer,Pattern['^(infinity|(\d+(K|M|G|T|P|E|%)?))$'],Systemd::LogindSettings::Ensure],
+    Optional['RuntimeDirectorySize']         => Variant[Systemd::Unit::AmountOrPercent ,Systemd::LogindSettings::Ensure],
+    Optional['SessionsMax']                  => Variant[Systemd::Unit::Amount,Systemd::LogindSettings::Ensure],
     Optional['SuspendKeyIgnoreInhibited']    => Variant[Enum['yes','no'],Systemd::LogindSettings::Ensure],
-    Optional['UserTasksMax']                 => Variant[Integer,Pattern['^(infinity|(\d+(K|M|G|T|P|E|%)?))$'],Systemd::LogindSettings::Ensure],
-    Optional['StopIdleSessionSec']           => Variant[Integer,Pattern['^(infinity|(\d+(K|M|G|T|P|E|%)?))$'],Systemd::LogindSettings::Ensure]
+    Optional['UserTasksMax']                 => Variant[Systemd::Unit::Amount,Systemd::LogindSettings::Ensure],
+    Optional['StopIdleSessionSec']           => Variant[Systemd::Unit::Amount,Systemd::LogindSettings::Ensure]
   }]
 ```
 
@@ -2502,12 +2502,15 @@ Alias of `Pattern[/^[a-zA-Z0-9:\-_.\\@%]+\.(service|socket|device|mount|automoun
 ### <a name="Systemd--Unit--Amount"></a>`Systemd::Unit::Amount`
 
 Systemd definition of amount, often bytes or united bytes
+Some man pages are lagging behind and only report support up to Tera.
+https://github.com/systemd/systemd/blob/main/src/basic/format-util.c
+shows support for Peta and Exa.
 
 * **See also**
   * https://www.freedesktop.org/software/systemd/man/systemd.service.html
   * https://www.freedesktop.org/software/systemd/man/systemd.slice.html
 
-Alias of `Variant[Integer[0], Pattern['\A(infinity|\d+(K|M|G|T)?(:\d+(K|M|G|T)?)?)\z']]`
+Alias of `Variant[Integer[0], Pattern['\A(infinity|\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)\z']]`
 
 ### <a name="Systemd--Unit--AmountOrPercent"></a>`Systemd::Unit::AmountOrPercent`
 
@@ -2629,24 +2632,24 @@ Struct[{
     Optional['CPUAccounting']             => Boolean,
     Optional['CPUShares']                 => Integer[2,262144],
     Optional['StartupCPUShares']          => Integer[2,262144],
-    Optional['CPUQuota']                  => Pattern['^([1-9][0-9]*)%$'],
+    Optional['CPUQuota']                  => Systemd::Unit::Percent,
     Optional['MemoryAccounting']          => Boolean,
-    Optional['MemoryLow']                 => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemoryMin']                 => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemoryHigh']                => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemoryMax']                 => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemoryLimit']               => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemorySwapMax']             => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
+    Optional['MemoryLow']                 => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryMin']                 => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryHigh']                => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryMax']                 => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryLimit']               => Systemd::Unit::Amount,
+    Optional['MemorySwapMax']             => Systemd::Unit::Amount,
     Optional['TasksAccounting']           => Boolean,
-    Optional['TasksMax']                  => Variant[Integer[1],Pattern['^(infinity|([1-9][0-9]?$|^100)%)$']],
+    Optional['TasksMax']                  => Systemd::Unit::AmountOrPercent,
     Optional['IOAccounting']              => Boolean,
     Optional['IOWeight']                  => Integer[1,10000],
     Optional['StartupIOWeight']           => Integer[1,10000],
     Optional['IODeviceWeight']            => Array[Hash[Stdlib::Absolutepath, Integer[1,10000], 1, 1]],
-    Optional['IOReadBandwidthMax']        => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
-    Optional['IOWriteBandwidthMax']       => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
-    Optional['IOReadIOPSMax']             => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
-    Optional['IOWriteIOPSMax']            => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
+    Optional['IOReadBandwidthMax']        => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount, 1, 1]],
+    Optional['IOWriteBandwidthMax']       => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount, 1, 1]],
+    Optional['IOReadIOPSMax']             => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount, 1, 1]],
+    Optional['IOWriteIOPSMax']            => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount, 1, 1]],
     Optional['DeviceAllow']               => String[1],
     Optional['DevicePolicy']              => Enum['auto','closed','strict'],
     Optional['Slice']                     => String[1],
@@ -2734,7 +2737,7 @@ Alias of
 ```puppet
 Struct[{
     Optional['CPUAccounting']       => Boolean,
-    Optional['CPUQuota']            => Pattern['^([1-9][0-9]*)%$'],
+    Optional['CPUQuota']            => Systemd::Unit::Percent,
     Optional['CPUShares']           => Integer[2,262144],
     Optional['CPUWeight']           => Variant[Enum['idle'],Integer[1,10000]],
     Optional['Delegate']            => Boolean,
