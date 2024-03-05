@@ -4,7 +4,24 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v6.4.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.4.0) (2024-02-24)
+## [v6.5.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.5.0) (2024-03-05)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.4.0...v6.5.0)
+
+**Implemented enhancements:**
+
+- Add possibility to setup limits for user sessions [\#417](https://github.com/voxpupuli/puppet-systemd/issues/417)
+- add a cron-like systemd::timer interface [\#374](https://github.com/voxpupuli/puppet-systemd/issues/374)
+- Use Systemd::Unit::Amount, Percent and AmountOrPercent [\#422](https://github.com/voxpupuli/puppet-systemd/pull/422) ([traylenator](https://github.com/traylenator))
+- Support `[Slice]` in manage\_unit and manage\_dropin [\#420](https://github.com/voxpupuli/puppet-systemd/pull/420) ([traylenator](https://github.com/traylenator))
+- feat: add a cron like wrapper for timers [\#419](https://github.com/voxpupuli/puppet-systemd/pull/419) ([TheMeier](https://github.com/TheMeier))
+
+**Merged pull requests:**
+
+- Rename daemon\_reload.rb to daemon\_reload\_spec.rb [\#418](https://github.com/voxpupuli/puppet-systemd/pull/418) ([TheMeier](https://github.com/TheMeier))
+- manage\_unit: correct minor mistakes in examples [\#415](https://github.com/voxpupuli/puppet-systemd/pull/415) ([zbentley](https://github.com/zbentley))
+
+## [v6.4.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.4.0) (2024-02-26)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.3.0...v6.4.0)
 
