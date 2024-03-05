@@ -2632,7 +2632,7 @@ Struct[{
     Optional['CPUAccounting']             => Boolean,
     Optional['CPUShares']                 => Integer[2,262144],
     Optional['StartupCPUShares']          => Integer[2,262144],
-    Optional['CPUQuota']                  => Systemd::Unit::Percent,
+    Optional['CPUQuota']                  => Pattern['^([1-9][0-9]*)%$'], # bigger than 100% is okay.
     Optional['MemoryAccounting']          => Boolean,
     Optional['MemoryLow']                 => Systemd::Unit::AmountOrPercent,
     Optional['MemoryMin']                 => Systemd::Unit::AmountOrPercent,
@@ -2737,7 +2737,7 @@ Alias of
 ```puppet
 Struct[{
     Optional['CPUAccounting']       => Boolean,
-    Optional['CPUQuota']            => Systemd::Unit::Percent,
+    Optional['CPUQuota']            => Pattern['^([1-9][0-9]*)%$'], # bigger than 100% is okay.
     Optional['CPUShares']           => Integer[2,262144],
     Optional['CPUWeight']           => Variant[Enum['idle'],Integer[1,10000]],
     Optional['Delegate']            => Boolean,
