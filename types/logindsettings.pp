@@ -22,11 +22,11 @@ type Systemd::LogindSettings = Struct[
     Optional['PowerKeyIgnoreInhibited']      => Variant[Enum['yes','no'],Systemd::LogindSettings::Ensure],
     Optional['RemoveIPC']                    => Variant[Enum['yes','no'],Systemd::LogindSettings::Ensure],
     Optional['ReserveVT']                    => Variant[Integer,Systemd::LogindSettings::Ensure],
-    Optional['RuntimeDirectorySize']         => Variant[Integer,Pattern['^(\d+(K|M|G|T|P|E|%)?)$'],Systemd::LogindSettings::Ensure],
-    Optional['SessionsMax']                  => Variant[Integer,Pattern['^(infinity|(\d+(K|M|G|T|P|E|%)?))$'],Systemd::LogindSettings::Ensure],
+    Optional['RuntimeDirectorySize']         => Variant[Systemd::Unit::AmountOrPercent ,Systemd::LogindSettings::Ensure],
+    Optional['SessionsMax']                  => Variant[Systemd::Unit::Amount,Systemd::LogindSettings::Ensure],
     Optional['SuspendKeyIgnoreInhibited']    => Variant[Enum['yes','no'],Systemd::LogindSettings::Ensure],
-    Optional['UserTasksMax']                 => Variant[Integer,Pattern['^(infinity|(\d+(K|M|G|T|P|E|%)?))$'],Systemd::LogindSettings::Ensure],
-    Optional['StopIdleSessionSec']           => Variant[Integer,Pattern['^(infinity|(\d+(K|M|G|T|P|E|%)?))$'],Systemd::LogindSettings::Ensure]
+    Optional['UserTasksMax']                 => Variant[Systemd::Unit::Amount,Systemd::LogindSettings::Ensure],
+    Optional['StopIdleSessionSec']           => Variant[Systemd::Unit::Amount,Systemd::LogindSettings::Ensure]
   }
   # lint:endignore
 ]
