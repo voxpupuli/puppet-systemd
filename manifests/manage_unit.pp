@@ -88,6 +88,7 @@
 #   call `systemd::daemon-reload` to ensure that the modified unit file is loaded
 #
 # @param unit_entry  key value pairs for [Unit] section of the unit file.
+# @param slice_entry key value pairs for [Slice] section of the unit file
 # @param service_entry key value pairs for [Service] section of the unit file.
 # @param install_entry key value pairs for [Install] section of the unit file.
 # @param timer_entry key value pairs for [Timer] section of the unit file
@@ -109,6 +110,7 @@ define systemd::manage_unit (
   Boolean                                  $daemon_reload           = true,
   Optional[Systemd::Unit::Install]         $install_entry           = undef,
   Optional[Systemd::Unit::Unit]            $unit_entry              = undef,
+  Optional[Systemd::Unit::Slice]           $slice_entry             = undef,
   Optional[Systemd::Unit::Service]         $service_entry           = undef,
   Optional[Systemd::Unit::Timer]           $timer_entry             = undef,
   Optional[Systemd::Unit::Path]            $path_entry              = undef,
@@ -126,6 +128,10 @@ define systemd::manage_unit (
 
   if $socket_entry and $name !~ Pattern['^[^/]+\.socket'] {
     fail("Systemd::Manage_unit[${name}]: socket_entry is only valid for socket units")
+  }
+
+  if $slice_entry and $name !~ Pattern['^[^/]+\.slice'] {
+    fail("Systemd::Manage_unit[${name}]: slice_entry is only valid for slice units")
   }
 
   if $ensure != 'absent' and  $name =~ Pattern['^[^/]+\.service'] and !$service_entry {
@@ -146,6 +152,7 @@ define systemd::manage_unit (
     daemon_reload           => $daemon_reload,
     content                 => epp('systemd/unit_file.epp', {
         'unit_entry'    => $unit_entry,
+        'slice_entry'   => $slice_entry,
         'service_entry' => $service_entry,
         'install_entry' => $install_entry,
         'timer_entry'   => $timer_entry,

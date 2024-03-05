@@ -1,5 +1,6 @@
 <%- |
  Optional[Hash] $unit_entry,
+ Optional[Hash] $slice_entry,
  Optional[Hash] $service_entry,
  Optional[Hash] $install_entry,
  Optional[Hash] $timer_entry,
@@ -13,6 +14,7 @@
 
  $_unit_sections = [
    'Unit',
+   'Slice',
    'Service',
    'Timer',
    'Path',

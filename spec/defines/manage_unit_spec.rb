@@ -42,7 +42,8 @@ describe 'systemd::manage_unit' do
               with_content(%r{^\[Install\]$}).
               with_content(%r{^Description=My great service$}).
               with_content(%r{^Description=has two lines of description$}).
-              with_content(%r{^Type=oneshot$})
+              with_content(%r{^Type=oneshot$}).
+              without_content(%r{^\[Slice\]$})
           }
 
           context 'with no service_entry' do
@@ -69,6 +70,14 @@ describe 'systemd::manage_unit' do
             end
 
             it { is_expected.to compile.and_raise_error(%r{timer_entry is only valid for timer units}) }
+          end
+
+          context 'with a slice entry' do
+            let(:params) do
+              super().merge(slice_entry: { 'IOWeight' => 100 })
+            end
+
+            it { is_expected.to compile.and_raise_error(%r{slice_entry is only valid for slice units}) }
           end
 
           context 'with a path entry' do
@@ -158,6 +167,30 @@ describe 'systemd::manage_unit' do
               with_content(%r{^ListenStream=4241$}).
               with_content(%r{^Accept=true$}).
               with_content(%r{^BindIPv6Only=both$})
+          }
+        end
+
+        context 'on a slice unit' do
+          let(:title) { 'myslice.slice' }
+          let(:params) do
+            {
+              unit_entry: {
+                Description: 'A crazy slice',
+              },
+              slice_entry: {
+                'MemoryMax' => '10G',
+                'IOAccounting' => true,
+              }
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__unit_file('myslice.slice').
+              with_content(%r{^\[Slice\]$}).
+              with_content(%r{^MemoryMax=10G$}).
+              with_content(%r{^IOAccounting=true$})
           }
         end
 

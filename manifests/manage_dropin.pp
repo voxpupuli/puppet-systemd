@@ -50,6 +50,15 @@
 #    }
 #  }
 #
+# @example set memory limits on the user slices
+#   systemd::manage_dropin { 'userlimits.conf':
+#     unit        => 'user-.slice',
+#     slice_entry => {
+#       MemoryMax        => '10G',
+#       MemoryAccounting => true,
+#     }
+#   }
+#
 # @param unit The unit to create a dropfile for
 # @param filename The target unit file to create. The filename of the drop in. The full path is determined using the path, unit and this filename.
 # @param ensure The state of this dropin file
@@ -62,6 +71,7 @@
 # @param notify_service Notify a service for the unit, if it exists
 # @param daemon_reload Call systemd::daemon_reload
 # @param unit_entry key value pairs for [Unit] section of the unit file
+# @param slice_entry key value pairs for [Slice] section of the unit file
 # @param service_entry key value pairs for [Service] section of the unit file
 # @param install_entry key value pairs for [Install] section of the unit file
 # @param timer_entry key value pairs for [Timer] section of the unit file
@@ -82,6 +92,7 @@ define systemd::manage_dropin (
   Boolean                          $daemon_reload           = true,
   Optional[Systemd::Unit::Install] $install_entry           = undef,
   Optional[Systemd::Unit::Unit]    $unit_entry              = undef,
+  Optional[Systemd::Unit::Slice]   $slice_entry             = undef,
   Optional[Systemd::Unit::Service] $service_entry           = undef,
   Optional[Systemd::Unit::Timer]   $timer_entry             = undef,
   Optional[Systemd::Unit::Path]    $path_entry              = undef,
@@ -99,6 +110,10 @@ define systemd::manage_dropin (
     fail("Systemd::Manage_dropin[${name}]: for unit ${unit} socket_entry is only valid for socket units")
   }
 
+  if $slice_entry and $unit !~ Pattern['^[^/]+\.slice'] {
+    fail("Systemd::Manage_dropin[${name}]: for unit ${unit} slice_entry is only valid for slice units")
+  }
+
   systemd::dropin_file { $name:
     ensure                  => $ensure,
     filename                => $filename,
@@ -113,6 +128,7 @@ define systemd::manage_dropin (
     daemon_reload           => $daemon_reload,
     content                 => epp('systemd/unit_file.epp', {
         'unit_entry'    => $unit_entry,
+        'slice_entry'   => $slice_entry,
         'service_entry' => $service_entry,
         'install_entry' => $install_entry,
         'timer_entry'   => $timer_entry,
