@@ -93,15 +93,9 @@ define systemd::unit_file (
   }
 
   if $_target {
-    $_ensure = $ensure ? {
-      'absent' => 'absent',
-      default  => 'link',
-    }
+    $_ensure = stdlib::ensure($ensure, 'link')
   } else {
-    $_ensure = $ensure ? {
-      'present' => 'file',
-      default   => $ensure,
-    }
+    $_ensure = stdlib::ensure($ensure, 'file')
   }
 
   file { "${path}/${name}":
