@@ -4,7 +4,15 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v6.5.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.5.0) (2024-03-05)
+## [v6.6.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.6.0) (2024-03-08)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.5.0...v6.6.0)
+
+**Implemented enhancements:**
+
+- Add bolt task to return unit state in a more parsable way [\#426](https://github.com/voxpupuli/puppet-systemd/pull/426) ([rwaffen](https://github.com/rwaffen))
+
+## [v6.5.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.5.0) (2024-03-06)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.4.0...v6.5.0)
 
@@ -15,6 +23,10 @@ These should not affect the functionality of the module.
 - Use Systemd::Unit::Amount, Percent and AmountOrPercent [\#422](https://github.com/voxpupuli/puppet-systemd/pull/422) ([traylenator](https://github.com/traylenator))
 - Support `[Slice]` in manage\_unit and manage\_dropin [\#420](https://github.com/voxpupuli/puppet-systemd/pull/420) ([traylenator](https://github.com/traylenator))
 - feat: add a cron like wrapper for timers [\#419](https://github.com/voxpupuli/puppet-systemd/pull/419) ([TheMeier](https://github.com/TheMeier))
+
+**Fixed bugs:**
+
+- Allow CPUQuota to be greater than 100% [\#423](https://github.com/voxpupuli/puppet-systemd/pull/423) ([traylenator](https://github.com/traylenator))
 
 **Merged pull requests:**
 
