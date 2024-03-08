@@ -10,12 +10,11 @@
 [![Apache-2 License](https://img.shields.io/github/license/voxpupuli/puppet-systemd.svg)](LICENSE)
 [![Donated by Camptocamp](https://img.shields.io/badge/donated%20by-camptocamp-fb7047.svg)](#transfer-notice)
 
-
 ## Overview
 
 This module declares exec resources to create global sync points for reloading systemd.
 
-**Version 2 and newer of the module don't work with Hiera 3! You need to migrate your existing Hiera setup to Hiera 5**
+### Version 2 and newer of the module don't work with Hiera 3! You need to migrate your existing Hiera setup to Hiera 5
 
 ## Usage and examples
 
@@ -181,6 +180,7 @@ file { '/etc/tmpfiles.d/foo.conf':
 ```
 
 ### timer units
+
 Create a systemd timer unit and a systemd service unit to execute from
 that timer
 
@@ -339,7 +339,8 @@ class { 'systemd':
 ```
 
 will stop the service and should also copy `/run/systemd/resolve/resolv.conf` to `/etc/resolve.conf`.
-* Writing your own file to `/etc/resolv.conf` is also possible.
+
+- Writing your own file to `/etc/resolv.conf` is also possible.
 
 It is possible to configure the default ntp servers in `/etc/systemd/timesyncd.conf`:
 
@@ -355,8 +356,6 @@ when `manage_systemd` is true any required sub package, e.g. `systemd-resolved` 
 systemd-resolved will only occur on second puppet run after that installation.
 
 This requires [puppetlabs-inifile](https://forge.puppet.com/puppetlabs/inifile), which is only a soft dependency in this module (you need to explicitly install it). Both parameters accept a string or an array.
-
-
 
 ### Resource Accounting
 
@@ -376,6 +375,7 @@ class { 'systemd':
   }
 }
 ```
+
 ### journald configuration
 
 It also allows you to manage journald settings. You can manage journald settings through setting the `journald_settings` parameter. If you want a parameter to be removed, you can pass its value as params.
@@ -424,7 +424,8 @@ systemd::udev::rule:
 ```
 
 ### oomd configuration
-The `systemd-oomd `system can be configured.
+
+The `systemd-oomd` system can be configured.
 
 ```puppet
 class { 'systemd':
@@ -439,7 +440,8 @@ class { 'systemd':
 ```
 
 ### coredump configuration
-The `systemd-coredump `system can be configured.
+
+The `systemd-coredump` system can be configured.
 
 ```puppet
 class{'systemd':
@@ -483,6 +485,7 @@ loginctl_user { 'foo':
 or as a hash via the `systemd::loginctl_users` parameter.
 
 ### Systemd Escape Function
+
 Partially escape strings as `systemd-escape` command does.
 
 This functions only escapes a subset of chars. Non-ASCII character will not escape.
@@ -490,6 +493,7 @@ This functions only escapes a subset of chars. Non-ASCII character will not esca
 ```puppet
 $result = systemd::escape('foo::bar/')
 ```
+
 `$result` would be `foo::bar-`
 
 or path escape as if with `-p` option.
@@ -497,9 +501,11 @@ or path escape as if with `-p` option.
 ```puppet
 $result = systemd::escape('/mnt/foobar/', true)
 ```
+
 `$result` would be `mnt-foobar`.
 
 ### Systemd Escape Function (uses systemd-escape)
+
 Escape strings call the `systemd-escape` command in the background.
 
 It's highly recommend running the function as [deferred function](https://puppet.com/docs/puppet/6/deferring_functions.html) since it executes the command on the agent.
@@ -507,6 +513,7 @@ It's highly recommend running the function as [deferred function](https://puppet
 ```puppet
 $result = Deferred('systemd::systemd_escape', ["foo::bar"])
 ```
+
 `$result` would be `foo::bar-`
 
 or path escape as if with `-p` option.
@@ -514,7 +521,45 @@ or path escape as if with `-p` option.
 ```puppet
 $result = Deferred('systemd::systemd_escape', ["/mnt/foo-bar/", true])
 ```
+
 `$result` would be `mnt-foo\x2dbar`.
+
+## Tasks
+
+### systemd::systemctl_show
+
+Returns more parseable output then the standard service task from bolt itself.
+
+Default property filter: `["ActiveState", "LoadState", "MainPID", "SubState", "UnitFileState"]`
+
+#### output of standard task from bolt
+
+```text
+bolt task run service name=puppet.service action=status -t controller-0
+
+Started on controller-0...
+Finished on controller-0:
+  {
+    "status": "MainPID=686,LoadState=loaded,ActiveState=active",
+    "enabled": "enabled"
+  }
+```
+
+#### output of systemd::systemctl_show
+
+```text
+bolt task run systemd::systemctl_show unit_name=puppet.service -t controller-0
+
+Started on controller-0...
+Finished on controller-0:
+  {
+    "MainPID": "686",
+    "LoadState": "loaded",
+    "ActiveState": "active",
+    "SubState": "running",
+    "UnitFileState": "enabled"
+  }
+```
 
 ## Transfer Notice
 
@@ -522,4 +567,4 @@ This plugin was originally authored by [Camptocamp](http://www.camptocamp.com).
 The maintainer preferred that Puppet Community take ownership of the module for future improvement and maintenance.
 Existing pull requests and issues were transferred over, please fork and continue to contribute here instead of Camptocamp.
 
-Previously: https://github.com/camptocamp/puppet-systemd
+Previously: [https://github.com/camptocamp/puppet-systemd]
