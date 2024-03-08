@@ -75,6 +75,10 @@
 * [`Systemd::Unit::Timespan`](#Systemd--Unit--Timespan): Timer specification for systemd time spans, e.g. timers.
 * [`Systemd::Unit::Unit`](#Systemd--Unit--Unit): Possible keys for the [Unit] section of a unit file
 
+### Tasks
+
+* [`systemctl_show`](#systemctl_show): Get systemctl show output of a unit
+
 ## Classes
 
 ### <a name="systemd"></a>`systemd`
@@ -2930,4 +2934,32 @@ Struct[{
     Optional['StartLimitBurst']           => Integer[1],
   }]
 ```
+
+## Tasks
+
+### <a name="systemctl_show"></a>`systemctl_show`
+
+Get systemctl show output of a unit
+
+**Supports noop?** false
+
+#### Parameters
+
+##### `bin_path`
+
+Data type: `String[1]`
+
+Path to systemctl binary
+
+##### `properties`
+
+Data type: `Array[String[1]]`
+
+Properties to retrieve from the unit
+
+##### `unit_name`
+
+Data type: `String[1]`
+
+Name of the unit
 
