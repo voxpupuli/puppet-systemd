@@ -498,6 +498,7 @@ describe 'systemd' do
           it { is_expected.to compile.with_all_deps }
           it { is_expected.not_to contain_service('systemd-udevd') }
           it { is_expected.not_to contain_file('/etc/udev/udev.conf') }
+          it { is_expected.not_to contain_file('/etc/udev/rules.d') }
         end
 
         context 'when working with udevd and no custom rules' do
@@ -534,6 +535,8 @@ describe 'systemd' do
               with_content(%r{^resolve_names=early$}).
               with_content(%r{^timeout_signal=SIGKILL$})
           }
+
+          it { is_expected.to contain_file('/etc/udev/rules.d').with_ensure('directory').with_purge(false) }
         end
 
         context 'when working with udevd and a rule set' do
@@ -555,6 +558,18 @@ describe 'systemd' do
               } },
 
             }
+          end
+
+          context 'when enabling udevd management and rule purging' do
+            let(:params) do
+              {
+                manage_udevd: true,
+                udev_purge_rules: true,
+              }
+            end
+
+            it { is_expected.to compile.with_all_deps }
+            it { is_expected.to contain_file('/etc/udev/rules.d').with_ensure('directory').with_purge(true) }
           end
 
           it { is_expected.to compile.with_all_deps }

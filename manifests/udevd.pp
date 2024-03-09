@@ -9,6 +9,12 @@ class systemd::udevd {
     enable => true,
   }
 
+  file { '/etc/udev/rules.d':
+    ensure  => directory,
+    purge   => $systemd::udev_purge_rules,
+    recurse => true,
+  }
+
   file { '/etc/udev/udev.conf':
     ensure  => 'file',
     owner   => 'root',
