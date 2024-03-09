@@ -1847,35 +1847,35 @@ Default value: `undef`
 
 ##### <a name="-systemd--timer_wrapper--service_overrides"></a>`service_overrides`
 
-Data type: `Systemd::Unit::Service`
+Data type: `Optional[Systemd::Unit::Service]`
 
 override for the`[Service]` section of the service
 
-Default value: `{}`
+Default value: `undef`
 
 ##### <a name="-systemd--timer_wrapper--timer_overrides"></a>`timer_overrides`
 
-Data type: `Systemd::Unit::Timer`
+Data type: `Optional[Systemd::Unit::Timer]`
 
 override for the`[Timer]` section of the timer
 
-Default value: `{}`
+Default value: `undef`
 
 ##### <a name="-systemd--timer_wrapper--service_unit_overrides"></a>`service_unit_overrides`
 
-Data type: `Systemd::Unit::Unit`
+Data type: `Optional[Systemd::Unit::Unit]`
 
 override for the`[Unit]` section of the service
 
-Default value: `{}`
+Default value: `undef`
 
 ##### <a name="-systemd--timer_wrapper--timer_unit_overrides"></a>`timer_unit_overrides`
 
-Data type: `Systemd::Unit::Unit`
+Data type: `Optional[Systemd::Unit::Unit]`
 
 override for the `[Unit]` section of the timer
 
-Default value: `{}`
+Default value: `undef`
 
 ### <a name="systemd--tmpfile"></a>`systemd::tmpfile`
 

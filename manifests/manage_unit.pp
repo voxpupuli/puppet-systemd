@@ -118,6 +118,15 @@ define systemd::manage_unit (
 ) {
   assert_type(Systemd::Unit, $name)
 
+  # Verify at least one directive is set
+  if $ensure != 'absent' {
+    ['install_entry', 'unit_entry', 'slice_entry', 'service_entry', 'timer_entry', 'path_entry', 'socket_entry'].each |$_entry| {
+      assert_type(Variant[Hash[String[1],Any,1],Undef],getvar($_entry)) | $_expected, $_actual | {
+        fail("The \"${_entry}\" parameter should be \"${_expected}\", and not \"${_actual}\". At least one directive must be set if \"${_entry}\" it is set")
+      }
+    }
+  }
+
   if $timer_entry and $name !~ Pattern['^[^/]+\.timer'] {
     fail("Systemd::Manage_unit[${name}]: timer_entry is only valid for timer units")
   }

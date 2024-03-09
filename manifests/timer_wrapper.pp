@@ -45,10 +45,10 @@ define systemd::timer_wrapper (
   Optional[Systemd::Unit::Timespan]      $on_unit_active_sec = undef,
   Optional[Systemd::Unit::Timespan]      $on_unit_inactive_sec = undef,
   Optional[Systemd::Unit::Timespan]      $on_calendar = undef,
-  Systemd::Unit::Service                 $service_overrides         = {},
-  Systemd::Unit::Timer                   $timer_overrides           = {},
-  Systemd::Unit::Unit                    $timer_unit_overrides      = {},
-  Systemd::Unit::Unit                    $service_unit_overrides    = {},
+  Optional[Systemd::Unit::Service]       $service_overrides = undef,
+  Optional[Systemd::Unit::Timer]         $timer_overrides = undef,
+  Optional[Systemd::Unit::Unit]          $timer_unit_overrides = undef,
+  Optional[Systemd::Unit::Unit]          $service_unit_overrides = undef,
 ) {
   $_timer_spec = {
     'OnActiveSec'       => $on_active_sec,
@@ -74,22 +74,45 @@ define systemd::timer_wrapper (
     }
   }
 
+  $_service = {
+    'ExecStart' => $command, # if ensure present command is defined is checked above
+    'User'      => $user, # defaults apply
+    'Type'      => 'oneshot',
+  }.filter |$k, $v| { $v =~ NotUndef }
+
   $service_ensure = $ensure ? { 'absent' => false,  default  => true, }
   $unit_name = systemd::escape($title)
 
+  $_service_unit_entry = $service_unit_overrides ? {
+    Undef   => undef,
+    default => $service_unit_overrides,
+  }
+
+  $_service_entry = $service_overrides ? {
+    Undef   => $_service,
+    default => $_service + $service_overrides
+  }
+
   systemd::manage_unit { "${unit_name}.service":
     ensure        => $ensure,
-    unit_entry    => $service_unit_overrides,
-    service_entry => {
-      'ExecStart' => $command, # if ensure present command is defined is checked above
-      'User'      => $user, # defaults apply
-      'Type'      => 'oneshot',
-    }.filter |$key, $val| { $val =~ NotUndef } + $service_overrides,
+    unit_entry    => $_service_unit_entry,
+    service_entry => $_service_entry,
   }
+
+  $_timer_unit_entry = $timer_unit_overrides ? {
+    Undef   => undef,
+    default => $timer_unit_overrides,
+  }
+
+  $_timer_entry = $timer_overrides ? {
+    Undef   => $_timer_spec,
+    default => $_timer_spec + $timer_overrides,
+  }
+
   systemd::manage_unit { "${unit_name}.timer":
     ensure        => $ensure,
     unit_entry    => $timer_unit_overrides,
-    timer_entry   => $_timer_spec +  $timer_overrides,
+    timer_entry   => $_timer_entry,
     install_entry => {
       'WantedBy' => 'timers.target',
     },

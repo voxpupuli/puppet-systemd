@@ -98,6 +98,14 @@ define systemd::manage_dropin (
   Optional[Systemd::Unit::Path]    $path_entry              = undef,
   Optional[Systemd::Unit::Socket]  $socket_entry            = undef,
 ) {
+  if $ensure != 'absent' {
+    ['install_entry', 'unit_entry', 'slice_entry', 'service_entry', 'timer_entry', 'path_entry', 'socket_entry'].each |$_entry| {
+      assert_type(Variant[Hash[String[1],Any,1],Undef],getvar($_entry)) | $_expected, $_actual | {
+        fail("The ${_entry} parameter should be \"${_expected}\", and not \"${_actual}\". At least one directive must be set if \"${_entry}\" it is set")
+      }
+    }
+  }
+
   if $timer_entry and $unit !~ Pattern['^[^/]+\.timer'] {
     fail("Systemd::Manage_dropin[${name}]: for unit ${unit} timer_entry is only valid for timer units")
   }

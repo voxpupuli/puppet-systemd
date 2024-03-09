@@ -46,6 +46,17 @@ describe 'systemd::manage_unit' do
               without_content(%r{^\[Slice\]$})
           }
 
+          context 'with an empty service_entry' do
+            let(:params) do
+              {
+                ensure: 'present',
+                service_entry: {},
+              }
+            end
+
+            it { is_expected.to compile.and_raise_error(%r{one directive must be set if "service_entry" it is set}) }
+          end
+
           context 'with no service_entry' do
             let(:params) do
               {

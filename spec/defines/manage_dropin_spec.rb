@@ -20,6 +20,14 @@ describe 'systemd::manage_dropin' do
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_systemd__dropin_file('foobar.conf').with_content(%r{^# Deployed with puppet$}) }
 
+          context 'with an empty slice entry' do
+            let(:params) do
+              super().merge(slice_entry: {})
+            end
+
+            it { is_expected.to compile.and_raise_error(%r{one directive must be set if "slice_entry" it is set}) }
+          end
+
           context 'setting some parameters simply' do
             let(:params) do
               super().merge(
