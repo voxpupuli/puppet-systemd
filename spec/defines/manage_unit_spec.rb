@@ -21,7 +21,8 @@ describe 'systemd::manage_unit' do
                 Type: 'oneshot',
                 ExecStart: '/usr/bin/doit.sh',
                 SyslogIdentifier: 'doit-backwards.sh',
-                Environment: ['bla=foo', 'foo=bla']
+                Environment: ['bla=foo', 'foo=bla'],
+                IOReadIOPSMax: ['/dev/afs', '1K'],
               },
               install_entry: {
                 WantedBy: 'multi-user.target',
@@ -43,6 +44,7 @@ describe 'systemd::manage_unit' do
               with_content(%r{^Description=My great service$}).
               with_content(%r{^Description=has two lines of description$}).
               with_content(%r{^Type=oneshot$}).
+              with_content(%r{^IOReadIOPSMax=/dev/afs 1K$}).
               without_content(%r{^\[Slice\]$})
           }
 
@@ -180,7 +182,11 @@ describe 'systemd::manage_unit' do
               slice_entry: {
                 'MemoryMax' => '10G',
                 'IOAccounting' => true,
-              }
+                'IOWriteIOPSMax' => [
+                  ['/dev/gluster', 20],
+                  ['/dev/afs', '50K'],
+                ],
+              },
             }
           end
 
@@ -190,7 +196,10 @@ describe 'systemd::manage_unit' do
             is_expected.to contain_systemd__unit_file('myslice.slice').
               with_content(%r{^\[Slice\]$}).
               with_content(%r{^MemoryMax=10G$}).
-              with_content(%r{^IOAccounting=true$})
+              with_content(%r{^IOAccounting=true$}).
+              with_content(%r{^IOWriteIOPSMax=/dev/gluster 20$}).
+              with_content(%r{^IOWriteIOPSMax=/dev/afs 50K$}).
+              without_content(%r{^\[Service\]$})
           }
         end
 

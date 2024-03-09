@@ -20,6 +20,24 @@ describe 'systemd::manage_dropin' do
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_systemd__dropin_file('foobar.conf').with_content(%r{^# Deployed with puppet$}) }
 
+          context 'with empty sections' do
+            let(:params) do
+              super().merge(
+                unit_entry: {},
+                service_entry: {}
+              )
+            end
+
+            it { is_expected.to compile.with_all_deps }
+
+            it {
+              is_expected.to contain_systemd__dropin_file('foobar.conf').
+                with_content(%r{^\[Unit\]$}).
+                with_content(%r{^\[Service\]$}).
+                without_content(%r{^\[Slice\]$})
+            }
+          end
+
           context 'setting some parameters simply' do
             let(:params) do
               super().merge(
@@ -29,6 +47,12 @@ describe 'systemd::manage_dropin' do
                 service_entry: {
                   SyslogIdentifier: 'simple',
                   LimitCORE: 'infinity',
+                  IODeviceWeight:
+                    [
+                      ['/dev/weight', 10],
+                      ['/dev/weight2', 20],
+                    ],
+                  IOReadBandwidthMax: ['/dev/weight3', '50K'],
                 }
               )
             end
@@ -38,6 +62,9 @@ describe 'systemd::manage_dropin' do
                 with_content(%r{^LimitCORE=infinity$}).
                 with_content(%r{^DefaultDependencies=true$}).
                 with_content(%r{^SyslogIdentifier=simple$}).
+                with_content(%r{^IODeviceWeight=/dev/weight 10$}).
+                with_content(%r{^IODeviceWeight=/dev/weight2 20$}).
+                with_content(%r{^IOReadBandwidthMax=/dev/weight3 50K$}).
                 without_content(%r{^\[Slice\]$})
             }
           end
@@ -133,6 +160,10 @@ describe 'systemd::manage_dropin' do
               slice_entry: {
                 'MemoryMax' => '10G',
                 'MemoryAccounting' => true,
+                'IOWriteBandwidthMax' => [
+                  ['/dev/afs', '50P'],
+                  ['/dev/gluster', 50],
+                ]
               }
             }
           end
@@ -142,8 +173,11 @@ describe 'systemd::manage_dropin' do
           it {
             is_expected.to contain_systemd__dropin_file('foobar.conf').
               with_unit('user-.slice').
+              with_content(%r{^IOWriteBandwidthMax=/dev/afs 50P$}).
+              with_content(%r{^IOWriteBandwidthMax=/dev/gluster 50$}).
               with_content(%r{^MemoryMax=10G$}).
-              with_content(%r{^MemoryAccounting=true$})
+              with_content(%r{^MemoryAccounting=true$}).
+              without_content(%r{^\[Service\]$})
           }
         end
 

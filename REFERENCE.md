@@ -871,6 +871,20 @@ systemd::manage_dropin { 'userlimits.conf':
 }
 ```
 
+##### set IO limits on two devices
+
+```puppet
+systemd::manage_dropin { 'devicelimits.conf':
+  unit          =>  'special.service',
+  service_entry => {
+   'IOReadIOPSMax' => [
+     ['/dev/afs',100],
+     ['/dev/gluster','1000K'],
+   ],
+  },
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `systemd::manage_dropin` defined type:
@@ -2649,11 +2663,11 @@ Struct[{
     Optional['IOAccounting']              => Boolean,
     Optional['IOWeight']                  => Integer[1,10000],
     Optional['StartupIOWeight']           => Integer[1,10000],
-    Optional['IODeviceWeight']            => Array[Hash[Stdlib::Absolutepath, Integer[1,10000], 1, 1]],
-    Optional['IOReadBandwidthMax']        => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount, 1, 1]],
-    Optional['IOWriteBandwidthMax']       => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount, 1, 1]],
-    Optional['IOReadIOPSMax']             => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount, 1, 1]],
-    Optional['IOWriteIOPSMax']            => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount, 1, 1]],
+    Optional['IODeviceWeight']            => Variant[Tuple[Stdlib::Absolutepath, Integer[1,10000]],Array[Tuple[Stdlib::Absolutepath, Integer[1,10000]]]],
+    Optional['IOReadBandwidthMax']        => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOWriteBandwidthMax']       => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOReadIOPSMax']             => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOWriteIOPSMax']            => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
     Optional['DeviceAllow']               => String[1],
     Optional['DevicePolicy']              => Enum['auto','closed','strict'],
     Optional['Slice']                     => String[1],
@@ -2748,12 +2762,12 @@ Struct[{
     Optional['DeviceAllow']         => Pattern['^(/dev/)|(char-)|(block-).*$'],
     Optional['DevicePolicy']        => Enum['auto','closed','strict'],
     Optional['IOAccounting']        => Boolean,
-    Optional['IODeviceWeight']      => Array[Hash[Stdlib::Absolutepath, Integer[1,10000], 1, 1]],
-    Optional['IOReadBandwidthMax']  => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount], 1, 1],
-    Optional['IOReadIOPSMax']       => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount], 1, 1],
+    Optional['IODeviceWeight']      => Variant[Tuple[Stdlib::Absolutepath, Integer[1,10000]],Array[Tuple[Stdlib::Absolutepath, Integer[1,10000]]]],
+    Optional['IOReadBandwidthMax']  => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOReadIOPSMax']       => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
     Optional['IOWeight']            => Integer[1,10000],
-    Optional['IOWriteBandwidthMax'] => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount], 1, 1],
-    Optional['IOWriteIOPSMax']      => Array[Hash[Stdlib::Absolutepath, Systemd::Unit::Amount], 1, 1],
+    Optional['IOWriteBandwidthMax'] => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOWriteIOPSMax']      => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
     Optional['IPAccounting']        => Boolean,
     Optional['MemoryAccounting']    => Boolean,
     Optional['MemoryHigh']          => Systemd::Unit::AmountOrPercent,

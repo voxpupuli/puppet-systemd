@@ -106,4 +106,21 @@ describe 'Systemd::Unit::Service' do
   it { is_expected.not_to allow_value({ 'CPUQuota' => 50 }) }
   it { is_expected.not_to allow_value({ 'CPUQuota' => '0%' }) }
   it { is_expected.not_to allow_value({ 'MemoryHigh' => '1Y' }) }
+
+  it { is_expected.to allow_value({ 'IODeviceWeight' => ['/dev/afs', 1000] }) }
+  it { is_expected.to allow_value({ 'IODeviceWeight' => [['/dev/afs', 1000], ['/dev/gluster', 10]] }) }
+  it { is_expected.not_to allow_value({ 'IODeviceWeight' => ['/dev/afs', 10_001] }) }
+  it { is_expected.not_to allow_value({ 'IODeviceWeight' => ['absolute/path', 10_001] }) }
+  it { is_expected.not_to allow_value({ 'IODeviceWeight' => '/dev/afs 1000' }) }
+
+  %w[IOReadBandwidthMax IOWriteBandwidthMax IOWriteIOPSMax IOWriteIOPSMax].each do |device_size|
+    context "with a key of #{device_size} can have a typle and size" do
+      it {
+        is_expected.to allow_value({ device_size => ['/dev/afs', 1000] })
+        is_expected.to allow_value({ device_size => [['/dev/afs', 1000], ['/dev/gluster', '12G']] })
+        is_expected.not_to allow_value({ device_size => '/dev/afs 1000' })
+        is_expected.not_to allow_value({ device_size => [['absolute/path', 1000], ['/dev/gluster', '12G']] })
+      }
+    end
+  end
 end
