@@ -183,6 +183,8 @@
 # @param oomd_settings
 #   Hash of systemd-oomd configurations for oomd.conf
 #
+# @param udev_purge_rules
+#   Toggle if unmanaged files in /etc/udev/rules.d should be purged if manage_udevd is enabled
 class systemd (
   Optional[Pattern['^.+\.target$']]                   $default_target = undef,
   Hash[String,String]                                 $accounting = {},
@@ -239,6 +241,7 @@ class systemd (
   Boolean                                             $manage_oomd = false,
   Enum['stopped','running']                           $oomd_ensure = 'running',
   Systemd::OomdSettings                               $oomd_settings = {},
+  Boolean                                             $udev_purge_rules = false,
 ) {
   contain systemd::install
 

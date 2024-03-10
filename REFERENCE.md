@@ -144,6 +144,7 @@ The following parameters are available in the `systemd` class:
 * [`manage_oomd`](#-systemd--manage_oomd)
 * [`oomd_ensure`](#-systemd--oomd_ensure)
 * [`oomd_settings`](#-systemd--oomd_settings)
+* [`udev_purge_rules`](#-systemd--udev_purge_rules)
 
 ##### <a name="-systemd--default_target"></a>`default_target`
 
@@ -601,6 +602,14 @@ Data type: `Systemd::OomdSettings`
 Hash of systemd-oomd configurations for oomd.conf
 
 Default value: `{}`
+
+##### <a name="-systemd--udev_purge_rules"></a>`udev_purge_rules`
+
+Data type: `Boolean`
+
+Toggle if unmanaged files in /etc/udev/rules.d should be purged if manage_udevd is enabled
+
+Default value: `false`
 
 ### <a name="systemd--tmpfiles"></a>`systemd::tmpfiles`
 
