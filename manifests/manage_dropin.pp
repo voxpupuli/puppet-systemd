@@ -59,6 +59,17 @@
 #     }
 #   }
 #
+# @example set IO limits on two devices
+#   systemd::manage_dropin { 'devicelimits.conf':
+#     unit          =>  'special.service',
+#     service_entry => {
+#      'IOReadIOPSMax' => [
+#        ['/dev/afs',100],
+#        ['/dev/gluster','1000K'],
+#      ],
+#     },
+#   }
+#
 # @param unit The unit to create a dropfile for
 # @param filename The target unit file to create. The filename of the drop in. The full path is determined using the path, unit and this filename.
 # @param ensure The state of this dropin file
