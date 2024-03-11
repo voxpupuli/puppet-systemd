@@ -58,6 +58,9 @@
 # @param daemon_reload
 #   call `systemd::daemon-reload` to ensure that the modified unit file is loaded
 #
+# @param service_restart
+#   restart (notify) the service when unit file changed
+#
 # @example manage unit file + service
 #   systemd::unit_file { 'foo.service':
 #     content => file("${module_name}/foo.service"),
@@ -80,7 +83,8 @@ define systemd::unit_file (
   Optional[String]                         $restart   = undef,
   Boolean                                  $selinux_ignore_defaults = false,
   Hash[String[1], Any]                     $service_parameters = {},
-  Boolean                                  $daemon_reload = true
+  Boolean                                  $daemon_reload = true,
+  Boolean                                  $service_restart = true
 ) {
   include systemd
 
@@ -130,7 +134,7 @@ define systemd::unit_file (
         fail("Can't ensure the unit file is absent and activate/enable the service at the same time")
       }
       Service[$name] -> File["${path}/${name}"]
-    } else {
+    } elsif $service_restart {
       File["${path}/${name}"] ~> Service[$name]
 
       if $daemon_reload {

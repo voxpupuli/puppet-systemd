@@ -86,6 +86,8 @@
 #   hash that will be passed with the splat operator to the service resource
 # @param daemon_reload
 #   call `systemd::daemon-reload` to ensure that the modified unit file is loaded
+# @param service_restart
+#   restart (notify) the service when unit file changed
 #
 # @param unit_entry  key value pairs for [Unit] section of the unit file.
 # @param slice_entry key value pairs for [Slice] section of the unit file
@@ -108,6 +110,7 @@ define systemd::manage_unit (
   Boolean                                  $selinux_ignore_defaults = false,
   Hash[String[1], Any]                     $service_parameters      = {},
   Boolean                                  $daemon_reload           = true,
+  Boolean                                  $service_restart         = true,
   Optional[Systemd::Unit::Install]         $install_entry           = undef,
   Optional[Systemd::Unit::Unit]            $unit_entry              = undef,
   Optional[Systemd::Unit::Slice]           $slice_entry             = undef,
@@ -150,6 +153,7 @@ define systemd::manage_unit (
     selinux_ignore_defaults => $selinux_ignore_defaults,
     service_parameters      => $service_parameters,
     daemon_reload           => $daemon_reload,
+    service_restart         => $service_restart,
     content                 => epp('systemd/unit_file.epp', {
         'unit_entry'    => $unit_entry,
         'slice_entry'   => $slice_entry,

@@ -128,6 +128,34 @@ describe 'systemd::unit_file' do
           end
         end
 
+        context 'with enable => true and active => true and service_restart => false' do
+          let(:params) do
+            super().merge(
+              enable: true,
+              active: true,
+              service_restart: false
+            )
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            expect(subject).to contain_service('test.service').
+              with_ensure(true).
+              with_enable(true).
+              with_provider('systemd').
+              without_hasstatus.
+              without_hasrestart.
+              without_flags.
+              without_timeout
+          end
+
+          it do
+            expect(subject).not_to contain_service('test.service').
+              that_subscribes_to("Systemd::Daemon_reload[#{title}]")
+          end
+        end
+
         context 'ensure => absent' do
           let(:params) { super().merge(ensure: 'absent') }
 
