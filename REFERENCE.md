@@ -2073,7 +2073,7 @@ The target unit file to create
 
 ##### <a name="-systemd--unit_file--ensure"></a>`ensure`
 
-Data type: `Enum['present', 'absent', 'file']`
+Data type: `Enum['present', 'absent']`
 
 The state of the unit file to ensure
 
