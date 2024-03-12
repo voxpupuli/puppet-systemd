@@ -160,8 +160,7 @@ Default value: `undef`
 
 Data type: `Hash[String[1],Hash[String[1], Any]]`
 
-May be passed a resource hash suitable for passing directly into the
-``create_resources()`` function as called on ``systemd::service_limits``
+Hash of `systemd::service_limits` resources
 
 Default value: `{}`
 
