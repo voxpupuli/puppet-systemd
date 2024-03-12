@@ -84,7 +84,7 @@ define systemd::unit_file (
   Boolean                                  $selinux_ignore_defaults = false,
   Hash[String[1], Any]                     $service_parameters = {},
   Boolean                                  $daemon_reload = true,
-  Boolean                                  $service_restart = true
+  Boolean                                  $service_restart = true,
 ) {
   include systemd
 
