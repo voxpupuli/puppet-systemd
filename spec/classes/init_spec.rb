@@ -764,7 +764,7 @@ describe 'systemd' do
           let :params do
             {
               manage_networkd: true,
-              manage_all_network_files: true
+              manage_all_network_files: true,
             }
           end
 
