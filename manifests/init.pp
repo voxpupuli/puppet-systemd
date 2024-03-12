@@ -149,7 +149,13 @@
 #   `loginctl_user`.
 #
 # @param dropin_files
-#   Configure dropin files via hiera with factory pattern
+#   Configure dropin files via hiera and `systemd::dropin_file` with factory pattern
+#
+# @param manage_units
+#   Configure units via hiera and `systemd::manage_unit` with factory pattern
+#
+# @param manage_dropins
+#   Configure dropin files via hiera and `systemd::manage_dropin` with factory pattern
 #
 # @param manage_all_network_files
 #
@@ -234,6 +240,8 @@ class systemd (
   Stdlib::Absolutepath                                $network_path = '/etc/systemd/network',
   Hash                                                $loginctl_users = {},
   Hash                                                $dropin_files = {},
+  Hash[String[1], Hash[String[1], Any]]               $manage_units = {},
+  Hash[String[1], Hash[String[1], Any]]               $manage_dropins = {},
   Hash                                                $udev_rules = {},
   Boolean                                             $manage_coredump = false,
   Systemd::CoredumpSettings                           $coredump_settings = {},
@@ -329,6 +337,18 @@ class systemd (
 
   $dropin_files.each |$name, $resource| {
     systemd::dropin_file { $name:
+      * => $resource,
+    }
+  }
+
+  $manage_units.each |$name, $resource| {
+    systemd::manage_unit { $name:
+      * => $resource,
+    }
+  }
+
+  $manage_dropins.each |$name, $resource| {
+    systemd::manage_dropin { $name:
       * => $resource,
     }
   }

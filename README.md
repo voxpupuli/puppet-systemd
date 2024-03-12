@@ -82,6 +82,17 @@ systemd::manage_unit { 'myrunner.service':
 The parameters `unit_entry`, `service_entry` and `install_entry` populate the
 `[Unit]`, `[Service]` and `[Install]` sections of the generated unit file.
 
+Similarly units can be created from hiera yaml files
+
+```yaml
+systemd::manage_units:
+  myservice.service:
+    unit_entry:
+      Description: My Customisation
+    service_entry:
+      CPUWeight: 2000
+```
+
 ### drop-in files
 
 Drop-in files are used to add or alter settings of a unit without modifying the
@@ -139,6 +150,20 @@ systemd::manage_dropin { 'myconf.conf':
     'ExecStart' => ['', '/usr/bin/doit.sh'],
   },
 }
+```
+
+Dropins can also be created similarly via yaml
+
+```yaml
+systemd::manage_dropins:
+  myconf.conf:
+    ensure: present
+    unit: myservice.service
+    service_entry:
+      Type: oneshot
+      ExecStart:
+        - ''
+        - '/usr/bin/doit.sh'
 ```
 
 The filename of the drop in. The full path is determined using the path, unit and this filename.
