@@ -6,8 +6,7 @@
 #   The default systemd boot target, unmanaged if set to undef.
 #
 # @param service_limits
-#   May be passed a resource hash suitable for passing directly into the
-#   ``create_resources()`` function as called on ``systemd::service_limits``
+#   Hash of `systemd::service_limits` resources
 #
 # @param networks
 #   Hash of `systemd::network` resources
