@@ -133,6 +133,8 @@ The following parameters are available in the `systemd` class:
 * [`logind_settings`](#-systemd--logind_settings)
 * [`loginctl_users`](#-systemd--loginctl_users)
 * [`dropin_files`](#-systemd--dropin_files)
+* [`manage_units`](#-systemd--manage_units)
+* [`manage_dropins`](#-systemd--manage_dropins)
 * [`manage_all_network_files`](#-systemd--manage_all_network_files)
 * [`network_path`](#-systemd--network_path)
 * [`manage_accounting`](#-systemd--manage_accounting)
@@ -511,7 +513,23 @@ Default value: `{}`
 
 Data type: `Hash`
 
-Configure dropin files via hiera with factory pattern
+Configure dropin files via hiera and `systemd::dropin_file` with factory pattern
+
+Default value: `{}`
+
+##### <a name="-systemd--manage_units"></a>`manage_units`
+
+Data type: `Hash[String[1], Hash[String[1], Any]]`
+
+Configure units via hiera and `systemd::manage_unit` with factory pattern
+
+Default value: `{}`
+
+##### <a name="-systemd--manage_dropins"></a>`manage_dropins`
+
+Data type: `Hash[String[1], Hash[String[1], Any]]`
+
+Configure dropin files via hiera and `systemd::manage_dropin` with factory pattern
 
 Default value: `{}`
 

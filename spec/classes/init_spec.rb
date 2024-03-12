@@ -709,6 +709,57 @@ describe 'systemd' do
           it { is_expected.to contain_systemd__dropin_file('my-foo.conf').with_content('[Service]\nReadWritePaths=/') }
         end
 
+        context 'when passing manage_units' do
+          let(:params) do
+            {
+              manage_units: {
+                'special.service' => {
+                  'ensure' => 'present',
+                  'unit_entry' => { 'Description' => 'My Special Unit' },
+                  'service_entry' => { 'TimeoutStartSec' => '100h' },
+                },
+              },
+            }
+          end
+
+          it {
+            is_expected.to contain_systemd__manage_unit('special.service').
+              with_ensure('present').
+              with_unit_entry({ 'Description' => 'My Special Unit' }).
+              with_service_entry({ 'TimeoutStartSec' => '100h' })
+          }
+        end
+
+        context 'when passing manage_dropins' do
+          let(:params) do
+            {
+              manage_dropins: {
+                'foo.conf' => {
+                  'unit' => 'special.slice',
+                  'slice_entry' => { 'CPUQuota' => '999%' },
+                },
+                'bar.conf' => {
+                  'unit' => 'special.timer',
+                  'timer_entry' => { 'OnCalendar' => ['', 'Daily'] },
+                },
+
+              },
+            }
+          end
+
+          it {
+            is_expected.to contain_systemd__manage_dropin('foo.conf').
+              with_unit('special.slice').
+              with_slice_entry({ 'CPUQuota' => '999%' })
+          }
+
+          it {
+            is_expected.to contain_systemd__manage_dropin('bar.conf').
+              with_unit('special.timer').
+              with_timer_entry({ 'OnCalendar' => ['', 'Daily'] })
+          }
+        end
+
         context 'with managed networkd directory' do
           let :params do
             {
