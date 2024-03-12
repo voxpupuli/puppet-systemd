@@ -1161,6 +1161,7 @@ The following parameters are available in the `systemd::manage_unit` defined typ
 * [`selinux_ignore_defaults`](#-systemd--manage_unit--selinux_ignore_defaults)
 * [`service_parameters`](#-systemd--manage_unit--service_parameters)
 * [`daemon_reload`](#-systemd--manage_unit--daemon_reload)
+* [`service_restart`](#-systemd--manage_unit--service_restart)
 * [`unit_entry`](#-systemd--manage_unit--unit_entry)
 * [`slice_entry`](#-systemd--manage_unit--slice_entry)
 * [`service_entry`](#-systemd--manage_unit--service_entry)
@@ -1268,6 +1269,14 @@ Default value: `{}`
 Data type: `Boolean`
 
 call `systemd::daemon-reload` to ensure that the modified unit file is loaded
+
+Default value: `true`
+
+##### <a name="-systemd--manage_unit--service_restart"></a>`service_restart`
+
+Data type: `Boolean`
+
+restart (notify) the service when unit file changed
 
 Default value: `true`
 
@@ -2064,6 +2073,7 @@ The following parameters are available in the `systemd::unit_file` defined type:
 * [`selinux_ignore_defaults`](#-systemd--unit_file--selinux_ignore_defaults)
 * [`service_parameters`](#-systemd--unit_file--service_parameters)
 * [`daemon_reload`](#-systemd--unit_file--daemon_reload)
+* [`service_restart`](#-systemd--unit_file--service_restart)
 
 ##### <a name="-systemd--unit_file--name"></a>`name`
 
@@ -2194,6 +2204,14 @@ Default value: `{}`
 Data type: `Boolean`
 
 call `systemd::daemon-reload` to ensure that the modified unit file is loaded
+
+Default value: `true`
+
+##### <a name="-systemd--unit_file--service_restart"></a>`service_restart`
+
+Data type: `Boolean`
+
+restart (notify) the service when unit file changed
 
 Default value: `true`
 
