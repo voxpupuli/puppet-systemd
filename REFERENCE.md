@@ -35,6 +35,7 @@
 * [`systemd::modules_load`](#systemd--modules_load): Creates a modules-load.d drop file
 * [`systemd::network`](#systemd--network): Creates network config for systemd-networkd
 * [`systemd::service_limits`](#systemd--service_limits): Adds a set of custom limits to the service
+* [`systemd::socket_service`](#systemd--socket_service): Create a systemd socket activated service
 * [`systemd::timer`](#systemd--timer): Create a timer and optionally a service unit to execute with the timer unit
 * [`systemd::timer_wrapper`](#systemd--timer_wrapper): Helper to define timer and accompanying services for a given task (cron like interface).
 * [`systemd::tmpfile`](#systemd--tmpfile): Creates a systemd tmpfile
@@ -1607,6 +1608,62 @@ Data type: `Boolean`
 Unused parameter for compatibility with older versions. Will fail if true is passed in.
 
 Default value: `false`
+
+### <a name="systemd--socket_service"></a>`systemd::socket_service`
+
+Systemd socket activated services have their own dependencies. This is a
+convenience wrapper around systemd::unit_file.
+
+#### Parameters
+
+The following parameters are available in the `systemd::socket_service` defined type:
+
+* [`name`](#-systemd--socket_service--name)
+* [`ensure`](#-systemd--socket_service--ensure)
+* [`socket_content`](#-systemd--socket_service--socket_content)
+* [`service_content`](#-systemd--socket_service--service_content)
+* [`enable`](#-systemd--socket_service--enable)
+
+##### <a name="-systemd--socket_service--name"></a>`name`
+
+Data type: `Pattern['^[^/]+$']`
+
+The target unit file to create
+
+##### <a name="-systemd--socket_service--ensure"></a>`ensure`
+
+Data type: `Enum['running', 'stopped', 'present', 'absent']`
+
+State of the socket service to ensure. Present means it ensures it's
+present, but doesn't ensure the service state.
+
+Default value: `'running'`
+
+##### <a name="-systemd--socket_service--socket_content"></a>`socket_content`
+
+Data type: `Optional[String[1]]`
+
+The content for the socket unit file. Required if ensure isn't absent.
+
+Default value: `undef`
+
+##### <a name="-systemd--socket_service--service_content"></a>`service_content`
+
+Data type: `Optional[String[1]]`
+
+The content for the service unit file. Required if ensure isn't absent.
+
+Default value: `undef`
+
+##### <a name="-systemd--socket_service--enable"></a>`enable`
+
+Data type: `Optional[Boolean]`
+
+Whether to enable or disable the service. By default this is derived from
+$ensure but can be overridden for advanced use cases where the service is
+running during a migration but shouldn't be enabled on boot.
+
+Default value: `undef`
 
 ### <a name="systemd--timer"></a>`systemd::timer`
 
