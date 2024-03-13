@@ -1,0 +1,32 @@
+<%- |
+ Optional[Hash] $match_entry,
+ Optional[Hash] $network_entry,
+ Optional[Hash] $address_entry,
+| -%>
+<% if $match_entry { -%>
+
+[Match]
+<% $match_entry.each | $_key, $_value | { -%>
+<% Array($_value, true).each | $_subvalue | { -%>
+<%= $_key %>=<%= $_subvalue %>
+<% } -%>
+<% } -%>
+<% } -%>
+<% if $network_entry { -%>
+
+[Network]
+<% $network_entry.each | $_key, $_value | { -%>
+<% Array($_value, true).each | $_subvalue | { -%>
+<%= $_key %>=<%= $_subvalue %>
+<% } -%>
+<% } -%>
+<% } -%>
+<% if $address_entry { -%>
+
+[Address]
+<% $address_entry.each | $_key, $_value | { -%>
+<% Array($_value, true).each | $_subvalue | { -%>
+<%= $_key %>=<%= $_subvalue %>
+<% } -%>
+<% } -%>
+<% } -%>
