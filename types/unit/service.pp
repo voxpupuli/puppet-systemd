@@ -129,5 +129,6 @@ type Systemd::Unit::Service = Struct[
     Optional['CapabilityBoundingSet']     => Variant[String, Array[String]],
     Optional['NoNewPrivileges']           => Boolean,
     Optional['LockPersonality']           => Boolean,
+    Optional['NetworkNamespacePath']      => Stdlib::Unixpath,
   }
 ]
