@@ -158,7 +158,7 @@ Default value: `undef`
 
 ##### <a name="-systemd--service_limits"></a>`service_limits`
 
-Data type: `Hash[String[1],Hash[String[1], Any]]`
+Data type: `Stdlib::CreateResources`
 
 Hash of `systemd::service_limits` resources
 
@@ -166,7 +166,7 @@ Default value: `{}`
 
 ##### <a name="-systemd--networks"></a>`networks`
 
-Data type: `Hash[String[1],Hash[String[1], Any]]`
+Data type: `Stdlib::CreateResources`
 
 Hash of `systemd::network` resources
 
@@ -174,7 +174,7 @@ Default value: `{}`
 
 ##### <a name="-systemd--timers"></a>`timers`
 
-Data type: `Hash[String[1],Hash[String[1], Any]]`
+Data type: `Stdlib::CreateResources`
 
 Hash of `systemd::timer` resources
 
@@ -182,7 +182,7 @@ Default value: `{}`
 
 ##### <a name="-systemd--tmpfiles"></a>`tmpfiles`
 
-Data type: `Hash[String[1],Hash[String[1], Any]]`
+Data type: `Stdlib::CreateResources`
 
 Hash of `systemd::tmpfile` resources
 
@@ -190,7 +190,7 @@ Default value: `{}`
 
 ##### <a name="-systemd--unit_files"></a>`unit_files`
 
-Data type: `Hash[String[1],Hash[String[1], Any]]`
+Data type: `Stdlib::CreateResources`
 
 Hash of `systemd::unit_file` resources
 
@@ -468,7 +468,7 @@ Default value: `undef`
 
 ##### <a name="-systemd--udev_rules"></a>`udev_rules`
 
-Data type: `Hash`
+Data type: `Stdlib::CreateResources`
 
 Config Hash that is used to generate instances of our
 `udev::rule` define.
@@ -501,7 +501,7 @@ Default value: `{}`
 
 ##### <a name="-systemd--loginctl_users"></a>`loginctl_users`
 
-Data type: `Hash`
+Data type: `Stdlib::CreateResources`
 
 Config Hash that is used to generate instances of our type
 `loginctl_user`.
@@ -510,7 +510,7 @@ Default value: `{}`
 
 ##### <a name="-systemd--dropin_files"></a>`dropin_files`
 
-Data type: `Hash`
+Data type: `Stdlib::CreateResources`
 
 Configure dropin files via hiera and `systemd::dropin_file` with factory pattern
 
@@ -518,7 +518,7 @@ Default value: `{}`
 
 ##### <a name="-systemd--manage_units"></a>`manage_units`
 
-Data type: `Hash[String[1], Hash[String[1], Any]]`
+Data type: `Stdlib::CreateResources`
 
 Configure units via hiera and `systemd::manage_unit` with factory pattern
 
@@ -526,7 +526,7 @@ Default value: `{}`
 
 ##### <a name="-systemd--manage_dropins"></a>`manage_dropins`
 
-Data type: `Hash[String[1], Hash[String[1], Any]]`
+Data type: `Stdlib::CreateResources`
 
 Configure dropin files via hiera and `systemd::manage_dropin` with factory pattern
 
