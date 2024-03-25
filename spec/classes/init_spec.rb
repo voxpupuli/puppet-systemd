@@ -137,6 +137,36 @@ describe 'systemd' do
           it { is_expected.not_to contain_ini_setting('dns_stub_listener') }
         end
 
+        context 'when setting dns_stub_listener to absent' do
+          let(:params) do
+            {
+              manage_resolved: true,
+              dns: ['8.8.8.8', '8.8.4.4'],
+              fallback_dns: ['2001:4860:4860::8888', '2001:4860:4860::8844'],
+              dns_stub_listener: 'absent'
+            }
+          end
+
+          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_ini_setting('dns_stub_listener').with_ensure('absent') }
+        end
+
+        context 'when setting dns_stub_listener_extra to absent' do
+          let(:params) do
+            {
+              manage_resolved: true,
+              dns: ['8.8.8.8', '8.8.4.4'],
+              fallback_dns: ['2001:4860:4860::8888', '2001:4860:4860::8844'],
+              dns_stub_listener_extra: 'absent'
+            }
+          end
+
+          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_ini_setting('dns_stub_listener_extra').with_ensure('absent') }
+        end
+
         context 'when enabling resolved with DNS values (full)' do
           let(:params) do
             {
@@ -171,8 +201,13 @@ describe 'systemd' do
             )
           }
 
-          it { is_expected.to contain_ini_setting('dns_stub_listener') }
-          it { is_expected.to contain_ini_setting('dns_stub_listener_extra').with_value(['192.0.2.1', '2001:db8::1']) }
+          it { is_expected.to contain_ini_setting('dns_stub_listener').with_ensure('present') }
+
+          it {
+            is_expected.to contain_ini_setting('dns_stub_listener_extra').
+              with_value(['192.0.2.1', '2001:db8::1']).
+              with_ensure('present')
+          }
         end
 
         context 'when enabling resolved with no-negative cache variant' do
