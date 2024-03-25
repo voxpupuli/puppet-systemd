@@ -586,6 +586,11 @@ Finished on controller-0:
   }
 ```
 
+## Deprecation Notices
+
+The type `systemd::service_limits` is deprecated and `systemd::manage_dropin` or `systemd::dropin_file` should
+be used instead.
+
 ## Transfer Notice
 
 This plugin was originally authored by [Camptocamp](http://www.camptocamp.com).
