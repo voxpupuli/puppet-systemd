@@ -1,3 +1,2 @@
 ---
-systemd::networkd_package: systemd-networkd
 systemd::nspawn_package: 'systemd-container'

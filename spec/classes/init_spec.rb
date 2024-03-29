@@ -20,6 +20,7 @@ describe 'systemd' do
         it { is_expected.not_to contain_package('systemd-networkd') }
         it { is_expected.not_to contain_package('systemd-timesyncd') }
         it { is_expected.not_to contain_package('systemd-resolved') }
+        it { is_expected.not_to contain_package('systemd-container') }
         it { is_expected.not_to contain_class('systemd::coredump') }
         it { is_expected.not_to contain_class('systemd::oomd') }
         it { is_expected.not_to contain_exec('systemctl set-default multi-user.target') }
@@ -277,6 +278,28 @@ describe 'systemd' do
               value: 10
             )
           }
+        end
+
+        context 'when enabling nspawn' do
+          let(:params) do
+            {
+              manage_nspawn: true,
+            }
+          end
+
+          case facts[:os]['family']
+          when 'RedHat'
+            case facts[:os]['release']['major']
+            when '7'
+              it { is_expected.not_to contain_package('systemd-container') } # rubocop:disable RSpec/RepeatedExample
+            else
+              it { is_expected.to contain_package('systemd-container').with_ensure('present') } # rubocop:disable RSpec/RepeatedExample
+            end
+          when 'Debian'
+            it { is_expected.to contain_package('systemd-container').with_ensure('present') } # rubocop:disable RSpec/RepeatedExample
+          else
+            it { is_expected.not_to contain_package('systemd-container') } # rubocop:disable RSpec/RepeatedExample
+          end
         end
 
         context 'when enabling timesyncd' do
