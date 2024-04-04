@@ -19,4 +19,10 @@ class systemd::install {
       ensure => present,
     }
   }
+
+  if $systemd::manage_nspawn and $systemd::nspawn_package {
+    package { $systemd::nspawn_package:
+      ensure => present,
+    }
+  }
 }

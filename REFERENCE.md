@@ -98,6 +98,8 @@ The following parameters are available in the `systemd` class:
 * [`manage_resolved`](#-systemd--manage_resolved)
 * [`resolved_ensure`](#-systemd--resolved_ensure)
 * [`resolved_package`](#-systemd--resolved_package)
+* [`manage_nspawn`](#-systemd--manage_nspawn)
+* [`nspawn_package`](#-systemd--nspawn_package)
 * [`dns`](#-systemd--dns)
 * [`fallback_dns`](#-systemd--fallback_dns)
 * [`domains`](#-systemd--domains)
@@ -219,6 +221,23 @@ Default value: `'running'`
 Data type: `Optional[Enum['systemd-resolved']]`
 
 The name of a systemd sub package needed for systemd-resolved if one needs to be installed.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_nspawn"></a>`manage_nspawn`
+
+Data type: `Boolean`
+
+Manage the systemd-nspawn@service and machinectl subsystem.
+
+Default value: `false`
+
+##### <a name="-systemd--nspawn_package"></a>`nspawn_package`
+
+Data type: `Optional[Enum['systemd-container']]`
+
+The name of a systemd sub package needed for the nspawn tools machinectl and
+systemd-nspawn if one needs to be installed.
 
 Default value: `undef`
 

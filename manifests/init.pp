@@ -31,6 +31,13 @@
 # @param resolved_package
 #   The name of a systemd sub package needed for systemd-resolved if one needs to be installed.
 #
+# @param manage_nspawn
+#   Manage the systemd-nspawn@service and machinectl subsystem.
+#
+# @param nspawn_package
+#   The name of a systemd sub package needed for the nspawn tools machinectl and
+#   systemd-nspawn if one needs to be installed.
+#
 # @param dns
 #   A space-separated list of IPv4 and IPv6 addresses to use as system DNS servers.
 #   DNS requests are sent to one of the listed DNS servers in parallel to suitable
@@ -243,6 +250,8 @@ class systemd (
   Stdlib::CreateResources                             $manage_dropins = {},
   Stdlib::CreateResources                             $udev_rules = {},
   Boolean                                             $manage_coredump = false,
+  Boolean                                             $manage_nspawn = false,
+  Optional[Enum['systemd-container']]                 $nspawn_package = undef,
   Systemd::CoredumpSettings                           $coredump_settings = {},
   Boolean                                             $coredump_backtrace = false,
   Boolean                                             $manage_oomd = false,
