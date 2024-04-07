@@ -40,6 +40,7 @@
 * [`systemd::tmpfile`](#systemd--tmpfile): Creates a systemd tmpfile
 * [`systemd::udev::rule`](#systemd--udev--rule): Adds a custom udev rule
 * [`systemd::unit_file`](#systemd--unit_file): Creates a systemd unit file
+* [`systemd::user_service`](#systemd--user_service): Manage a user service running under systemd --user
 
 ### Resource types
 
@@ -2250,6 +2251,104 @@ Data type: `Boolean`
 restart (notify) the service when unit file changed
 
 Default value: `true`
+
+### <a name="systemd--user_service"></a>`systemd::user_service`
+
+Manage a user service running under systemd --user
+
+#### Examples
+
+##### Enable a service for all users
+
+```puppet
+systemd::user_service { 'systemd-tmpfiles-clean.timer':
+  enable => true,
+  global => true,
+}
+```
+
+##### Enable a particular user's service
+
+```puppet
+systemd::user_service { 'podman-auto-update.timer':
+  ensure => true,
+  enable => true,
+  user   => 'steve',
+}
+```
+
+##### Notify a user's service to restart it
+
+```puppet
+file{ '/home/steve/.config/systemd/user/podman-auto-update.timer':
+  ensure  => file,
+  content => ...,
+  notify  => Systemd::User_service['steve-podman-auto-update.timer']
+}
+
+systemd::user_service { 'steve-podman-auto-update.timer':
+  ensure => true,
+  enable => true,
+  unit   => 'podman-auto-update.timer',
+  user   => 'steve',
+}
+
+@param unit Unit name to work on
+@param ensure Should the unit be started or stopped. Can only be true if user is specified.
+@param enable Should the unit be enabled or disabled
+@param user User name of user whose unit should be acted upon. Mutually exclusive with
+@param global Act globally for all users. Mutually exclusibe with `user`.
+```
+
+#### Parameters
+
+The following parameters are available in the `systemd::user_service` defined type:
+
+* [`unit`](#-systemd--user_service--unit)
+* [`ensure`](#-systemd--user_service--ensure)
+* [`enable`](#-systemd--user_service--enable)
+* [`global`](#-systemd--user_service--global)
+* [`user`](#-systemd--user_service--user)
+
+##### <a name="-systemd--user_service--unit"></a>`unit`
+
+Data type: `Systemd::Unit`
+
+
+
+Default value: `$title`
+
+##### <a name="-systemd--user_service--ensure"></a>`ensure`
+
+Data type: `Variant[Boolean,Enum['stopped','running']]`
+
+
+
+Default value: `false`
+
+##### <a name="-systemd--user_service--enable"></a>`enable`
+
+Data type: `Boolean`
+
+
+
+Default value: `false`
+
+##### <a name="-systemd--user_service--global"></a>`global`
+
+Data type: `Boolean`
+
+
+
+Default value: `false`
+
+##### <a name="-systemd--user_service--user"></a>`user`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
 
 ## Resource types
 
