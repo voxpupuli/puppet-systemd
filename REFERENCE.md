@@ -678,12 +678,35 @@ Default value: `['create']`
 
 Run systemctl daemon-reload
 
+#### Examples
+
+##### Force reload the system systemd
+
+```puppet
+notify{ 'fake event to notify from':
+  notify => Systemd::Daemon_reload['special']
+}
+systemd::daemon_reload{ 'special': }
+```
+
+##### Force reload a systemd --user
+
+```puppet
+notify{ 'fake event to notify from':
+  notify => Systemd::Daemon_reload['steve_user']
+}
+systemd::daemon_reload{ 'steve_user':
+  user => 'steve',
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `systemd::daemon_reload` defined type:
 
 * [`name`](#-systemd--daemon_reload--name)
 * [`enable`](#-systemd--daemon_reload--enable)
+* [`user`](#-systemd--daemon_reload--user)
 
 ##### <a name="-systemd--daemon_reload--name"></a>`name`
 
@@ -694,10 +717,18 @@ A globally unique name for the resource
 Data type: `Boolean`
 
 Enable the reload exec
-
 * Added in case users want to disable the reload globally using a resource collector
 
 Default value: `true`
+
+##### <a name="-systemd--daemon_reload--user"></a>`user`
+
+Data type: `Optional[String[1]]`
+
+Specify user name of `systemd --user` to reload. This not supported **below** Redhat 9,
+Ubuntu 22.04 or Debian 12.
+
+Default value: `undef`
 
 ### <a name="systemd--dropin_file"></a>`systemd::dropin_file`
 
