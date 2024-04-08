@@ -117,7 +117,7 @@ define systemd::user_service (
       # Puppet does this for services so lets copy that logic
       # don't enable if you can't start.
       if $_ensure {
-        Exec["Start user service ${unit} for user ${user}"] -> Exec[$_enable_title]
+        Exec[$_ensure_title] -> Exec[$_enable_title]
       }
     } else {
       $_enable_title   = "Disable user service ${unit} for user ${user}"
