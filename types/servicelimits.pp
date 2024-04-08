@@ -1,4 +1,5 @@
-# Matches Systemd Service Limit Struct
+# @summary Deprecated - Matches Systemd Service Limit Struct
+#
 type Systemd::ServiceLimits = Struct[
   {
     Optional['LimitCPU']            => Pattern['^\d+(s|m|h|d|w|M|y)?(:\d+(s|m|h|d|w|M|y)?)?$'],
