@@ -39,6 +39,7 @@ describe 'systemd::service_limits' do
           end
 
           it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_systemd__manage_dropin("#{title}-90-limits.conf").with_ensure('present') }
 
           it {
             expect(subject).to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").
@@ -71,6 +72,13 @@ describe 'systemd::service_limits' do
                 that_notifies('Service[test]')
             end
           end
+        end
+
+        describe 'source specified' do
+          let(:params) { { source: 'puppet:///mine/content' } }
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_systemd__dropin_file("#{title}-90-limits.conf").with_ensure('present') }
         end
 
         describe 'ensured absent' do
