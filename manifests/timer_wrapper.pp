@@ -75,9 +75,8 @@ define systemd::timer_wrapper (
   }
 
   $service_ensure = $ensure ? { 'absent' => false,  default  => true, }
-  $unit_name = systemd::escape($title)
 
-  systemd::manage_unit { "${unit_name}.service":
+  systemd::manage_unit { "${title}.service":
     ensure        => $ensure,
     unit_entry    => $service_unit_overrides,
     service_entry => {
@@ -86,7 +85,7 @@ define systemd::timer_wrapper (
       'Type'      => 'oneshot',
     }.filter |$key, $val| { $val =~ NotUndef } + $service_overrides,
   }
-  systemd::manage_unit { "${unit_name}.timer":
+  systemd::manage_unit { "${title}.timer":
     ensure        => $ensure,
     unit_entry    => $timer_unit_overrides,
     timer_entry   => $_timer_spec +  $timer_overrides,
@@ -95,19 +94,19 @@ define systemd::timer_wrapper (
     },
   }
 
-  service { "${unit_name}.timer":
+  service { "${title}.timer":
     ensure => $service_ensure,
     enable => $service_ensure,
   }
 
   if $ensure == 'present' {
-    Systemd::Manage_unit["${unit_name}.service"]
-    -> Systemd::Manage_unit["${unit_name}.timer"]
-    -> Service["${unit_name}.timer"]
+    Systemd::Manage_unit["${title}.service"]
+    -> Systemd::Manage_unit["${title}.timer"]
+    -> Service["${title}.timer"]
   } else {
     # Ensure the timer is stopped and disabled before the service
-    Service["${unit_name}.timer"]
-    -> Systemd::Manage_unit["${unit_name}.timer"]
-    -> Systemd::Manage_unit["${unit_name}.service"]
+    Service["${title}.timer"]
+    -> Systemd::Manage_unit["${title}.timer"]
+    -> Systemd::Manage_unit["${title}.service"]
   }
 }
