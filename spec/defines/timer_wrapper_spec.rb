@@ -73,18 +73,7 @@ describe 'systemd::timer_wrapper' do
           end
 
           it {
-            is_expected.to compile
-            is_expected.to contain_file('/etc/systemd/system/t-i-t-l-e.timer')
-            is_expected.to contain_systemd__manage_unit('t-i-t-l-e.timer')
-            is_expected.to contain_systemd__unit_file('t-i-t-l-e.timer')
-            is_expected.to contain_file('/etc/systemd/system/t-i-t-l-e.service')
-            is_expected.to contain_systemd__manage_unit('t-i-t-l-e.service')
-            is_expected.to contain_systemd__unit_file('t-i-t-l-e.service')
-            is_expected.to contain_service('t-i-t-l-e.timer')
-            is_expected.to contain_exec('systemd-t-i-t-l-e.service-systemctl-daemon-reload')
-            is_expected.to contain_exec('systemd-t-i-t-l-e.timer-systemctl-daemon-reload')
-            is_expected.to contain_Systemd__Daemon_reload('t-i-t-l-e.service')
-            is_expected.to contain_Systemd__Daemon_reload('t-i-t-l-e.timer')
+            is_expected.to compile.and_raise_error(%r{expects a match for Systemd::Unit = Pattern})
           }
         end
 
