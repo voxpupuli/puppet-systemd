@@ -442,7 +442,7 @@ systemd::udev::rule:
   ensure: present
   path: /etc/udev/rules.d
   selinux_ignore_defaults: false
-  notify: "Service[systemd-udevd']"
+  notify: "Service[systemd-udevd]"
   rules:
     - 'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"'
     - 'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
