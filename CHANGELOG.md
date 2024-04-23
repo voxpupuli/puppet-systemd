@@ -4,6 +4,51 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v7.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v7.0.0) (2024-04-23)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.6.0...v7.0.0)
+
+**Breaking changes:**
+
+- remove `systemd::escape` usage for `timer_wrapper` [\#452](https://github.com/voxpupuli/puppet-systemd/pull/452) ([TheMeier](https://github.com/TheMeier))
+- Drop EoL Debian 10 support [\#448](https://github.com/voxpupuli/puppet-systemd/pull/448) ([bastelfreak](https://github.com/bastelfreak))
+- Use Stdlib::CreateResources type for hiera expansions [\#438](https://github.com/voxpupuli/puppet-systemd/pull/438) ([traylenator](https://github.com/traylenator))
+- Deprecate `systemd::service_limits` [\#437](https://github.com/voxpupuli/puppet-systemd/pull/437) ([traylenator](https://github.com/traylenator))
+- Don't allow ensure=file anymore for systemd::unit\_file [\#434](https://github.com/voxpupuli/puppet-systemd/pull/434) ([baurmatt](https://github.com/baurmatt))
+
+**Implemented enhancements:**
+
+- Add `NetworkNamespacePath` to unit service [\#440](https://github.com/voxpupuli/puppet-systemd/issues/440)
+- Add hiera-friendly option to manage dropins [\#435](https://github.com/voxpupuli/puppet-systemd/issues/435)
+- Manage units running under `systemd --user` instance [\#446](https://github.com/voxpupuli/puppet-systemd/pull/446) ([traylenator](https://github.com/traylenator))
+- New parameters to manage systemd-nspawn [\#444](https://github.com/voxpupuli/puppet-systemd/pull/444) ([traylenator](https://github.com/traylenator))
+- Support reload of instances of systemd --user [\#443](https://github.com/voxpupuli/puppet-systemd/pull/443) ([traylenator](https://github.com/traylenator))
+- Add NetworkNamespacePath as a valid unit service configuration [\#441](https://github.com/voxpupuli/puppet-systemd/pull/441) ([Valantin](https://github.com/Valantin))
+- Create manage\_unit, manage\_dropin types from hiera [\#436](https://github.com/voxpupuli/puppet-systemd/pull/436) ([traylenator](https://github.com/traylenator))
+- Make service restart upon unit file change optional [\#433](https://github.com/voxpupuli/puppet-systemd/pull/433) ([schustersv](https://github.com/schustersv))
+- remove resolved settings from config when changed to `absent` [\#429](https://github.com/voxpupuli/puppet-systemd/pull/429) ([TheMeier](https://github.com/TheMeier))
+- Add parameter to manage /etc/udev/rules.d directory [\#428](https://github.com/voxpupuli/puppet-systemd/pull/428) ([TheMeier](https://github.com/TheMeier))
+- `systemd::unit_file`: Ensure link gets removed on `ensure => absent` [\#405](https://github.com/voxpupuli/puppet-systemd/pull/405) ([baurmatt](https://github.com/baurmatt))
+
+**Fixed bugs:**
+
+- IODeviceWeight, IOReadIOPSMax, .. do not work in systemd::manage\_unit or systemd::dropin\_file [\#424](https://github.com/voxpupuli/puppet-systemd/issues/424)
+- Correctly interpolate variables in `service_limits` [\#449](https://github.com/voxpupuli/puppet-systemd/pull/449) ([ekohl](https://github.com/ekohl))
+- Correct typing for IOReadIOPSMax, IOWriteIOPSMax,... in systemd::manage\_dropin [\#430](https://github.com/voxpupuli/puppet-systemd/pull/430) ([traylenator](https://github.com/traylenator))
+
+**Closed issues:**
+
+- Service not enabled on systemd::timer [\#391](https://github.com/voxpupuli/puppet-systemd/issues/391)
+- Add documentation about user services [\#381](https://github.com/voxpupuli/puppet-systemd/issues/381)
+- create systemd::path [\#370](https://github.com/voxpupuli/puppet-systemd/issues/370)
+- create services/timers for users [\#328](https://github.com/voxpupuli/puppet-systemd/issues/328)
+
+**Merged pull requests:**
+
+- Fix typo [\#455](https://github.com/voxpupuli/puppet-systemd/pull/455) ([deric](https://github.com/deric))
+- Add test case for interpolation bug in name of used types [\#450](https://github.com/voxpupuli/puppet-systemd/pull/450) ([traylenator](https://github.com/traylenator))
+- `init`: `service_limits` param: don't refer to `create_resources` [\#439](https://github.com/voxpupuli/puppet-systemd/pull/439) ([kenyon](https://github.com/kenyon))
+
 ## [v6.6.0](https://github.com/voxpupuli/puppet-systemd/tree/v6.6.0) (2024-03-08)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.5.0...v6.6.0)
