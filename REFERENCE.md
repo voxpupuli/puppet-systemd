@@ -315,17 +315,19 @@ Default value: `undef`
 
 ##### <a name="-systemd--dns_stub_listener"></a>`dns_stub_listener`
 
-Data type: `Optional[Variant[Boolean,Enum['udp','tcp']]]`
+Data type: `Optional[Variant[Boolean,Enum['udp','tcp','absent']]]`
 
 Takes a boolean argument or one of "udp" and "tcp".
+Setting it to `'absent'` will remove `DNSStubListener` existing entries from the configuration file
 
 Default value: `undef`
 
 ##### <a name="-systemd--dns_stub_listener_extra"></a>`dns_stub_listener_extra`
 
-Data type: `Optional[Array[String[1]]]`
+Data type: `Optional[Variant[Array[String[1]],Enum['absent']]]`
 
 Additional addresses for the DNS stub listener to listen on
+Setting it to `'absent'` will remove `DNSStubListenerExtra` existing entries from the configuration file
 
 Default value: `undef`
 
