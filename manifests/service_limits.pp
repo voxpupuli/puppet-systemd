@@ -74,7 +74,7 @@ define systemd::service_limits (
       }
     }.reduce | $_memo, $_value | { $_memo + $_value }
 
-    deprecation("systemd::servicelimits - ${title}",'systemd::servicelimits is deprecated, use systemd::manage_dropin')
+    deprecation("systemd::service_limits - ${title}",'systemd::service_limits is deprecated, use systemd::manage_dropin')
     systemd::manage_dropin { "${name}-90-limits.conf":
       ensure                  => $ensure,
       unit                    => $name,
@@ -85,7 +85,7 @@ define systemd::service_limits (
       notify_service          => true,
     }
   } else {
-    deprecation("systemd::servicelimits ${title}",'systemd::servicelimits is deprecated, use systemd::dropin_file or systemd::manage_dropin')
+    deprecation("systemd::service_limits ${title}",'systemd::service_limits is deprecated, use systemd::dropin_file or systemd::manage_dropin')
     systemd::dropin_file { "${name}-90-limits.conf":
       ensure                  => $ensure,
       unit                    => $name,
