@@ -280,7 +280,8 @@ systemd::timer { 'daily.timer':
 
 ### service limits
 
-Manage soft and hard limits on various resources for executed processes.
+It's possible to ensure soft and hard limits on various resources for executed processes.
+Previously `systemd::service_limits` was provided, but this is deprecated and will be removed in the next version.
 
 ```puppet
 systemd::service_limits { 'foo.service':
@@ -291,13 +292,20 @@ systemd::service_limits { 'foo.service':
 }
 ```
 
-Or provide the configuration file yourself. Systemd reloading and restarting of the service are handled by the module.
+The replacement is to use the `systemd::manage_dropin` defined type directly.
+To migrate from the above example, use the following:
 
 ```puppet
-systemd::service_limits { 'foo.service':
-  source => "puppet:///modules/${module_name}/foo.conf",
+systemd::manage_dropin { 'foo.service-90-limits.conf':
+  unit     => 'foo.service',
+  filename => '90-limits.conf',
+  limits   => {
+    'LimitNOFILE' => 8192,
+    'LimitNPROC'  => 16384,
+  },
 }
 ```
+
 
 ### machine-info (hostnamectl)
 
