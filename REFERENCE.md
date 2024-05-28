@@ -23,6 +23,7 @@
 * `systemd::oomd`: This class manages and configures oomd.
 * `systemd::resolved`: This class provides an abstract way to trigger resolved.
 * `systemd::system`: This class provides a solution to enable accounting
+* `systemd::timedatectl`: This class provides an abstract way to set elements with timedatectl
 * `systemd::timesyncd`: This class provides an abstract way to trigger systemd-timesyncd
 * `systemd::udevd`: This class manages systemd's udev config
 
@@ -121,6 +122,8 @@ The following parameters are available in the `systemd` class:
 * [`timesyncd_package`](#-systemd--timesyncd_package)
 * [`ntp_server`](#-systemd--ntp_server)
 * [`fallback_ntp_server`](#-systemd--fallback_ntp_server)
+* [`timezone`](#-systemd--timezone)
+* [`set_local_rtc`](#-systemd--set_local_rtc)
 * [`manage_journald`](#-systemd--manage_journald)
 * [`journald_settings`](#-systemd--journald_settings)
 * [`manage_udevd`](#-systemd--manage_udevd)
@@ -413,6 +416,30 @@ Data type: `Optional[Variant[Array,String]]`
 A space-separated list of NTP server host names or IP addresses to be used
 as the fallback NTP servers. Any per-interface NTP servers obtained from
 systemd-networkd take precedence over this setting. requires puppetlabs-inifile
+
+Default value: `undef`
+
+##### <a name="-systemd--timezone"></a>`timezone`
+
+Data type: `Optional[String[1]]`
+
+Set the system time zone to the specified value.
+Available timezones can be listed with list-timezones.
+If the RTC is configured to be in the local time, this will also update
+the RTC time. This call will alter the /etc/localtime symlink.
+
+Default value: `undef`
+
+##### <a name="-systemd--set_local_rtc"></a>`set_local_rtc`
+
+Data type: `Optional[Boolean]`
+
+Takes a boolean argument. If "false", the system is configured to maintain
+the RTC in universal time.
+If "true", it will maintain the RTC in local time instead.
+Note that maintaining the RTC in the local timezone is not fully supported
+and will create various problems with time zone changes and daylight saving
+adjustments. If at all possible, keep the RTC in UTC mode.
 
 Default value: `undef`
 

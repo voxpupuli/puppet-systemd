@@ -112,6 +112,20 @@
 #   as the fallback NTP servers. Any per-interface NTP servers obtained from
 #   systemd-networkd take precedence over this setting. requires puppetlabs-inifile
 #
+# @param timezone
+#   Set the system time zone to the specified value.
+#   Available timezones can be listed with list-timezones.
+#   If the RTC is configured to be in the local time, this will also update
+#   the RTC time. This call will alter the /etc/localtime symlink.
+#
+# @param set_local_rtc
+#   Takes a boolean argument. If "false", the system is configured to maintain
+#   the RTC in universal time.
+#   If "true", it will maintain the RTC in local time instead.
+#   Note that maintaining the RTC in the local timezone is not fully supported
+#   and will create various problems with time zone changes and daylight saving
+#   adjustments. If at all possible, keep the RTC in UTC mode.
+#
 # @param manage_journald
 #   Manage the systemd journald
 #
@@ -230,6 +244,8 @@ class systemd (
   Optional[String[1]]                                 $timesyncd_package = undef,
   Optional[Variant[Array,String]]                     $ntp_server = undef,
   Optional[Variant[Array,String]]                     $fallback_ntp_server = undef,
+  Optional[Boolean]                                   $set_local_rtc = undef,
+  Optional[String[1]]                                 $timezone = undef,
   Boolean                                             $manage_accounting = false,
   Boolean                                             $purge_dropin_dirs = true,
   Boolean                                             $manage_journald = true,
@@ -312,6 +328,8 @@ class systemd (
     contain systemd::networkd
     Class['systemd::install'] -> Class['systemd::networkd']
   }
+
+  contain systemd::timedatectl
 
   if $manage_timesyncd and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-timesyncd.service'] {
     contain systemd::timesyncd

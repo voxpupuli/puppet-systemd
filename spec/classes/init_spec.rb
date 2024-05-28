@@ -386,6 +386,43 @@ describe 'systemd' do
           it { is_expected.to contain_ini_setting('fallback_ntp_server') }
         end
 
+        context 'when setting timezone' do
+          let(:params) do
+            {
+              timezone: 'America/Chicago',
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_exec('set system timezone').with_command('timedatectl set-timezone America/Chicago') }
+          it { is_expected.not_to contain_exec('set local hardware clock to local time') }
+          it { is_expected.not_to contain_exec('set local hardware clock to UTC time') }
+        end
+
+        context 'when setting rtc-local is true' do
+          let(:params) do
+            {
+              set_local_rtc: true
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_exec('set local hardware clock to local time') }
+          it { is_expected.not_to contain_exec('set local hardware clock to UTC time') }
+        end
+
+        context 'when setting rtc-local is false' do
+          let(:params) do
+            {
+              set_local_rtc: false
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_exec('set local hardware clock to local time') }
+          it { is_expected.to contain_exec('set local hardware clock to UTC time') }
+        end
+
         context 'when passing service limits' do
           let(:params) do
             {
