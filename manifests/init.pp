@@ -205,6 +205,9 @@
 # @param manage_oomd
 #   Should systemd-oomd configuration be managed
 #
+# @param oomd_package
+#   Name of the package required for systemd-oomd, if any
+#
 # @param oomd_ensure
 #   The state that the ``oomd`` service should be in
 #
@@ -273,6 +276,7 @@ class systemd (
   Systemd::CoredumpSettings                           $coredump_settings = {},
   Boolean                                             $coredump_backtrace = false,
   Boolean                                             $manage_oomd = false,
+  Optional[String[1]]                                 $oomd_package = undef,
   Enum['stopped','running']                           $oomd_ensure = 'running',
   Systemd::OomdSettings                               $oomd_settings = {},
   Boolean                                             $udev_purge_rules = false,

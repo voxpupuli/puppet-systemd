@@ -8,6 +8,12 @@ class systemd::install {
     }
   }
 
+  if $systemd::manage_oomd and $systemd::oomd_package {
+    package { $systemd::oomd_package:
+      ensure => present,
+    }
+  }
+
   if $systemd::manage_resolved and $systemd::resolved_package {
     package { $systemd::resolved_package:
       ensure => present,
