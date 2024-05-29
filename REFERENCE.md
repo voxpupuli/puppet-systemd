@@ -150,6 +150,7 @@ The following parameters are available in the `systemd` class:
 * [`coredump_settings`](#-systemd--coredump_settings)
 * [`coredump_backtrace`](#-systemd--coredump_backtrace)
 * [`manage_oomd`](#-systemd--manage_oomd)
+* [`oomd_package`](#-systemd--oomd_package)
 * [`oomd_ensure`](#-systemd--oomd_ensure)
 * [`oomd_settings`](#-systemd--oomd_settings)
 * [`udev_purge_rules`](#-systemd--udev_purge_rules)
@@ -652,6 +653,14 @@ Data type: `Boolean`
 Should systemd-oomd configuration be managed
 
 Default value: `false`
+
+##### <a name="-systemd--oomd_package"></a>`oomd_package`
+
+Data type: `Optional[String[1]]`
+
+Name of the package required for systemd-oomd, if any
+
+Default value: `undef`
 
 ##### <a name="-systemd--oomd_ensure"></a>`oomd_ensure`
 
