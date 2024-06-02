@@ -69,8 +69,30 @@ describe 'systemd::dropin_file' do
 
             it { is_expected.to compile.with_all_deps }
             it { is_expected.to contain_service('myservice').that_subscribes_to("File[#{filename}]") }
-            it { is_expected.to contain_systemd__daemon_reload(params[:unit]).that_notifies('Service[myservice]') }
+            it { is_expected.not_to contain_systemd__daemon_reload(params[:unit]).that_notifies('Service[myservice]') }
+            it { is_expected.to contain_systemd__daemon_reload(params[:unit]).that_comes_before('Service[myservice]') }
           end
+        end
+
+        context 'doesn\'t notify services' do
+          let(:params) do
+            super().merge(notify_service: false)
+          end
+          let(:filename) { "/etc/systemd/system/#{params[:unit]}.d/#{title}" }
+          let(:pre_condition) do
+            <<-PUPPET
+            service { ['test', 'test.service']:
+            }
+            PUPPET
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_service('test') }
+          it { is_expected.not_to contain_service('test').that_subscribes_to("File[#{filename}]") }
+          it { is_expected.not_to contain_service('test').that_subscribes_to("Systemd::Daemon_reload[#{params[:unit]}]") }
+          it { is_expected.to contain_service('test.service') }
+          it { is_expected.not_to contain_service('test.service').that_subscribes_to("File[#{filename}]") }
+          it { is_expected.not_to contain_service('test.service').that_subscribes_to("Systemd::Daemon_reload[#{params[:unit]}]") }
         end
 
         context 'with selinux_ignore_defaults set to true' do
