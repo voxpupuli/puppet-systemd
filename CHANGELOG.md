@@ -4,7 +4,23 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v7.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v7.0.0) (2024-04-23)
+## [v7.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v7.1.0) (2024-06-03)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v7.0.0...v7.1.0)
+
+**Implemented enhancements:**
+
+- add MemoryDenyWriteExecute to Systemd::Unit::Service type [\#465](https://github.com/voxpupuli/puppet-systemd/pull/465) ([TheMeier](https://github.com/TheMeier))
+- Allow setting a specific package name for systemd-oomd [\#464](https://github.com/voxpupuli/puppet-systemd/pull/464) ([jcpunk](https://github.com/jcpunk))
+- Add support for timezone and hardware clock [\#462](https://github.com/voxpupuli/puppet-systemd/pull/462) ([jcpunk](https://github.com/jcpunk))
+- fix typo in service\_limits deprecation message [\#460](https://github.com/voxpupuli/puppet-systemd/pull/460) ([saz](https://github.com/saz))
+- fix: refresh service only based on drop-in file changes [\#406](https://github.com/voxpupuli/puppet-systemd/pull/406) ([shieldwed](https://github.com/shieldwed))
+
+**Merged pull requests:**
+
+- Update README to reflect service\_limits is deprecated [\#461](https://github.com/voxpupuli/puppet-systemd/pull/461) ([ekohl](https://github.com/ekohl))
+
+## [v7.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v7.0.0) (2024-04-26)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v6.6.0...v7.0.0)
 
@@ -39,7 +55,6 @@ These should not affect the functionality of the module.
 **Closed issues:**
 
 - Service not enabled on systemd::timer [\#391](https://github.com/voxpupuli/puppet-systemd/issues/391)
-- Add documentation about user services [\#381](https://github.com/voxpupuli/puppet-systemd/issues/381)
 - create systemd::path [\#370](https://github.com/voxpupuli/puppet-systemd/issues/370)
 - create services/timers for users [\#328](https://github.com/voxpupuli/puppet-systemd/issues/328)
 
