@@ -130,5 +130,6 @@ type Systemd::Unit::Service = Struct[
     Optional['NoNewPrivileges']           => Boolean,
     Optional['LockPersonality']           => Boolean,
     Optional['NetworkNamespacePath']      => Stdlib::Unixpath,
+    Optional['MemoryDenyWriteExecute']    => Boolean,
   }
 ]
