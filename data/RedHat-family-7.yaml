@@ -1,5 +1,4 @@
 ---
-systemd::resolved_package: 'systemd-resolved'
 systemd::nspawn_package: ~
 
 systemd::accounting:

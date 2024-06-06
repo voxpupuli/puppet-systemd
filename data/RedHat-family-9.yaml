@@ -1,5 +1,4 @@
 ---
-systemd::resolved_package: 'systemd-resolved'
 systemd::oomd_package: 'systemd-oomd'
 
 systemd::accounting:
