@@ -47,8 +47,7 @@ describe 'systemd' do
             it { is_expected.not_to contain_package('systemd-networkd') }
           end
 
-          case [facts[:os]['family'], facts[:os]['release']['major']]
-          when %w[RedHat 7], %w[RedHat 9], %w[Debian 12]
+          if (facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] != '8') || (facts[:os]['name'] == 'Debian' && facts[:os]['release']['major'] == '12')
             it { is_expected.to contain_package('systemd-resolved') }
           else
             it { is_expected.not_to contain_package('systemd-resolved') }
