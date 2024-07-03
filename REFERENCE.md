@@ -2888,7 +2888,7 @@ Struct[{
     Optional['MemoryHigh']                => Systemd::Unit::AmountOrPercent,
     Optional['MemoryMax']                 => Systemd::Unit::AmountOrPercent,
     Optional['MemoryLimit']               => Systemd::Unit::Amount,
-    Optional['MemorySwapMax']             => Systemd::Unit::Amount,
+    Optional['MemorySwapMax']             => Systemd::Unit::AmountOrPercent,
     Optional['TasksAccounting']           => Boolean,
     Optional['TasksMax']                  => Systemd::Unit::AmountOrPercent,
     Optional['IOAccounting']              => Boolean,
