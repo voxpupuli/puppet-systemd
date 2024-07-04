@@ -103,6 +103,8 @@ describe 'Systemd::Unit::Service' do
     )
   }
 
+  it { is_expected.to allow_value({ 'MemorySwapMax' => '80%' }) }
+
   it { is_expected.not_to allow_value({ 'CPUQuota' => 50 }) }
   it { is_expected.not_to allow_value({ 'CPUQuota' => '0%' }) }
   it { is_expected.not_to allow_value({ 'MemoryHigh' => '1Y' }) }
