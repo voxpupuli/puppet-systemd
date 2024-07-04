@@ -67,6 +67,7 @@
 * [`Systemd::Unit::Amount`](#Systemd--Unit--Amount): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::AmountOrPercent`](#Systemd--Unit--AmountOrPercent): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::Install`](#Systemd--Unit--Install): Possible keys for the [Install] section of a unit file
+* [`Systemd::Unit::Kube`](#Systemd--Unit--Kube): Possible keys for the [Kube] section of a unit file
 * [`Systemd::Unit::Path`](#Systemd--Unit--Path): Possible keys for the [Path] section of a unit file
 * [`Systemd::Unit::Percent`](#Systemd--Unit--Percent): Systemd definition of a percentage
 * [`Systemd::Unit::Service`](#Systemd--Unit--Service): Possible keys for the [Service] section of a unit file
@@ -1022,6 +1023,7 @@ The following parameters are available in the `systemd::manage_dropin` defined t
 * [`timer_entry`](#-systemd--manage_dropin--timer_entry)
 * [`path_entry`](#-systemd--manage_dropin--path_entry)
 * [`socket_entry`](#-systemd--manage_dropin--socket_entry)
+* [`kube_entry`](#-systemd--manage_dropin--kube_entry)
 
 ##### <a name="-systemd--manage_dropin--unit"></a>`unit`
 
@@ -1162,6 +1164,14 @@ Default value: `undef`
 Data type: `Optional[Systemd::Unit::Socket]`
 
 key value pairs for the [Socket] section of the unit file
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_dropin--kube_entry"></a>`kube_entry`
+
+Data type: `Optional[Systemd::Unit::Kube]`
+
+key value pairs for the [Kube] section of the unit file
 
 Default value: `undef`
 
@@ -2183,7 +2193,7 @@ The following parameters are available in the `systemd::unit_file` defined type:
 
 ##### <a name="-systemd--unit_file--name"></a>`name`
 
-Data type: `Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']`
+Data type: `Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope|kube)$']`
 
 The target unit file to create
 
@@ -2746,7 +2756,7 @@ custom datatype that validates different filenames for systemd units and unit te
 * **See also**
   * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
 
-Alias of `Pattern[/^[a-zA-Z0-9:\-_.\\@%]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$/]`
+Alias of `Pattern[/^[a-zA-Z0-9:\-_.\\@%]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope|kube)$/]`
 
 ### <a name="Systemd--Unit--Amount"></a>`Systemd::Unit::Amount`
 
@@ -2786,6 +2796,33 @@ Struct[{
     Optional['WantedBy']   => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['RequiredBy'] => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['Also']       => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+  }]
+```
+
+### <a name="Systemd--Unit--Kube"></a>`Systemd::Unit::Kube`
+
+Possible keys for the [Kube] section of a unit file
+
+* **See also**
+  * https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html#kube-units-kube
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['AutoUpdate'] => String,
+    Optional['ConfigMap']  => Stdlib::Unixpath,
+    Optional['ContainersConfModule'] => Stdlib::Unixpath,
+    Optional['ExitCodePropagation'] => Enum['all', 'any', 'none'],
+    Optioanl['GlobalArgs'] => String,
+    Optional['KubeDownForce'] => Boolean,
+    Optional['LogDriver'] => String,
+    Optional['Network'] => String,
+    Optional['PodmanArgs'] => String,
+    Optional['PublishPort'] => Variant[String, Integer],
+    Optional['SetWorkingDirectory'] => Enum['yaml', 'unit'],
+    Optional['UserNS'] => String,
+    Optional['Yaml'] => Stdlib::Unixpath,
   }]
 ```
 

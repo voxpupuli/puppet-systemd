@@ -6,6 +6,7 @@
  Optional[Hash] $timer_entry,
  Optional[Hash] $path_entry,
  Optional[Hash] $socket_entry,
+ Optional[Hash] $kube_entry,
 | -%>
 <%-
 
@@ -14,6 +15,7 @@
 
  $_unit_sections = [
    'Unit',
+   'Kube',
    'Slice',
    'Service',
    'Timer',

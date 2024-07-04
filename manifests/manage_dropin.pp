@@ -88,6 +88,7 @@
 # @param timer_entry key value pairs for [Timer] section of the unit file
 # @param path_entry key value pairs for [Path] section of the unit file
 # @param socket_entry key value pairs for the [Socket] section of the unit file
+# @param kube_entry key value pairs for the [Kube] section of the unit file
 #
 define systemd::manage_dropin (
   Systemd::Unit                    $unit,
@@ -108,6 +109,7 @@ define systemd::manage_dropin (
   Optional[Systemd::Unit::Timer]   $timer_entry             = undef,
   Optional[Systemd::Unit::Path]    $path_entry              = undef,
   Optional[Systemd::Unit::Socket]  $socket_entry            = undef,
+  Optional[Systemd::Unit::Kube]    $kube_entry              = undef,
 ) {
   if $timer_entry and $unit !~ Pattern['^[^/]+\.timer'] {
     fail("Systemd::Manage_dropin[${name}]: for unit ${unit} timer_entry is only valid for timer units")
@@ -123,6 +125,10 @@ define systemd::manage_dropin (
 
   if $slice_entry and $unit !~ Pattern['^[^/]+\.slice'] {
     fail("Systemd::Manage_dropin[${name}]: for unit ${unit} slice_entry is only valid for slice units")
+  }
+
+  if $kube_entry and $unit !~ Pattern['^[^/]+\.kube'] {
+    fail("Systemd::Manage_dropin[${name}]: for unit ${unit} slice_entry is only valid for kube units")
   }
 
   systemd::dropin_file { $name:
@@ -145,6 +151,7 @@ define systemd::manage_dropin (
         'timer_entry'   => $timer_entry,
         'path_entry'    => $path_entry,
         'socket_entry'  => $socket_entry,
+        'kube_entry'    => $kube_entry,
     }),
   }
 }
