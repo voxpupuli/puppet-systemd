@@ -35,6 +35,7 @@
 * [`systemd::manage_unit`](#systemd--manage_unit): Generate unit file from template
 * [`systemd::modules_load`](#systemd--modules_load): Creates a modules-load.d drop file
 * [`systemd::network`](#systemd--network): Creates network config for systemd-networkd
+* [`systemd::quadlet_file`](#systemd--quadlet_file): Creates a systemd Podman Quadlet file
 * [`systemd::service_limits`](#systemd--service_limits): Deprecated - Adds a set of custom limits to the service
 * [`systemd::timer`](#systemd--timer): Create a timer and optionally a service unit to execute with the timer unit
 * [`systemd::timer_wrapper`](#systemd--timer_wrapper): Helper to define timer and accompanying services for a given task (cron like interface).
@@ -62,6 +63,7 @@
 * [`Systemd::LogindSettings::Ensure`](#Systemd--LogindSettings--Ensure): defines allowed ensure states for systemd-logind settings
 * [`Systemd::MachineInfoSettings`](#Systemd--MachineInfoSettings): Matches Systemd machine-info (hostnamectl) file Struct
 * [`Systemd::OomdSettings`](#Systemd--OomdSettings): Configurations for oomd.conf
+* [`Systemd::Quadlet`](#Systemd--Quadlet): custom datatype that validates different filenames for quadlet units
 * [`Systemd::ServiceLimits`](#Systemd--ServiceLimits): Deprecated - Matches Systemd Service Limit Struct
 * [`Systemd::Unit`](#Systemd--Unit): custom datatype that validates different filenames for systemd units and unit templates
 * [`Systemd::Unit::Amount`](#Systemd--Unit--Amount): Systemd definition of amount, often bytes or united bytes
@@ -1620,6 +1622,149 @@ whether systemd-networkd should be restarted on changes, defaults to true. `$sys
 
 Default value: `true`
 
+### <a name="systemd--quadlet_file"></a>`systemd::quadlet_file`
+
+Quadlet will generate a unit file, and this service can be managed by puppet.
+
+* **See also**
+  * podman.systemd.unit(5)
+
+#### Parameters
+
+The following parameters are available in the `systemd::quadlet_file` defined type:
+
+* [`name`](#-systemd--quadlet_file--name)
+* [`ensure`](#-systemd--quadlet_file--ensure)
+* [`content`](#-systemd--quadlet_file--content)
+* [`path`](#-systemd--quadlet_file--path)
+* [`source`](#-systemd--quadlet_file--source)
+* [`owner`](#-systemd--quadlet_file--owner)
+* [`group`](#-systemd--quadlet_file--group)
+* [`mode`](#-systemd--quadlet_file--mode)
+* [`enable`](#-systemd--quadlet_file--enable)
+* [`active`](#-systemd--quadlet_file--active)
+* [`restart`](#-systemd--quadlet_file--restart)
+* [`service_parameters`](#-systemd--quadlet_file--service_parameters)
+* [`daemon_reload`](#-systemd--quadlet_file--daemon_reload)
+* [`service_restart`](#-systemd--quadlet_file--service_restart)
+
+##### <a name="-systemd--quadlet_file--name"></a>`name`
+
+The name of the quadlet file
+
+##### <a name="-systemd--quadlet_file--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+The state of the quadlet file to ensure
+
+Default value: `'present'`
+
+##### <a name="-systemd--quadlet_file--content"></a>`content`
+
+Data type: `Optional[Variant[String, Sensitive[String], Deferred]]`
+
+The full content of the quadlet file
+
+Default value: `undef`
+
+##### <a name="-systemd--quadlet_file--path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The path where the quadlet file will be created
+For systemd in user mode use any of
+- ~/.config/containers/systemd
+- /etc/containers/systemd/users/$(UID)
+
+For global systemd use any of:
+- /etc/containers/systemd
+- /usr/share/containers/systemd
+
+Default value: `'/etc/containers/systemd'`
+
+##### <a name="-systemd--quadlet_file--source"></a>`source`
+
+Data type: `Optional[String]`
+
+The ``File`` resource compatible ``source``
+
+* Mutually exclusive with ``$content``
+
+Default value: `undef`
+
+##### <a name="-systemd--quadlet_file--owner"></a>`owner`
+
+Data type: `String[1]`
+
+The owner to set on the unit file
+
+Default value: `'root'`
+
+##### <a name="-systemd--quadlet_file--group"></a>`group`
+
+Data type: `String[1]`
+
+The group to set on the unit file
+
+Default value: `'root'`
+
+##### <a name="-systemd--quadlet_file--mode"></a>`mode`
+
+Data type: `String[1]`
+
+The mode to set on the unit file
+
+Default value: `'0444'`
+
+##### <a name="-systemd--quadlet_file--enable"></a>`enable`
+
+Data type: `Optional[Boolean]`
+
+If set, will manage the unit enablement status.
+
+Default value: `undef`
+
+##### <a name="-systemd--quadlet_file--active"></a>`active`
+
+Data type: `Optional[Boolean]`
+
+If set, will manage the state of the unit.
+
+Default value: `undef`
+
+##### <a name="-systemd--quadlet_file--restart"></a>`restart`
+
+Data type: `Optional[String]`
+
+Specify a restart command manually. If left unspecified, a standard Puppet service restart happens.
+
+Default value: `undef`
+
+##### <a name="-systemd--quadlet_file--service_parameters"></a>`service_parameters`
+
+Data type: `Hash[String[1], Any]`
+
+hash that will be passed with the splat operator to the service resource
+
+Default value: `{}`
+
+##### <a name="-systemd--quadlet_file--daemon_reload"></a>`daemon_reload`
+
+Data type: `Boolean`
+
+call `systemd::daemon-reload` to ensure that the modified unit file is loaded
+
+Default value: `true`
+
+##### <a name="-systemd--quadlet_file--service_restart"></a>`service_restart`
+
+Data type: `Boolean`
+
+restart (notify) the service when unit file changed
+
+Default value: `true`
+
 ### <a name="systemd--service_limits"></a>`systemd::service_limits`
 
 Deprecated - Adds a set of custom limits to the service
@@ -2685,6 +2830,16 @@ Struct[{
     Optional['DefaultMemoryPressureDurationSec'] => Integer[0],
   }]
 ```
+
+### <a name="Systemd--Quadlet"></a>`Systemd::Quadlet`
+
+custom datatype that validates different filenames for quadlet units
+
+* **See also**
+  * https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html
+  * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
+
+Alias of `Pattern[/^[a-zA-Z0-9:\-_.\\@%]+\.(container|volume|network|kube|image|build|pod)$/]`
 
 ### <a name="Systemd--ServiceLimits"></a>`Systemd::ServiceLimits`
 

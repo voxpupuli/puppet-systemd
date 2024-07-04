@@ -20,6 +20,21 @@ This module declares exec resources to create global sync points for reloading s
 
 There are two ways to use this module.
 
+### podman quadlet files
+
+Let this module handle file creation and reloading of systemd.
+
+```puppet
+systemd::quadlet_file { 'foo.kube':
+  content         => file("${module_name}/foo.kube"),
+  enable          => true,
+  active          => true,
+  service_restart => true,
+}
+```
+
+All file types supported by podman quadlet are possible, see [the quadlet documentation](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) for all supported types.
+
 ### unit files
 
 Let this module handle file creation.
