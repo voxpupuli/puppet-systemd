@@ -297,9 +297,9 @@ To migrate from the above example, use the following:
 
 ```puppet
 systemd::manage_dropin { 'foo.service-90-limits.conf':
-  unit     => 'foo.service',
-  filename => '90-limits.conf',
-  limits   => {
+  unit            => 'foo.service',
+  filename        => '90-limits.conf',
+  service_entry   => {
     'LimitNOFILE' => 8192,
     'LimitNPROC'  => 16384,
   },
