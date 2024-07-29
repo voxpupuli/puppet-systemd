@@ -284,7 +284,7 @@ class systemd (
   contain systemd::install
 
   if $default_target {
-    $target = shell_escape($default_target)
+    $target = stdlib::shell_escape($default_target)
     service { $target:
       ensure => 'running',
       enable => true,
