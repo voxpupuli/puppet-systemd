@@ -1,2 +1,3 @@
 ---
 systemd::nspawn_package: 'systemd-container'
+systemd::journal_upload::package_name: 'systemd-journal-remote'

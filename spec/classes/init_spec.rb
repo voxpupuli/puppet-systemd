@@ -675,6 +675,56 @@ describe 'systemd' do
           it { is_expected.not_to contain_service('systemd-journald') }
         end
 
+        context 'when journal-upload is enabled' do
+          let(:params) do
+            {
+              manage_journal_upload: true,
+              journal_upload_settings: {
+                'URL' => 'https://central.server:19532',
+                'ServerKeyFile' => '/tmp/key.pem',
+                'ServerCertificateFile' => '/tmp/cert.pem',
+                'TrustedCertificateFile' => {
+                  'ensure' => 'absent',
+                },
+              },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_service('systemd-journal-upload') }
+
+          it { is_expected.to have_ini_setting_resource_count(4) }
+
+          it {
+            expect(subject).to contain_ini_setting('URL').with(
+              path: '/etc/systemd/journal-upload.conf',
+              section: 'Upload',
+              notify: 'Service[systemd-journal-upload]',
+              value: 'https://central.server:19532'
+            )
+          }
+
+          it {
+            expect(subject).to contain_ini_setting('TrustedCertificateFile').with(
+              path: '/etc/systemd/journal-upload.conf',
+              section: 'Upload',
+              notify: 'Service[systemd-journal-upload]',
+              ensure: 'absent'
+            )
+          }
+        end
+
+        context 'when journal-upload is not enabled' do
+          let(:params) do
+            {
+              manage_journal_upload: false,
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_service('systemd-journal-upload') }
+        end
+
         context 'when disabling udevd management' do
           let(:params) do
             {

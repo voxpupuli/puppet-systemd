@@ -132,6 +132,12 @@
 # @param journald_settings
 #   Config Hash that is used to configure settings in journald.conf
 #
+# @param manage_journal_upload
+#   Manage the systemd journal upload to a remote server
+#
+# @param journal_upload_settings
+#   Config Hash that is used to configure settings in journal-upload.conf
+#
 # @param manage_udevd
 #   Manage the systemd udev daemon
 #
@@ -275,6 +281,8 @@ class systemd (
   Boolean                                             $purge_dropin_dirs = true,
   Boolean                                             $manage_journald = true,
   Systemd::JournaldSettings                           $journald_settings = {},
+  Boolean                                             $manage_journal_upload = false,
+  Systemd::JournalUploadSettings                      $journal_upload_settings = {},
   Systemd::MachineInfoSettings                        $machine_info_settings = {},
   Boolean                                             $manage_udevd = false,
   Optional[Variant[Integer,String]]                   $udev_log = undef,
@@ -381,6 +389,10 @@ class systemd (
 
   if $manage_journald {
     contain systemd::journald
+  }
+
+  if $manage_journal_upload {
+    contain systemd::journal_upload
   }
 
   if $manage_logind {
