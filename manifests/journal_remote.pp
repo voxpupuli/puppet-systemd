@@ -18,18 +18,18 @@ class systemd::journal_remote (
     ensure => running,
   }
   $systemd::journal_remote_settings.each |$option, $value| {
-    ini_setting { $option:
+    ini_setting { "journal-remote_${option}":
       path    => '/etc/systemd/journal-remote.conf',
       section => 'Remote',
       setting => $option,
       notify  => Service['systemd-journal-remote'],
     }
-    if $value =~ Hash {
-      Ini_setting[$option] {
+    if $value =~ Systemd::JournaldSettings::Ensure {
+      Ini_setting["journal-remote_${option}"] {
         * => $value,
       }
     } else {
-      Ini_setting[$option] {
+      Ini_setting["journal-remote_${option}"] {
         value   => $value,
       }
     }

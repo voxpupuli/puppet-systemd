@@ -608,18 +608,20 @@ describe 'systemd' do
           it { is_expected.to have_ini_setting_resource_count(4) }
 
           it {
-            expect(subject).to contain_ini_setting('SplitMode').with(
+            expect(subject).to contain_ini_setting('journal-remote_SplitMode').with(
               path: '/etc/systemd/journal-remote.conf',
               section: 'Remote',
+              setting: 'SplitMode',
               notify: 'Service[systemd-journal-remote]',
               value: 'host'
             )
           }
 
           it {
-            expect(subject).to contain_ini_setting('TrustedCertificateFile').with(
+            expect(subject).to contain_ini_setting('journal-remote_TrustedCertificateFile').with(
               path: '/etc/systemd/journal-remote.conf',
               section: 'Remote',
+              setting: 'TrustedCertificateFile',
               notify: 'Service[systemd-journal-remote]',
               ensure: 'absent'
             )
