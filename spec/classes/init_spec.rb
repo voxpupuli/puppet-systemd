@@ -587,6 +587,56 @@ describe 'systemd' do
           it { is_expected.not_to contain_service('systemd-journald') }
         end
 
+        context 'when journal-remote is enabled' do
+          let(:params) do
+            {
+              manage_journal_remote: true,
+              journal_remote_settings: {
+                'SplitMode' => 'host',
+                'ServerKeyFile' => '/tmp/key.pem',
+                'ServerCertificateFile' => '/tmp/cert.pem',
+                'TrustedCertificateFile' => {
+                  'ensure' => 'absent',
+                },
+              },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_service('systemd-journal-remote') }
+
+          it { is_expected.to have_ini_setting_resource_count(4) }
+
+          it {
+            expect(subject).to contain_ini_setting('SplitMode').with(
+              path: '/etc/systemd/journal-remote.conf',
+              section: 'Remote',
+              notify: 'Service[systemd-journal-remote]',
+              value: 'host'
+            )
+          }
+
+          it {
+            expect(subject).to contain_ini_setting('TrustedCertificateFile').with(
+              path: '/etc/systemd/journal-remote.conf',
+              section: 'Remote',
+              notify: 'Service[systemd-journal-remote]',
+              ensure: 'absent'
+            )
+          }
+        end
+
+        context 'when journal-remote is not enabled' do
+          let(:params) do
+            {
+              manage_journal_remote: false,
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_service('systemd-journal-remote') }
+        end
+
         context 'when disabling udevd management' do
           let(:params) do
             {
