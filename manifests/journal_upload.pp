@@ -18,18 +18,18 @@ class systemd::journal_upload (
     ensure => running,
   }
   $systemd::journal_upload_settings.each |$option, $value| {
-    ini_setting { $option:
+    ini_setting { "journal-upload_${option}":
       path    => '/etc/systemd/journal-upload.conf',
       section => 'Upload',
       setting => $option,
       notify  => Service['systemd-journal-upload'],
     }
-    if $value =~ Hash {
-      Ini_setting[$option] {
+    if $value =~ Systemd::JournaldSettings::Ensure {
+      Ini_setting["journal-upload_${option}"] {
         * => $value,
       }
     } else {
-      Ini_setting[$option] {
+      Ini_setting["journal-upload_${option}"] {
         value   => $value,
       }
     }

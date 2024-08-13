@@ -696,18 +696,20 @@ describe 'systemd' do
           it { is_expected.to have_ini_setting_resource_count(4) }
 
           it {
-            expect(subject).to contain_ini_setting('URL').with(
+            expect(subject).to contain_ini_setting('journal-upload_URL').with(
               path: '/etc/systemd/journal-upload.conf',
               section: 'Upload',
+              setting: 'URL',
               notify: 'Service[systemd-journal-upload]',
               value: 'https://central.server:19532'
             )
           }
 
           it {
-            expect(subject).to contain_ini_setting('TrustedCertificateFile').with(
+            expect(subject).to contain_ini_setting('journal-upload_TrustedCertificateFile').with(
               path: '/etc/systemd/journal-upload.conf',
               section: 'Upload',
+              setting: 'TrustedCertificateFile',
               notify: 'Service[systemd-journal-upload]',
               ensure: 'absent'
             )
