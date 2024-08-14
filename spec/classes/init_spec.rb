@@ -675,14 +675,23 @@ describe 'systemd' do
           it { is_expected.not_to contain_service('systemd-journald') }
         end
 
-        context 'when journal-upload is enabled' do
+        context 'when journal-upload and journal-remote is enabled' do
           let(:params) do
             {
               manage_journal_upload: true,
               journal_upload_settings: {
                 'URL' => 'https://central.server:19532',
-                'ServerKeyFile' => '/tmp/key.pem',
-                'ServerCertificateFile' => '/tmp/cert.pem',
+                'ServerKeyFile' => '/tmp/key-upload.pem',
+                'ServerCertificateFile' => {
+                  'ensure' => 'absent',
+                },
+                'TrustedCertificateFile' => '/tmp/cert-upload.pem',
+              },
+              manage_journal_remote: true,
+              journal_remote_settings: {
+                'SplitMode' => 'host',
+                'ServerKeyFile' => '/tmp/key-remote.pem',
+                'ServerCertificateFile' => '/tmp/cert-remote.pem',
                 'TrustedCertificateFile' => {
                   'ensure' => 'absent',
                 },
@@ -692,18 +701,9 @@ describe 'systemd' do
 
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_service('systemd-journal-upload') }
+          it { is_expected.to contain_service('systemd-journal-remote') }
 
-          it { is_expected.to have_ini_setting_resource_count(4) }
-
-          it {
-            expect(subject).to contain_ini_setting('journal-upload_URL').with(
-              path: '/etc/systemd/journal-upload.conf',
-              section: 'Upload',
-              setting: 'URL',
-              notify: 'Service[systemd-journal-upload]',
-              value: 'https://central.server:19532'
-            )
-          }
+          it { is_expected.to have_ini_setting_resource_count(8) }
 
           it {
             expect(subject).to contain_ini_setting('journal-upload_TrustedCertificateFile').with(
@@ -711,20 +711,52 @@ describe 'systemd' do
               section: 'Upload',
               setting: 'TrustedCertificateFile',
               notify: 'Service[systemd-journal-upload]',
+              value: '/tmp/cert-upload.pem'
+            )
+          }
+
+          it {
+            expect(subject).to contain_ini_setting('journal-remote_TrustedCertificateFile').with(
+              path: '/etc/systemd/journal-remote.conf',
+              section: 'Remote',
+              setting: 'TrustedCertificateFile',
+              notify: 'Service[systemd-journal-remote]',
               ensure: 'absent'
+            )
+          }
+
+          it {
+            expect(subject).to contain_ini_setting('journal-upload_ServerCertificateFile').with(
+              path: '/etc/systemd/journal-upload.conf',
+              section: 'Upload',
+              setting: 'ServerCertificateFile',
+              notify: 'Service[systemd-journal-upload]',
+              ensure: 'absent'
+            )
+          }
+
+          it {
+            expect(subject).to contain_ini_setting('journal-remote_ServerCertificateFile').with(
+              path: '/etc/systemd/journal-remote.conf',
+              section: 'Remote',
+              setting: 'ServerCertificateFile',
+              notify: 'Service[systemd-journal-remote]',
+              value: '/tmp/cert-remote.pem'
             )
           }
         end
 
-        context 'when journal-upload is not enabled' do
+        context 'when journal-upload/journal-remote is not enabled' do
           let(:params) do
             {
               manage_journal_upload: false,
+              manage_journal_remote: false,
             }
           end
 
           it { is_expected.to compile.with_all_deps }
           it { is_expected.not_to contain_service('systemd-journal-upload') }
+          it { is_expected.not_to contain_service('systemd-journal-remote') }
         end
 
         context 'when disabling udevd management' do
