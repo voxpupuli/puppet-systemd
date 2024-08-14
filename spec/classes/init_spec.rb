@@ -700,8 +700,19 @@ describe 'systemd' do
           end
 
           it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_service('systemd-journal-upload') }
-          it { is_expected.to contain_service('systemd-journal-remote') }
+
+          it {
+            is_expected.to contain_service('systemd-journal-upload').with(
+              ensure: 'running',
+              enable: true
+            )
+          }
+
+          it {
+            is_expected.to contain_service('systemd-journal-remote').with(
+              ensure: 'running'
+            )
+          }
 
           it { is_expected.to have_ini_setting_resource_count(8) }
 

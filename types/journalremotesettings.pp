@@ -1,4 +1,4 @@
-# Matches Systemd journal remote config Struct
+# @summary matches Systemd journal remote config Struct
 type Systemd::JournalRemoteSettings = Struct[
   # lint:ignore:140chars
   {

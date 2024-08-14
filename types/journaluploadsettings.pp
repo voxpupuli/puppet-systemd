@@ -1,4 +1,4 @@
-# Matches Systemd journal upload config Struct
+# @summary matches Systemd journal upload config Struct
 type Systemd::JournalUploadSettings = Struct[
   # lint:ignore:140chars
   {
