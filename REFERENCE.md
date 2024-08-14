@@ -15,6 +15,7 @@
 
 * `systemd::coredump`: This class manages the systemd-coredump configuration.
 * `systemd::install`: Install any systemd sub packages
+* `systemd::journal_remote`: This class manages and configures journal-remote.
 * `systemd::journal_upload`: This class manages and configures journal-upload.
 * `systemd::journald`: This class manages and configures journald.
 * `systemd::logind`: This class manages systemd's login manager configuration.
@@ -57,6 +58,7 @@
 
 * [`Systemd::CoredumpSettings`](#Systemd--CoredumpSettings): Configurations for coredump.conf
 * [`Systemd::Dropin`](#Systemd--Dropin): custom datatype that validates filenames/paths for valid systemd dropin files
+* [`Systemd::JournalRemoteSettings`](#Systemd--JournalRemoteSettings): Matches Systemd journal remote config Struct
 * [`Systemd::JournalUploadSettings`](#Systemd--JournalUploadSettings): Matches Systemd journal upload config Struct
 * [`Systemd::JournaldSettings`](#Systemd--JournaldSettings): Matches Systemd journald config Struct
 * [`Systemd::JournaldSettings::Ensure`](#Systemd--JournaldSettings--Ensure): defines allowed ensure states for systemd-journald settings
@@ -130,6 +132,8 @@ The following parameters are available in the `systemd` class:
 * [`journald_settings`](#-systemd--journald_settings)
 * [`manage_journal_upload`](#-systemd--manage_journal_upload)
 * [`journal_upload_settings`](#-systemd--journal_upload_settings)
+* [`manage_journal_remote`](#-systemd--manage_journal_remote)
+* [`journal_remote_settings`](#-systemd--journal_remote_settings)
 * [`manage_udevd`](#-systemd--manage_udevd)
 * [`udev_log`](#-systemd--udev_log)
 * [`udev_children_max`](#-systemd--udev_children_max)
@@ -477,6 +481,22 @@ Default value: `false`
 Data type: `Systemd::JournalUploadSettings`
 
 Config Hash that is used to configure settings in journal-upload.conf
+
+Default value: `{}`
+
+##### <a name="-systemd--manage_journal_remote"></a>`manage_journal_remote`
+
+Data type: `Boolean`
+
+Manage the systemd journal remote server used to upload journals
+
+Default value: `false`
+
+##### <a name="-systemd--journal_remote_settings"></a>`journal_remote_settings`
+
+Data type: `Systemd::JournalRemoteSettings`
+
+Config Hash that is used to configure settings in journal-remote.conf
 
 Default value: `{}`
 
@@ -2581,6 +2601,26 @@ Struct[{
 custom datatype that validates filenames/paths for valid systemd dropin files
 
 Alias of `Pattern['^[^/]+\.conf$']`
+
+### <a name="Systemd--JournalRemoteSettings"></a>`Systemd::JournalRemoteSettings`
+
+Matches Systemd journal remote config Struct
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['Seal']                   => Variant[Enum['yes','no'],Systemd::JournaldSettings::Ensure],
+    Optional['SplitMode']              => Variant[Enum['host','none'],Systemd::JournaldSettings::Ensure],
+    Optional['ServerKeyFile']          => Variant[Stdlib::Unixpath,Systemd::JournaldSettings::Ensure],
+    Optional['ServerCertificateFile']  => Variant[Stdlib::Unixpath,Systemd::JournaldSettings::Ensure],
+    Optional['TrustedCertificateFile'] => Variant[Stdlib::Unixpath,Systemd::JournaldSettings::Ensure],
+    Optional['MaxUse']                 => Variant[Systemd::Unit::Amount,Systemd::JournaldSettings::Ensure],
+    Optional['KeepFree']               => Variant[Systemd::Unit::Amount,Systemd::JournaldSettings::Ensure],
+    Optional['MaxFileSize']            => Variant[Systemd::Unit::Amount,Systemd::JournaldSettings::Ensure],
+    Optional['MaxFiles']               => Variant[Integer,Systemd::JournaldSettings::Ensure],
+  }]
+```
 
 ### <a name="Systemd--JournalUploadSettings"></a>`Systemd::JournalUploadSettings`
 
