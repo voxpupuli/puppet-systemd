@@ -58,8 +58,8 @@
 
 * [`Systemd::CoredumpSettings`](#Systemd--CoredumpSettings): Configurations for coredump.conf
 * [`Systemd::Dropin`](#Systemd--Dropin): custom datatype that validates filenames/paths for valid systemd dropin files
-* [`Systemd::JournalRemoteSettings`](#Systemd--JournalRemoteSettings): Matches Systemd journal remote config Struct
-* [`Systemd::JournalUploadSettings`](#Systemd--JournalUploadSettings): Matches Systemd journal upload config Struct
+* [`Systemd::JournalRemoteSettings`](#Systemd--JournalRemoteSettings): matches Systemd journal remote config Struct
+* [`Systemd::JournalUploadSettings`](#Systemd--JournalUploadSettings): matches Systemd journal upload config Struct
 * [`Systemd::JournaldSettings`](#Systemd--JournaldSettings): Matches Systemd journald config Struct
 * [`Systemd::JournaldSettings::Ensure`](#Systemd--JournaldSettings--Ensure): defines allowed ensure states for systemd-journald settings
 * [`Systemd::LogindSettings`](#Systemd--LogindSettings): Matches Systemd Login Manager Struct
@@ -2604,7 +2604,7 @@ Alias of `Pattern['^[^/]+\.conf$']`
 
 ### <a name="Systemd--JournalRemoteSettings"></a>`Systemd::JournalRemoteSettings`
 
-Matches Systemd journal remote config Struct
+matches Systemd journal remote config Struct
 
 Alias of
 
@@ -2624,7 +2624,7 @@ Struct[{
 
 ### <a name="Systemd--JournalUploadSettings"></a>`Systemd::JournalUploadSettings`
 
-Matches Systemd journal upload config Struct
+matches Systemd journal upload config Struct
 
 Alias of
 
