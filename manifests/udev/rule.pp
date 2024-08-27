@@ -38,14 +38,14 @@ define systemd::udev::rule (
     fail("systemd::udev::rule - ${name}: param rules is empty, you need to pass rules")
   }
 
-  if $systemd::udev_reload {
+  $_notify = if $systemd::udev_reload {
     if $notify_services =~ Array {
-      $_notify = $notify_services << 'Exec[systemd-udev_reload]'
+      $notify_services << 'Exec[systemd-udev_reload]'
     } else {
-      $_notify = [$notify_services, 'Exec[systemd-udev_reload]']
+      [$notify_services, 'Exec[systemd-udev_reload]']
     }
   } else {
-    $_notify = $notify_services
+    $notify_services
   }
 
   file { join([$path, $name], '/'):
