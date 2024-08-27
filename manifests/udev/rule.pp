@@ -43,7 +43,7 @@ define systemd::udev::rule (
     owner                   => 'root',
     group                   => 'root',
     mode                    => '0444',
-    notify                  => $notify_services,
+    notify                  => $notify_services << 'Exec[systemd-udev_reload]',
     selinux_ignore_defaults => $selinux_ignore_defaults,
     content                 => epp("${module_name}/udev_rule.epp", { 'rules' => $rules }),
   }

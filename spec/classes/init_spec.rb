@@ -701,6 +701,8 @@ describe 'systemd' do
                      'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
                    ])
           }
+
+          it { is_expected.to contain_file('/etc/udev/rules.d/example_raw.rules').that_notifies('Exec[systemd-udev_reload]') }
         end
 
         context 'with machine-info' do
