@@ -36,4 +36,10 @@ class systemd::udevd {
       * => $udev_rule,
     }
   }
+
+  exec { 'systemd-udev_reload':
+    command     => 'udevadm control --reload-rules && udevadm trigger',
+    refreshonly => true,
+    path        => $facts['path'],
+  }
 }

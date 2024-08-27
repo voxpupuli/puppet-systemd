@@ -134,6 +134,7 @@ The following parameters are available in the `systemd` class:
 * [`udev_resolve_names`](#-systemd--udev_resolve_names)
 * [`udev_timeout_signal`](#-systemd--udev_timeout_signal)
 * [`udev_rules`](#-systemd--udev_rules)
+* [`udev_reload`](#-systemd--udev_reload)
 * [`machine_info_settings`](#-systemd--machine_info_settings)
 * [`manage_logind`](#-systemd--manage_logind)
 * [`logind_settings`](#-systemd--logind_settings)
@@ -524,6 +525,14 @@ Config Hash that is used to generate instances of our
 `udev::rule` define.
 
 Default value: `{}`
+
+##### <a name="-systemd--udev_reload"></a>`udev_reload`
+
+Data type: `Boolean`
+
+Whether udev rules should be automatically reloaded upon change.
+
+Default value: `false`
 
 ##### <a name="-systemd--machine_info_settings"></a>`machine_info_settings`
 

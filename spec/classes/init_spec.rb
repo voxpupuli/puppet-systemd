@@ -642,6 +642,7 @@ describe 'systemd' do
           let(:params) do
             {
               manage_udevd: true,
+              udev_reload: true,
               udev_log: 'daemon',
               udev_children_max: 1,
               udev_exec_delay: 2,
@@ -664,6 +665,7 @@ describe 'systemd' do
               {
                 manage_udevd: true,
                 udev_purge_rules: true,
+                udev_reload: true,
               }
             end
 
@@ -701,6 +703,9 @@ describe 'systemd' do
                      'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
                    ])
           }
+
+          it { is_expected.to contain_exec('systemd-udev_reload') }
+          it { is_expected.to contain_file('/etc/udev/rules.d/example_raw.rules').that_notifies('Exec[systemd-udev_reload]') }
         end
 
         context 'with machine-info' do

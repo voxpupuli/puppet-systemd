@@ -88,7 +88,24 @@ describe 'systemd::udev::rule' do
           it { is_expected.to contain_file("/etc/udev/rules.d/#{title}").with_ensure('absent').with_notify([]) }
         end
 
-        describe 'ensured absent with notify' do
+        describe 'ensured absent with automatic reload' do
+          let(:pre_condition) do
+            <<-PUPPET
+            class { 'systemd': manage_udevd => true, manage_journald => false, udev_reload => true }
+            PUPPET
+          end
+          let(:params) do
+            {
+              ensure: 'absent',
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it { is_expected.to contain_file("/etc/udev/rules.d/#{title}").with_ensure('absent').with_notify(['Exec[systemd-udev_reload]']) }
+        end
+
+        describe 'ensured absent with custom notify' do
           let(:params) { { ensure: 'absent', notify_services: 'Service[systemd-udevd]', } }
 
           it { is_expected.to compile.with_all_deps }

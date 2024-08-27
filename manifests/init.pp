@@ -157,6 +157,9 @@
 #   Config Hash that is used to generate instances of our
 #   `udev::rule` define.
 #
+# @param udev_reload
+#   Whether udev rules should be automatically reloaded upon change.
+#
 # @param machine_info_settings
 #   Settings to place into /etc/machine-info (hostnamectl)
 #
@@ -261,6 +264,7 @@ class systemd (
   Optional[Integer]                                   $udev_event_timeout = undef,
   Optional[Enum['early', 'late', 'never']]            $udev_resolve_names = undef,
   Optional[Variant[Integer,String]]                   $udev_timeout_signal = undef,
+  Boolean                                             $udev_reload = false,
   Boolean                                             $manage_logind = false,
   Systemd::LogindSettings                             $logind_settings = {},
   Boolean                                             $manage_all_network_files = false,
