@@ -42,5 +42,4 @@ class systemd::udevd {
     refreshonly => true,
     path        => $facts['path'],
   }
-
 }
