@@ -441,6 +441,17 @@ class { 'systemd':
 }
 ```
 
+With enabled `udev_reload` modified rules would be applied immediately by executing `udevadm control --reload-rules`.
+
+```yaml
+systemd::udev_reload: true
+systemd::manage_udevd: true
+systemd::udev_rules:
+  50-md.rules:
+    rules:
+      - 'SUBSYSTEM=="block", KERNEL=="md*", ACTION=="change", TEST=="md/stripe_cache_size", ATTR{md/stripe_cache_size}="4096"'
+```
+
 ### udev::rules configuration
 
 Custom udev rules can be defined for specific events.
@@ -453,7 +464,7 @@ systemd::udev::rule:
   notify: "Service[systemd-udevd]"
   rules:
     - 'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"'
-    - 'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
+    - 'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"'
 ```
 
 ### oomd configuration
