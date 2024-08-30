@@ -36,7 +36,7 @@ systemd::unit_file { 'foo.service':
 This is equivalent to:
 
 ```puppet
-file { '/usr/lib/systemd/system/foo.service':
+file { '/etc/systemd/system/foo.service':
   ensure => file,
   owner  => 'root',
   group  => 'root',
