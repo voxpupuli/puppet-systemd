@@ -63,6 +63,27 @@
 #    },
 #  }
 #
+# @example Mount a Filesystem and Use for a Service
+#  systemd::manage_unit { 'var-lib-sss-db.mount':
+#    ensure      => present,
+#    unit_entry  => {
+#      'Description' => 'Mount sss tmpfs db',
+#    },
+#    mount_entry => {
+#      'What'    => 'tmpfs',
+#      'Where'   => '/var/lib/sss/db',
+#      'Type'    => 'tmpfs',
+#      'Options' => 'size=300M,mode=0700,uid=sssd,gid=sssd,rootcontext=system_u:object_r:sssd_var_lib_t:s0',
+#    },
+#  }
+#  systemd::manage_dropin { 'tmpfs-db.conf':
+#    ensure     => present,
+#    unit       => 'sssd.service',
+#    unit_entry => {
+#      'RequiresMountsFor' => '/var/lib/sss/db',
+#    },
+#  }
+#
 # @example Remove a unit file
 #  systemd::manage_unit { 'my.service':
 #    ensure     => 'absent',
@@ -96,6 +117,7 @@
 # @param timer_entry key value pairs for [Timer] section of the unit file
 # @param path_entry key value pairs for [Path] section of the unit file.
 # @param socket_entry kev value paors for [Socket] section of the unit file.
+# @param mount_entry kev value pairs for [Mount] section of the unit file.
 #
 define systemd::manage_unit (
   Enum['present', 'absent']                $ensure                  = 'present',
@@ -118,6 +140,7 @@ define systemd::manage_unit (
   Optional[Systemd::Unit::Timer]           $timer_entry             = undef,
   Optional[Systemd::Unit::Path]            $path_entry              = undef,
   Optional[Systemd::Unit::Socket]          $socket_entry            = undef,
+  Optional[Systemd::Unit::Mount]           $mount_entry             = undef,
 ) {
   assert_type(Systemd::Unit, $name)
 
@@ -135,6 +158,10 @@ define systemd::manage_unit (
 
   if $slice_entry and $name !~ Pattern['^[^/]+\.slice'] {
     fail("Systemd::Manage_unit[${name}]: slice_entry is only valid for slice units")
+  }
+
+  if $mount_entry and $name !~ Pattern['^[^/]+\.mount'] {
+    fail("Systemd::Manage_unit[${name}]: mount_entry is only valid for mount units")
   }
 
   if $ensure != 'absent' and  $name =~ Pattern['^[^/]+\.service'] and !$service_entry {
@@ -162,6 +189,7 @@ define systemd::manage_unit (
         'timer_entry'   => $timer_entry,
         'path_entry'    => $path_entry,
         'socket_entry'  => $socket_entry,
+        'mount_entry'   => $mount_entry,
     }),
   }
 }

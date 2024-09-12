@@ -67,6 +67,7 @@
 * [`Systemd::Unit::Amount`](#Systemd--Unit--Amount): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::AmountOrPercent`](#Systemd--Unit--AmountOrPercent): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::Install`](#Systemd--Unit--Install): Possible keys for the [Install] section of a unit file
+* [`Systemd::Unit::Mount`](#Systemd--Unit--Mount): Possible keys for the [Mount] section of a unit file
 * [`Systemd::Unit::Path`](#Systemd--Unit--Path): Possible keys for the [Path] section of a unit file
 * [`Systemd::Unit::Percent`](#Systemd--Unit--Percent): Systemd definition of a percentage
 * [`Systemd::Unit::Service`](#Systemd--Unit--Service): Possible keys for the [Service] section of a unit file
@@ -1031,6 +1032,7 @@ The following parameters are available in the `systemd::manage_dropin` defined t
 * [`timer_entry`](#-systemd--manage_dropin--timer_entry)
 * [`path_entry`](#-systemd--manage_dropin--path_entry)
 * [`socket_entry`](#-systemd--manage_dropin--socket_entry)
+* [`mount_entry`](#-systemd--manage_dropin--mount_entry)
 
 ##### <a name="-systemd--manage_dropin--unit"></a>`unit`
 
@@ -1174,6 +1176,14 @@ key value pairs for the [Socket] section of the unit file
 
 Default value: `undef`
 
+##### <a name="-systemd--manage_dropin--mount_entry"></a>`mount_entry`
+
+Data type: `Optional[Systemd::Unit::Mount]`
+
+key value pairs for the [Mount] section of the unit file
+
+Default value: `undef`
+
 ### <a name="systemd--manage_unit"></a>`systemd::manage_unit`
 
 Generate unit file from template
@@ -1251,6 +1261,30 @@ systemd::manage_unit{'arcd@.service':
 }
 ```
 
+##### Mount a Filesystem and Use for a Service
+
+```puppet
+systemd::manage_unit { 'var-lib-sss-db.mount':
+  ensure      => present,
+  unit_entry  => {
+    'Description' => 'Mount sss tmpfs db',
+  },
+  mount_entry => {
+    'What'    => 'tmpfs',
+    'Where'   => '/var/lib/sss/db',
+    'Type'    => 'tmpfs',
+    'Options' => 'size=300M,mode=0700,uid=sssd,gid=sssd,rootcontext=system_u:object_r:sssd_var_lib_t:s0',
+  },
+}
+systemd::manage_dropin { 'tmpfs-db.conf':
+  ensure     => present,
+  unit       => 'sssd.service',
+  unit_entry => {
+    'RequiresMountsFor' => '/var/lib/sss/db',
+  },
+}
+```
+
 ##### Remove a unit file
 
 ```puppet
@@ -1284,6 +1318,7 @@ The following parameters are available in the `systemd::manage_unit` defined typ
 * [`timer_entry`](#-systemd--manage_unit--timer_entry)
 * [`path_entry`](#-systemd--manage_unit--path_entry)
 * [`socket_entry`](#-systemd--manage_unit--socket_entry)
+* [`mount_entry`](#-systemd--manage_unit--mount_entry)
 
 ##### <a name="-systemd--manage_unit--name"></a>`name`
 
@@ -1448,6 +1483,14 @@ Default value: `undef`
 Data type: `Optional[Systemd::Unit::Socket]`
 
 kev value paors for [Socket] section of the unit file.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_unit--mount_entry"></a>`mount_entry`
+
+Data type: `Optional[Systemd::Unit::Mount]`
+
+kev value pairs for [Mount] section of the unit file.
 
 Default value: `undef`
 
@@ -2795,6 +2838,30 @@ Struct[{
     Optional['WantedBy']   => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['RequiredBy'] => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['Also']       => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+  }]
+```
+
+### <a name="Systemd--Unit--Mount"></a>`Systemd::Unit::Mount`
+
+Possible keys for the [Mount] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.mount.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['What']          => String[1],
+    Optional['Where']         => Stdlib::Unixpath,
+    Optional['Type']          => String[1],
+    Optional['Options']       => String[1],
+    Optional['SloppyOptions'] => Boolean,
+    Optional['LazyUnmount']   => Boolean,
+    Optional['ReadWriteOnly'] => Boolean,
+    Optional['ForceUnmount']  => Boolean,
+    Optional['DirectoryMode'] => Stdlib::Filemode,
+    Optional['TimeoutSec']    => String[0],
   }]
 ```
 

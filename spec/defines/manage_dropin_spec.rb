@@ -153,6 +153,25 @@ describe 'systemd::manage_dropin' do
           }
         end
 
+        context 'on a mount' do
+          let(:params) do
+            {
+              unit: 'var-lib-sss-db.mount',
+              mount_entry: {
+                'SloppyOptions' => true,
+              }
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__dropin_file('foobar.conf').
+              with_unit('var-lib-sss-db.mount').
+              with_content(%r{^SloppyOptions=true$})
+          }
+        end
+
         context 'on a slice' do
           let(:params) do
             {

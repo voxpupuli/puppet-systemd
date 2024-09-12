@@ -99,6 +99,34 @@ describe 'systemd::manage_unit' do
           end
         end
 
+        context 'on a mount' do
+          let(:title) { 'var-lib-sss-db.mount' }
+
+          let(:params) do
+            {
+              unit_entry: {
+                Description: 'Mount sssd dir',
+              },
+              mount_entry: {
+                'What' => 'tmpfs',
+                'Where' => '/var/lib/sss/db',
+                'Type' => 'tmpfs',
+                'Options' => 'size=300M',
+              },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__unit_file('var-lib-sss-db.mount').
+              with_content(%r{^\[Mount\]$}).
+              with_content(%r{^What=tmpfs$}).
+              with_content(%r{^Where=/var/lib/sss/db$}).
+              with_content(%r{^Options=size=300M$})
+          }
+        end
+
         context 'on a timer' do
           let(:title) { 'winter.timer' }
 
