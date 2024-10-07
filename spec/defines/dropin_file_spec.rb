@@ -136,7 +136,7 @@ describe 'systemd::dropin_file' do
             "systemd::dropin_file { 'httpd_longer-timeout':
               filename => '#{default_params[:filename]}',
               unit     => 'httpd.service',
-              content  => '#{default_params[:context]}',
+              content  => '#{default_params[:content]}',
             }"
           end
           #
