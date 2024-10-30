@@ -22,7 +22,7 @@
 * `systemd::networkd`: This class provides an abstract way to trigger systemd-networkd
 * `systemd::oomd`: This class manages and configures oomd.
 * `systemd::resolved`: This class provides an abstract way to trigger resolved.
-* `systemd::system`: This class provides a solution to enable accounting
+* `systemd::service_manager`: This class provides a solution to manage system and/or user service manager settings
 * `systemd::timedatectl`: This class provides an abstract way to set elements with timedatectl
 * `systemd::timesyncd`: This class provides an abstract way to trigger systemd-timesyncd
 * `systemd::udevd`: This class manages systemd's udev config
@@ -54,15 +54,24 @@
 
 ### Data types
 
+* [`Systemd::Boolean`](#Systemd--Boolean): Defines systemd boolean type representation
+* [`Systemd::Boolean::False`](#Systemd--Boolean--False): Defines systemd boolean "false" type representation
+* [`Systemd::Boolean::True`](#Systemd--Boolean--True): Defines systemd boolean "true" type representation
+* [`Systemd::Capabilities`](#Systemd--Capabilities): Defines allowed capabilities
 * [`Systemd::CoredumpSettings`](#Systemd--CoredumpSettings): Configurations for coredump.conf
 * [`Systemd::Dropin`](#Systemd--Dropin): custom datatype that validates filenames/paths for valid systemd dropin files
 * [`Systemd::JournaldSettings`](#Systemd--JournaldSettings): Matches Systemd journald config Struct
 * [`Systemd::JournaldSettings::Ensure`](#Systemd--JournaldSettings--Ensure): defines allowed ensure states for systemd-journald settings
+* [`Systemd::LogLevel`](#Systemd--LogLevel): Defines allowed log levels
 * [`Systemd::LogindSettings`](#Systemd--LogindSettings): Matches Systemd Login Manager Struct
 * [`Systemd::LogindSettings::Ensure`](#Systemd--LogindSettings--Ensure): defines allowed ensure states for systemd-logind settings
 * [`Systemd::MachineInfoSettings`](#Systemd--MachineInfoSettings): Matches Systemd machine-info (hostnamectl) file Struct
 * [`Systemd::OomdSettings`](#Systemd--OomdSettings): Configurations for oomd.conf
+* [`Systemd::Output`](#Systemd--Output): Defines allowed output values
 * [`Systemd::ServiceLimits`](#Systemd--ServiceLimits): Deprecated - Matches Systemd Service Limit Struct
+* [`Systemd::ServiceManagerSettings`](#Systemd--ServiceManagerSettings): Matches Systemd system.conf/user.conf settings
+* [`Systemd::SettingEnsure`](#Systemd--SettingEnsure): Defines allowed ensure states for an ini_setting
+* [`Systemd::Timespan`](#Systemd--Timespan): Defines a timespan type
 * [`Systemd::Unit`](#Systemd--Unit): custom datatype that validates different filenames for systemd units and unit templates
 * [`Systemd::Unit::Amount`](#Systemd--Unit--Amount): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::AmountOrPercent`](#Systemd--Unit--AmountOrPercent): Systemd definition of amount, often bytes or united bytes
@@ -156,6 +165,10 @@ The following parameters are available in the `systemd` class:
 * [`oomd_ensure`](#-systemd--oomd_ensure)
 * [`oomd_settings`](#-systemd--oomd_settings)
 * [`udev_purge_rules`](#-systemd--udev_purge_rules)
+* [`manage_system_conf`](#-systemd--manage_system_conf)
+* [`system_settings`](#-systemd--system_settings)
+* [`manage_user_conf`](#-systemd--manage_user_conf)
+* [`user_settings`](#-systemd--user_settings)
 
 ##### <a name="-systemd--default_target"></a>`default_target`
 
@@ -612,7 +625,8 @@ Default value: `'/etc/systemd/network'`
 
 Data type: `Boolean`
 
-when enabled, the different accounting options (network traffic, IO, CPU util...) are enabled for units
+When enabled, the different accounting options (network traffic, IO,
+CPU util...) are enabled for units.
 
 Default value: `false`
 
@@ -620,7 +634,9 @@ Default value: `false`
 
 Data type: `Hash[String,String]`
 
-Hash of the different accounting options. This highly depends on the used systemd version. The module provides sane defaults per operating system using Hiera.
+Hash of the different accounting options. This highly depends on the used
+systemd version. The module provides sane defaults per operating system
+using Hiera.
 
 Default value: `{}`
 
@@ -695,6 +711,42 @@ Data type: `Boolean`
 Toggle if unmanaged files in /etc/udev/rules.d should be purged if manage_udevd is enabled
 
 Default value: `false`
+
+##### <a name="-systemd--manage_system_conf"></a>`manage_system_conf`
+
+Data type: `Boolean`
+
+Should system service manager configurations be managed
+
+Default value: `false`
+
+##### <a name="-systemd--system_settings"></a>`system_settings`
+
+Data type: `Systemd::ServiceManagerSettings`
+
+Config Hash that is used to configure settings in system.conf
+NOTE: It's currently impossible to have multiple entries of the same key in
+the settings.
+
+Default value: `{}`
+
+##### <a name="-systemd--manage_user_conf"></a>`manage_user_conf`
+
+Data type: `Boolean`
+
+Should user service manager configurations be managed
+
+Default value: `false`
+
+##### <a name="-systemd--user_settings"></a>`user_settings`
+
+Data type: `Systemd::ServiceManagerSettings`
+
+Config Hash that is used to configure settings in user.conf
+NOTE: It's currently impossible to have multiple entries of the same key in
+the settings.
+
+Default value: `{}`
 
 ### <a name="systemd--tmpfiles"></a>`systemd::tmpfiles`
 
@@ -2587,6 +2639,30 @@ Use path (-p) ornon-path  style escaping.
 
 ## Data types
 
+### <a name="Systemd--Boolean"></a>`Systemd::Boolean`
+
+Defines systemd boolean type representation
+
+Alias of `Variant[Systemd::Boolean::True, Systemd::Boolean::False]`
+
+### <a name="Systemd--Boolean--False"></a>`Systemd::Boolean::False`
+
+Defines systemd boolean "false" type representation
+
+Alias of `Variant[Integer[0,0], Enum['no', 'false'], Boolean[false]]`
+
+### <a name="Systemd--Boolean--True"></a>`Systemd::Boolean::True`
+
+Defines systemd boolean "true" type representation
+
+Alias of `Variant[Integer[1], Enum['yes', 'true'], Boolean[true]]`
+
+### <a name="Systemd--Capabilities"></a>`Systemd::Capabilities`
+
+Defines allowed capabilities
+
+Alias of `Variant[Pattern[/^~?(CAP_[A-Z_]+ *)+$/]]`
+
 ### <a name="Systemd--CoredumpSettings"></a>`Systemd::CoredumpSettings`
 
 Configurations for coredump.conf
@@ -2660,6 +2736,12 @@ Struct[{
 defines allowed ensure states for systemd-journald settings
 
 Alias of `Struct[{ 'ensure' => Enum['present','absent'] }]`
+
+### <a name="Systemd--LogLevel"></a>`Systemd::LogLevel`
+
+Defines allowed log levels
+
+Alias of `Variant[Enum['emerg','alert','crit','err','warning','notice','info','debug'], Integer[0,7]]`
 
 ### <a name="Systemd--LogindSettings"></a>`Systemd::LogindSettings`
 
@@ -2738,6 +2820,12 @@ Struct[{
   }]
 ```
 
+### <a name="Systemd--Output"></a>`Systemd::Output`
+
+Used in DefaultStandardOutput/DefaultStandardError e.g.
+
+Alias of `Enum['inherit', 'null', 'tty', 'journal', 'journal+console', 'kmsg', 'kmsg+console']`
+
 ### <a name="Systemd--ServiceLimits"></a>`Systemd::ServiceLimits`
 
 Deprecated - Matches Systemd Service Limit Struct
@@ -2790,6 +2878,110 @@ Struct[{
     Optional['OOMScoreAdjust']      => Integer[-1000,1000]
   }]
 ```
+
+### <a name="Systemd--ServiceManagerSettings"></a>`Systemd::ServiceManagerSettings`
+
+NOTE: Systemd::SettingEnsure here allows to delete the setting from the INI
+file. See the example below for Hiera:
+
+```yaml
+systemd::system_settings:
+  LogLevel:
+    ensure: absent
+```
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd-system.conf.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['LogLevel'] => Variant[Systemd::LogLevel, Systemd::SettingEnsure],
+    Optional['LogTarget'] => Variant[Enum['console','console-prefixed','kmsg','journal','journal-or-kmsg','auto','null'], Systemd::SettingEnsure],
+    Optional['LogColor'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
+    Optional['LogLocation'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
+    Optional['LogTime'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
+    Optional['DumpCore'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
+    Optional['ShowStatus'] => Variant[Systemd::Boolean, Enum['auto','error'], Systemd::SettingEnsure],
+    Optional['CrashChangeVT'] => Variant[Systemd::Boolean, Integer[1,63], Systemd::SettingEnsure],
+    Optional['CrashShell'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
+    Optional['CrashReboot'] => Variant[Systemd::Boolean, Systemd::SettingEnsure], # Obsoleted by CrashAction in v256, delete after Debian 12 EOL
+    Optional['CrashAction'] => Variant[Enum['freeze', 'reboot', 'poweroff'], Systemd::SettingEnsure],
+    Optional['CtrlAltDelBurstAction'] => Variant[Enum['reboot-force','poweroff-force','reboot-immediate','poweroff-immediate','none'], Systemd::SettingEnsure],
+    Optional['CPUAffinity'] => Variant[Enum['numa'], Pattern['^[0-9, -]+$'], Systemd::SettingEnsure],
+    Optional['NUMAPolicy'] => Variant[Enum['default','preferred','bind','interleave','local'], Systemd::SettingEnsure],
+    Optional['NUMAMask'] => Variant[Enum['all'], Pattern['^[0-9, -]+$'], Systemd::SettingEnsure],
+    Optional['RuntimeWatchdogSec'] => Variant[Enum['off','default'], Systemd::Timespan, Systemd::SettingEnsure],
+    Optional['RuntimeWatchdogPreSec'] => Variant[Enum['off'], Systemd::Timespan, Systemd::SettingEnsure],
+    Optional['RuntimeWatchdogPreGovernor'] => Variant[Enum['noop', 'panic'], String[1], Systemd::SettingEnsure],
+    Optional['RebootWatchdogSec'] => Variant[Enum['off','default'], Systemd::Timespan, Systemd::SettingEnsure],
+    Optional['KExecWatchdogSec'] => Variant[Enum['off','default'], Systemd::Timespan, Systemd::SettingEnsure],
+    Optional['WatchdogDevice'] => Variant[Stdlib::Absolutepath, Systemd::SettingEnsure],
+    Optional['CapabilityBoundingSet'] => Variant[Systemd::Capabilities, Systemd::SettingEnsure],
+    Optional['NoNewPrivileges'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
+    Optional['ProtectSystem'] => Variant[Enum['auto'], Systemd::Boolean, Systemd::SettingEnsure],
+    Optional['SystemCallArchitectures'] => Variant[String[1], Systemd::SettingEnsure],
+    Optional['TimerSlackNSec'] => Variant[Systemd::Timespan, Systemd::SettingEnsure],
+    Optional['StatusUnitFormat'] => Variant[Enum['combined','description','name'], Systemd::SettingEnsure],
+    Optional['DefaultTimerAccuracySec'] => Variant[Systemd::Timespan, Systemd::SettingEnsure],
+    Optional['DefaultStandardOutput'] => Variant[Systemd::Output, Systemd::SettingEnsure],
+    Optional['DefaultStandardError'] => Variant[Systemd::Output, Systemd::SettingEnsure],
+    Optional['DefaultTimeoutStartSec'] => Variant[Systemd::Timespan, Systemd::SettingEnsure],
+    Optional['DefaultTimeoutStopSec'] => Variant[Systemd::Timespan, Systemd::SettingEnsure],
+    Optional['DefaultTimeoutAbortSec'] => Variant[Systemd::Timespan, Systemd::SettingEnsure],
+    Optional['DefaultDeviceTimeoutSec'] => Variant[Systemd::Timespan, Systemd::SettingEnsure],
+    Optional['DefaultRestartSec'] => Variant[Systemd::Timespan, Systemd::SettingEnsure],
+    Optional['DefaultStartLimitIntervalSec'] => Variant[Enum['infinity'], Systemd::Timespan, Systemd::SettingEnsure],
+    Optional['DefaultStartLimitBurst'] => Variant[Integer[0], Systemd::SettingEnsure],
+    Optional['DefaultEnvironment'] => Variant[String, Systemd::SettingEnsure],
+    Optional['ManagerEnvironment'] => Variant[String, Systemd::SettingEnsure],
+    Optional['DefaultCPUAccounting'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
+    Optional['DefaultBlockIOAccounting'] => Variant[Systemd::Boolean, Systemd::SettingEnsure], # Deprecated in v252. Delete after Debian 11 EOL
+    Optional['DefaultIOAccounting'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
+    Optional['DefaultIPAccounting'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
+    Optional['DefaultMemoryAccounting'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
+    Optional['DefaultTasksAccounting'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
+    Optional['DefaultTasksMax'] => Variant[Enum['infinity'], Integer[0], Systemd::Unit::Percent, Systemd::SettingEnsure],
+    Optional['DefaultLimitCPU'] => Variant[Enum['infinity'], Pattern['^\d+(s|m|h|d|w|M|y)?(:\d+(s|m|h|d|w|M|y)?)?$'], Systemd::SettingEnsure],
+    Optional['DefaultLimitFSIZE'] => Variant[Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'], Systemd::SettingEnsure],
+    Optional['DefaultLimitDATA'] => Variant[Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'], Systemd::SettingEnsure],
+    Optional['DefaultLimitSTACK'] => Variant[Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'], Systemd::SettingEnsure],
+    Optional['DefaultLimitCORE'] => Variant[Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'], Systemd::SettingEnsure],
+    Optional['DefaultLimitRSS'] => Variant[Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'], Systemd::SettingEnsure],
+    Optional['DefaultLimitNOFILE'] => Variant[Integer[-1], Pattern['^(infinity|\d+(:(infinity|\d+))?)$'], Systemd::SettingEnsure],
+    Optional['DefaultLimitAS'] => Variant[Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'], Systemd::SettingEnsure],
+    Optional['DefaultLimitNPROC'] => Variant[Integer[-1],Pattern['^(infinity|\d+(:(infinity|\d+))?)$'], Systemd::SettingEnsure],
+    Optional['DefaultLimitMEMLOCK'] => Variant[Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'], Systemd::SettingEnsure],
+    Optional['DefaultLimitLOCKS'] => Variant[Integer[1], Systemd::SettingEnsure],
+    Optional['DefaultLimitSIGPENDING'] => Variant[Integer[1], Systemd::SettingEnsure],
+    Optional['DefaultLimitMSGQUEUE'] => Variant[Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'], Systemd::SettingEnsure],
+    Optional['DefaultLimitNICE'] => Variant[Integer[0,40], Pattern['^(-\+([0-1]?[0-9]|20))|([0-3]?[0-9]|40)$'], Systemd::SettingEnsure],
+    Optional['DefaultLimitRTPRIO'] => Variant[Integer[0], Systemd::SettingEnsure],
+    Optional['DefaultLimitRTTIME'] => Variant[Pattern['^\d+(ms|s|m|h|d|w|M|y)?(:\d+(ms|s|m|h|d|w|M|y)?)?$'], Systemd::SettingEnsure],
+    Optional['DefaultOOMPolicy'] => Variant[Enum['continue', 'stop','kill'], Systemd::SettingEnsure],
+    Optional['DefaultSmackProcessLabel'] => Variant[String, Systemd::SettingEnsure],
+    Optional['ReloadLimitIntervalSec'] => Variant[Enum['infinity'], Systemd::Timespan, Systemd::SettingEnsure],
+    Optional['ReloadLimitBurst'] => Variant[Integer[0], Systemd::SettingEnsure],
+    Optional['DefaultMemoryPressureWatch'] => Variant[Systemd::SettingEnsure],
+    Optional['DefaultMemoryPressureThresholdSec'] => Variant[Systemd::SettingEnsure],
+  }]
+```
+
+### <a name="Systemd--SettingEnsure"></a>`Systemd::SettingEnsure`
+
+Defines allowed ensure states for an ini_setting
+
+Alias of `Struct[{ 'ensure' => Enum['absent'] }]`
+
+### <a name="Systemd--Timespan"></a>`Systemd::Timespan`
+
+Defines a timespan type
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.time.html
+
+Alias of `Variant[Integer[0], Pattern[/^([0-9]+ *(usec|us|msec|ms|seconds?|sec|s|minutes?|min|m|hours?|hr|h|days?|d|weeks?|w|months?|M|years?|y)? *)+$/]]`
 
 ### <a name="Systemd--Unit"></a>`Systemd::Unit`
 

@@ -508,7 +508,7 @@ describe 'systemd' do
             }
           end
 
-          it { is_expected.to contain_class('systemd::system') }
+          it { is_expected.to contain_class('systemd::service_manager') }
 
           case facts[:os]['family']
           when 'Archlinux', 'Gentoo'
@@ -519,9 +519,97 @@ describe 'systemd' do
             accounting = %w[DefaultCPUAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
           end
           accounting.each do |account|
-            it { is_expected.to contain_ini_setting(account) }
+            it { is_expected.to contain_ini_setting("system/#{account}") }
           end
           it { is_expected.to compile.with_all_deps }
+
+          context 'when both manage_accounting and manage_system_conf are enabled' do
+            let :params do
+              super().merge(
+                manage_system_conf: true,
+                system_settings: {
+                  'DefaultTimeoutStartSec' => '120s',
+                  'DefaultCPUAccounting' => true,
+                  'DefaultMemoryAccounting' => { 'ensure' => 'absent' },
+                }
+              )
+            end
+
+            it { is_expected.to compile.with_all_deps }
+            it { is_expected.to contain_ini_setting('system/DefaultTimeoutStartSec').with_ensure('present').with_value('120s') }
+            # Value is overriden by accounting settings
+            it { is_expected.to contain_ini_setting('system/DefaultCPUAccounting').with_ensure('present').with_value('yes') }
+            # Ensure and value are overriden by accounting settings
+            it { is_expected.to contain_ini_setting('system/DefaultMemoryAccounting').with_ensure('present').with_value('yes') }
+            # Included by accounting (switch to DefaultIOAccounting after RHEL7 EOL)
+            it { is_expected.to contain_ini_setting('system/DefaultBlockIOAccounting').with_ensure('present').with_value('yes') }
+          end
+        end
+
+        context 'when managing system service manager config' do
+          let :params do
+            {
+              manage_system_conf: true,
+              system_settings: {
+                'DefaultTimeoutStartSec' => '120s',
+                'DefaultCPUAccounting' => true,
+                'DefaultMemoryAccounting' => { 'ensure' => 'absent' },
+              }
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to have_ini_setting_resource_count(3) }
+          it { is_expected.to contain_ini_setting('system/DefaultMemoryAccounting').with_ensure('absent') }
+
+          it do
+            is_expected.to contain_ini_setting('system/DefaultTimeoutStartSec').with(
+              ensure: 'present',
+              path: '/etc/systemd/system.conf',
+              value: '120s'
+            )
+          end
+
+          it do
+            is_expected.to contain_ini_setting('system/DefaultCPUAccounting').with(
+              ensure: 'present',
+              path: '/etc/systemd/system.conf',
+              value: true
+            )
+          end
+        end
+
+        context 'when managing user service manager config' do
+          let :params do
+            {
+              manage_user_conf: true,
+              user_settings: {
+                'DefaultTimeoutStartSec' => '123s',
+                'DefaultLimitCORE' => 'infinity',
+                'DefaultLimitCPU' => { 'ensure' => 'absent' },
+              }
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to have_ini_setting_resource_count(3) }
+          it { is_expected.to contain_ini_setting('user/DefaultLimitCPU').with_ensure('absent') }
+
+          it do
+            is_expected.to contain_ini_setting('user/DefaultTimeoutStartSec').with(
+              ensure: 'present',
+              path: '/etc/systemd/user.conf',
+              value: '123s'
+            )
+          end
+
+          it do
+            is_expected.to contain_ini_setting('user/DefaultLimitCORE').with(
+              ensure: 'present',
+              path: '/etc/systemd/user.conf',
+              value: 'infinity'
+            )
+          end
         end
 
         context 'when enabling journald with options' do

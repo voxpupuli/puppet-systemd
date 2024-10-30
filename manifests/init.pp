@@ -188,10 +188,13 @@
 #   where all networkd files are placed in
 #
 # @param manage_accounting
-#   when enabled, the different accounting options (network traffic, IO, CPU util...) are enabled for units
+#   When enabled, the different accounting options (network traffic, IO,
+#   CPU util...) are enabled for units.
 #
 # @param accounting
-#   Hash of the different accounting options. This highly depends on the used systemd version. The module provides sane defaults per operating system using Hiera.
+#   Hash of the different accounting options. This highly depends on the used
+#   systemd version. The module provides sane defaults per operating system
+#   using Hiera.
 #
 # @param purge_dropin_dirs
 #   When enabled, unused directories for dropin files will be purged
@@ -219,6 +222,22 @@
 #
 # @param udev_purge_rules
 #   Toggle if unmanaged files in /etc/udev/rules.d should be purged if manage_udevd is enabled
+#
+# @param manage_system_conf
+#   Should system service manager configurations be managed
+#
+# @param system_settings
+#   Config Hash that is used to configure settings in system.conf
+#   NOTE: It's currently impossible to have multiple entries of the same key in
+#   the settings.
+#
+# @param manage_user_conf
+#   Should user service manager configurations be managed
+#
+# @param user_settings
+#   Config Hash that is used to configure settings in user.conf
+#   NOTE: It's currently impossible to have multiple entries of the same key in
+#   the settings.
 class systemd (
   Optional[Pattern['^.+\.target$']]                   $default_target = undef,
   Hash[String,String]                                 $accounting = {},
@@ -284,6 +303,10 @@ class systemd (
   Enum['stopped','running']                           $oomd_ensure = 'running',
   Systemd::OomdSettings                               $oomd_settings = {},
   Boolean                                             $udev_purge_rules = false,
+  Boolean                                             $manage_system_conf = false,
+  Systemd::ServiceManagerSettings                     $system_settings = {},
+  Boolean                                             $manage_user_conf = false,
+  Systemd::ServiceManagerSettings                     $user_settings = {},
 ) {
   contain systemd::install
 
@@ -347,8 +370,9 @@ class systemd (
     contain systemd::udevd
   }
 
-  if $manage_accounting {
-    contain systemd::system
+  # $manage_accounting is retained for backward compatibility
+  if $manage_accounting or $manage_system_conf or $manage_user_conf {
+    contain systemd::service_manager
   }
 
   unless empty($machine_info_settings) {
