@@ -42,22 +42,13 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7",
         "8",
         "9"
       ]
     },
     {
-      "operatingsystem": "VirtuozzoLinux",
-      "operatingsystemrelease": [
-        "7"
-      ]
-    },
-    {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "7",
-        "8",
         "9"
       ]
     },
@@ -87,13 +78,6 @@
     },
     {
       "operatingsystem": "Gentoo"
-    },
-    {
-      "operatingsystem": "Fedora",
-      "operatingsystemrelease": [
-        "37",
-        "38"
-      ]
     }
   ],
   "requirements": [
