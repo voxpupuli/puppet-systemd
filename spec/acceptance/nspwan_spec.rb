@@ -3,7 +3,7 @@
 require 'spec_helper_acceptance'
 
 describe 'systemd with manage_nspawn true' do
-  machinectl = (fact('os.name') == 'Debian') && %w[10 11].include?(fact('os.release.major')) ? '/bin/machinectl' : '/usr/bin/machinectl'
+  machinectl = (fact('os.name') == 'Debian') && (fact('os.release.major') == '11') ? '/bin/machinectl' : '/usr/bin/machinectl'
 
   context 'configure nspawn' do
     let(:manifest) do
