@@ -5,10 +5,53 @@
 # @param ensure The state that the ``networkd`` service should be in
 # @param path path where all networkd files are placed in
 # @param manage_all_network_files if enabled, all networkd files that aren't managed by puppet will be purged
+# @param link_profiles
+#   Hash of network link profiles that can be referenced by it's key on an interface
+#   The structure is equal to the 'link' parameter of an interface.
+# @param netdev_profiles
+#   Hash of netdev profiles that can be referenced by it's key on an interface
+#   The structure is equal to the 'netdev' parameter of an interface.
+# @param network_profiles
+#   Hash of network profiles that can be referenced by it's key on an interface
+#   The structure is equal to the 'network' parameter of an interface.
+# @param interfaces
+#  Hash of interfaces to configure on a node.
+#  The link, netdev and network parameters are deep merged with the respective profile
+#  (referenced by the key of the interface).
+#  With the profiles you can set the default values for a network.
+#  Hint: to remove a profile setting for an interface you can either overwrite or
+#  set it to '~' for removal.
+#  Example (hiera yaml notation):
+#    systemd::networkd::network_profiles:
+#      mynet:
+#        Network:
+#          Gateway: '192.168.0.1'
+#        
+#    systemd::networkd
+#      mynet:
+#        filename: '50-static'
+#        network:
+#          Match:
+#            Name: 'eno0'
+#          Network:
+#            Address: '192.168.0.15/24'
+#
+#   Gives you a file /etc/systemd/network/50-static.network
+#   with content:
+#     [Match]
+#     Name=enp2s0
+#     [Network]
+#     Address=192.168.0.15/24
+#     Gateway=192.168.0.1
+#
 class systemd::networkd (
-  Enum['stopped','running'] $ensure = $systemd::networkd_ensure,
-  Stdlib::Absolutepath $path = $systemd::network_path,
-  Boolean $manage_all_network_files = $systemd::manage_all_network_files,
+  Enum['stopped','running']                   $ensure                   = $systemd::networkd_ensure,
+  Stdlib::Absolutepath                        $path                     = $systemd::network_path,
+  Boolean                                     $manage_all_network_files = $systemd::manage_all_network_files,
+  Hash[String[1],Systemd::Interface::Link]    $link_profiles            = {},
+  Hash[String[1],Systemd::Interface::Netdev]  $netdev_profiles          = {},
+  Hash[String[1],Systemd::Interface::Network] $network_profiles         = {},
+  Hash[String[1],Systemd::Interface]          $interfaces               = {},
 ) {
   assert_private()
 
@@ -30,6 +73,37 @@ class systemd::networkd (
       recurse => true,
       purge   => true,
       notify  => Service['systemd-networkd'],
+    }
+  }
+
+  $interfaces.each | String[1] $interface_name, Systemd::Interface $interface | {
+    $_filename=pick($interface['filename'], $interface_name)
+    if 'link' in $interface.keys() {
+      systemd::network { "${_filename}.link":
+        path    => $path,
+        content => epp('systemd/network.epp', {
+            fname  => "${_filename}.link",
+            config => deep_merge(pick($link_profiles[$interface_name], {}), $interface['link']),
+        }),
+      }
+    }
+    if 'netdev' in $interface.keys() {
+      systemd::network { "${_filename}.netdev":
+        path    => $path,
+        content => epp('systemd/network.epp', {
+            fname  => "${_filename}.netdev",
+            config => deep_merge(pick($netdev_profiles[$interface_name], {}), $interface['netdev']),
+        }),
+      }
+    }
+    if 'network' in $interface.keys() {
+      systemd::network { "${_filename}.network":
+        path    => $path,
+        content => epp('systemd/network.epp', {
+            fname  => "${_filename}.network",
+            config => deep_merge(pick($network_profiles[$interface_name], {}),  $interface['network']),
+        }),
+      }
     }
   }
 }
