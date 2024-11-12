@@ -20,7 +20,7 @@
 #  (referenced by the key of the interface).
 #  With the profiles you can set the default values for a network.
 #  Hint: to remove a profile setting for an interface you can either overwrite or
-#  set it to '~' for removal.
+#  set it to `~` for removal.
 #  Example (hiera yaml notation):
 #    systemd::networkd::network_profiles:
 #      mynet:
