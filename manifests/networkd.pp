@@ -12,7 +12,7 @@
 #   Hash of netdev profiles that can be referenced by its key on an interface
 #   The structure is equal to the 'netdev' parameter of an interface.
 # @param network_profiles
-#   Hash of network profiles that can be referenced by it's key on an interface
+#   Hash of network profiles that can be referenced by its key on an interface
 #   The structure is equal to the 'network' parameter of an interface.
 # @param interfaces
 #  Hash of interfaces to configure on a node.
