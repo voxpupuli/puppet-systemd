@@ -16,6 +16,7 @@ class systemd::journal_remote (
 
   service { 'systemd-journal-remote':
     ensure => running,
+    enable => true,
   }
   $systemd::journal_remote_settings.each |$option, $value| {
     ini_setting { "journal-remote_${option}":
