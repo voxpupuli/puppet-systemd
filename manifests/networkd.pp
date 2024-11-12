@@ -6,7 +6,7 @@
 # @param path path where all networkd files are placed in
 # @param manage_all_network_files if enabled, all networkd files that aren't managed by puppet will be purged
 # @param link_profiles
-#   Hash of network link profiles that can be referenced by it's key on an interface
+#   Hash of network link profiles that can be referenced by its key on an interface
 #   The structure is equal to the 'link' parameter of an interface.
 # @param netdev_profiles
 #   Hash of netdev profiles that can be referenced by it's key on an interface
