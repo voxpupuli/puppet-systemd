@@ -9,7 +9,7 @@
 #   Hash of network link profiles that can be referenced by its key on an interface
 #   The structure is equal to the 'link' parameter of an interface.
 # @param netdev_profiles
-#   Hash of netdev profiles that can be referenced by it's key on an interface
+#   Hash of netdev profiles that can be referenced by its key on an interface
 #   The structure is equal to the 'netdev' parameter of an interface.
 # @param network_profiles
 #   Hash of network profiles that can be referenced by it's key on an interface
