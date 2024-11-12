@@ -1,0 +1,26 @@
+<%- | String[1] $fname = {},
+      Hash      $config = {},
+| -%>
+#
+# This file is managed with puppet
+#
+# File name: <%= $fname %>
+#
+<% $config.each |String $head, Variant[Hash,Array] $vals| { -%>
+  <%- if $vals =~ Array { $_loop= $vals } else { $_loop = [ $vals ] } -%>
+  <%- $_loop.each | Hash $vals | { -%>
+
+    <%- %>[<%= $head %>]
+    <%- $vals.each() | String $key, Any $value | { -%>
+      <%- if $value =~ Array[String] { -%>
+        <%- $value.each() | String $val | { -%>
+          <%- %><%= $key %>=<%= $val %>
+        <%- } -%>
+      <%- } else { -%>
+        <%- if $value !~ Undef { -%>
+          <%- %><%= $key %>=<%= $value %>
+        <%- } -%>
+      <%- } -%>
+    <%- } -%>
+  <%- } -%>
+<% } -%>
