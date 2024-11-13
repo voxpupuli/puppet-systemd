@@ -45,13 +45,13 @@
 #     Gateway=192.168.0.1
 #
 class systemd::networkd (
-  Enum['stopped','running']                   $ensure                   = $systemd::networkd_ensure,
-  Stdlib::Absolutepath                        $path                     = $systemd::network_path,
-  Boolean                                     $manage_all_network_files = $systemd::manage_all_network_files,
-  Hash[String[1],Systemd::Interface::Link]    $link_profiles            = {},
-  Hash[String[1],Systemd::Interface::Netdev]  $netdev_profiles          = {},
-  Hash[String[1],Systemd::Interface::Network] $network_profiles         = {},
-  Hash[String[1],Systemd::Interface]          $interfaces               = {},
+  Enum['stopped','running'] $ensure = $systemd::networkd_ensure,
+  Stdlib::Absolutepath $path = $systemd::network_path,
+  Boolean $manage_all_network_files = $systemd::manage_all_network_files,
+  Hash[String[1],Systemd::Interface::Link] $link_profiles = {},
+  Hash[String[1],Systemd::Interface::Netdev] $netdev_profiles = {},
+  Hash[String[1],Systemd::Interface::Network] $network_profiles = {},
+  Hash[String[1],Systemd::Interface] $interfaces = {},
 ) {
   assert_private()
 
