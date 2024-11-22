@@ -3279,6 +3279,8 @@ Struct[{
     Optional['RuntimeDirectoryMode']      => Stdlib::Filemode,
     Optional['StateDirectory']            => String,
     Optional['LogsDirectory']             => String,
+    Optional['LogRateLimitIntervalSec']   => Variant[Pattern[/^[0-9]+(s|min|h|ms|us)?$/]],
+    Optional['LogRateLimitBurst']         => Variant[Integer[0], Pattern[/^[0-9]+$/]],
     Optional['LogsDirectoryMode']         => Stdlib::Filemode,
     Optional['ProtectSystem']             => Variant[Boolean, Enum['full', 'strict']],
     Optional['ProtectHome']               => Variant[Boolean, Enum['read-only', 'tmpfs']],
