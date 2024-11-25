@@ -26,11 +26,7 @@ describe 'systemd::daemon_reload' do
             case [facts[:os]['name'], facts[:os]['family'], facts[:os]['release']['major']]
             when %w[Debian Debian 11],
               ['Ubuntu', 'Debian', '20.04'],
-              %w[VirtuozzoLinux RedHat 7],
               %w[AlmaLinux RedHat 8],
-              %w[CentOS RedHat 7],
-              %w[CentOS RedHat 8],
-              %w[RedHat RedHat 7],
               %w[RedHat RedHat 8],
               %w[Rocky RedHat 8],
               %w[OracleLinux RedHat 8]
