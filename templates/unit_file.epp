@@ -21,9 +21,9 @@
    'Timer',
    'Path',
    'Socket',
-   'Install',
    'Mount',
    'Swap',
+   'Install',
 ]
 
 # Directives which are pair of items to be expressed as a space seperated pair.
