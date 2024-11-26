@@ -89,6 +89,7 @@
 # @param path_entry key value pairs for [Path] section of the unit file
 # @param socket_entry key value pairs for the [Socket] section of the unit file
 # @param mount_entry key value pairs for the [Mount] section of the unit file
+# @param swap_entry key value pairs for the [Swap] section of the unit file
 #
 define systemd::manage_dropin (
   Systemd::Unit                    $unit,
@@ -110,6 +111,7 @@ define systemd::manage_dropin (
   Optional[Systemd::Unit::Path]    $path_entry              = undef,
   Optional[Systemd::Unit::Socket]  $socket_entry            = undef,
   Optional[Systemd::Unit::Mount]   $mount_entry             = undef,
+  Optional[Systemd::Unit::Swap]    $swap_entry              = undef,
 ) {
   if $timer_entry and $unit !~ Pattern['^[^/]+\.timer'] {
     fail("Systemd::Manage_dropin[${name}]: for unit ${unit} timer_entry is only valid for timer units")
@@ -129,6 +131,10 @@ define systemd::manage_dropin (
 
   if $mount_entry and $unit !~ Pattern['^[^/]+\.mount'] {
     fail("Systemd::Manage_dropin[${name}]: for unit ${unit} mount_entry is only valid for mount units")
+  }
+
+  if $swap_entry and $unit !~ Pattern['^[^/]+\.swap'] {
+    fail("Systemd::Manage_dropin[${name}]: for unit ${unit} mount_entry is only valid for swap units")
   }
 
   systemd::dropin_file { $name:
@@ -152,6 +158,7 @@ define systemd::manage_dropin (
         'path_entry'    => $path_entry,
         'socket_entry'  => $socket_entry,
         'mount_entry'   => $mount_entry,
+        'swap_entry'    => $swap_entry,
     }),
   }
 }

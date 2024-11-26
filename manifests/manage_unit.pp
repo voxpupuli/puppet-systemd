@@ -84,6 +84,40 @@
 #    },
 #  }
 #
+# @example Create and Mount a Swap File
+#
+#  systemd::manage_unit{'swapfile.swap':
+#    ensure        => present,
+#    enable        => true,
+#    active        => true,
+#    unit_entry    => {
+#      'Description' => 'Mount /swapfile as a swap file',
+#      'After'       => 'mkswap.service',
+#      'Requires'    => 'mkswap.service',
+#    },
+#    swap_entry    => {
+#      'What' => '/swapfile',
+#    },
+#    install_entry => {
+#      'WantedBy' => 'multi-user.target',
+#    },
+#    require       => Systemd::Manage_unit['mkswap.service'],
+#  }
+#  systemd::manage_unit{'mkswap.service':
+#    ensure        => present,
+#    unit_entry    => {
+#      'Description'         => 'Format a swapfile at /swapfile',
+#      'ConditionPathExists' => '!/swapfile',
+#    },
+#    service_entry => {
+#      'type'      => 'oneshot',
+#      'ExecStart' => [
+#        '/usr/bin/dd if=/dev/zero of=/swapfile bs=1024 count=1000',
+#        '/usr/sbin/mkswap /swapfile',
+#      ],
+#    },
+#  }
+#
 # @example Remove a unit file
 #  systemd::manage_unit { 'my.service':
 #    ensure     => 'absent',
@@ -118,6 +152,7 @@
 # @param path_entry key value pairs for [Path] section of the unit file.
 # @param socket_entry kev value paors for [Socket] section of the unit file.
 # @param mount_entry kev value pairs for [Mount] section of the unit file.
+# @param swap_entry kev value pairs for [Swap] section of the unit file.
 #
 define systemd::manage_unit (
   Enum['present', 'absent']                $ensure                  = 'present',
@@ -141,6 +176,7 @@ define systemd::manage_unit (
   Optional[Systemd::Unit::Path]            $path_entry              = undef,
   Optional[Systemd::Unit::Socket]          $socket_entry            = undef,
   Optional[Systemd::Unit::Mount]           $mount_entry             = undef,
+  Optional[Systemd::Unit::Swap]            $swap_entry              = undef,
 ) {
   assert_type(Systemd::Unit, $name)
 
@@ -162,6 +198,10 @@ define systemd::manage_unit (
 
   if $mount_entry and $name !~ Pattern['^[^/]+\.mount'] {
     fail("Systemd::Manage_unit[${name}]: mount_entry is only valid for mount units")
+  }
+
+  if $swap_entry and $name !~ Pattern['^[^/]+\.swap'] {
+    fail("Systemd::Manage_unit[${name}]: swap_entry is only valid for swap units")
   }
 
   if $ensure != 'absent' and  $name =~ Pattern['^[^/]+\.service'] and !$service_entry {
@@ -190,6 +230,7 @@ define systemd::manage_unit (
         'path_entry'    => $path_entry,
         'socket_entry'  => $socket_entry,
         'mount_entry'   => $mount_entry,
+        'swap_entry'    => $swap_entry,
     }),
   }
 }
