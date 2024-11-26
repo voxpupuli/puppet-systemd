@@ -7,6 +7,7 @@
  Optional[Hash] $path_entry,
  Optional[Hash] $socket_entry,
  Optional[Hash] $mount_entry,
+ Optional[Hash] $swap_entry,
 | -%>
 <%-
 
@@ -22,6 +23,7 @@
    'Socket',
    'Install',
    'Mount',
+   'Swap',
 ]
 
 # Directives which are pair of items to be expressed as a space seperated pair.

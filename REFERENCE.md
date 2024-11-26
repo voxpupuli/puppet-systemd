@@ -87,6 +87,7 @@
 * [`Systemd::Unit::Service::Exec`](#Systemd--Unit--Service--Exec): Possible strings for ExecStart, ExecStartPrep, ...
 * [`Systemd::Unit::Slice`](#Systemd--Unit--Slice): Possible keys for the [Slice] section of a unit file
 * [`Systemd::Unit::Socket`](#Systemd--Unit--Socket): Possible keys for the [Socket] section of a unit file
+* [`Systemd::Unit::Swap`](#Systemd--Unit--Swap): Possible keys for the [Swap] section of a unit file
 * [`Systemd::Unit::Timer`](#Systemd--Unit--Timer): Possible keys for the [Timer] section of a unit file
 * [`Systemd::Unit::Timespan`](#Systemd--Unit--Timespan): Timer specification for systemd time spans, e.g. timers.
 * [`Systemd::Unit::Unit`](#Systemd--Unit--Unit): Possible keys for the [Unit] section of a unit file
@@ -1125,6 +1126,7 @@ The following parameters are available in the `systemd::manage_dropin` defined t
 * [`path_entry`](#-systemd--manage_dropin--path_entry)
 * [`socket_entry`](#-systemd--manage_dropin--socket_entry)
 * [`mount_entry`](#-systemd--manage_dropin--mount_entry)
+* [`swap_entry`](#-systemd--manage_dropin--swap_entry)
 
 ##### <a name="-systemd--manage_dropin--unit"></a>`unit`
 
@@ -1276,6 +1278,14 @@ key value pairs for the [Mount] section of the unit file
 
 Default value: `undef`
 
+##### <a name="-systemd--manage_dropin--swap_entry"></a>`swap_entry`
+
+Data type: `Optional[Systemd::Unit::Swap]`
+
+key value pairs for the [Swap] section of the unit file
+
+Default value: `undef`
+
 ### <a name="systemd--manage_unit"></a>`systemd::manage_unit`
 
 Generate unit file from template
@@ -1377,6 +1387,43 @@ systemd::manage_dropin { 'tmpfs-db.conf':
 }
 ```
 
+##### Create and Mount a Swap File
+
+```puppet
+
+systemd::manage_unit{'swapfile.swap':
+  ensure        => present,
+  enable        => true,
+  active        => true,
+  unit_entry    => {
+    'Description' => 'Mount /swapfile as a swap file',
+    'After'       => 'mkswap.service',
+    'Requires'    => 'mkswap.service',
+  },
+  swap_entry    => {
+    'What' => '/swapfile',
+  },
+  install_entry => {
+    'WantedBy' => 'multi-user.target',
+  },
+  require       => Systemd::Manage_unit['mkswap.service'],
+}
+systemd::manage_unit{'mkswap.service':
+  ensure        => present,
+  unit_entry    => {
+    'Description'         => 'Format a swapfile at /swapfile',
+    'ConditionPathExists' => '!/swapfile',
+  },
+  service_entry => {
+    'type'      => 'oneshot',
+    'ExecStart' => [
+      '/usr/bin/dd if=/dev/zero of=/swapfile bs=1024 count=1000',
+      '/usr/sbin/mkswap /swapfile',
+    ],
+  },
+}
+```
+
 ##### Remove a unit file
 
 ```puppet
@@ -1411,6 +1458,7 @@ The following parameters are available in the `systemd::manage_unit` defined typ
 * [`path_entry`](#-systemd--manage_unit--path_entry)
 * [`socket_entry`](#-systemd--manage_unit--socket_entry)
 * [`mount_entry`](#-systemd--manage_unit--mount_entry)
+* [`swap_entry`](#-systemd--manage_unit--swap_entry)
 
 ##### <a name="-systemd--manage_unit--name"></a>`name`
 
@@ -1583,6 +1631,14 @@ Default value: `undef`
 Data type: `Optional[Systemd::Unit::Mount]`
 
 kev value pairs for [Mount] section of the unit file.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_unit--swap_entry"></a>`swap_entry`
+
+Data type: `Optional[Systemd::Unit::Swap]`
+
+kev value pairs for [Swap] section of the unit file.
 
 Default value: `undef`
 
@@ -3432,6 +3488,24 @@ Struct[{
     Optional['FileDescriptorName']      => String[1,255],
     Optional['TriggerLimitIntervalSec'] => String[1],
     Optional['TriggerLimitBurst']       => Integer[0],
+  }]
+```
+
+### <a name="Systemd--Unit--Swap"></a>`Systemd::Unit::Swap`
+
+Possible keys for the [Swap] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.swap.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['What']          => String[1],
+    Optional['Options']       => String[1],
+    Optional['Priority']      => Integer,
+    Optional['TimeoutSec']    => Variant[Integer[0],String[0]]
   }]
 ```
 

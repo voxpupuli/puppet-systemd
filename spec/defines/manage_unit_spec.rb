@@ -127,6 +127,35 @@ describe 'systemd::manage_unit' do
           }
         end
 
+        context 'on a swap' do
+          let(:title) { 'file.swap' }
+
+          let(:params) do
+            {
+              unit_entry: {
+                Description: 'Add swap from a file',
+              },
+              swap_entry: {
+                'What' => '/file',
+                'TimeoutSec' => 100,
+                'Options' => 'trim',
+                'Priority' => 10,
+              },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__unit_file('file.swap').
+              with_content(%r{^\[Swap\]$}).
+              with_content(%r{^What=/file$}).
+              with_content(%r{^TimeoutSec=100$}).
+              with_content(%r{^Options=trim$}).
+              with_content(%r{^Priority=10$})
+          }
+        end
+
         context 'on a timer' do
           let(:title) { 'winter.timer' }
 

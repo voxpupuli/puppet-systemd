@@ -134,6 +134,26 @@ describe 'systemd::manage_dropin' do
           end
         end
 
+        context 'on a swap unit' do
+          let(:params) do
+            {
+              unit: 'file.swap',
+              swap_entry: {
+                'Priority' => 10,
+              }
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__dropin_file('foobar.conf').
+              with_unit('file.swap').
+              with_content(%r{^\[Swap\]$}).
+              with_content(%r{^Priority=10$})
+          }
+        end
+
         context 'on a timer' do
           let(:params) do
             {
