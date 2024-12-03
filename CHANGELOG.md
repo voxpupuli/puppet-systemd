@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v8.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v8.0.0) (2024-11-26)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v7.1.0...v8.0.0)
+
+**Breaking changes:**
+
+- Drop support for RHEL 7, CentOS 7/8, Fedora 38/39, VirtuozzoLinux 7 [\#496](https://github.com/voxpupuli/puppet-systemd/pull/496) ([jay7x](https://github.com/jay7x))
+- Replace deprecated `shell_escape` function with `stdlib::shell_escape` [\#480](https://github.com/voxpupuli/puppet-systemd/pull/480) ([jormaster3k](https://github.com/jormaster3k))
+
+**Implemented enhancements:**
+
+- Support management of Swap unit files [\#502](https://github.com/voxpupuli/puppet-systemd/pull/502) ([traylenator](https://github.com/traylenator))
+- \[Systemd::Unit::Service\] add support for LogRateLimit\* options [\#500](https://github.com/voxpupuli/puppet-systemd/pull/500) ([veshij](https://github.com/veshij))
+- Add Ubuntu 24.04 and Fedora 40 support [\#498](https://github.com/voxpupuli/puppet-systemd/pull/498) ([jay7x](https://github.com/jay7x))
+- Manage {system,user}.conf values [\#495](https://github.com/voxpupuli/puppet-systemd/pull/495) ([jay7x](https://github.com/jay7x))
+- Support Mount units for manage\_unit or dropin types [\#490](https://github.com/voxpupuli/puppet-systemd/pull/490) ([traylenator](https://github.com/traylenator))
+- Reload udev rules after change [\#485](https://github.com/voxpupuli/puppet-systemd/pull/485) ([deric](https://github.com/deric))
+- add support for journal upload and remote server [\#482](https://github.com/voxpupuli/puppet-systemd/pull/482) ([trefzer](https://github.com/trefzer))
+- allow service time settings to accept Integer values [\#475](https://github.com/voxpupuli/puppet-systemd/pull/475) ([vchepkov](https://github.com/vchepkov))
+- Allow `MemorySwapMax` be specified as a percentage [\#472](https://github.com/voxpupuli/puppet-systemd/pull/472) ([traylenator](https://github.com/traylenator))
+- Rework Red Hat resolved package list to be more future proof [\#468](https://github.com/voxpupuli/puppet-systemd/pull/468) ([jcpunk](https://github.com/jcpunk))
+
+**Merged pull requests:**
+
+- README: fix path in example [\#489](https://github.com/voxpupuli/puppet-systemd/pull/489) ([kenyon](https://github.com/kenyon))
+- Update readme to reflect changes in \#485 [\#487](https://github.com/voxpupuli/puppet-systemd/pull/487) ([deric](https://github.com/deric))
+- README.md: correct service limits example [\#476](https://github.com/voxpupuli/puppet-systemd/pull/476) ([kenyon](https://github.com/kenyon))
+
 ## [v7.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v7.1.0) (2024-06-03)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v7.0.0...v7.1.0)
@@ -16,9 +44,13 @@ These should not affect the functionality of the module.
 - fix typo in service\_limits deprecation message [\#460](https://github.com/voxpupuli/puppet-systemd/pull/460) ([saz](https://github.com/saz))
 - fix: refresh service only based on drop-in file changes [\#406](https://github.com/voxpupuli/puppet-systemd/pull/406) ([shieldwed](https://github.com/shieldwed))
 
+**Closed issues:**
+
+- Deprecation of systemd::service\_limits unexpectedly causes service restarts in some scenarios [\#463](https://github.com/voxpupuli/puppet-systemd/issues/463)
+
 **Merged pull requests:**
 
-- Update README to reflect service\_limits is deprecated [\#461](https://github.com/voxpupuli/puppet-systemd/pull/461) ([ekohl](https://github.com/ekohl))
+- Update README to reflect `service_limits` is deprecated [\#461](https://github.com/voxpupuli/puppet-systemd/pull/461) ([ekohl](https://github.com/ekohl))
 
 ## [v7.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v7.0.0) (2024-04-26)
 

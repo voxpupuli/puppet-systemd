@@ -414,6 +414,7 @@ class { 'systemd':
 It also allows you to manage journald settings. You can manage journald settings through setting the `journald_settings` parameter. If you want a parameter to be removed, you can pass its value as params.
 
 ```yaml
+---
 systemd::journald_settings:
   Storage: auto
   MaxRetentionSec: 5day
@@ -444,6 +445,7 @@ class { 'systemd':
 With enabled `udev_reload` modified rules would be applied immediately by executing `udevadm control --reload-rules`.
 
 ```yaml
+---
 systemd::udev_reload: true
 systemd::manage_udevd: true
 systemd::udev_rules:
