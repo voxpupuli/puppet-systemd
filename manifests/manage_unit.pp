@@ -110,7 +110,8 @@
 #      'ConditionPathExists' => '!/swapfile',
 #    },
 #    service_entry => {
-#      'type'      => 'oneshot',
+#      'Type'      => 'oneshot',
+#      'UMask'     => '0177',
 #      'ExecStart' => [
 #        '/usr/bin/dd if=/dev/zero of=/swapfile bs=1024 count=1000',
 #        '/usr/sbin/mkswap /swapfile',
