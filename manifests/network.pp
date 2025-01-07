@@ -24,7 +24,9 @@ define systemd::network (
   Boolean                        $show_diff       = true,
   Boolean                        $restart_service = true,
 ) {
-  include systemd
+  if !defined(Class['systemd']) {
+    include systemd
+  }
 
   if $restart_service and $systemd::manage_networkd and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-networkd.service'] {
     $notify = Service['systemd-networkd']

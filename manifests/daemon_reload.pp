@@ -31,7 +31,9 @@ define systemd::daemon_reload (
   Boolean $enable = true,
   Optional[String[1]] $user = undef,
 ) {
-  include systemd
+  if !defined(Class['systemd']) {
+    include systemd
+  }
 
   if $enable {
     if $user {

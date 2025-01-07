@@ -35,7 +35,9 @@ define systemd::dropin_file (
   Boolean                                     $notify_service          = true,
   Boolean                                     $daemon_reload           = true,
 ) {
-  include systemd
+  if !defined(Class['systemd']) {
+    include systemd
+  }
 
   if $target {
     $_ensure = 'link'

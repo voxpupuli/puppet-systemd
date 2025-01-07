@@ -86,7 +86,9 @@ define systemd::unit_file (
   Boolean                                  $daemon_reload = true,
   Boolean                                  $service_restart = true,
 ) {
-  include systemd
+  if !defined(Class['systemd']) {
+    include systemd
+  }
 
   assert_type(Systemd::Unit, $name)
 

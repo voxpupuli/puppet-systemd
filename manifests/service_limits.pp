@@ -41,7 +41,9 @@ define systemd::service_limits (
     fail('The restart_service parameter is deprecated and only false is a valid value')
   }
 
-  include systemd
+  if !defined(Class['systemd']) {
+    include systemd
+  }
 
   if $name !~ Pattern['^.+\.(service|socket|mount|swap)$'] {
     fail('$name must match Pattern["^.+\.(service|socket|mount|swap)$"]')
