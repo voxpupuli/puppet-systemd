@@ -4,7 +4,21 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v8.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v8.0.0) (2024-11-26)
+## [v8.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v8.1.0) (2025-01-08)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v8.0.0...v8.1.0)
+
+**Implemented enhancements:**
+
+- Add a few more missing service options [\#508](https://github.com/voxpupuli/puppet-systemd/pull/508) ([jcpunk](https://github.com/jcpunk))
+- Add Missing Condition Units which were added in version244 [\#507](https://github.com/voxpupuli/puppet-systemd/pull/507) ([C24-AK](https://github.com/C24-AK))
+
+**Closed issues:**
+
+- option not to remove existing dropin files. [\#504](https://github.com/voxpupuli/puppet-systemd/issues/504)
+- \[4.1.0\] ignore active+enable when ensure is set to absent for systemd::timer [\#454](https://github.com/voxpupuli/puppet-systemd/issues/454)
+
+## [v8.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v8.0.0) (2024-12-13)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v7.1.0...v8.0.0)
 
@@ -28,6 +42,7 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
+- Correct UMask in mkswap example [\#503](https://github.com/voxpupuli/puppet-systemd/pull/503) ([traylenator](https://github.com/traylenator))
 - README: fix path in example [\#489](https://github.com/voxpupuli/puppet-systemd/pull/489) ([kenyon](https://github.com/kenyon))
 - Update readme to reflect changes in \#485 [\#487](https://github.com/voxpupuli/puppet-systemd/pull/487) ([deric](https://github.com/deric))
 - README.md: correct service limits example [\#476](https://github.com/voxpupuli/puppet-systemd/pull/476) ([kenyon](https://github.com/kenyon))
