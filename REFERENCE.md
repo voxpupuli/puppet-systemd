@@ -3365,6 +3365,12 @@ Struct[{
     Optional['LockPersonality']           => Boolean,
     Optional['NetworkNamespacePath']      => Stdlib::Unixpath,
     Optional['MemoryDenyWriteExecute']    => Boolean,
+    Optional['PAMName']                   => String,
+    Optional['SetLoginEnvironment']       => Boolean,
+    Optional['RootImage']                 => Stdlib::Unixpath,
+    Optional['RootImageOptions']          => String,
+    Optional['RootEphemeral']             => Boolean,
+    Optional['RootHash']                  => String,
   }]
 ```
 
