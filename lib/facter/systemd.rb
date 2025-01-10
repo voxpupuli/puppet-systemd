@@ -50,14 +50,10 @@ Facter.add(:systemd_version) do
 end
 
 Facter.add(:systemd_internal_services) do
+  require 'json'
   confine systemd: true
   setcode do
-    command_output = Facter::Util::Resolution.exec(
-      'systemctl list-unit-files --no-legend --no-pager "systemd-*" -t service --state=enabled,disabled,enabled-runtime,indirect'
-    )
-    lines = command_output.lines.lazy.map { |line| line.split(%r{\s+}) }
-    lines.each_with_object({}) do |(service, status, *), result|
-      result[service] = status
-    end
+    command_output = Facter::Util::Resolution.exec('systemctl list-unit-files "systemd-*" -t service --state=enabled,disabled,enabled-runtime,indirect -o json')
+    JSON.parse(command_output).to_h { |service| [service['unit_file'], service['state']] }
   end
 end
