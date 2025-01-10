@@ -1,0 +1,28 @@
+# interface network DHCPv6 section definition
+# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+type Systemd::Interface::Network::Dhcpv6 = Struct[{
+    'MUDURL'                         => Optional[String[1]],
+    'IAID'                           => Optional[String[1]],
+    'DUIDType'                       => Optional[String[1]],
+    'DUIDRawData'                    => Optional[String[1]],
+    'RequestOptions'                 => Optional[String[1]],
+    'SendOption'                     => Optional[Integer[1,65536]],
+    'SendVendorOption'               => Optional[String[1]],
+    'UserClass'                      => Optional[String[1]],
+    'VendorClass'                    => Optional[String[1]],
+    'PrefixDelegationHint'           => Optional[String[1]],
+    'RapidCommit'                    => Optional[Enum['yes','no']],
+    'SendHostname'                   => Optional[Enum['yes','no']],
+    'Hostname'                       => Optional[String[1]],
+    'UseAddress'                     => Optional[Enum['yes','no']],
+    'UseCaptivePortal'               => Optional[Enum['yes','no']],
+    'UseDelegatedPrefix'             => Optional[Enum['yes','no']],
+    'UseDNS'                         => Optional[Enum['yes','no']],
+    'UseNTP'                         => Optional[Enum['yes','no']],
+    'UseHostname'                    => Optional[Enum['yes','no']],
+    'UseDomains'                     => Optional[Enum['yes','no']],
+    'NetLabel'                       => Optional[Enum['yes','no']],
+    'SendRelease'                    => Optional[Enum['yes','no']],
+    'NFTSet'                         => Optional[String[1]],
+    'WithoutRA'                      => Optional[Enum['no', 'solicit', 'information-request']],
+}]
