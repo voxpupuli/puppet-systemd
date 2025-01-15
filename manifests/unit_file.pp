@@ -73,7 +73,7 @@ define systemd::unit_file (
   Stdlib::Absolutepath                     $path      = '/etc/systemd/system',
   Optional[Variant[String, Sensitive[String], Deferred]] $content = undef,
   Optional[String]                         $source    = undef,
-  Optional[Stdlib::Absolutepath]           $target    = undef,
+  Optional[String]                         $target    = undef,
   String                                   $owner     = 'root',
   String                                   $group     = 'root',
   String                                   $mode      = '0444',
