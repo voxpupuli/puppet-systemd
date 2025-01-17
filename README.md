@@ -58,6 +58,22 @@ systemd::unit_file { 'foo.service':
 }
 ```
 
+If you're using "template" units (those with a `@` in it), you can
+simply enable an instance of the template with a `service` resource. This, for example, will
+enable the `foo@bar` service unit, based on the `foo@` template:
+
+```puppet
+systemd::unit_file { 'foo@.service':
+  content => file("${module_name}/foo@.service"),
+  enable  => false,
+  active  => false,
+}
+service { 'foo@bar.service':
+  ensure => true,
+  enable => true,
+}
+```
+
 ### unit files from parameters
 
 Create a unit file from parameters
