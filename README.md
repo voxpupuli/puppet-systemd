@@ -59,7 +59,7 @@ systemd::unit_file { 'foo.service':
 ```
 
 If you're using "template" units (those with a `@` in it), you can
-simply enable it with a `service` resource. This, for example, will
+simply enable an instance of the template with a `service` resource. This, for example, will
 enable the `foo@bar` service unit, based on the `foo@` template:
 
 ```puppet
