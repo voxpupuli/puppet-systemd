@@ -1,4 +1,5 @@
-# interface definition
+# @summary Network device configuration(Link) SR-IOV section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html
 type Systemd::Interface::Link::Sr_iov = Struct[{
     'VirtualFunction'         => Optional[Integer[0,2147483646]],
     'VLANId'                  => Optional[Integer[1,4095]],

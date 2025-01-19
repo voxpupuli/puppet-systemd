@@ -1,5 +1,5 @@
-# netdev MACsecReceiveAssociation section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev MACsecReceiveAssociation section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::Macsecreceiveassociation = Struct[{
     'Port'       => Integer[1, 65535],
     'MACAddress' => String[1],

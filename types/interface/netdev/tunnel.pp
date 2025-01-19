@@ -1,5 +1,5 @@
-# netdev Tunnel section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev Tunnel section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::Tunnel = Struct[{
     'External'                  => Optional[Enum['yes','no']],
     'Local'                     => Optional[Variant[Enum['any', 'ipv4_link_local', 'ipv6_link_local', 'dhcp4', 'dhcp6', 'slaac'], String[1]]],

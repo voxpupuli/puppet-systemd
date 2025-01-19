@@ -1,5 +1,5 @@
-# interface network Route section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network Route section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Route = Struct[{
     'Gateway'                            => Optional[Variant[Array[String[1]], String[1]]],
     'GatewayOnLink'                      => Optional[Enum['yes', 'no']],

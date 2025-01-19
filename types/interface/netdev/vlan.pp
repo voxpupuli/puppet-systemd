@@ -1,5 +1,5 @@
-# netdev VLAN section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev VLAN section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::Vlan = Struct[{
     'Id'             => Optional[Integer[0,4094]],
     'Protocol'       => Optional[Enum['802.1q','802.1ad']],

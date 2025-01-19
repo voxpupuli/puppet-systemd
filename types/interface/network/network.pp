@@ -1,5 +1,5 @@
-# interface network Network section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network Network section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Network = Struct[{
     'Description'                        => Optional[String[1]],
     'DHCP'                               => Optional[Enum['yes', 'no', 'ipv4', 'ipv6']],

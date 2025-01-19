@@ -1,5 +1,5 @@
-# interface definition
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network = Struct[{
     'Match'                           => Optional[Systemd::Interface::Network::Match],
     'Link'                            => Optional[Systemd::Interface::Network::Link],

@@ -1,5 +1,5 @@
-# netdev FooOverUDP section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev FooOverUDP section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::Foooverudp = Struct[{
     'Encapsulation'             => Optional[Enum['FooOverUDP','GenericUDPEncapsulation']],
     'Port'                      => Integer[1],

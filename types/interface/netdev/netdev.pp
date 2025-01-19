@@ -1,5 +1,5 @@
-# netdev NetDev section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev NetDev section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::Netdev = Struct[{
     'Description' => Optional[String[1]],
     'Name'        => Optional[String[1]],

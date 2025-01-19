@@ -1,5 +1,5 @@
-# interface network SR-IOV section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network SR-IOV section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Sr_iov = Struct[{
     'VirtualFunction'         => Optional[Integer[0,2147483646]],
     'VLANId'                  => Optional[Integer[1,4095]],

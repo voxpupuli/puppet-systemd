@@ -1,5 +1,5 @@
-# netdev WireGuard section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev WireGuard section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::Wireguardpeer = Struct[{
     'PublicKey'           => Optional[String[1]],
     'PresharedKey'        => Optional[String[1]],

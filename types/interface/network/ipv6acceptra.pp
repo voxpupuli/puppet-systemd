@@ -1,5 +1,5 @@
-# interface network IPv6AcceptRA section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network IPv6AcceptRA section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Ipv6acceptra = Struct[{
     'UseRedirect'           => Optional[Enum['yes','no']],
     'Token'                 => Optional[String[1]],

@@ -1,5 +1,5 @@
-# netdev WireGuard section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev WireGuard section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::Wireguard = Struct[{
     'PrivateKey'     => Optional[String[1]],
     'PrivateKeyFile' => Optional[Stdlib::Absolutepath],

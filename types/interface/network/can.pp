@@ -1,5 +1,5 @@
-# interface network CAN section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network CAN section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Can = Struct[{
     'BitRate'                 => Optional[String[1]],
     'SamplePoint'             => Optional[String[1]],

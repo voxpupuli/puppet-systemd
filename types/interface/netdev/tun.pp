@@ -1,5 +1,5 @@
-# netdev Tun and Tap section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev Tun and Tap section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::Tun = Struct[{
     'MultiQueue'  => Optional[Enum['yes','no']],
     'PacketInfo'  => Optional[Enum['yes','no']],

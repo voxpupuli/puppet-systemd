@@ -1,5 +1,5 @@
-# interface network Match section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network Match section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Match = Struct[{
     'MACAddress'          => Optional[String[1]],
     'PermanentMACAddress' => Optional[String[1]],

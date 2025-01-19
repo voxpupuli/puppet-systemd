@@ -1,5 +1,5 @@
-# interface network DHCPv4 section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network DHCPv4 section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Dhcpv4 = Struct[{
     'RequestAddress'                 => Optional[String[1]],
     'SendHostname'                   => Optional[Enum['yes','no']],
