@@ -90,6 +90,8 @@
 # @param socket_entry key value pairs for the [Socket] section of the unit file
 # @param mount_entry key value pairs for the [Mount] section of the unit file
 # @param swap_entry key value pairs for the [Swap] section of the unit file
+# @param match_entry kev value pairs for [Match] section of the unit file.
+# @param link_entry kev value pairs for [Link] section of the unit file.
 #
 define systemd::manage_dropin (
   Systemd::Unit                    $unit,
@@ -112,6 +114,8 @@ define systemd::manage_dropin (
   Optional[Systemd::Unit::Socket]  $socket_entry            = undef,
   Optional[Systemd::Unit::Mount]   $mount_entry             = undef,
   Optional[Systemd::Unit::Swap]    $swap_entry              = undef,
+  Optional[Systemd::Unit::Link]    $link_entry              = undef,
+  Optional[Systemd::Unit::Match]   $match_entry             = undef,
 ) {
   if $timer_entry and $unit !~ Pattern['^[^/]+\.timer'] {
     fail("Systemd::Manage_dropin[${name}]: for unit ${unit} timer_entry is only valid for timer units")
@@ -137,6 +141,14 @@ define systemd::manage_dropin (
     fail("Systemd::Manage_dropin[${name}]: for unit ${unit} mount_entry is only valid for swap units")
   }
 
+  if $link_entry and $unit !~ Pattern['^[^/]+\.link'] {
+    fail("Systemd::Manage_dropin[${name}]: for unit ${unit} link_entry is only valid for link units")
+  }
+
+  if $match_entry and $unit !~ Pattern['^[^/]+\.link'] {
+    fail("Systemd::Manage_dropin[${name}]: for unit ${unit} match_entry is only valid for link units")
+  }
+
   systemd::dropin_file { $name:
     ensure                  => $ensure,
     filename                => $filename,
@@ -159,6 +171,8 @@ define systemd::manage_dropin (
         'socket_entry'  => $socket_entry,
         'mount_entry'   => $mount_entry,
         'swap_entry'    => $swap_entry,
+        'match_entry'   => $match_entry,
+        'link_entry'    => $link_entry,
     }),
   }
 }

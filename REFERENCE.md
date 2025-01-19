@@ -80,6 +80,8 @@
 * [`Systemd::Unit::Amount`](#Systemd--Unit--Amount): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::AmountOrPercent`](#Systemd--Unit--AmountOrPercent): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::Install`](#Systemd--Unit--Install): Possible keys for the [Install] section of a unit file
+* [`Systemd::Unit::Link`](#Systemd--Unit--Link): Possible keys for the [Link] section of a unit file
+* [`Systemd::Unit::Match`](#Systemd--Unit--Match): Possible keys for the [Match] section of a unit file
 * [`Systemd::Unit::Mount`](#Systemd--Unit--Mount): Possible keys for the [Mount] section of a unit file
 * [`Systemd::Unit::Path`](#Systemd--Unit--Path): Possible keys for the [Path] section of a unit file
 * [`Systemd::Unit::Percent`](#Systemd--Unit--Percent): Systemd definition of a percentage
@@ -1127,6 +1129,8 @@ The following parameters are available in the `systemd::manage_dropin` defined t
 * [`socket_entry`](#-systemd--manage_dropin--socket_entry)
 * [`mount_entry`](#-systemd--manage_dropin--mount_entry)
 * [`swap_entry`](#-systemd--manage_dropin--swap_entry)
+* [`match_entry`](#-systemd--manage_dropin--match_entry)
+* [`link_entry`](#-systemd--manage_dropin--link_entry)
 
 ##### <a name="-systemd--manage_dropin--unit"></a>`unit`
 
@@ -1283,6 +1287,22 @@ Default value: `undef`
 Data type: `Optional[Systemd::Unit::Swap]`
 
 key value pairs for the [Swap] section of the unit file
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_dropin--match_entry"></a>`match_entry`
+
+Data type: `Optional[Systemd::Unit::Match]`
+
+kev value pairs for [Match] section of the unit file.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_dropin--link_entry"></a>`link_entry`
+
+Data type: `Optional[Systemd::Unit::Link]`
+
+kev value pairs for [Link] section of the unit file.
 
 Default value: `undef`
 
@@ -1460,6 +1480,8 @@ The following parameters are available in the `systemd::manage_unit` defined typ
 * [`socket_entry`](#-systemd--manage_unit--socket_entry)
 * [`mount_entry`](#-systemd--manage_unit--mount_entry)
 * [`swap_entry`](#-systemd--manage_unit--swap_entry)
+* [`match_entry`](#-systemd--manage_unit--match_entry)
+* [`link_entry`](#-systemd--manage_unit--link_entry)
 
 ##### <a name="-systemd--manage_unit--name"></a>`name`
 
@@ -1640,6 +1662,22 @@ Default value: `undef`
 Data type: `Optional[Systemd::Unit::Swap]`
 
 kev value pairs for [Swap] section of the unit file.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_unit--match_entry"></a>`match_entry`
+
+Data type: `Optional[Systemd::Unit::Match]`
+
+kev value pairs for [Match] section of the unit file.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_unit--link_entry"></a>`link_entry`
+
+Data type: `Optional[Systemd::Unit::Link]`
+
+kev value pairs for [Link] section of the unit file.
 
 Default value: `undef`
 
@@ -3123,7 +3161,7 @@ custom datatype that validates different filenames for systemd units and unit te
 * **See also**
   * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
 
-Alias of `Pattern[/^[a-zA-Z0-9:\-_.\\@%]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$/]`
+Alias of `Pattern[/^[a-zA-Z0-9:\-_.\\@%]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope|link)$/]`
 
 ### <a name="Systemd--Unit--Amount"></a>`Systemd::Unit::Amount`
 
@@ -3163,6 +3201,36 @@ Struct[{
     Optional['WantedBy']   => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['RequiredBy'] => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['Also']       => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
+  }]
+```
+
+### <a name="Systemd--Unit--Link"></a>`Systemd::Unit::Link`
+
+Possible keys for the [Link] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['MTUBytes']    => Integer[0],
+  }]
+```
+
+### <a name="Systemd--Unit--Match"></a>`Systemd::Unit::Match`
+
+Possible keys for the [Match] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['Driver'] => String[1],
   }]
 ```
 
