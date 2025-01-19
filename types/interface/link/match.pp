@@ -1,4 +1,5 @@
-# interface definition
+# @summary Network device configuration(Link) Match section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html
 type Systemd::Interface::Link::Match = Struct[{
     'Name'                => Optional[String[1]],
     'MACAddress'          => Optional[String[1]],

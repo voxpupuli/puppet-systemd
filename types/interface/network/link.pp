@@ -1,5 +1,5 @@
-# interface network Link section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network Link section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Link = Struct[{
     'MACAddress'              => Optional[String[1]],
     'MTUBytes'                => Optional[Integer[1280]],

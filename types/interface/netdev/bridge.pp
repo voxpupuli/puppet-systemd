@@ -1,5 +1,5 @@
-# netdev Bridge section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev Bridge section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::Bridge = Struct[{
     'Description'          => Optional[String[1]],
     'HelloTimeSec'         => Optional[Integer[1]],

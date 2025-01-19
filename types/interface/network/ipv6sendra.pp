@@ -1,5 +1,5 @@
-# interface network IPv6SendRA section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network IPv6SendRA section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Ipv6sendra = Struct[{
     'Managed'              => Optional[Enum['yes','no']],
     'OtherInformation'     => Optional[Enum['yes','no']],

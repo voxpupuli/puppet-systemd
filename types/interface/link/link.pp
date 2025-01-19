@@ -1,4 +1,5 @@
-# interface definition
+# @summary Network device configuration(Link) Link section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html
 type Systemd::Interface::Link::Link = Struct[{
     'Description'                         => Optional[String[1]],
     'Property'                            => Optional[String[1]],

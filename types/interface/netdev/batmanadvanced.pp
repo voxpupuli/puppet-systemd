@@ -1,5 +1,5 @@
-# netdev BatmanAdvanced section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev BatmanAdvanced section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::Batmanadvanced = Struct[{
     'GatewayMode'           => Optional[Enum['off', 'server', 'client']],
     'Aggregation'           => Optional[Enum['yes','no']],

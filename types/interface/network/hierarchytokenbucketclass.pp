@@ -1,5 +1,5 @@
-# interface network HierarchyTokenBucketClass section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network HierarchyTokenBucketClass section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Hierarchytokenbucketclass = Struct[{
     'Parent'          => Optional[Variant[Enum['root'], String[1]]],
     'ClassId'         => Optional[String[1]],

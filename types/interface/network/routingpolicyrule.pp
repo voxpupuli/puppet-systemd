@@ -1,5 +1,5 @@
-# interface network RoutingPolicyRule section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network RoutingPolicyRule section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Routingpolicyrule = Struct[{
     'TypeOfService'          => Optional[Integer[0,255]],
     'From'                   => Optional[String[1]],

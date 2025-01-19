@@ -1,5 +1,5 @@
-# interface network DHCPPrefixDelegation section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network DHCPPrefixDelegation section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Dhcpprefixdelegation = Struct[{
     'UplinkInterface'        => Optional[String[1]],
     'SubnetId'               => Optional[String[1]],

@@ -1,5 +1,5 @@
-# netdev L2TP section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev L2TP section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::L2tp = Struct[{
     'TunnelId'           => Integer[1,4294967295],
     'PeerTunnelId'       => Integer[1,4294967295],

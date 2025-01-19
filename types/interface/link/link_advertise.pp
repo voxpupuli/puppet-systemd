@@ -1,4 +1,5 @@
-# interface definition
+# @summary Network device configuration(Link), link advertise speeds 
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html
 type Systemd::Interface::Link::Link_advertise = Enum[
   '10baset-full',
   '10baset1l-full',

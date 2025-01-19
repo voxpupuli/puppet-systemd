@@ -1,5 +1,5 @@
-# interface netdev configs
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary interface netdev configs
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev = Struct[{
     'Match'                     => Optional[Systemd::Interface::Netdev::Match],
     'NetDev'                    => Optional[Systemd::Interface::Netdev::Netdev],

@@ -1,5 +1,5 @@
-# netdev VXLAN section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev VXLAN section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::Vxlan = Struct[{
     'VNI'                      => Optional[Integer[1, 16777215]],
     'Remote'                   => Optional[String[1]],

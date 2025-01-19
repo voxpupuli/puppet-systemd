@@ -1,5 +1,5 @@
-# interface network CAKE section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network CAKE section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Cake = Struct[{
     'Parent'                 => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
     'Bandwidth'              => Optional[String[1]],

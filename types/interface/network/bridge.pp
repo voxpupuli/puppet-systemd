@@ -1,5 +1,5 @@
-# interface network Bridge section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network Bridge section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Bridge = Struct[{
     'UnicastFlood'        => Optional[Enum['yes', 'no']],
     'MulticastFlood'      => Optional[Enum['yes', 'no']],

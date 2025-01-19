@@ -63,91 +63,91 @@
 * [`Systemd::CoredumpSettings`](#Systemd--CoredumpSettings): Configurations for coredump.conf
 * [`Systemd::Dropin`](#Systemd--Dropin): custom datatype that validates filenames/paths for valid systemd dropin files
 * [`Systemd::Interface`](#Systemd--Interface): network interface definition
-* [`Systemd::Interface::Link`](#Systemd--Interface--Link): interface definition
-* [`Systemd::Interface::Link::Link`](#Systemd--Interface--Link--Link): interface definition
-* [`Systemd::Interface::Link::Link_advertise`](#Systemd--Interface--Link--Link_advertise): interface definition
-* [`Systemd::Interface::Link::Match`](#Systemd--Interface--Link--Match): interface definition
-* [`Systemd::Interface::Link::Sr_iov`](#Systemd--Interface--Link--Sr_iov): interface definition
-* [`Systemd::Interface::Netdev`](#Systemd--Interface--Netdev): interface netdev configs see: https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Bareudp`](#Systemd--Interface--Netdev--Bareudp): netdev BareUDP section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Batmanadvanced`](#Systemd--Interface--Netdev--Batmanadvanced): netdev BatmanAdvanced section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Bond`](#Systemd--Interface--Netdev--Bond): netdev Bond section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Bridge`](#Systemd--Interface--Netdev--Bridge): netdev Bridge section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Foooverudp`](#Systemd--Interface--Netdev--Foooverudp): netdev FooOverUDP section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Geneve`](#Systemd--Interface--Netdev--Geneve): netdev GENEVE section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Ipoib`](#Systemd--Interface--Netdev--Ipoib): netdev IPoIB section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Ipvlan`](#Systemd--Interface--Netdev--Ipvlan): netdev IPVLAN and IPVTAP section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::L2tp`](#Systemd--Interface--Netdev--L2tp): netdev L2TP section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::L2tpsession`](#Systemd--Interface--Netdev--L2tpsession): netdev L2TPSession section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Macsec`](#Systemd--Interface--Netdev--Macsec): netdev MACsec section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Macsecreceiveassociation`](#Systemd--Interface--Netdev--Macsecreceiveassociation): netdev MACsecReceiveAssociation section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Macsecreceivechannel`](#Systemd--Interface--Netdev--Macsecreceivechannel): netdev MACsecReceiveChannel section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Macsectransmitassociation`](#Systemd--Interface--Netdev--Macsectransmitassociation): netdev MACsecTransmitAssociation section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Macvlan`](#Systemd--Interface--Netdev--Macvlan): netdev MACVLAN and MACVTAP section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Match`](#Systemd--Interface--Netdev--Match): netdev match section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Netdev`](#Systemd--Interface--Netdev--Netdev): netdev NetDev section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Peer`](#Systemd--Interface--Netdev--Peer): netdev Peer section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Tun`](#Systemd--Interface--Netdev--Tun): netdev Tun and Tap section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Tunnel`](#Systemd--Interface--Netdev--Tunnel): netdev Tunnel section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Vlan`](#Systemd--Interface--Netdev--Vlan): netdev VLAN section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Vrf`](#Systemd--Interface--Netdev--Vrf): netdev VRF section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Vxcan`](#Systemd--Interface--Netdev--Vxcan): netdev VXCAN section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Vxlan`](#Systemd--Interface--Netdev--Vxlan): netdev VXLAN section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Wireguard`](#Systemd--Interface--Netdev--Wireguard): netdev WireGuard section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Wireguardpeer`](#Systemd--Interface--Netdev--Wireguardpeer): netdev WireGuard section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Wlan`](#Systemd--Interface--Netdev--Wlan): netdev WLAN section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Netdev::Xfrm`](#Systemd--Interface--Netdev--Xfrm): netdev Xfrm section see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
-* [`Systemd::Interface::Network`](#Systemd--Interface--Network): interface definition see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Address`](#Systemd--Interface--Network--Address): interface network Address section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Bfifo`](#Systemd--Interface--Network--Bfifo): interface network BFIFO section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Bridge`](#Systemd--Interface--Network--Bridge): interface network Bridge section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Bridgefdb`](#Systemd--Interface--Network--Bridgefdb): interface network BridgeFDB section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Bridgemdb`](#Systemd--Interface--Network--Bridgemdb): interface network BridgeMDB section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Bridgevlan`](#Systemd--Interface--Network--Bridgevlan): interface network BridgeVLAN section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Cake`](#Systemd--Interface--Network--Cake): interface network CAKE section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Can`](#Systemd--Interface--Network--Can): interface network CAN section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Controlleddelay`](#Systemd--Interface--Network--Controlleddelay): interface network ControlledDelay section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Deficitroundrobinscheduler`](#Systemd--Interface--Network--Deficitroundrobinscheduler): interface network DeficitRoundRobinScheduler section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.
-* [`Systemd::Interface::Network::Deficitroundrobinschedulerclass`](#Systemd--Interface--Network--Deficitroundrobinschedulerclass): interface network DeficitRoundRobinSchedulerClass section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.net
-* [`Systemd::Interface::Network::Dhcpprefixdelegation`](#Systemd--Interface--Network--Dhcpprefixdelegation): interface network DHCPPrefixDelegation section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Dhcpserver`](#Systemd--Interface--Network--Dhcpserver): interface network DHCPServer section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Dhcpserverstaticlease`](#Systemd--Interface--Network--Dhcpserverstaticlease): interface network DHCPServerStaticLease section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Dhcpv4`](#Systemd--Interface--Network--Dhcpv4): interface network DHCPv4 section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Dhcpv6`](#Systemd--Interface--Network--Dhcpv6): interface network DHCPv6 section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Enhancedtransmissionselection`](#Systemd--Interface--Network--Enhancedtransmissionselection): interface network EnhancedTransmissionSelection section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.netwo
-* [`Systemd::Interface::Network::Fairqueueing`](#Systemd--Interface--Network--Fairqueueing): interface network FairQueueing section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Fairqueueingcontrolleddelay`](#Systemd--Interface--Network--Fairqueueingcontrolleddelay): interface network FairQueueingControlledDelay section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network
-* [`Systemd::Interface::Network::Flowqueuepie`](#Systemd--Interface--Network--Flowqueuepie): interface network FlowQueuePIE section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Genericrandomearlydetection`](#Systemd--Interface--Network--Genericrandomearlydetection): interface network GenericRandomEarlyDetection section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network
-* [`Systemd::Interface::Network::Heavyhitterfilter`](#Systemd--Interface--Network--Heavyhitterfilter): interface network HeavyHitterFilter section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Hierarchytokenbucketclass`](#Systemd--Interface--Network--Hierarchytokenbucketclass): interface network HierarchyTokenBucketClass section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.h
-* [`Systemd::Interface::Network::Ipoib`](#Systemd--Interface--Network--Ipoib): interface network IPoIB section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Ipv6acceptra`](#Systemd--Interface--Network--Ipv6acceptra): interface network IPv6AcceptRA section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Ipv6addresslabel`](#Systemd--Interface--Network--Ipv6addresslabel): interface network IPv6AddressLabel section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Ipv6pref64prefix`](#Systemd--Interface--Network--Ipv6pref64prefix): interface network IPv6PREF64Prefix section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Ipv6prefix`](#Systemd--Interface--Network--Ipv6prefix): interface network IPv6Prefix section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Ipv6routeprefix`](#Systemd--Interface--Network--Ipv6routeprefix): interface network IPv6RoutePrefix section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Ipv6sendra`](#Systemd--Interface--Network--Ipv6sendra): interface network IPv6SendRA section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Link`](#Systemd--Interface--Network--Link): interface network Link section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Lldp`](#Systemd--Interface--Network--Lldp): interface network LLDP section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Match`](#Systemd--Interface--Network--Match): interface network Match section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Neighbor`](#Systemd--Interface--Network--Neighbor): interface network Neighbor section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Network`](#Systemd--Interface--Network--Network): interface network Network section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Networkemulator`](#Systemd--Interface--Network--Networkemulator): interface network NetworkEmulator section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Nexthop`](#Systemd--Interface--Network--Nexthop): interface network NextHop section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Pfifo`](#Systemd--Interface--Network--Pfifo): interface network PFIFO section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Pfifofast`](#Systemd--Interface--Network--Pfifofast): interface network PFIFOFast section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Pfifoheaddrop`](#Systemd--Interface--Network--Pfifoheaddrop): interface network PFIFOHeadDrop section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Pie`](#Systemd--Interface--Network--Pie): interface network PIE section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Qdisc`](#Systemd--Interface--Network--Qdisc): interface network QDisc section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Quickfairqueueingclass`](#Systemd--Interface--Network--Quickfairqueueingclass): interface network QuickFairQueueingClass section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Route`](#Systemd--Interface--Network--Route): interface network Route section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Routingpolicyrule`](#Systemd--Interface--Network--Routingpolicyrule): interface network RoutingPolicyRule section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Sr_iov`](#Systemd--Interface--Network--Sr_iov): interface network SR-IOV section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Stochasticfairblue`](#Systemd--Interface--Network--Stochasticfairblue): interface network StochasticFairBlue section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Stochasticfairnessqueueing`](#Systemd--Interface--Network--Stochasticfairnessqueueing): interface network StochasticFairnessQueueing section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.
-* [`Systemd::Interface::Network::Tokenbucketfilter`](#Systemd--Interface--Network--Tokenbucketfilter): interface network TokenBucketFilter section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-* [`Systemd::Interface::Network::Triviallinkequalizer`](#Systemd--Interface--Network--Triviallinkequalizer): interface network TrivialLinkEqualizer section definition see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+* [`Systemd::Interface::Link`](#Systemd--Interface--Link): Network device configuration(Link)
+* [`Systemd::Interface::Link::Link`](#Systemd--Interface--Link--Link): Network device configuration(Link) Link section definition
+* [`Systemd::Interface::Link::Link_advertise`](#Systemd--Interface--Link--Link_advertise): Network device configuration(Link), link advertise speeds
+* [`Systemd::Interface::Link::Match`](#Systemd--Interface--Link--Match): Network device configuration(Link) Match section definition
+* [`Systemd::Interface::Link::Sr_iov`](#Systemd--Interface--Link--Sr_iov): Network device configuration(Link) SR-IOV section definition
+* [`Systemd::Interface::Netdev`](#Systemd--Interface--Netdev): interface netdev configs
+* [`Systemd::Interface::Netdev::Bareudp`](#Systemd--Interface--Netdev--Bareudp): netdev BareUDP section
+* [`Systemd::Interface::Netdev::Batmanadvanced`](#Systemd--Interface--Netdev--Batmanadvanced): netdev BatmanAdvanced section
+* [`Systemd::Interface::Netdev::Bond`](#Systemd--Interface--Netdev--Bond): netdev Bond section
+* [`Systemd::Interface::Netdev::Bridge`](#Systemd--Interface--Netdev--Bridge): netdev Bridge section
+* [`Systemd::Interface::Netdev::Foooverudp`](#Systemd--Interface--Netdev--Foooverudp): netdev FooOverUDP section
+* [`Systemd::Interface::Netdev::Geneve`](#Systemd--Interface--Netdev--Geneve): netdev GENEVE section
+* [`Systemd::Interface::Netdev::Ipoib`](#Systemd--Interface--Netdev--Ipoib): netdev IPoIB section
+* [`Systemd::Interface::Netdev::Ipvlan`](#Systemd--Interface--Netdev--Ipvlan): netdev IPVLAN and IPVTAP section
+* [`Systemd::Interface::Netdev::L2tp`](#Systemd--Interface--Netdev--L2tp): netdev L2TP section
+* [`Systemd::Interface::Netdev::L2tpsession`](#Systemd--Interface--Netdev--L2tpsession): netdev L2TPSession section
+* [`Systemd::Interface::Netdev::Macsec`](#Systemd--Interface--Netdev--Macsec): netdev MACsec section
+* [`Systemd::Interface::Netdev::Macsecreceiveassociation`](#Systemd--Interface--Netdev--Macsecreceiveassociation): netdev MACsecReceiveAssociation section
+* [`Systemd::Interface::Netdev::Macsecreceivechannel`](#Systemd--Interface--Netdev--Macsecreceivechannel): netdev MACsecReceiveChannel section
+* [`Systemd::Interface::Netdev::Macsectransmitassociation`](#Systemd--Interface--Netdev--Macsectransmitassociation): netdev MACsecTransmitAssociation section
+* [`Systemd::Interface::Netdev::Macvlan`](#Systemd--Interface--Netdev--Macvlan): netdev MACVLAN and MACVTAP section
+* [`Systemd::Interface::Netdev::Match`](#Systemd--Interface--Netdev--Match): netdev match section
+* [`Systemd::Interface::Netdev::Netdev`](#Systemd--Interface--Netdev--Netdev): netdev NetDev section
+* [`Systemd::Interface::Netdev::Peer`](#Systemd--Interface--Netdev--Peer): netdev Peer section
+* [`Systemd::Interface::Netdev::Tun`](#Systemd--Interface--Netdev--Tun): netdev Tun and Tap section
+* [`Systemd::Interface::Netdev::Tunnel`](#Systemd--Interface--Netdev--Tunnel): netdev Tunnel section
+* [`Systemd::Interface::Netdev::Vlan`](#Systemd--Interface--Netdev--Vlan): netdev VLAN section
+* [`Systemd::Interface::Netdev::Vrf`](#Systemd--Interface--Netdev--Vrf): netdev VRF section
+* [`Systemd::Interface::Netdev::Vxcan`](#Systemd--Interface--Netdev--Vxcan): netdev VXCAN section
+* [`Systemd::Interface::Netdev::Vxlan`](#Systemd--Interface--Netdev--Vxlan): netdev VXLAN section
+* [`Systemd::Interface::Netdev::Wireguard`](#Systemd--Interface--Netdev--Wireguard): netdev WireGuard section
+* [`Systemd::Interface::Netdev::Wireguardpeer`](#Systemd--Interface--Netdev--Wireguardpeer): netdev WireGuard section
+* [`Systemd::Interface::Netdev::Wlan`](#Systemd--Interface--Netdev--Wlan): netdev WLAN section
+* [`Systemd::Interface::Netdev::Xfrm`](#Systemd--Interface--Netdev--Xfrm): netdev Xfrm section
+* [`Systemd::Interface::Network`](#Systemd--Interface--Network): interface definition
+* [`Systemd::Interface::Network::Address`](#Systemd--Interface--Network--Address): interface network Address section definition
+* [`Systemd::Interface::Network::Bfifo`](#Systemd--Interface--Network--Bfifo): interface network BFIFO section definition
+* [`Systemd::Interface::Network::Bridge`](#Systemd--Interface--Network--Bridge): interface network Bridge section definition
+* [`Systemd::Interface::Network::Bridgefdb`](#Systemd--Interface--Network--Bridgefdb): interface network BridgeFDB section definition
+* [`Systemd::Interface::Network::Bridgemdb`](#Systemd--Interface--Network--Bridgemdb): interface network BridgeMDB section definition
+* [`Systemd::Interface::Network::Bridgevlan`](#Systemd--Interface--Network--Bridgevlan): interface network BridgeVLAN section definition
+* [`Systemd::Interface::Network::Cake`](#Systemd--Interface--Network--Cake): interface network CAKE section definition
+* [`Systemd::Interface::Network::Can`](#Systemd--Interface--Network--Can): interface network CAN section definition
+* [`Systemd::Interface::Network::Controlleddelay`](#Systemd--Interface--Network--Controlleddelay): interface network ControlledDelay section definition
+* [`Systemd::Interface::Network::Deficitroundrobinscheduler`](#Systemd--Interface--Network--Deficitroundrobinscheduler): interface network DeficitRoundRobinScheduler section definition
+* [`Systemd::Interface::Network::Deficitroundrobinschedulerclass`](#Systemd--Interface--Network--Deficitroundrobinschedulerclass): interface network DeficitRoundRobinSchedulerClass section definition
+* [`Systemd::Interface::Network::Dhcpprefixdelegation`](#Systemd--Interface--Network--Dhcpprefixdelegation): interface network DHCPPrefixDelegation section definition
+* [`Systemd::Interface::Network::Dhcpserver`](#Systemd--Interface--Network--Dhcpserver): interface network DHCPServer section definition
+* [`Systemd::Interface::Network::Dhcpserverstaticlease`](#Systemd--Interface--Network--Dhcpserverstaticlease): interface network DHCPServerStaticLease section definition
+* [`Systemd::Interface::Network::Dhcpv4`](#Systemd--Interface--Network--Dhcpv4): interface network DHCPv4 section definition
+* [`Systemd::Interface::Network::Dhcpv6`](#Systemd--Interface--Network--Dhcpv6): interface network DHCPv6 section definition
+* [`Systemd::Interface::Network::Enhancedtransmissionselection`](#Systemd--Interface--Network--Enhancedtransmissionselection): interface network EnhancedTransmissionSelection section definition
+* [`Systemd::Interface::Network::Fairqueueing`](#Systemd--Interface--Network--Fairqueueing): interface network FairQueueing section definition
+* [`Systemd::Interface::Network::Fairqueueingcontrolleddelay`](#Systemd--Interface--Network--Fairqueueingcontrolleddelay): interface network FairQueueingControlledDelay section definition
+* [`Systemd::Interface::Network::Flowqueuepie`](#Systemd--Interface--Network--Flowqueuepie): interface network FlowQueuePIE section definition
+* [`Systemd::Interface::Network::Genericrandomearlydetection`](#Systemd--Interface--Network--Genericrandomearlydetection): interface network GenericRandomEarlyDetection section definition
+* [`Systemd::Interface::Network::Heavyhitterfilter`](#Systemd--Interface--Network--Heavyhitterfilter): interface network HeavyHitterFilter section definition
+* [`Systemd::Interface::Network::Hierarchytokenbucketclass`](#Systemd--Interface--Network--Hierarchytokenbucketclass): interface network HierarchyTokenBucketClass section definition
+* [`Systemd::Interface::Network::Ipoib`](#Systemd--Interface--Network--Ipoib): interface network IPoIB section definition
+* [`Systemd::Interface::Network::Ipv6acceptra`](#Systemd--Interface--Network--Ipv6acceptra): interface network IPv6AcceptRA section definition
+* [`Systemd::Interface::Network::Ipv6addresslabel`](#Systemd--Interface--Network--Ipv6addresslabel): interface network IPv6AddressLabel section definition
+* [`Systemd::Interface::Network::Ipv6pref64prefix`](#Systemd--Interface--Network--Ipv6pref64prefix): interface network IPv6PREF64Prefix section definition
+* [`Systemd::Interface::Network::Ipv6prefix`](#Systemd--Interface--Network--Ipv6prefix): interface network IPv6Prefix section definition
+* [`Systemd::Interface::Network::Ipv6routeprefix`](#Systemd--Interface--Network--Ipv6routeprefix): interface network IPv6RoutePrefix section definition
+* [`Systemd::Interface::Network::Ipv6sendra`](#Systemd--Interface--Network--Ipv6sendra): interface network IPv6SendRA section definition
+* [`Systemd::Interface::Network::Link`](#Systemd--Interface--Network--Link): interface network Link section definition
+* [`Systemd::Interface::Network::Lldp`](#Systemd--Interface--Network--Lldp): interface network LLDP section definition
+* [`Systemd::Interface::Network::Match`](#Systemd--Interface--Network--Match): interface network Match section definition
+* [`Systemd::Interface::Network::Neighbor`](#Systemd--Interface--Network--Neighbor): interface network Neighbor section definition
+* [`Systemd::Interface::Network::Network`](#Systemd--Interface--Network--Network): interface network Network section definition
+* [`Systemd::Interface::Network::Networkemulator`](#Systemd--Interface--Network--Networkemulator): interface network NetworkEmulator section definition
+* [`Systemd::Interface::Network::Nexthop`](#Systemd--Interface--Network--Nexthop): interface network NextHop section definition
+* [`Systemd::Interface::Network::Pfifo`](#Systemd--Interface--Network--Pfifo): interface network PFIFO section definition
+* [`Systemd::Interface::Network::Pfifofast`](#Systemd--Interface--Network--Pfifofast): interface network PFIFOFast section definition
+* [`Systemd::Interface::Network::Pfifoheaddrop`](#Systemd--Interface--Network--Pfifoheaddrop): interface network PFIFOHeadDrop section definition
+* [`Systemd::Interface::Network::Pie`](#Systemd--Interface--Network--Pie): interface network PIE section definition
+* [`Systemd::Interface::Network::Qdisc`](#Systemd--Interface--Network--Qdisc): interface network QDisc section definition
+* [`Systemd::Interface::Network::Quickfairqueueingclass`](#Systemd--Interface--Network--Quickfairqueueingclass): interface network QuickFairQueueingClass section definition
+* [`Systemd::Interface::Network::Route`](#Systemd--Interface--Network--Route): interface network Route section definition
+* [`Systemd::Interface::Network::Routingpolicyrule`](#Systemd--Interface--Network--Routingpolicyrule): interface network RoutingPolicyRule section definition
+* [`Systemd::Interface::Network::Sr_iov`](#Systemd--Interface--Network--Sr_iov): interface network SR-IOV section definition
+* [`Systemd::Interface::Network::Stochasticfairblue`](#Systemd--Interface--Network--Stochasticfairblue): interface network StochasticFairBlue section definition
+* [`Systemd::Interface::Network::Stochasticfairnessqueueing`](#Systemd--Interface--Network--Stochasticfairnessqueueing): interface network StochasticFairnessQueueing section definition
+* [`Systemd::Interface::Network::Tokenbucketfilter`](#Systemd--Interface--Network--Tokenbucketfilter): interface network TokenBucketFilter section definition
+* [`Systemd::Interface::Network::Triviallinkequalizer`](#Systemd--Interface--Network--Triviallinkequalizer): interface network TrivialLinkEqualizer section definition
 * [`Systemd::JournalRemoteSettings`](#Systemd--JournalRemoteSettings): matches Systemd journal remote config Struct
 * [`Systemd::JournalUploadSettings`](#Systemd--JournalUploadSettings): matches Systemd journal upload config Struct
 * [`Systemd::JournaldSettings`](#Systemd--JournaldSettings): Matches Systemd journald config Struct
@@ -2890,7 +2890,10 @@ Struct[{
 
 ### <a name="Systemd--Interface--Link"></a>`Systemd::Interface::Link`
 
-interface definition
+Network device configuration(Link)
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html
 
 Alias of
 
@@ -2904,7 +2907,10 @@ Struct[{
 
 ### <a name="Systemd--Interface--Link--Link"></a>`Systemd::Interface::Link::Link`
 
-interface definition
+Network device configuration(Link) Link section definition
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html
 
 Alias of
 
@@ -2996,13 +3002,19 @@ Struct[{
 
 ### <a name="Systemd--Interface--Link--Link_advertise"></a>`Systemd::Interface::Link::Link_advertise`
 
-interface definition
+Network device configuration(Link), link advertise speeds
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html
 
 Alias of `Enum['10baset-full', '10baset1l-full', '10baset-half', '100basefx-full', '100baset-full', '100baset1-full', '100basefx-half', '100baset-half', '1000basekx-ful', '1000baset-full', '1000baset1-full', '1000basex-full', '1000baset-half', '2500baset-full', '2500basex-full', '5000baset-full', '10000baser-fec', '10000basecr-full', '10000baseer-full', '10000basekr-full', '10000basekx4-full', '10000baselr-full', '10000baselrm-full', '10000basesr-full', '10000baset-full', '20000basekr2-full', '20000basemld2-full', '25000basecr-full', '25000basekr-full', '25000basesr-full', '40000basecr4-full', '40000basekr4-full', '40000baselr4-full', '40000basesr4-full', '50000basecr-full', '50000basecr2-full', '50000basedr-full', '50000basekr-full', '50000basekr2-full', '50000baselr-er-fr-full', '50000basesr-full', '50000basesr2-full', '56000basecr4-full', '56000basekr4-full', '56000baselr4-full', '56000basesr4-full', '100000basecr-full', '100000basecr2-full', '100000basecr4-full', '100000basedr-full', '100000basedr2-full', '100000basekr-full', '100000basekr2-full', '100000basekr4-full', '100000baselr-er-fr-full', '100000baselr2-er2-fr2-full', '100000baselr4-er4-full', '100000basesr-full', '100000basesr2-full', '100000basesr4-full', '200000basecr2-full', '200000basecr4-full', '200000basedr2-full', '200000basedr4-full', '200000basekr2-full', '200000basekr4-full', '200000baselr2-er2-fr2-full', '200000baselr4-er4-fr4-full', '200000basesr2-full', '200000basesr4-full', '400000basecr4-full', '400000basecr8-full', '400000basedr4-full', '400000basedr8-full', '400000basekr4-full', '400000basekr8-full', '400000baselr4-er4-fr4-full', '400000baselr8-er8-fr8-full', '400000basesr4-full', '400000basesr8-full', '800000basecr8-full', '800000basedr8-2-full', '800000basedr8-full', '800000basekr8-full', '800000basesr8-full', '800000basevr8-full', 'asym-pause', 'aui', 'autonegotiation', 'backplane', 'bnc', 'fec-baser', 'fec-llrs', 'fec-none', 'fec-rs', 'fibre', 'mii', 'pause', 'tp']`
 
 ### <a name="Systemd--Interface--Link--Match"></a>`Systemd::Interface::Link::Match`
 
-interface definition
+Network device configuration(Link) Match section definition
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html
 
 Alias of
 
@@ -3031,7 +3043,10 @@ Struct[{
 
 ### <a name="Systemd--Interface--Link--Sr_iov"></a>`Systemd::Interface::Link::Sr_iov`
 
-interface definition
+Network device configuration(Link) SR-IOV section definition
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html
 
 Alias of
 
@@ -3052,7 +3067,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev"></a>`Systemd::Interface::Netdev`
 
 interface netdev configs
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3095,7 +3112,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Bareudp"></a>`Systemd::Interface::Netdev::Bareudp`
 
 netdev BareUDP section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3109,7 +3128,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Batmanadvanced"></a>`Systemd::Interface::Netdev::Batmanadvanced`
 
 netdev BatmanAdvanced section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3131,7 +3152,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Bond"></a>`Systemd::Interface::Netdev::Bond`
 
 netdev Bond section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3171,7 +3194,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Bridge"></a>`Systemd::Interface::Netdev::Bridge`
 
 netdev Bridge section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3196,7 +3221,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Foooverudp"></a>`Systemd::Interface::Netdev::Foooverudp`
 
 netdev FooOverUDP section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3214,7 +3241,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Geneve"></a>`Systemd::Interface::Netdev::Geneve`
 
 netdev GENEVE section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3237,7 +3266,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Ipoib"></a>`Systemd::Interface::Netdev::Ipoib`
 
 netdev IPoIB section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3252,7 +3283,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Ipvlan"></a>`Systemd::Interface::Netdev::Ipvlan`
 
 netdev IPVLAN and IPVTAP section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3266,7 +3299,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--L2tp"></a>`Systemd::Interface::Netdev::L2tp`
 
 netdev L2TP section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3288,7 +3323,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--L2tpsession"></a>`Systemd::Interface::Netdev::L2tpsession`
 
 netdev L2TPSession section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3304,7 +3341,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Macsec"></a>`Systemd::Interface::Netdev::Macsec`
 
 netdev MACsec section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3318,7 +3357,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Macsecreceiveassociation"></a>`Systemd::Interface::Netdev::Macsecreceiveassociation`
 
 netdev MACsecReceiveAssociation section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3337,7 +3378,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Macsecreceivechannel"></a>`Systemd::Interface::Netdev::Macsecreceivechannel`
 
 netdev MACsecReceiveChannel section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3351,7 +3394,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Macsectransmitassociation"></a>`Systemd::Interface::Netdev::Macsectransmitassociation`
 
 netdev MACsecTransmitAssociation section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3369,7 +3414,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Macvlan"></a>`Systemd::Interface::Netdev::Macvlan`
 
 netdev MACVLAN and MACVTAP section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3385,7 +3432,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Match"></a>`Systemd::Interface::Netdev::Match`
 
 netdev match section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3404,7 +3453,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Netdev"></a>`Systemd::Interface::Netdev::Netdev`
 
 netdev NetDev section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3421,7 +3472,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Peer"></a>`Systemd::Interface::Netdev::Peer`
 
 netdev Peer section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3435,7 +3488,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Tun"></a>`Systemd::Interface::Netdev::Tun`
 
 netdev Tun and Tap section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3453,7 +3508,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Tunnel"></a>`Systemd::Interface::Netdev::Tunnel`
 
 netdev Tunnel section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3493,7 +3550,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Vlan"></a>`Systemd::Interface::Netdev::Vlan`
 
 netdev VLAN section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3513,7 +3572,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Vrf"></a>`Systemd::Interface::Netdev::Vrf`
 
 netdev VRF section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3526,7 +3587,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Vxcan"></a>`Systemd::Interface::Netdev::Vxcan`
 
 netdev VXCAN section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3539,7 +3602,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Vxlan"></a>`Systemd::Interface::Netdev::Vxlan`
 
 netdev VXLAN section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3576,7 +3641,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Wireguard"></a>`Systemd::Interface::Netdev::Wireguard`
 
 netdev WireGuard section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3594,7 +3661,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Wireguardpeer"></a>`Systemd::Interface::Netdev::Wireguardpeer`
 
 netdev WireGuard section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3614,7 +3683,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Wlan"></a>`Systemd::Interface::Netdev::Wlan`
 
 netdev WLAN section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3630,7 +3701,9 @@ Struct[{
 ### <a name="Systemd--Interface--Netdev--Xfrm"></a>`Systemd::Interface::Netdev::Xfrm`
 
 netdev Xfrm section
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 
 Alias of
 
@@ -3644,7 +3717,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network"></a>`Systemd::Interface::Network`
 
 interface definition
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -3741,7 +3816,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Address"></a>`Systemd::Interface::Network::Address`
 
 interface network Address section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -3767,7 +3844,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Bfifo"></a>`Systemd::Interface::Network::Bfifo`
 
 interface network BFIFO section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -3782,7 +3861,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Bridge"></a>`Systemd::Interface::Network::Bridge`
 
 interface network Bridge section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -3809,7 +3890,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Bridgefdb"></a>`Systemd::Interface::Network::Bridgefdb`
 
 interface network BridgeFDB section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -3827,7 +3910,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Bridgemdb"></a>`Systemd::Interface::Network::Bridgemdb`
 
 interface network BridgeMDB section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -3841,7 +3926,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Bridgevlan"></a>`Systemd::Interface::Network::Bridgevlan`
 
 interface network BridgeVLAN section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -3856,7 +3943,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Cake"></a>`Systemd::Interface::Network::Cake`
 
 interface network CAKE section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -3883,7 +3972,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Can"></a>`Systemd::Interface::Network::Can`
 
 interface network CAN section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -3920,7 +4011,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Controlleddelay"></a>`Systemd::Interface::Network::Controlleddelay`
 
 interface network ControlledDelay section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -3938,7 +4031,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Deficitroundrobinscheduler"></a>`Systemd::Interface::Network::Deficitroundrobinscheduler`
 
 interface network DeficitRoundRobinScheduler section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -3952,7 +4047,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Deficitroundrobinschedulerclass"></a>`Systemd::Interface::Network::Deficitroundrobinschedulerclass`
 
 interface network DeficitRoundRobinSchedulerClass section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -3967,7 +4064,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Dhcpprefixdelegation"></a>`Systemd::Interface::Network::Dhcpprefixdelegation`
 
 interface network DHCPPrefixDelegation section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -3988,7 +4087,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Dhcpserver"></a>`Systemd::Interface::Network::Dhcpserver`
 
 interface network DHCPServer section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4034,7 +4135,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Dhcpserverstaticlease"></a>`Systemd::Interface::Network::Dhcpserverstaticlease`
 
 interface network DHCPServerStaticLease section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4048,7 +4151,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Dhcpv4"></a>`Systemd::Interface::Network::Dhcpv4`
 
 interface network DHCPv4 section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4109,7 +4214,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Dhcpv6"></a>`Systemd::Interface::Network::Dhcpv6`
 
 interface network DHCPv6 section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4145,7 +4252,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Enhancedtransmissionselection"></a>`Systemd::Interface::Network::Enhancedtransmissionselection`
 
 interface network EnhancedTransmissionSelection section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4163,7 +4272,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Fairqueueing"></a>`Systemd::Interface::Network::Fairqueueing`
 
 interface network FairQueueing section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4186,7 +4297,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Fairqueueingcontrolleddelay"></a>`Systemd::Interface::Network::Fairqueueingcontrolleddelay`
 
 interface network FairQueueingControlledDelay section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4208,7 +4321,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Flowqueuepie"></a>`Systemd::Interface::Network::Flowqueuepie`
 
 interface network FlowQueuePIE section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4223,7 +4338,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Genericrandomearlydetection"></a>`Systemd::Interface::Network::Genericrandomearlydetection`
 
 interface network GenericRandomEarlyDetection section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4240,7 +4357,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Heavyhitterfilter"></a>`Systemd::Interface::Network::Heavyhitterfilter`
 
 interface network HeavyHitterFilter section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4255,7 +4374,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Hierarchytokenbucketclass"></a>`Systemd::Interface::Network::Hierarchytokenbucketclass`
 
 interface network HierarchyTokenBucketClass section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4277,7 +4398,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Ipoib"></a>`Systemd::Interface::Network::Ipoib`
 
 interface network IPoIB section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4291,7 +4414,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Ipv6acceptra"></a>`Systemd::Interface::Network::Ipv6acceptra`
 
 interface network IPv6AcceptRA section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4329,7 +4454,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Ipv6addresslabel"></a>`Systemd::Interface::Network::Ipv6addresslabel`
 
 interface network IPv6AddressLabel section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4343,7 +4470,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Ipv6pref64prefix"></a>`Systemd::Interface::Network::Ipv6pref64prefix`
 
 interface network IPv6PREF64Prefix section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4357,7 +4486,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Ipv6prefix"></a>`Systemd::Interface::Network::Ipv6prefix`
 
 interface network IPv6Prefix section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4377,7 +4508,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Ipv6routeprefix"></a>`Systemd::Interface::Network::Ipv6routeprefix`
 
 interface network IPv6RoutePrefix section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4391,7 +4524,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Ipv6sendra"></a>`Systemd::Interface::Network::Ipv6sendra`
 
 interface network IPv6SendRA section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4419,7 +4554,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Link"></a>`Systemd::Interface::Network::Link`
 
 interface network Link section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4444,7 +4581,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Lldp"></a>`Systemd::Interface::Network::Lldp`
 
 interface network LLDP section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4457,7 +4596,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Match"></a>`Systemd::Interface::Network::Match`
 
 interface network Match section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4492,7 +4633,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Neighbor"></a>`Systemd::Interface::Network::Neighbor`
 
 interface network Neighbor section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4506,7 +4649,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Network"></a>`Systemd::Interface::Network::Network`
 
 interface network Network section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4581,7 +4726,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Networkemulator"></a>`Systemd::Interface::Network::Networkemulator`
 
 interface network NetworkEmulator section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4599,7 +4746,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Nexthop"></a>`Systemd::Interface::Network::Nexthop`
 
 interface network NextHop section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4617,7 +4766,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Pfifo"></a>`Systemd::Interface::Network::Pfifo`
 
 interface network PFIFO section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4632,7 +4783,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Pfifofast"></a>`Systemd::Interface::Network::Pfifofast`
 
 interface network PFIFOFast section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4646,7 +4799,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Pfifoheaddrop"></a>`Systemd::Interface::Network::Pfifoheaddrop`
 
 interface network PFIFOHeadDrop section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4661,7 +4816,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Pie"></a>`Systemd::Interface::Network::Pie`
 
 interface network PIE section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4676,7 +4833,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Qdisc"></a>`Systemd::Interface::Network::Qdisc`
 
 interface network QDisc section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4690,7 +4849,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Quickfairqueueingclass"></a>`Systemd::Interface::Network::Quickfairqueueingclass`
 
 interface network QuickFairQueueingClass section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4706,7 +4867,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Route"></a>`Systemd::Interface::Network::Route`
 
 interface network Route section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4743,7 +4906,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Routingpolicyrule"></a>`Systemd::Interface::Network::Routingpolicyrule`
 
 interface network RoutingPolicyRule section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4773,7 +4938,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Sr_iov"></a>`Systemd::Interface::Network::Sr_iov`
 
 interface network SR-IOV section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4794,7 +4961,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Stochasticfairblue"></a>`Systemd::Interface::Network::Stochasticfairblue`
 
 interface network StochasticFairBlue section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4809,7 +4978,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Stochasticfairnessqueueing"></a>`Systemd::Interface::Network::Stochasticfairnessqueueing`
 
 interface network StochasticFairnessQueueing section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4824,7 +4995,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Tokenbucketfilter"></a>`Systemd::Interface::Network::Tokenbucketfilter`
 
 interface network TokenBucketFilter section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 
@@ -4845,7 +5018,9 @@ Struct[{
 ### <a name="Systemd--Interface--Network--Triviallinkequalizer"></a>`Systemd::Interface::Network::Triviallinkequalizer`
 
 interface network TrivialLinkEqualizer section definition
-see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 
 Alias of
 

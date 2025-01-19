@@ -1,5 +1,5 @@
-# netdev Bond section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev Bond section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::Bond = Struct[{
     'Mode'                         => Optional[Enum[
         'balance-rr', 'active-backup', 'balance-xor',

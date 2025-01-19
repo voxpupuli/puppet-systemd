@@ -1,5 +1,5 @@
-# interface network IPv6Prefix section definition
-# see: https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+# @summary interface network IPv6Prefix section definition
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
 type Systemd::Interface::Network::Ipv6prefix = Struct[{
     'AddressAutoconfiguration' => Optional[Enum['yes','no']],
     'OnLink'                   => Optional[Enum['yes','no']],

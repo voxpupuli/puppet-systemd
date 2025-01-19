@@ -1,5 +1,5 @@
-# netdev GENEVE section
-# see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
+# @summary netdev GENEVE section
+# @see https://www.freedesktop.org/software/systemd/man/latest/systemd.netdev.html
 type Systemd::Interface::Netdev::Geneve = Struct[{
     'Id'                   => Integer[0,16777215],
     'Remote'               => Optional[String[1]],
