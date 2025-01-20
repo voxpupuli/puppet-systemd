@@ -6,6 +6,7 @@ describe 'Systemd::Unit' do
   context 'with a permitted unit name' do
     [
       'foo.service',
+      '25-wireless.link',
       'foo.socket',
       'atemplate@.service',
       'atemplate@instance.service',

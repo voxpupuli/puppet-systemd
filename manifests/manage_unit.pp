@@ -154,6 +154,8 @@
 # @param socket_entry kev value paors for [Socket] section of the unit file.
 # @param mount_entry kev value pairs for [Mount] section of the unit file.
 # @param swap_entry kev value pairs for [Swap] section of the unit file.
+# @param match_entry kev value pairs for [Match] section of the unit file.
+# @param link_entry kev value pairs for [Link] section of the unit file.
 #
 define systemd::manage_unit (
   Enum['present', 'absent']                $ensure                  = 'present',
@@ -178,6 +180,8 @@ define systemd::manage_unit (
   Optional[Systemd::Unit::Socket]          $socket_entry            = undef,
   Optional[Systemd::Unit::Mount]           $mount_entry             = undef,
   Optional[Systemd::Unit::Swap]            $swap_entry              = undef,
+  Optional[Systemd::Unit::Link]            $link_entry              = undef,
+  Optional[Systemd::Unit::Match]           $match_entry             = undef,
 ) {
   assert_type(Systemd::Unit, $name)
 
@@ -203,6 +207,14 @@ define systemd::manage_unit (
 
   if $swap_entry and $name !~ Pattern['^[^/]+\.swap'] {
     fail("Systemd::Manage_unit[${name}]: swap_entry is only valid for swap units")
+  }
+
+  if $link_entry and $name !~ Pattern['^[^/]+\.link'] {
+    fail("Systemd::Manage_unit[${name}]: link_entry is only valid for link units")
+  }
+
+  if $match_entry and $name !~ Pattern['^[^/]+\.link'] {
+    fail("Systemd::Manage_unit[${name}]: mantch_entry is only valid for link units")
   }
 
   if $ensure != 'absent' and  $name =~ Pattern['^[^/]+\.service'] and !$service_entry {
@@ -232,6 +244,8 @@ define systemd::manage_unit (
         'socket_entry'  => $socket_entry,
         'mount_entry'   => $mount_entry,
         'swap_entry'    => $swap_entry,
+        'match_entry'   => $match_entry,
+        'link_entry'    => $link_entry,
     }),
   }
 }
