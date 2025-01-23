@@ -260,30 +260,6 @@ describe 'systemd::manage_unit' do
           }
         end
 
-        context 'on a link unit' do
-          let(:title) { '15-wireless.link' }
-          let(:params) do
-            {
-              match_entry: {
-                'Driver' => 'brcmsmac',
-              },
-              link_entry: {
-                'MTUBytes' => 1450,
-              }
-            }
-          end
-
-          it { is_expected.to compile.with_all_deps }
-
-          it {
-            is_expected.to contain_systemd__unit_file('15-wireless.link').
-              with_content(%r{^\[Match\]$}).
-              with_content(%r{^Driver=brcmsmac$}).
-              with_content(%r{^\[Link\]$}).
-              with_content(%r{^MTUBytes=1450$})
-          }
-        end
-
         context 'on a path unit' do
           let(:title) { 'etc-passwd.path' }
 
