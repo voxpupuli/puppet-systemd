@@ -8,8 +8,6 @@
  Optional[Hash] $socket_entry,
  Optional[Hash] $mount_entry,
  Optional[Hash] $swap_entry,
- Optional[Hash] $match_entry,
- Optional[Hash] $link_entry,
 | -%>
 <%-
 
@@ -26,8 +24,6 @@
    'Mount',
    'Swap',
    'Install',
-   'Match',
-   'Link',
 ]
 
 # Directives which are pair of items to be expressed as a space seperated pair.

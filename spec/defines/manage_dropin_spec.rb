@@ -259,31 +259,6 @@ describe 'systemd::manage_dropin' do
               with_content(%r{^ListenMessageQueue=/panic$})
           }
         end
-
-        context 'on a link unit dropin' do
-          let(:params) do
-            {
-              unit: 'wireless.link',
-              match_entry: {
-                'Driver' => 'brcmsmac',
-              },
-              link_entry: {
-                'MTUBytes' => 1450,
-              }
-            }
-          end
-
-          it { is_expected.to compile.with_all_deps }
-
-          it {
-            is_expected.to contain_systemd__dropin_file('foobar.conf').
-              with_unit('wireless.link').
-              with_content(%r{^\[Match\]$}).
-              with_content(%r{^Driver=brcmsmac$}).
-              with_content(%r{^\[Link\]$}).
-              with_content(%r{^MTUBytes=1450$})
-          }
-        end
       end
     end
   end
