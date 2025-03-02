@@ -134,7 +134,7 @@ define systemd::manage_dropin (
   }
 
   if $swap_entry and $unit !~ Pattern['^[^/]+\.swap'] {
-    fail("Systemd::Manage_dropin[${name}]: for unit ${unit} mount_entry is only valid for swap units")
+    fail("Systemd::Manage_dropin[${name}]: for unit ${unit} swap_entry is only valid for swap units")
   }
 
   systemd::dropin_file { $name:
