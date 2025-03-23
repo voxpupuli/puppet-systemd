@@ -47,7 +47,7 @@ describe 'systemd' do
             it { is_expected.not_to contain_package('systemd-networkd') }
           end
 
-          if (facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] != '8') || (facts[:os]['name'] == 'Debian' && facts[:os]['release']['major'] == '12')
+          if (facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] != '8') || (facts[:os]['name'] == 'Debian' && facts[:os]['release']['major'].to_i >= 12) || (facts[:os]['name'] == 'Ubuntu' && facts[:os]['release']['major'].to_i >= 24)
             it { is_expected.to contain_package('systemd-resolved') }
           else
             it { is_expected.not_to contain_package('systemd-resolved') }
