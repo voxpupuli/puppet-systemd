@@ -3,7 +3,7 @@
 require 'spec_helper_acceptance'
 
 describe 'systemd with manage_resolved true' do
-  has_package = (fact('os.family') == 'RedHat' && fact('os.release.major') != '8') || (fact('os.name') == 'Debian' && fact('os.release.major').to_i >= 12)
+  has_package = (fact('os.family') == 'RedHat' && fact('os.release.major') != '8') || (fact('os.name') == 'Debian' && fact('os.release.major').to_i >= 12) || (fact('os.name') == 'Ubuntu' && fact('os.release.major').to_i >= 24)
 
   context 'configure systemd resolved' do
     it 'works idempotently with no errors' do
