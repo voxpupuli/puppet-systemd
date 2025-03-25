@@ -25,6 +25,16 @@ describe 'systemd with manage_resolved true' do
     end
 
     it { expect(package('systemd-resolved')).to be_installed } if has_package
+
+    if fact('os.family') == 'Debian'
+      %w[
+        myhostname
+        resolve
+        systemd
+      ].each do |pkg|
+        it { expect(package("libnss-#{pkg}")).to be_installed }
+      end
+    end
   end
 
   context 'configure systemd stopped' do

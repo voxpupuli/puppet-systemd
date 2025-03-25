@@ -52,6 +52,17 @@ describe 'systemd' do
           else
             it { is_expected.not_to contain_package('systemd-resolved') }
           end
+
+          if facts[:os]['family'] == 'Debian'
+            %w[
+              myhostname
+              resolve
+              systemd
+            ].each do |pkg|
+              it { is_expected.to contain_package("libnss-#{pkg}") }
+            end
+          end
+
           context 'with manage_resolv_conf false' do
             let(:params) { super().merge(manage_resolv_conf: false) }
 
