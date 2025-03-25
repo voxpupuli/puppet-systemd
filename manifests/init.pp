@@ -31,6 +31,9 @@
 # @param resolved_package
 #   The name of a systemd sub package needed for systemd-resolved if one needs to be installed.
 #
+# @param resolved_libraries
+#   List of library packages needed for systemd-resolved.
+#
 # @param manage_nspawn
 #   Manage the systemd-nspawn@service and machinectl subsystem.
 #
@@ -260,6 +263,7 @@ class systemd (
   Stdlib::CreateResources                             $unit_files = {},
   Boolean                                             $manage_resolved = false,
   Optional[Enum['systemd-resolved']]                  $resolved_package = undef,
+  Array[String[1]]                                    $resolved_libraries = [],
   Enum['stopped','running']                           $resolved_ensure = 'running',
   Optional[Variant[Array[String],String]]             $dns = undef,
   Optional[Variant[Array[String],String]]             $fallback_dns = undef,

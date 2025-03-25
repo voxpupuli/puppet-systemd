@@ -2,3 +2,7 @@
 systemd::nspawn_package: 'systemd-container'
 systemd::journal_upload::package_name: 'systemd-journal-remote'
 systemd::journal_remote::package_name: 'systemd-journal-remote'
+systemd::resolved_libraries:
+  - libnss-myhostname
+  - libnss-resolve
+  - libnss-systemd

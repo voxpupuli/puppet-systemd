@@ -115,6 +115,7 @@ The following parameters are available in the `systemd` class:
 * [`manage_resolved`](#-systemd--manage_resolved)
 * [`resolved_ensure`](#-systemd--resolved_ensure)
 * [`resolved_package`](#-systemd--resolved_package)
+* [`resolved_libraries`](#-systemd--resolved_libraries)
 * [`manage_nspawn`](#-systemd--manage_nspawn)
 * [`nspawn_package`](#-systemd--nspawn_package)
 * [`dns`](#-systemd--dns)
@@ -252,6 +253,14 @@ Data type: `Optional[Enum['systemd-resolved']]`
 The name of a systemd sub package needed for systemd-resolved if one needs to be installed.
 
 Default value: `undef`
+
+##### <a name="-systemd--resolved_libraries"></a>`resolved_libraries`
+
+Data type: `Array[String[1]]`
+
+List of library packages needed for systemd-resolved.
+
+Default value: `[]`
 
 ##### <a name="-systemd--manage_nspawn"></a>`manage_nspawn`
 
