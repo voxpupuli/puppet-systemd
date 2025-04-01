@@ -3,15 +3,16 @@
 #
 type Systemd::Unit::Mount = Struct[
   {
-    Optional['What']          => String[1],
-    Optional['Where']         => Stdlib::Unixpath,
-    Optional['Type']          => String[1],
-    Optional['Options']       => String[1],
-    Optional['SloppyOptions'] => Boolean,
-    Optional['LazyUnmount']   => Boolean,
-    Optional['ReadWriteOnly'] => Boolean,
-    Optional['ForceUnmount']  => Boolean,
-    Optional['DirectoryMode'] => Stdlib::Filemode,
-    Optional['TimeoutSec']    => String[0],
+    Optional['What']           => String[1],
+    Optional['Where']          => Stdlib::Unixpath,
+    Optional['Type']           => String[1],
+    Optional['Options']        => String[1],
+    Optional['SloppyOptions']  => Boolean,
+    Optional['LazyUnmount']    => Boolean,
+    Optional['ReadWriteOnly']  => Boolean,
+    Optional['ForceUnmount']   => Boolean,
+    Optional['DirectoryMode']  => Stdlib::Filemode,
+    Optional['TimeoutSec']     => String[0],
+    Optional['OOMScoreAdjust'] => Integer[-1000,1000],
   }
 ]

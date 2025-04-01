@@ -25,4 +25,13 @@ describe 'Systemd::Unit::Swap' do
   context 'with a key of Where' do
     it { is_expected.not_to allow_value({ 'Where' => '/mnt/foo' }) }
   end
+
+  context 'with a key of OOMScoreAdjust' do
+    it {
+      is_expected.to allow_value({ 'OOMScoreAdjust' => 999 })
+      is_expected.to allow_value({ 'OOMScoreAdjust' => -999 })
+      is_expected.not_to allow_value({ 'OOMScoreAdjust' => 1005 })
+      is_expected.not_to allow_value({ 'OOMScoreAdjust' => '10' })
+    }
+  end
 end

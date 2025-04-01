@@ -3186,16 +3186,17 @@ Alias of
 
 ```puppet
 Struct[{
-    Optional['What']          => String[1],
-    Optional['Where']         => Stdlib::Unixpath,
-    Optional['Type']          => String[1],
-    Optional['Options']       => String[1],
-    Optional['SloppyOptions'] => Boolean,
-    Optional['LazyUnmount']   => Boolean,
-    Optional['ReadWriteOnly'] => Boolean,
-    Optional['ForceUnmount']  => Boolean,
-    Optional['DirectoryMode'] => Stdlib::Filemode,
-    Optional['TimeoutSec']    => String[0],
+    Optional['What']           => String[1],
+    Optional['Where']          => Stdlib::Unixpath,
+    Optional['Type']           => String[1],
+    Optional['Options']        => String[1],
+    Optional['SloppyOptions']  => Boolean,
+    Optional['LazyUnmount']    => Boolean,
+    Optional['ReadWriteOnly']  => Boolean,
+    Optional['ForceUnmount']   => Boolean,
+    Optional['DirectoryMode']  => Stdlib::Filemode,
+    Optional['TimeoutSec']     => String[0],
+    Optional['OOMScoreAdjust'] => Integer[-1000,1000],
   }]
 ```
 
@@ -3504,6 +3505,7 @@ Struct[{
     Optional['FileDescriptorName']      => String[1,255],
     Optional['TriggerLimitIntervalSec'] => String[1],
     Optional['TriggerLimitBurst']       => Integer[0],
+    Optional['OOMScoreAdjust']          => Integer[-1000,1000],
   }]
 ```
 
@@ -3518,10 +3520,11 @@ Alias of
 
 ```puppet
 Struct[{
-    Optional['What']          => String[1],
-    Optional['Options']       => String[1],
-    Optional['Priority']      => Integer,
-    Optional['TimeoutSec']    => Variant[Integer[0],String[0]]
+    Optional['What']           => String[1],
+    Optional['Options']        => String[1],
+    Optional['Priority']       => Integer,
+    Optional['TimeoutSec']     => Variant[Integer[0],String[0]],
+    Optional['OOMScoreAdjust'] => Integer[-1000,1000],
   }]
 ```
 
