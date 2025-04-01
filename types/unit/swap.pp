@@ -3,9 +3,10 @@
 #
 type Systemd::Unit::Swap = Struct[
   {
-    Optional['What']          => String[1],
-    Optional['Options']       => String[1],
-    Optional['Priority']      => Integer,
-    Optional['TimeoutSec']    => Variant[Integer[0],String[0]]
+    Optional['What']           => String[1],
+    Optional['Options']        => String[1],
+    Optional['Priority']       => Integer,
+    Optional['TimeoutSec']     => Variant[Integer[0],String[0]],
+    Optional['OOMScoreAdjust'] => Integer[-1000,1000],
   }
 ]

@@ -61,5 +61,6 @@ type Systemd::Unit::Socket = Struct[
     Optional['FileDescriptorName']      => String[1,255],
     Optional['TriggerLimitIntervalSec'] => String[1],
     Optional['TriggerLimitBurst']       => Integer[0],
+    Optional['OOMScoreAdjust']          => Integer[-1000,1000],
   }
 ]

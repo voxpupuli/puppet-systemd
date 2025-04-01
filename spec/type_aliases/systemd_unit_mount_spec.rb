@@ -39,4 +39,13 @@ describe 'Systemd::Unit::Mount' do
       it { is_expected.to allow_value({ assert => true }) }
     end
   end
+
+  context 'with a key of OOMScoreAdjust' do
+    it {
+      is_expected.to allow_value({ 'OOMScoreAdjust' => 999 })
+      is_expected.to allow_value({ 'OOMScoreAdjust' => -999 })
+      is_expected.not_to allow_value({ 'OOMScoreAdjust' => 1005 })
+      is_expected.not_to allow_value({ 'OOMScoreAdjust' => '10' })
+    }
+  end
 end
