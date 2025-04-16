@@ -76,6 +76,10 @@ describe 'Systemd::Unit::Service' do
   it { is_expected.to allow_value({ 'Nice' => 19 }) }
   it { is_expected.not_to allow_value({ 'Nice' => '0' }) }
 
+  it { is_expected.to allow_value({ 'CPUSchedulingPolicy' => 'idle' }) }
+  it { is_expected.to allow_value({ 'CPUSchedulingPolicy' => '' }) }
+  it { is_expected.not_to allow_value({ 'CPUSchedulingPolicy' => 'best-effort' }) }
+
   it { is_expected.to allow_value({ 'IOSchedulingClass' => 'best-effort' }) }
   it { is_expected.to allow_value({ 'IOSchedulingClass' => '' }) }
   it { is_expected.not_to allow_value({ 'IOSchedulingClass' => 'random' }) }

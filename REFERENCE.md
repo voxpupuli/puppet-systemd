@@ -3269,6 +3269,7 @@ Struct[{
     Optional['KillSignal']                => Pattern[/^SIG[A-Z]+$/],
     Optional['KillMode']                  => Enum['control-group', 'mixed', 'process', 'none'],
     Optional['Nice']                      => Variant[String[0,0],Integer[-20,19]],
+    Optional['CPUSchedulingPolicy']       => Enum['','batch','fifo','idle','other','rr'],
     Optional['IOSchedulingClass']         => Enum['','realtime','best-effort','idle'],
     Optional['IOSchedulingPriority']      => Variant[String[0,0],Integer[0,7]],
     Optional['SyslogIdentifier']          => String,
