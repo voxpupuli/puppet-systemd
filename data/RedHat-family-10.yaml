@@ -1,0 +1,10 @@
+---
+systemd::oomd_package: 'systemd-oomd'
+
+systemd::accounting:
+  DefaultCPUAccounting: 'yes'
+  DefaultBlockIOAccounting: 'yes'
+  DefaultMemoryAccounting: 'yes'
+  DefaultTasksAccounting: 'yes'
+  DefaultIOAccounting: 'yes'
+  DefaultIPAccounting: 'yes'
