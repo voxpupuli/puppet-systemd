@@ -2917,7 +2917,8 @@ Struct[{
     Optional['SessionsMax']                  => Variant[Systemd::Unit::Amount,Systemd::LogindSettings::Ensure],
     Optional['SuspendKeyIgnoreInhibited']    => Variant[Enum['yes','no'],Systemd::LogindSettings::Ensure],
     Optional['UserTasksMax']                 => Variant[Systemd::Unit::Amount,Systemd::LogindSettings::Ensure],
-    Optional['StopIdleSessionSec']           => Variant[Systemd::Unit::Amount,Systemd::LogindSettings::Ensure]
+    Optional['StopIdleSessionSec']           => Variant[Systemd::Unit::Amount,Systemd::LogindSettings::Ensure],
+    Optional['UserStopDelaySec']             => Variant[Systemd::Unit::Amount,Systemd::LogindSettings::Ensure],
   }]
 ```
 
