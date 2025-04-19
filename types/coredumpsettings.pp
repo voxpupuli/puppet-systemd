@@ -7,6 +7,7 @@ type Systemd::CoredumpSettings = Struct[
     Optional['Compress']        => Enum['yes','no'],
     Optional['ProcessSizeMax']  => Systemd::Unit::Amount,
     Optional['ExternalSizeMax'] => Systemd::Unit::Amount,
+    Optional['EnterNamespace']  => Enum['yes','no'],
     Optional['JournalSizeMax']  => Systemd::Unit::Amount,
     Optional['MaxUse']          => Systemd::Unit::Amount,
     Optional['KeepFree']        => Systemd::Unit::Amount,

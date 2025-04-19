@@ -76,6 +76,7 @@ type Systemd::ServiceManagerSettings = Struct[
     Optional['DefaultLimitRTPRIO'] => Variant[Integer[0], Systemd::SettingEnsure],
     Optional['DefaultLimitRTTIME'] => Variant[Pattern['^\d+(ms|s|m|h|d|w|M|y)?(:\d+(ms|s|m|h|d|w|M|y)?)?$'], Systemd::SettingEnsure],
     Optional['DefaultOOMPolicy'] => Variant[Enum['continue', 'stop','kill'], Systemd::SettingEnsure],
+    Optional['DefaultOOMScoreAdjust'] => Variant[Integer[-1000,1000], Systemd::SettingEnsure],
     Optional['DefaultSmackProcessLabel'] => Variant[String, Systemd::SettingEnsure],
     Optional['ReloadLimitIntervalSec'] => Variant[Enum['infinity'], Systemd::Timespan, Systemd::SettingEnsure],
     Optional['ReloadLimitBurst'] => Variant[Integer[0], Systemd::SettingEnsure],
