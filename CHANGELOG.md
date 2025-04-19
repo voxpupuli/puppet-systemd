@@ -4,14 +4,38 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v8.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v8.1.0) (2025-01-08)
+## [v8.2.0](https://github.com/voxpupuli/puppet-systemd/tree/v8.2.0) (2025-04-19)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v8.1.0...v8.2.0)
+
+**Implemented enhancements:**
+
+- Add missing settings to various types [\#533](https://github.com/voxpupuli/puppet-systemd/pull/533) ([TechyShishy](https://github.com/TechyShishy))
+- Add missing `Systemd::LogindSettings` [\#532](https://github.com/voxpupuli/puppet-systemd/pull/532) ([TechyShishy](https://github.com/TechyShishy))
+- Add `UserStopDelaySec` to `Systemd::LogindSettings` [\#531](https://github.com/voxpupuli/puppet-systemd/pull/531) ([TechyShishy](https://github.com/TechyShishy))
+- Add defaults for RHEL10 [\#530](https://github.com/voxpupuli/puppet-systemd/pull/530) ([jcpunk](https://github.com/jcpunk))
+- Add `CPUSchedulingPolicy` for service entries [\#529](https://github.com/voxpupuli/puppet-systemd/pull/529) ([jcpunk](https://github.com/jcpunk))
+- Allow `OOMScoreAdjust` within Mount, Socket, Swap Units [\#528](https://github.com/voxpupuli/puppet-systemd/pull/528) ([traylenator](https://github.com/traylenator))
+- metadata.json: Add OpenVox [\#523](https://github.com/voxpupuli/puppet-systemd/pull/523) ([jstraw](https://github.com/jstraw))
+
+**Fixed bugs:**
+
+- Ensure NSS libraries are installed when managing `systemd-resolved` on Debian family [\#527](https://github.com/voxpupuli/puppet-systemd/pull/527) ([kenyon](https://github.com/kenyon))
+- Define `systemd::resolved_package` for Ubuntu 24.04 [\#525](https://github.com/voxpupuli/puppet-systemd/pull/525) ([kenyon](https://github.com/kenyon))
+- Correct fail message "... swap\_entry is only valid for swap units" [\#519](https://github.com/voxpupuli/puppet-systemd/pull/519) ([phaedriel](https://github.com/phaedriel))
+
+**Merged pull requests:**
+
+- docs: describe how to deploy systemd templates [\#512](https://github.com/voxpupuli/puppet-systemd/pull/512) ([anarcat](https://github.com/anarcat))
+
+## [v8.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v8.1.0) (2025-01-10)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v8.0.0...v8.1.0)
 
 **Implemented enhancements:**
 
 - Add a few more missing service options [\#508](https://github.com/voxpupuli/puppet-systemd/pull/508) ([jcpunk](https://github.com/jcpunk))
-- Add Missing Condition Units which were added in version244 [\#507](https://github.com/voxpupuli/puppet-systemd/pull/507) ([C24-AK](https://github.com/C24-AK))
+- Add Missing Condition Units which were added in version 244 [\#507](https://github.com/voxpupuli/puppet-systemd/pull/507) ([C24-AK](https://github.com/C24-AK))
 
 **Closed issues:**
 
@@ -510,10 +534,6 @@ These should not affect the functionality of the module.
 ## [v3.3.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.3.0) (2021-08-25)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.2.0...v3.3.0)
-
-**Implemented enhancements:**
-
-- Add support for strict mode for DNS over TLS [\#200](https://github.com/voxpupuli/puppet-systemd/pull/200) ([ghost](https://github.com/ghost))
 
 **Merged pull requests:**
 
