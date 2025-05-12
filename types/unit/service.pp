@@ -140,5 +140,9 @@ type Systemd::Unit::Service = Struct[
     Optional['RootImageOptions']          => String,
     Optional['RootEphemeral']             => Boolean,
     Optional['RootHash']                  => String,
+    Optional['LoadCredential']            => Variant[String[0],Array[String[0],1]],
+    Optional['LoadCredentialEncrypted']   => Variant[String[0],Array[String[0],1]],
+    Optional['SetCredential']             => Variant[String[0],Array[String[0],1]],
+    Optional['SetCredentialEncrypted']    => Variant[String[0],Array[String[0],1]],
   }
 ]
