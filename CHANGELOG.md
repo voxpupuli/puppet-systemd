@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v8.3.0](https://github.com/voxpupuli/puppet-systemd/tree/v8.3.0) (2025-07-18)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v8.2.0...v8.3.0)
+
+**Implemented enhancements:**
+
+- Add missing credential-related service options [\#535](https://github.com/voxpupuli/puppet-systemd/pull/535) ([bootc](https://github.com/bootc))
+- add possibility to manage network interfaces with a template [\#497](https://github.com/voxpupuli/puppet-systemd/pull/497) ([trefzer](https://github.com/trefzer))
+
 ## [v8.2.0](https://github.com/voxpupuli/puppet-systemd/tree/v8.2.0) (2025-04-19)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v8.1.0...v8.2.0)
