@@ -120,6 +120,7 @@
 * [`Systemd::Interface::Network::Flowqueuepie`](#Systemd--Interface--Network--Flowqueuepie): interface network FlowQueuePIE section definition
 * [`Systemd::Interface::Network::Genericrandomearlydetection`](#Systemd--Interface--Network--Genericrandomearlydetection): interface network GenericRandomEarlyDetection section definition
 * [`Systemd::Interface::Network::Heavyhitterfilter`](#Systemd--Interface--Network--Heavyhitterfilter): interface network HeavyHitterFilter section definition
+* [`Systemd::Interface::Network::Hierarchytokenbucket`](#Systemd--Interface--Network--Hierarchytokenbucket): interface network HierarchyTokenBucketClass section definition
 * [`Systemd::Interface::Network::Hierarchytokenbucketclass`](#Systemd--Interface--Network--Hierarchytokenbucketclass): interface network HierarchyTokenBucketClass section definition
 * [`Systemd::Interface::Network::Ipoib`](#Systemd--Interface--Network--Ipoib): interface network IPoIB section definition
 * [`Systemd::Interface::Network::Ipv6acceptra`](#Systemd--Interface--Network--Ipv6acceptra): interface network IPv6AcceptRA section definition
@@ -140,6 +141,7 @@
 * [`Systemd::Interface::Network::Pfifoheaddrop`](#Systemd--Interface--Network--Pfifoheaddrop): interface network PFIFOHeadDrop section definition
 * [`Systemd::Interface::Network::Pie`](#Systemd--Interface--Network--Pie): interface network PIE section definition
 * [`Systemd::Interface::Network::Qdisc`](#Systemd--Interface--Network--Qdisc): interface network QDisc section definition
+* [`Systemd::Interface::Network::Quickfairqueueing`](#Systemd--Interface--Network--Quickfairqueueing): interface network QuickFairQueueingClass section definition
 * [`Systemd::Interface::Network::Quickfairqueueingclass`](#Systemd--Interface--Network--Quickfairqueueingclass): interface network QuickFairQueueingClass section definition
 * [`Systemd::Interface::Network::Route`](#Systemd--Interface--Network--Route): interface network Route section definition
 * [`Systemd::Interface::Network::Routingpolicyrule`](#Systemd--Interface--Network--Routingpolicyrule): interface network RoutingPolicyRule section definition
@@ -4381,6 +4383,24 @@ Struct[{
 }]
 ```
 
+### <a name="Systemd--Interface--Network--Hierarchytokenbucket"></a>`Systemd::Interface::Network::Hierarchytokenbucket`
+
+interface network HierarchyTokenBucketClass section definition
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+Alias of
+
+```puppet
+Struct[{
+    'Parent'        => Optional[Variant[Enum['root','clsact','ingress'], String[1]]],
+    'Handle'        => Optional[String[1]],
+    'DefaultClass'  => Optional[String[1]],
+    'RateToQuantum' => Optional[String[1]],
+}]
+```
+
 ### <a name="Systemd--Interface--Network--Hierarchytokenbucketclass"></a>`Systemd::Interface::Network::Hierarchytokenbucketclass`
 
 interface network HierarchyTokenBucketClass section definition
@@ -4852,6 +4872,22 @@ Alias of
 ```puppet
 Struct[{
     'Parent' => Optional[Enum['clsact', 'ingress']],
+    'Handle' => Optional[String[1]],
+}]
+```
+
+### <a name="Systemd--Interface--Network--Quickfairqueueing"></a>`Systemd::Interface::Network::Quickfairqueueing`
+
+interface network QuickFairQueueingClass section definition
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
+
+Alias of
+
+```puppet
+Struct[{
+    'Parent' => Optional[Variant[Enum['root','clsact','ingress'], String[1]]],
     'Handle' => Optional[String[1]],
 }]
 ```
