@@ -25,16 +25,16 @@
 #    systemd::networkd::network_profiles:
 #      mynet:
 #        Network:
-#          Gateway: '192.168.0.1'
-#        
-#    systemd::networkd
+#          Gateway: 192.168.0.1
+#
+#    systemd::networkd::interfaces:
 #      mynet:
-#        filename: '50-static'
+#        filename: 50-static
 #        network:
 #          Match:
-#            Name: 'eno0'
+#            Name: enp2s0
 #          Network:
-#            Address: '192.168.0.15/24'
+#            Address: 192.168.0.15/24
 #
 #   Gives you a file /etc/systemd/network/50-static.network
 #   with content:
