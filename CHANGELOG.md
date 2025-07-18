@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v8.3.1](https://github.com/voxpupuli/puppet-systemd/tree/v8.3.1) (2025-07-18)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v8.3.0...v8.3.1)
+
+**Fixed bugs:**
+
+- fix: add missing type definitions [\#543](https://github.com/voxpupuli/puppet-systemd/pull/543) ([vchepkov](https://github.com/vchepkov))
+
 ## [v8.3.0](https://github.com/voxpupuli/puppet-systemd/tree/v8.3.0) (2025-07-18)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v8.2.0...v8.3.0)
