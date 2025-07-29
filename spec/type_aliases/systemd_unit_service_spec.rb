@@ -129,4 +129,13 @@ describe 'Systemd::Unit::Service' do
       }
     end
   end
+
+  %w[ReadWritePaths ReadOnlyPaths InaccessiblePaths ExecPaths NoExecPaths].each do |depend|
+    context "with a key of #{depend} can have values of string or array of strings" do
+      it { is_expected.to allow_value({ depend => '+/var/log' }) }
+      it { is_expected.to allow_value({ depend => ['-/var/log', '+/opt/', '-+/home'] }) }
+      it { is_expected.not_to allow_value({ depend => 'foo bar blub' }) }
+      it { is_expected.not_to allow_value({ depend => '+-/opt' }) }
+    end
+  end
 end
