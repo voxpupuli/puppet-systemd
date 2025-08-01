@@ -37,6 +37,7 @@
 * [`systemd::manage_unit`](#systemd--manage_unit): Generate unit file from template
 * [`systemd::modules_load`](#systemd--modules_load): Creates a modules-load.d drop file
 * [`systemd::network`](#systemd--network): Creates network config for systemd-networkd
+* [`systemd::networkd::interface`](#systemd--networkd--interface): This class implements a network interface file for systemd-networkd
 * [`systemd::service_limits`](#systemd--service_limits): Deprecated - Adds a set of custom limits to the service
 * [`systemd::timer`](#systemd--timer): Create a timer and optionally a service unit to execute with the timer unit
 * [`systemd::timer_wrapper`](#systemd--timer_wrapper): Helper to define timer and accompanying services for a given task (cron like interface).
@@ -1917,6 +1918,114 @@ Data type: `Boolean`
 whether systemd-networkd should be restarted on changes, defaults to true. `$systemd::manage_networkd` needs to be true as well
 
 Default value: `true`
+
+### <a name="systemd--networkd--interface"></a>`systemd::networkd::interface`
+
+This class implements a network interface file for systemd-networkd. The advantage
+of this class over `systemd::network` is that it utilizes all the types
+provided by this module to validate input instead of just writing a file
+with the given content.
+
+#### Examples
+
+##### 
+
+```puppet
+$_network_profile = {
+  'Network' => {
+    'Gateway' => '192.168.0.1',
+  },
+}
+
+$_interface => {
+  'filename' => '50-static',
+  'network' => {
+    'Match' => {
+      'Name' => 'enp2s0',
+    },
+    'Network' => {
+      'Address' => '192.168.0.15/24',
+    },
+  },
+}
+
+systemd::networkd::interface { 'static-enp2s0':
+  type            => 'network',
+  interface       => $_interface,
+  network_profile => $_network_profile,
+}
+
+Gives you a file /etc/systemd/network/50-static.network
+with content:
+  [Network]
+  Gateway=192.168.0.1
+  Address=192.168.0.15/24
+
+  [Match]
+  Name=enp2s0
+```
+
+#### Parameters
+
+The following parameters are available in the `systemd::networkd::interface` defined type:
+
+* [`type`](#-systemd--networkd--interface--type)
+* [`interface`](#-systemd--networkd--interface--interface)
+* [`path`](#-systemd--networkd--interface--path)
+* [`link_profile`](#-systemd--networkd--interface--link_profile)
+* [`netdev_profile`](#-systemd--networkd--interface--netdev_profile)
+* [`network_profile`](#-systemd--networkd--interface--network_profile)
+
+##### <a name="-systemd--networkd--interface--type"></a>`type`
+
+Data type: `Enum['link', 'netdev', 'network']`
+
+The type of networkd interface to create
+
+##### <a name="-systemd--networkd--interface--interface"></a>`interface`
+
+Data type: `Systemd::Interface`
+
+An interface to configure on a node.
+The link, netdev and network parameters are deep merged with the respective profile
+With the profiles you can set the default values for a network.
+Hint: to remove a profile setting for an interface you can either overwrite or
+set it to `~` for removal.
+
+##### <a name="-systemd--networkd--interface--path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+path where all networkd files are placed in
+
+Default value: `'/etc/systemd/network'`
+
+##### <a name="-systemd--networkd--interface--link_profile"></a>`link_profile`
+
+Data type: `Systemd::Interface::Link`
+
+Hash of a network link profile
+The structure is equal to the 'link' parameter of an interface.
+
+Default value: `{}`
+
+##### <a name="-systemd--networkd--interface--netdev_profile"></a>`netdev_profile`
+
+Data type: `Systemd::Interface::Netdev`
+
+Hash of a netdev profile
+The structure is equal to the 'netdev' parameter of an interface.
+
+Default value: `{}`
+
+##### <a name="-systemd--networkd--interface--network_profile"></a>`network_profile`
+
+Data type: `Systemd::Interface::Network`
+
+Hash of a network profile
+The structure is equal to the 'network' parameter of an interface.
+
+Default value: `{}`
 
 ### <a name="systemd--service_limits"></a>`systemd::service_limits`
 
