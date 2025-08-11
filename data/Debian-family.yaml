@@ -6,3 +6,13 @@ systemd::resolved_libraries:
   - libnss-myhostname
   - libnss-resolve
   - libnss-systemd
+
+systemd::accounting:
+  DefaultCPUAccounting: 'yes'
+  DefaultIOAccounting: 'yes'
+  DefaultIPAccounting: 'yes'
+  DefaultBlockIOAccounting: 'yes'
+  DefaultMemoryAccounting: 'yes'
+  DefaultTasksAccounting: 'yes'
+
+systemd::timesyncd_package: 'systemd-timesyncd'
