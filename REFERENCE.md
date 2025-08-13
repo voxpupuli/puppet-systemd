@@ -5430,7 +5430,7 @@ custom datatype that validates different filenames for systemd units and unit te
 * **See also**
   * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
 
-Alias of `Pattern[/^[a-zA-Z0-9:\-_.\\@%]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$/]`
+Alias of `Pattern[/^[a-zA-Z0-9:\-_.\\@%]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope|volume|pod|kube|container)$/]`
 
 ### <a name="Systemd--Unit--Amount"></a>`Systemd::Unit::Amount`
 
