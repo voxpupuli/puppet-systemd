@@ -93,6 +93,7 @@ describe 'Systemd::Unit::Service' do
   it { is_expected.to allow_value({ 'MemoryAccounting' => true }) }
 
   it { is_expected.to allow_value({ 'CPUQuota' => '1%' }) }
+  it { is_expected.to allow_value({ 'CPUQuota' => :undef }) }
   it { is_expected.to allow_value({ 'CPUQuota' => '110%' }) }
 
   it {

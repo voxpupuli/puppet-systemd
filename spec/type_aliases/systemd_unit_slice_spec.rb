@@ -6,6 +6,7 @@ describe 'Systemd::Unit::Slice' do
   it { is_expected.to allow_value({ 'MemoryAccounting' => true }) }
   it { is_expected.to allow_value({ 'CPUWeight' => 100 }) }
   it { is_expected.to allow_value({ 'CPUQuota' => '1%' }) }
+  it { is_expected.to allow_value({ 'CPUQuota' => :undef }) }
   it { is_expected.to allow_value({ 'CPUQuota' => '110%' }) }
   it { is_expected.to allow_value({ 'CPUWeight' => 'idle' }) }
   it { is_expected.to allow_value({ 'IPAccounting' => true }) }
