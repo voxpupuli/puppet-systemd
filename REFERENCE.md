@@ -5292,7 +5292,7 @@ Struct[{
     Optional['CPUAccounting']       => Boolean,
     Optional['CPUShares']           => Integer[2,262144],
     Optional['StartupCPUShares']    => Integer[2,262144],
-    Optional['CPUQuota']            => Pattern['^([1-9][0-9]*)%$'],
+    Optional['CPUQuota']            => Optional[Pattern['^([1-9][0-9]*)%$']],
     Optional['MemoryAccounting']    => Boolean,
     Optional['MemoryLow']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
     Optional['MemoryMin']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
@@ -5591,7 +5591,7 @@ Struct[{
     Optional['CPUAccounting']             => Boolean,
     Optional['CPUShares']                 => Integer[2,262144],
     Optional['StartupCPUShares']          => Integer[2,262144],
-    Optional['CPUQuota']                  => Pattern['^([1-9][0-9]*)%$'], # bigger than 100% is okay.
+    Optional['CPUQuota']                  => Optional[Pattern['^([1-9][0-9]*)%$']], # bigger than 100% is okay.
     Optional['MemoryAccounting']          => Boolean,
     Optional['MemoryLow']                 => Systemd::Unit::AmountOrPercent,
     Optional['MemoryMin']                 => Systemd::Unit::AmountOrPercent,
@@ -5710,7 +5710,7 @@ Alias of
 ```puppet
 Struct[{
     Optional['CPUAccounting']       => Boolean,
-    Optional['CPUQuota']            => Pattern['^([1-9][0-9]*)%$'], # bigger than 100% is okay.
+    Optional['CPUQuota']            => Optional[Pattern['^([1-9][0-9]*)%$']], # bigger than 100% is okay.
     Optional['CPUShares']           => Integer[2,262144],
     Optional['CPUWeight']           => Variant[Enum['idle'],Integer[1,10000]],
     Optional['Delegate']            => Boolean,
