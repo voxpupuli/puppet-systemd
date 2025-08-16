@@ -1,0 +1,14 @@
+---
+systemd::networkd::network_profiles:
+  mynet:
+    Network:
+      Gateway: 192.168.0.1
+
+systemd::networkd::interfaces:
+  mynet:
+    filename: 50-static
+    network:
+      Match:
+        Name: enp2s0
+      Network:
+        Address: 192.168.0.15/24

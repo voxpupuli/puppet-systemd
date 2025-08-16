@@ -16,7 +16,7 @@
 #   The structure is equal to the 'network' parameter of an interface.
 # @param interfaces
 #  Hash of interfaces to configure on a node.
-#  The link, netdev and network parameters are deep merged with the respective profile
+#  The link, netdev, and network parameters are deep merged with the respective profile
 #  (referenced by the key of the interface).
 #  With the profiles you can set the default values for a network.
 #  Hint: to remove a profile setting for an interface you can either overwrite or
@@ -38,11 +38,12 @@
 #
 #   Gives you a file /etc/systemd/network/50-static.network
 #   with content:
+#     [Network]
+#     Gateway=192.168.0.1
+#     Address=192.168.0.15/24
+#
 #     [Match]
 #     Name=enp2s0
-#     [Network]
-#     Address=192.168.0.15/24
-#     Gateway=192.168.0.1
 #
 class systemd::networkd (
   Enum['stopped','running'] $ensure = $systemd::networkd_ensure,
@@ -79,30 +80,27 @@ class systemd::networkd (
   $interfaces.each | String[1] $interface_name, Systemd::Interface $interface | {
     $_filename=pick($interface['filename'], $interface_name)
     if 'link' in $interface.keys() {
-      systemd::network { "${_filename}.link":
-        path    => $path,
-        content => epp('systemd/network.epp', {
-            fname  => "${_filename}.link",
-            config => deep_merge(pick($link_profiles[$interface_name], {}), $interface['link']),
-        }),
+      systemd::networkd::interface { $_filename:
+        type            => 'link',
+        path            => $path,
+        interface       => $interface,
+        network_profile => pick($link_profiles[$interface_name], {}),
       }
     }
     if 'netdev' in $interface.keys() {
-      systemd::network { "${_filename}.netdev":
-        path    => $path,
-        content => epp('systemd/network.epp', {
-            fname  => "${_filename}.netdev",
-            config => deep_merge(pick($netdev_profiles[$interface_name], {}), $interface['netdev']),
-        }),
+      systemd::networkd::interface { $_filename:
+        type            => 'netdev',
+        path            => $path,
+        interface       => $interface,
+        network_profile => pick($netdev_profiles[$interface_name], {}),
       }
     }
     if 'network' in $interface.keys() {
-      systemd::network { "${_filename}.network":
-        path    => $path,
-        content => epp('systemd/network.epp', {
-            fname  => "${_filename}.network",
-            config => deep_merge(pick($network_profiles[$interface_name], {}),  $interface['network']),
-        }),
+      systemd::networkd::interface { $_filename:
+        type            => 'network',
+        path            => $path,
+        interface       => $interface,
+        network_profile => pick($network_profiles[$interface_name], {}),
       }
     }
   }

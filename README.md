@@ -349,6 +349,65 @@ systemd::network { 'eth0.network':
 }
 ```
 
+We also provide a more structured option:
+
+```puppet
+$_network_profile = {
+  'Network' => {
+    'Gateway' => '192.168.0.1',
+  },
+}
+
+$_interface => {
+  'filename' => '50-static',
+  'network' => {
+    'Match' => {
+      'Name' => 'enp2s0',
+    },
+    'Network' => {
+      'Address' => '192.168.0.15/24',
+    },
+  },
+}
+
+systemd::networkd::interface { 'static-enp2s0':
+  type            => 'network',
+  interface       => $_interface,
+  network_profile => $_network_profile,
+}
+```
+
+Gives you a file `/etc/systemd/network/50-static.network` with content:
+
+```plain
+[Network]
+Gateway=192.168.0.1
+Address=192.168.0.15/24
+
+[Match]
+Name=enp2s0
+```
+
+Lastly, the `systemd::networkd` class that is automatically included allows you to
+configure your networking via hiera. The example above could be achieved with the following
+hiera data:
+
+```yaml
+systemd::networkd::network_profiles:
+  mynet:
+    Network:
+      Gateway: 192.168.0.1
+
+systemd::networkd::interfaces:
+  mynet:
+    filename: 50-static
+    network:
+      Match:
+        Name: enp2s0
+      Network:
+        Address: 192.168.0.15/24
+```
+
 ### Services
 
 The default target is managed via the `default_target` parameter.  If this is left at its default value (`undef`), the default-target will be unmanaged by puppet.
