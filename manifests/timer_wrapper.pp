@@ -1,7 +1,9 @@
 # @summary
 #   Helper to define timer and accompanying services for a given task (cron like interface).
 # @param ensure whether the timer and service should be present or absent
-# @param command the command for the systemd servie to execute
+# @param pre_command the ExecStartPre for the systemd service to execute
+# @param command the command for the systemd service to execute
+# @param post_command the ExecStartPost for the systemd service to execute
 # @param user the user to run the command as
 # @param on_active_sec run service relative to the time when the timer was activated
 # @param on_boot_sec run service relative to when the machine was booted
@@ -37,7 +39,9 @@
 #   }
 define systemd::timer_wrapper (
   Enum['present', 'absent']              $ensure,
+  Optional[Systemd::Unit::Service::Exec] $pre_command = undef,
   Optional[Systemd::Unit::Service::Exec] $command = undef,
+  Optional[Systemd::Unit::Service::Exec] $post_command = undef,
   Optional[String[1]]                    $user = undef,
   Optional[Systemd::Unit::Timespan]      $on_active_sec = undef,
   Optional[Systemd::Unit::Timespan]      $on_boot_sec = undef,
@@ -80,9 +84,11 @@ define systemd::timer_wrapper (
     ensure        => $ensure,
     unit_entry    => $service_unit_overrides,
     service_entry => {
-      'ExecStart' => $command, # if ensure present command is defined is checked above
-      'User'      => $user, # defaults apply
-      'Type'      => 'oneshot',
+      'ExecStartPre'  => $pre_command,
+      'ExecStart'     => $command, # if ensure present command is defined is checked above
+      'ExecStartPost' => $post_command,
+      'User'          => $user, # defaults apply
+      'Type'          => 'oneshot',
     }.filter |$key, $val| { $val =~ NotUndef } + $service_overrides,
   }
   systemd::manage_unit { "${title}.timer":
