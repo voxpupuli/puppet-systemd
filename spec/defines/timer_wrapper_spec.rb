@@ -165,6 +165,40 @@ describe 'systemd::timer_wrapper' do
               with_content(%r{Wants=network-online.target})
           }
         end
+
+        context 'applies pre_command' do
+          let :params do
+            {
+              ensure: 'present',
+              pre_command: '/usr/bin/date',
+              command: 'date',
+              user: 'root',
+              on_boot_sec: 100,
+            }
+          end
+
+          it {
+            is_expected.to contain_file("/etc/systemd/system/#{title}.service").
+              with_content(%r{ExecStartPre=/usr/bin/date})
+          }
+        end
+
+        context 'applies post_command' do
+          let :params do
+            {
+              ensure: 'present',
+              command: 'date',
+              post_command: '/usr/bin/date',
+              user: 'root',
+              on_boot_sec: 100,
+            }
+          end
+
+          it {
+            is_expected.to contain_file("/etc/systemd/system/#{title}.service").
+              with_content(%r{ExecStartPost=/usr/bin/date})
+          }
+        end
       end
     end
   end

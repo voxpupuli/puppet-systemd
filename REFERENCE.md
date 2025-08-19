@@ -2198,7 +2198,9 @@ systemd::timer_wrapper { 'my_timer':
 The following parameters are available in the `systemd::timer_wrapper` defined type:
 
 * [`ensure`](#-systemd--timer_wrapper--ensure)
+* [`pre_command`](#-systemd--timer_wrapper--pre_command)
 * [`command`](#-systemd--timer_wrapper--command)
+* [`post_command`](#-systemd--timer_wrapper--post_command)
 * [`user`](#-systemd--timer_wrapper--user)
 * [`on_active_sec`](#-systemd--timer_wrapper--on_active_sec)
 * [`on_boot_sec`](#-systemd--timer_wrapper--on_boot_sec)
@@ -2217,11 +2219,27 @@ Data type: `Enum['present', 'absent']`
 
 whether the timer and service should be present or absent
 
+##### <a name="-systemd--timer_wrapper--pre_command"></a>`pre_command`
+
+Data type: `Optional[Systemd::Unit::Service::Exec]`
+
+the ExecStartPre for the systemd service to execute
+
+Default value: `undef`
+
 ##### <a name="-systemd--timer_wrapper--command"></a>`command`
 
 Data type: `Optional[Systemd::Unit::Service::Exec]`
 
-the command for the systemd servie to execute
+the command for the systemd service to execute
+
+Default value: `undef`
+
+##### <a name="-systemd--timer_wrapper--post_command"></a>`post_command`
+
+Data type: `Optional[Systemd::Unit::Service::Exec]`
+
+the ExecStartPost for the systemd service to execute
 
 Default value: `undef`
 
