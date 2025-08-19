@@ -20,7 +20,6 @@
 /.github/
 /.librarian/
 /Puppetfile.lock
-/Puppetfile
 *.iml
 /.editorconfig
 /.fixtures.yml

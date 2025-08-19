@@ -4,7 +4,6 @@
 
 name: CI
 
-# yamllint disable-line rule:truthy
 on:
   pull_request: {}
   push:
@@ -16,10 +15,7 @@ concurrency:
   group: ${{ github.ref_name }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-
 jobs:
   puppet:
     name: Puppet
-    uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v3
+    uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v2
