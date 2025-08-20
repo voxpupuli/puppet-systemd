@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v9.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v9.0.0) (2025-08-19)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v8.3.1...v9.0.0)
+
+**Breaking changes:**
+
+- Drop puppet, update openvox minimum version to 8.19 [\#547](https://github.com/voxpupuli/puppet-systemd/pull/547) ([TheMeier](https://github.com/TheMeier))
+
+**Implemented enhancements:**
+
+- timer\_wrapper: Add pre/post commands [\#555](https://github.com/voxpupuli/puppet-systemd/pull/555) ([b4ldr](https://github.com/b4ldr))
+- Add acceptance test for systemd::user\_service [\#551](https://github.com/voxpupuli/puppet-systemd/pull/551) ([traylenator](https://github.com/traylenator))
+- Support for Debian 13 \(Trixie\) [\#550](https://github.com/voxpupuli/puppet-systemd/pull/550) ([luitzifa](https://github.com/luitzifa))
+- Add a define representing a networkd interface [\#546](https://github.com/voxpupuli/puppet-systemd/pull/546) ([genebean](https://github.com/genebean))
+- Add options to manage file system access options to Service [\#545](https://github.com/voxpupuli/puppet-systemd/pull/545) ([moritzdietz](https://github.com/moritzdietz))
+
+**Fixed bugs:**
+
+- allow `CPUQuota` type to be empty, per systemd.resource-control\(5\) [\#554](https://github.com/voxpupuli/puppet-systemd/pull/554) ([skylar2-uw](https://github.com/skylar2-uw))
+
+**Closed issues:**
+
+- Support Debian 13 \(Trixie\) [\#549](https://github.com/voxpupuli/puppet-systemd/issues/549)
+
 ## [v8.3.1](https://github.com/voxpupuli/puppet-systemd/tree/v8.3.1) (2025-07-18)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v8.3.0...v8.3.1)
