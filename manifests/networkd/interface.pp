@@ -86,7 +86,7 @@
 #   }
 #
 #   Creates a dummy interface, on the file system, two files
-#   are created therfore.
+#   are created therefore.
 # 
 define systemd::networkd::interface (
   Systemd::Interface $interface,

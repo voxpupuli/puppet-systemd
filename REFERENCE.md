@@ -1988,7 +1988,7 @@ systemd::networkd::interface { 'static-dummy':
 }
 
 Creates a dummy interface, on the file system, two files
-are created therfore.
+are created therefore.
 ```
 
 #### Parameters
