@@ -12,3 +12,20 @@ systemd::networkd::interfaces:
         Name: enp2s0
       Network:
         Address: 192.168.0.15/24
+  a-vrf:
+    filename: 50-vrf
+    network:
+      Match:
+        Name: vrf
+      Network:
+        Address: 192.168.42.15/32
+    netdev:
+      NetDev:
+        Name: vrf
+        Kind: vrf
+      VRF:
+        Table: 42
+    link:
+      Match:
+        Name: vrf
+    

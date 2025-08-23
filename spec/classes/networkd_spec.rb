@@ -41,6 +41,18 @@ describe 'systemd::networkd' do
         is_expected.to contain_file('/etc/systemd/network/50-static.network').
           with_content(interface_file)
       }
+
+      it {
+        is_expected.to contain_file('/etc/systemd/network/50-vrf.network')
+      }
+
+      it {
+        is_expected.to contain_file('/etc/systemd/network/50-vrf.netdev')
+      }
+
+      it {
+        is_expected.to contain_file('/etc/systemd/network/50-vrf.link')
+      }
     end
   end
 end
