@@ -6,6 +6,7 @@
 # with the given content.
 #
 # @param type
+#   Parameter is deprecated in favor of the structured $interface parameter
 #   The type of networkd interface to create
 #
 # @param interface
@@ -50,7 +51,6 @@
 #   }
 #
 #   systemd::networkd::interface { 'static-enp2s0':
-#     type            => 'network',
 #     interface       => $_interface,
 #     network_profile => $_network_profile,
 #   }
@@ -64,46 +64,71 @@
 #     [Match]
 #     Name=enp2s0
 #
+# @example
+#   $_interface => {
+#     'filename' => '40-dummy',
+#     'netdev' => {
+#       'NetDev' => {
+#         'Name' => 'dummy0',
+#         'Kind' => 'dummy',
+#       },
+#     'network' => {
+#       'Match' => {
+#         'Name' => 'dummy0',
+#       },
+#       'Network' => {
+#         'Address' => '2001:DB8::42:42/64
+#       },
+#     },
+#   }
+#   systemd::networkd::interface { 'static-dummy':
+#     interface       => $_interface,
+#   }
+#
+#   Creates a dummy interface, on the file system, two files
+#   are created therfore.
+# 
 define systemd::networkd::interface (
-  Enum['link', 'netdev', 'network'] $type,
   Systemd::Interface $interface,
   Stdlib::Absolutepath $path = '/etc/systemd/network',
   Systemd::Interface::Link $link_profile = {},
   Systemd::Interface::Netdev $netdev_profile = {},
   Systemd::Interface::Network $network_profile = {},
+  # deprectated
+  Optional[Enum['link', 'netdev', 'network']] $type = undef,
 ) {
   $_filename=pick($interface['filename'], $title)
 
-  case $type {
-    'link': {
-      systemd::network { "${_filename}.link":
-        path    => $path,
-        content => epp('systemd/network.epp', {
-            fname  => "${_filename}.link",
-            config => deep_merge($link_profile, $interface['link']),
-        }),
-      }
+  # deprecation of type parameter:
+  if $type {
+    deprecation('systemd::networkd::interface::type', "This parameter is deprecated since it contains duplicated information. It's save to remove it.")
+  }
+
+  if 'link' in $interface.keys() {
+    systemd::network { "${_filename}.link":
+      path    => $path,
+      content => epp('systemd/network.epp', {
+          fname  => "${_filename}.link",
+          config => deep_merge($link_profile, $interface['link']),
+      }),
     }
-    'netdev': {
-      systemd::network { "${_filename}.netdev":
-        path    => $path,
-        content => epp('systemd/network.epp', {
-            fname  => "${_filename}.netdev",
-            config => deep_merge($netdev_profile, $interface['netdev']),
-        }),
-      }
+  }
+  if 'netdev' in $interface.keys() {
+    systemd::network { "${_filename}.netdev":
+      path    => $path,
+      content => epp('systemd/network.epp', {
+          fname  => "${_filename}.netdev",
+          config => deep_merge($netdev_profile, $interface['netdev']),
+      }),
     }
-    'network': {
-      systemd::network { "${_filename}.network":
-        path    => $path,
-        content => epp('systemd/network.epp', {
-            fname  => "${_filename}.network",
-            config => deep_merge($network_profile, $interface['network']),
-        }),
-      }
-    }
-    default: {
-      fail("Type '${type}' is not a known type of networkd interface")
+  }
+  if 'network' in $interface.keys() {
+    systemd::network { "${_filename}.network":
+      path    => $path,
+      content => epp('systemd/network.epp', {
+          fname  => "${_filename}.network",
+          config => deep_merge($network_profile, $interface['network']),
+      }),
     }
   }
 }

@@ -14,7 +14,6 @@ describe 'systemd::networkd::interface' do
         # This should match the example in the class documentation / readme
         let(:params) do
           {
-            type: 'network',
             interface: {
               filename: '50-static',
               network: {
