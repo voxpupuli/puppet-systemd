@@ -1950,7 +1950,6 @@ $_interface => {
 }
 
 systemd::networkd::interface { 'static-enp2s0':
-  type            => 'network',
   interface       => $_interface,
   network_profile => $_network_profile,
 }
@@ -1963,6 +1962,33 @@ with content:
 
   [Match]
   Name=enp2s0
+```
+
+##### 
+
+```puppet
+$_interface => {
+  'filename' => '40-dummy',
+  'netdev' => {
+    'NetDev' => {
+      'Name' => 'dummy0',
+      'Kind' => 'dummy',
+    },
+  'network' => {
+    'Match' => {
+      'Name' => 'dummy0',
+    },
+    'Network' => {
+      'Address' => '2001:DB8::42:42/64
+    },
+  },
+}
+systemd::networkd::interface { 'static-dummy':
+  interface       => $_interface,
+}
+
+Creates a dummy interface, on the file system, two files
+are created therefore.
 ```
 
 #### Parameters
@@ -1978,9 +2004,12 @@ The following parameters are available in the `systemd::networkd::interface` def
 
 ##### <a name="-systemd--networkd--interface--type"></a>`type`
 
-Data type: `Enum['link', 'netdev', 'network']`
+Data type: `Optional[Enum['link', 'netdev', 'network']]`
 
+Parameter is deprecated in favor of the structured $interface parameter
 The type of networkd interface to create
+
+Default value: `undef`
 
 ##### <a name="-systemd--networkd--interface--interface"></a>`interface`
 

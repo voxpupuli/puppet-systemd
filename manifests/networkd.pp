@@ -79,29 +79,12 @@ class systemd::networkd (
 
   $interfaces.each | String[1] $interface_name, Systemd::Interface $interface | {
     $_filename=pick($interface['filename'], $interface_name)
-    if 'link' in $interface.keys() {
-      systemd::networkd::interface { $_filename:
-        type            => 'link',
-        path            => $path,
-        interface       => $interface,
-        network_profile => pick($link_profiles[$interface_name], {}),
-      }
-    }
-    if 'netdev' in $interface.keys() {
-      systemd::networkd::interface { $_filename:
-        type            => 'netdev',
-        path            => $path,
-        interface       => $interface,
-        network_profile => pick($netdev_profiles[$interface_name], {}),
-      }
-    }
-    if 'network' in $interface.keys() {
-      systemd::networkd::interface { $_filename:
-        type            => 'network',
-        path            => $path,
-        interface       => $interface,
-        network_profile => pick($network_profiles[$interface_name], {}),
-      }
+    systemd::networkd::interface { $_filename:
+      path            => $path,
+      interface       => $interface,
+      link_profile    => pick($link_profiles[$interface_name], {}),
+      netdev_profile  => pick($netdev_profiles[$interface_name], {}),
+      network_profile => pick($network_profiles[$interface_name], {}),
     }
   }
 }
