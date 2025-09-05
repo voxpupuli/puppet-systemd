@@ -239,7 +239,7 @@ class systemd::resolved (
     default => $dns_stub_listener,
   }
 
-  if  $dns_stub_listener =~ String[1] {
+  if $dns_stub_listener =~ NotUndef {
     ini_setting { 'dns_stub_listener':
       ensure  => stdlib::ensure($dns_stub_listener != 'absent'),
       value   => $_dns_stub_listener,
