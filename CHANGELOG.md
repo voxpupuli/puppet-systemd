@@ -4,7 +4,16 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v9.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v9.0.0) (2025-08-19)
+## [v9.0.1](https://github.com/voxpupuli/puppet-systemd/tree/v9.0.1) (2025-09-16)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.0.0...v9.0.1)
+
+**Fixed bugs:**
+
+- Allow to disable the DNS stub listener [\#562](https://github.com/voxpupuli/puppet-systemd/pull/562) ([mpdude](https://github.com/mpdude))
+- networkd: fix broken implementation and add netdev and link file to spec tests [\#561](https://github.com/voxpupuli/puppet-systemd/pull/561) ([trefzer](https://github.com/trefzer))
+
+## [v9.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v9.0.0) (2025-08-20)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v8.3.1...v9.0.0)
 
