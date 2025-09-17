@@ -4865,6 +4865,7 @@ Struct[{
     'Address'                            => Optional[Variant[Array[String[1]], String[1]]],
     'Gateway'                            => Optional[Variant[Array[String[1]], String[1]]],
     'DNS'                                => Optional[Variant[Array[String[1]], String[1]]],
+    'Domains'                            => Optional[String[1]],
     'UseDomains'                         => Optional[Enum['yes', 'no', 'route']],
     'DNSDefaultRoute'                    => Optional[Enum['yes', 'no']],
     'NTP'                                => Optional[Enum['yes', 'no', 'route']],
