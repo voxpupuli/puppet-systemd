@@ -205,6 +205,7 @@ The following parameters are available in the `systemd` class:
 * [`resolved_ensure`](#-systemd--resolved_ensure)
 * [`resolved_package`](#-systemd--resolved_package)
 * [`resolved_libraries`](#-systemd--resolved_libraries)
+* [`resolved_synthesize_hostname`](#-systemd--resolved_synthesize_hostname)
 * [`manage_nspawn`](#-systemd--manage_nspawn)
 * [`nspawn_package`](#-systemd--nspawn_package)
 * [`dns`](#-systemd--dns)
@@ -350,6 +351,14 @@ Data type: `Array[String[1]]`
 List of library packages needed for systemd-resolved.
 
 Default value: `[]`
+
+##### <a name="-systemd--resolved_synthesize_hostname"></a>`resolved_synthesize_hostname`
+
+Data type: `Optional[Boolean]`
+
+Control if the hostname lookup via systemd should be synthesized.
+
+Default value: `undef`
 
 ##### <a name="-systemd--manage_nspawn"></a>`manage_nspawn`
 

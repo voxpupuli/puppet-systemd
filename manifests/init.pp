@@ -34,6 +34,9 @@
 # @param resolved_libraries
 #   List of library packages needed for systemd-resolved.
 #
+# @param resolved_synthesize_hostname
+#   Control if the hostname lookup via systemd should be synthesized.
+#
 # @param manage_nspawn
 #   Manage the systemd-nspawn@service and machinectl subsystem.
 #
@@ -265,6 +268,7 @@ class systemd (
   Optional[Enum['systemd-resolved']]                  $resolved_package = undef,
   Array[String[1]]                                    $resolved_libraries = [],
   Enum['stopped','running']                           $resolved_ensure = 'running',
+  Optional[Boolean]                                   $resolved_synthesize_hostname = undef,
   Optional[Variant[Array[String],String]]             $dns = undef,
   Optional[Variant[Array[String],String]]             $fallback_dns = undef,
   Optional[Variant[Array[String],String]]             $domains = undef,
