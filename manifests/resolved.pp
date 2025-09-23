@@ -48,6 +48,9 @@
 #   Takes a boolean argument. When "false" (default) it uses /run/systemd/resolve/resolv.conf
 #   as /etc/resolv.conf. When "true", it uses /run/systemd/resolve/stub-resolv.conf
 #
+# @param resolved_synthesize_hostname
+#   Should systemd-resolved synthesize the lookup of the hostname
+#
 class systemd::resolved (
   Enum['stopped','running'] $ensure                                  = $systemd::resolved_ensure,
   Optional[Variant[Array[String],String]] $dns                       = $systemd::dns,
@@ -61,6 +64,7 @@ class systemd::resolved (
   Optional[Variant[Boolean,Enum['udp', 'tcp','absent']]] $dns_stub_listener = $systemd::dns_stub_listener,
   Optional[Variant[Array[String[1]],Enum['absent']]] $dns_stub_listener_extra = $systemd::dns_stub_listener_extra,
   Boolean $use_stub_resolver                                         = $systemd::use_stub_resolver,
+  Optional[Boolean] $resolved_synthesize_hostname                    = $systemd::resolved_synthesize_hostname,
 ) {
   assert_private()
 
@@ -97,6 +101,21 @@ class systemd::resolved (
         provider => 'shell',
       }
     }
+  }
+
+  $_syn_ensure = $resolved_synthesize_hostname ? {
+    Boolean => 'present',
+    default => 'absent',
+  }
+  $_syn_service = $resolved_synthesize_hostname ? {
+    Boolean => { 'Environment' => "SYSTEMD_RESOLVED_SYNTHESIZE_HOSTNAME=${bool2str($resolved_synthesize_hostname,'1','0')}" },
+    default => undef,
+  }
+  systemd::manage_dropin { 'synthesize_hostname.conf':
+    ensure         => $_syn_ensure,
+    unit           => 'systemd-resolved.service',
+    service_entry  => $_syn_service,
+    notify_service => true,
   }
 
   if $dns {

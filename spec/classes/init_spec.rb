@@ -40,11 +40,13 @@ describe 'systemd' do
           it { is_expected.to create_service('systemd-networkd').with_ensure('running') }
           it { is_expected.to create_service('systemd-networkd').with_enable(true) }
           it { is_expected.not_to contain_file('/etc/systemd/network') }
+          it { is_expected.to contain_systemd__manage_dropin('synthesize_hostname.conf').with_ensure('absent') }
 
           if facts[:os]['family'] == 'RedHat'
             it { is_expected.to contain_package('systemd-networkd') }
           else
             it { is_expected.not_to contain_package('systemd-networkd') }
+
           end
 
           if (facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] != '8') || (facts[:os]['name'] == 'Debian' && facts[:os]['release']['major'].to_i >= 12) || (facts[:os]['name'] == 'Ubuntu' && facts[:os]['release']['major'].to_i >= 24)
@@ -255,6 +257,43 @@ describe 'systemd' do
             expect(subject).to contain_ini_setting('cache').with(
               path: '/etc/systemd/resolved.conf',
               value: 'no'
+            )
+          }
+        end
+
+        context 'when resolved_synthesize_hostname true' do
+          let(:params) do
+            {
+              manage_resolved: true,
+              resolved_synthesize_hostname: true,
+            }
+          end
+
+          it {
+            is_expected.to contain_systemd__manage_dropin('synthesize_hostname.conf').with(
+              {
+                ensure: 'present',
+                service_entry: { 'Environment' => 'SYSTEMD_RESOLVED_SYNTHESIZE_HOSTNAME=1' },
+              }
+            )
+          }
+        end
+
+        context 'when resolved_synthesize_hostname false' do
+          let(:params) do
+            {
+              manage_resolved: true,
+              resolved_synthesize_hostname: false,
+            }
+          end
+
+          it {
+            is_expected.to contain_systemd__manage_dropin('synthesize_hostname.conf').with(
+              {
+                ensure: 'present',
+                unit: 'systemd-resolved.service',
+                service_entry: { 'Environment' => 'SYSTEMD_RESOLVED_SYNTHESIZE_HOSTNAME=0' },
+              }
             )
           }
         end
