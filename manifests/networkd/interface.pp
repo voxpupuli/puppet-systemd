@@ -87,7 +87,7 @@
 #
 #   Creates a dummy interface, on the file system, two files
 #   are created therefore.
-# 
+#
 define systemd::networkd::interface (
   Systemd::Interface $interface,
   Stdlib::Absolutepath $path = '/etc/systemd/network',
@@ -107,28 +107,34 @@ define systemd::networkd::interface (
   if 'link' in $interface.keys() {
     systemd::network { "${_filename}.link":
       path    => $path,
-      content => epp('systemd/network.epp', {
+      content => epp('systemd/network.epp',
+        {
           fname  => "${_filename}.link",
           config => deep_merge($link_profile, $interface['link']),
-      }),
+        },
+      ),
     }
   }
   if 'netdev' in $interface.keys() {
     systemd::network { "${_filename}.netdev":
       path    => $path,
-      content => epp('systemd/network.epp', {
+      content => epp('systemd/network.epp',
+        {
           fname  => "${_filename}.netdev",
           config => deep_merge($netdev_profile, $interface['netdev']),
-      }),
+        },
+      ),
     }
   }
   if 'network' in $interface.keys() {
     systemd::network { "${_filename}.network":
       path    => $path,
-      content => epp('systemd/network.epp', {
+      content => epp('systemd/network.epp',
+        {
           fname  => "${_filename}.network",
           config => deep_merge($network_profile, $interface['network']),
-      }),
+        },
+      ),
     }
   }
 }

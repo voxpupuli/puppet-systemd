@@ -149,7 +149,8 @@ define systemd::manage_dropin (
     show_diff               => $show_diff,
     notify_service          => $notify_service,
     daemon_reload           => $daemon_reload,
-    content                 => epp('systemd/unit_file.epp', {
+    content                 => epp('systemd/unit_file.epp',
+      {
         'unit_entry'    => $unit_entry,
         'slice_entry'   => $slice_entry,
         'service_entry' => $service_entry,
@@ -159,6 +160,7 @@ define systemd::manage_dropin (
         'socket_entry'  => $socket_entry,
         'mount_entry'   => $mount_entry,
         'swap_entry'    => $swap_entry,
-    }),
+      },
+    ),
   }
 }
