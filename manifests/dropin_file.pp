@@ -49,14 +49,16 @@ define systemd::dropin_file (
   $full_filename = "${path}/${unit}.d/${filename}"
 
   if $ensure != 'absent' {
-    ensure_resource('file', dirname($full_filename), {
+    ensure_resource('file', dirname($full_filename),
+      {
         ensure                  => directory,
         owner                   => 'root',
         group                   => 'root',
         recurse                 => $systemd::purge_dropin_dirs,
         purge                   => $systemd::purge_dropin_dirs,
         selinux_ignore_defaults => $selinux_ignore_defaults,
-    })
+      },
+    )
   }
 
   file { $full_filename:

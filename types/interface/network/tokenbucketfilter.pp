@@ -1,6 +1,7 @@
 # @summary interface network TokenBucketFilter section definition
 # @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-type Systemd::Interface::Network::Tokenbucketfilter = Struct[{
+type Systemd::Interface::Network::Tokenbucketfilter = Struct[
+  {
     'Parent'     => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
     'Handle'     => Optional[String[1]],
     'LatencySec' => Optional[String[1]],
@@ -10,4 +11,5 @@ type Systemd::Interface::Network::Tokenbucketfilter = Struct[{
     'MPUBytes'   => Optional[String[1]],
     'PeakRate'   => Optional[String[1]],
     'MTUBytes'   => Optional[String[1]],
-}]
+  }
+]

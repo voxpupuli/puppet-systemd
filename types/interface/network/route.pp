@@ -1,6 +1,7 @@
 # @summary interface network Route section definition
 # @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-type Systemd::Interface::Network::Route = Struct[{
+type Systemd::Interface::Network::Route = Struct[
+  {
     'Gateway'                            => Optional[Variant[Array[String[1]], String[1]]],
     'GatewayOnLink'                      => Optional[Enum['yes', 'no']],
     'Destination'                        => Optional[String[1]],
@@ -15,7 +16,8 @@ type Systemd::Interface::Network::Route = Struct[{
     'Type'                               => Optional[Enum[
         'unicast', 'local', 'broadcast', 'anycast', 'multicast',
         'blackhole', 'unreachable', 'prohibit', 'throw', 'nat', 'xresolve'
-    ]],
+      ]
+    ],
     'InitialCongestionWindow'            => Optional[Integer[0,1023]],
     'InitialAdvertisedReceiveWindow'     => Optional[Integer[0,1023]],
     'QuickAck'                           => Optional[Enum['yes', 'no',]],
@@ -26,4 +28,5 @@ type Systemd::Interface::Network::Route = Struct[{
     'TCPRetransmissionTimeoutSeca'       => Optional[Integer[1]],
     'MultiPathRoute'                     => Optional[Variant[String[1],Array[String[1]]]],
     'NextHop'                            => Optional[Integer[1, 4294967295]],
-}]
+  }
+]

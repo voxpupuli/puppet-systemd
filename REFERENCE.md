@@ -3062,7 +3062,7 @@ Struct[{
     network  => Optional[Systemd::Interface::Network],
     netdev   => Optional[Systemd::Interface::Netdev],
     link     => Optional[Systemd::Interface::Link],
-}]
+  }]
 ```
 
 ### <a name="Systemd--Interface--Link"></a>`Systemd::Interface::Link`
@@ -3076,9 +3076,9 @@ Alias of
 
 ```puppet
 Struct[{
-    'Match'  => Optional[Systemd::Interface::Link::Match],
-    'Link'   => Optional[Systemd::Interface::Link::Link],
-    'SR-IOV' => Optional[Systemd::Interface::Link::Sr_iov],
+  'Match'  => Optional[Systemd::Interface::Link::Match],
+  'Link'   => Optional[Systemd::Interface::Link::Link],
+  'SR-IOV' => Optional[Systemd::Interface::Link::Sr_iov],
 }]
 ```
 
@@ -3093,87 +3093,87 @@ Alias of
 
 ```puppet
 Struct[{
-    'Description'                         => Optional[String[1]],
-    'Property'                            => Optional[String[1]],
-    'ImportProperty'                      => Optional[String[1]],
-    'UnsetProperty'                       => Optional[String[1]],
-    'Alias'                               => Optional[String[1]],
-    'MACAddressPolicy'                    => Optional[Enum['persistent', 'random', 'none', '']],
-    'MACAddress'                          => Optional[String[1]],
-    'NamePolicy'                          => Optional[Enum[
-        'kernel', 'database', 'onboard', 'slot',
-        'path', 'mac', 'keep'
-    ]],
-    'Name'                                => Optional[String[1]],
-    'AlternativeNamesPolicy'              => Optional[String[1]],
-    'AlternativeName'                     => Optional[String[1]],
-    'TransmitQueues'                      => Optional[Integer[1,4096]],
-    'ReceiveQueues'                       => Optional[Integer[1,4096]],
-    'TransmitQueueLength'                 => Optional[Integer[0, 4294967294]],
-    'MTUBytes'                            => Optional[Integer[1280]],
-    'BitsPerSecond'                       => Optional[String[1]],
-    'Duplex'                              => Optional[String[1]],
-    'AutoNegotiation'                     => Optional[Enum['yes','no']],
-    'WakeOnLan'                           => Optional[Enum[
-        'phy', 'unicast', 'multicast', 'broadcast',
-        'arp', 'magic', 'secureon'
-    ]],
-    'WakeOnLanPassword'                   => Optional[String[1]],
-    'Port'                                => Optional[Enum['tp', 'aui', 'bnc', 'mii', 'fibre']],
-    'Advertise'                           => Optional[Variant[
-        Systemd::Interface::Link::Link_advertise,
-        Array[Systemd::Interface::Link::Link_advertise]
-    ]],
-    'ReceiveChecksumOffload'              => Optional[Enum['yes','no']],
-    'TransmitChecksumOffload'             => Optional[Enum['yes','no']],
-    'TCPSegmentationOffload'              => Optional[Enum['yes','no']],
-    'TCP6SegmentationOffload'             => Optional[Enum['yes','no']],
-    'GenericSegmentationOffload'          => Optional[Enum['yes','no']],
-    'GenericReceiveOffload'               => Optional[Enum['yes','no']],
-    'LargeReceiveOffload'                 => Optional[Enum['yes','no']],
-    'ReceivePacketSteeringCPUMask'        => Optional[String[1]],
-    'ReceiveVLANCTAGHardwareAcceleration' => Optional[Enum['yes','no']],
-    'TransmitVLANCTAGHardwareAcceleration'=> Optional[Enum['yes','no']],
-    'ReceiveVLANCTAGFilter'               => Optional[Enum['yes','no']],
-    'TransmitVLANSTAGHardwareAcceleration'=> Optional[Enum['yes','no']],
-    'NTupleFilter'                        => Optional[Enum['yes','no']],
-    'RxChannels'                          => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
-    'TxChannels'                          => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
-    'OtherChannels'                       => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
-    'CombinedChannels'                    => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
-    'RxBufferSize'                        => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
-    'RxMiniBufferSize'                    => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
-    'RxJumboBufferSize'                   => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
-    'TxBufferSize'                        => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
-    'RxFlowControl'                       => Optional[Enum['yes','no']],
-    'TxFlowControl'                       => Optional[Enum['yes','no']],
-    'AutoNegotiationFlowControl'          => Optional[Enum['yes','no']],
-    'GenericSegmentOffloadMaxBytes'       => Optional[String[1]],
-    'GenericSegmentOffloadMaxSegments'    => Optional[Integer[1, 65535]],
-    'UseAdaptiveRxCoalesce'               => Optional[Enum['yes','no']],
-    'UseAdaptiveTxCoalesce'               => Optional[Enum['yes','no']],
-    'RxCoalesceSec'                       => Optional[Integer],
-    'RxCoalesceIrqSec'                    => Optional[Integer],
-    'RxCoalesceLowSec'                    => Optional[Integer],
-    'RxCoalesceHighSec'                   => Optional[Integer],
-    'TxCoalesceSec'                       => Optional[Integer],
-    'TxCoalesceIrqSec'                    => Optional[Integer],
-    'TxCoalesceLowSec'                    => Optional[Integer],
-    'TxCoalesceHighSec'                   => Optional[Integer],
-    'RxMaxCoalescedFrames'                => Optional[Integer],
-    'RxMaxCoalescedIrqFrames'             => Optional[Integer],
-    'RxMaxCoalescedLowFrames'             => Optional[Integer],
-    'RxMaxCoalescedHighFrames'            => Optional[Integer],
-    'TxMaxCoalescedFrames'                => Optional[Integer],
-    'TxMaxCoalescedIrqFrames'             => Optional[Integer],
-    'TxMaxCoalescedLowFrames'             => Optional[Integer],
-    'TxMaxCoalescedHighFrames'            => Optional[Integer],
-    'CoalescePacketRateLow'               => Optional[Integer],
-    'CoalescePacketRateHigh'              => Optional[Integer],
-    'CoalescePacketRateSampleIntervalSec' => Optional[Integer],
-    'StatisticsBlockCoalesceSec'          => Optional[Integer[1]],
-    'MDI'                                 => Optional[Enum['straight', 'mdi', 'crossover', 'mdi-x', 'mdix', 'auto']],
-    'SR_IOVVirtualFunctions'              => Optional[Integer[0, 2147483647]],
+  'Description'                         => Optional[String[1]],
+  'Property'                            => Optional[String[1]],
+  'ImportProperty'                      => Optional[String[1]],
+  'UnsetProperty'                       => Optional[String[1]],
+  'Alias'                               => Optional[String[1]],
+  'MACAddressPolicy'                    => Optional[Enum['persistent', 'random', 'none', '']],
+  'MACAddress'                          => Optional[String[1]],
+  'NamePolicy'                          => Optional[Enum[
+    'kernel', 'database', 'onboard', 'slot',
+    'path', 'mac', 'keep'
+  ]],
+  'Name'                                => Optional[String[1]],
+  'AlternativeNamesPolicy'              => Optional[String[1]],
+  'AlternativeName'                     => Optional[String[1]],
+  'TransmitQueues'                      => Optional[Integer[1,4096]],
+  'ReceiveQueues'                       => Optional[Integer[1,4096]],
+  'TransmitQueueLength'                 => Optional[Integer[0, 4294967294]],
+  'MTUBytes'                            => Optional[Integer[1280]],
+  'BitsPerSecond'                       => Optional[String[1]],
+  'Duplex'                              => Optional[String[1]],
+  'AutoNegotiation'                     => Optional[Enum['yes','no']],
+  'WakeOnLan'                           => Optional[Enum[
+    'phy', 'unicast', 'multicast', 'broadcast',
+    'arp', 'magic', 'secureon'
+  ]],
+  'WakeOnLanPassword'                   => Optional[String[1]],
+  'Port'                                => Optional[Enum['tp', 'aui', 'bnc', 'mii', 'fibre']],
+  'Advertise'                           => Optional[Variant[
+    Systemd::Interface::Link::Link_advertise,
+    Array[Systemd::Interface::Link::Link_advertise]
+  ]],
+  'ReceiveChecksumOffload'              => Optional[Enum['yes','no']],
+  'TransmitChecksumOffload'             => Optional[Enum['yes','no']],
+  'TCPSegmentationOffload'              => Optional[Enum['yes','no']],
+  'TCP6SegmentationOffload'             => Optional[Enum['yes','no']],
+  'GenericSegmentationOffload'          => Optional[Enum['yes','no']],
+  'GenericReceiveOffload'               => Optional[Enum['yes','no']],
+  'LargeReceiveOffload'                 => Optional[Enum['yes','no']],
+  'ReceivePacketSteeringCPUMask'        => Optional[String[1]],
+  'ReceiveVLANCTAGHardwareAcceleration' => Optional[Enum['yes','no']],
+  'TransmitVLANCTAGHardwareAcceleration'=> Optional[Enum['yes','no']],
+  'ReceiveVLANCTAGFilter'               => Optional[Enum['yes','no']],
+  'TransmitVLANSTAGHardwareAcceleration'=> Optional[Enum['yes','no']],
+  'NTupleFilter'                        => Optional[Enum['yes','no']],
+  'RxChannels'                          => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
+  'TxChannels'                          => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
+  'OtherChannels'                       => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
+  'CombinedChannels'                    => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
+  'RxBufferSize'                        => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
+  'RxMiniBufferSize'                    => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
+  'RxJumboBufferSize'                   => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
+  'TxBufferSize'                        => Optional[Variant[Enum['max'],Integer[1,4294967295]]],
+  'RxFlowControl'                       => Optional[Enum['yes','no']],
+  'TxFlowControl'                       => Optional[Enum['yes','no']],
+  'AutoNegotiationFlowControl'          => Optional[Enum['yes','no']],
+  'GenericSegmentOffloadMaxBytes'       => Optional[String[1]],
+  'GenericSegmentOffloadMaxSegments'    => Optional[Integer[1, 65535]],
+  'UseAdaptiveRxCoalesce'               => Optional[Enum['yes','no']],
+  'UseAdaptiveTxCoalesce'               => Optional[Enum['yes','no']],
+  'RxCoalesceSec'                       => Optional[Integer],
+  'RxCoalesceIrqSec'                    => Optional[Integer],
+  'RxCoalesceLowSec'                    => Optional[Integer],
+  'RxCoalesceHighSec'                   => Optional[Integer],
+  'TxCoalesceSec'                       => Optional[Integer],
+  'TxCoalesceIrqSec'                    => Optional[Integer],
+  'TxCoalesceLowSec'                    => Optional[Integer],
+  'TxCoalesceHighSec'                   => Optional[Integer],
+  'RxMaxCoalescedFrames'                => Optional[Integer],
+  'RxMaxCoalescedIrqFrames'             => Optional[Integer],
+  'RxMaxCoalescedLowFrames'             => Optional[Integer],
+  'RxMaxCoalescedHighFrames'            => Optional[Integer],
+  'TxMaxCoalescedFrames'                => Optional[Integer],
+  'TxMaxCoalescedIrqFrames'             => Optional[Integer],
+  'TxMaxCoalescedLowFrames'             => Optional[Integer],
+  'TxMaxCoalescedHighFrames'            => Optional[Integer],
+  'CoalescePacketRateLow'               => Optional[Integer],
+  'CoalescePacketRateHigh'              => Optional[Integer],
+  'CoalescePacketRateSampleIntervalSec' => Optional[Integer],
+  'StatisticsBlockCoalesceSec'          => Optional[Integer[1]],
+  'MDI'                                 => Optional[Enum['straight', 'mdi', 'crossover', 'mdi-x', 'mdix', 'auto']],
+  'SR_IOVVirtualFunctions'              => Optional[Integer[0, 2147483647]],
 }]
 ```
 
@@ -3197,24 +3197,24 @@ Alias of
 
 ```puppet
 Struct[{
-    'Name'                => Optional[String[1]],
-    'MACAddress'          => Optional[String[1]],
-    'PermanentMACAddress' => Optional[String[1]],
-    'Path'                => Optional[String[1]],
-    'Driver'              => Optional[String[1]],
-    'Type'                => Optional[String[1]],
-    'Kind'                => Optional[String[1]],
-    'Property'            => Optional[String[1]],
-    'OriginalName'        => Optional[String[1]],
-    'SSID'                => Optional[String[1]],
-    'BSSID'               => Optional[String[1]],
-    'Host'                => Optional[String[1]],
-    'Virtualization'      => Optional[String[1]],
-    'KernelCommandLine'   => Optional[String[1]],
-    'KernelVersion'       => Optional[String[1]],
-    'Credential'          => Optional[String[1]],
-    'Architecture'        => Optional[String[1]],
-    'Firmware'            => Optional[String[1]],
+  'Name'                => Optional[String[1]],
+  'MACAddress'          => Optional[String[1]],
+  'PermanentMACAddress' => Optional[String[1]],
+  'Path'                => Optional[String[1]],
+  'Driver'              => Optional[String[1]],
+  'Type'                => Optional[String[1]],
+  'Kind'                => Optional[String[1]],
+  'Property'            => Optional[String[1]],
+  'OriginalName'        => Optional[String[1]],
+  'SSID'                => Optional[String[1]],
+  'BSSID'               => Optional[String[1]],
+  'Host'                => Optional[String[1]],
+  'Virtualization'      => Optional[String[1]],
+  'KernelCommandLine'   => Optional[String[1]],
+  'KernelVersion'       => Optional[String[1]],
+  'Credential'          => Optional[String[1]],
+  'Architecture'        => Optional[String[1]],
+  'Firmware'            => Optional[String[1]],
 }]
 ```
 
@@ -3229,15 +3229,15 @@ Alias of
 
 ```puppet
 Struct[{
-    'VirtualFunction'         => Optional[Integer[0,2147483646]],
-    'VLANId'                  => Optional[Integer[1,4095]],
-    'QualityOfService'        => Optional[Integer[1,4294967294]],
-    'VLANProtocol'            => Optional[Enum['802.1Q', '802.1ad']],
-    'MACSpoofCheck'           => Optional[Enum['yes','no']],
-    'QueryReceiveSideScaling' => Optional[Enum['yes','no']],
-    'Trust'                   => Optional[Enum['yes','no']],
-    'LinkState'               => Optional[Enum['yes','no','auto']],
-    'MACAddress'              => Optional[String[1]],
+  'VirtualFunction'         => Optional[Integer[0,2147483646]],
+  'VLANId'                  => Optional[Integer[1,4095]],
+  'QualityOfService'        => Optional[Integer[1,4294967294]],
+  'VLANProtocol'            => Optional[Enum['802.1Q', '802.1ad']],
+  'MACSpoofCheck'           => Optional[Enum['yes','no']],
+  'QueryReceiveSideScaling' => Optional[Enum['yes','no']],
+  'Trust'                   => Optional[Enum['yes','no']],
+  'LinkState'               => Optional[Enum['yes','no','auto']],
+  'MACAddress'              => Optional[String[1]],
 }]
 ```
 
@@ -3252,37 +3252,37 @@ Alias of
 
 ```puppet
 Struct[{
-    'Match'                     => Optional[Systemd::Interface::Netdev::Match],
-    'NetDev'                    => Optional[Systemd::Interface::Netdev::Netdev],
-    'Bridge'                    => Optional[Systemd::Interface::Netdev::Bridge],
-    'Vlan'                      => Optional[Systemd::Interface::Netdev::Vlan],
-    'MACVLAN'                   => Optional[Systemd::Interface::Netdev::Macvlan],
-    'MACVTAP'                   => Optional[Systemd::Interface::Netdev::Macvlan],
-    'IPVLAN'                    => Optional[Systemd::Interface::Netdev::Ipvlan],
-    'IPVTAP'                    => Optional[Systemd::Interface::Netdev::Ipvlan],
-    'VXLAN'                     => Optional[Systemd::Interface::Netdev::Vxlan],
-    'GENEVE'                    => Optional[Systemd::Interface::Netdev::Geneve],
-    'BareUDP'                   => Optional[Systemd::Interface::Netdev::Bareudp],
-    'L2TP'                      => Optional[Systemd::Interface::Netdev::L2tp],
-    'L2TPSession'               => Optional[Systemd::Interface::Netdev::L2tpsession],
-    'MACsec'                    => Optional[Systemd::Interface::Netdev::Macsec],
-    'MACsecReceiveChannel'      => Optional[Systemd::Interface::Netdev::Macsecreceivechannel],
-    'MACsecTransmitAssociation' => Optional[Systemd::Interface::Netdev::Macsectransmitassociation],
-    'MACsecReceiveAssociation'  => Optional[Systemd::Interface::Netdev::Macsecreceiveassociation],
-    'Tunnel'                    => Optional[Systemd::Interface::Netdev::Tunnel],
-    'FooOverUDP'                => Optional[Systemd::Interface::Netdev::Foooverudp],
-    'Peer'                      => Optional[Systemd::Interface::Netdev::Peer],
-    'VXCAN'                     => Optional[Systemd::Interface::Netdev::Vxcan],
-    'Tun'                       => Optional[Systemd::Interface::Netdev::Tun],
-    'Tap'                       => Optional[Systemd::Interface::Netdev::Tun],
-    'WireGuard'                 => Optional[Systemd::Interface::Netdev::Wireguard],
-    'WireGuardPeer'             => Optional[Systemd::Interface::Netdev::Wireguardpeer],
-    'Bond'                      => Optional[Systemd::Interface::Netdev::Bond],
-    'Xfrm'                      => Optional[Systemd::Interface::Netdev::Xfrm],
-    'VRF'                       => Optional[Systemd::Interface::Netdev::Vrf],
-    'BatmanAdvanced'            => Optional[Systemd::Interface::Netdev::Batmanadvanced],
-    'IPoIB'                     => Optional[Systemd::Interface::Netdev::Ipoib],
-    'WLAN'                      => Optional[Systemd::Interface::Netdev::Wlan],
+  'Match'                     => Optional[Systemd::Interface::Netdev::Match],
+  'NetDev'                    => Optional[Systemd::Interface::Netdev::Netdev],
+  'Bridge'                    => Optional[Systemd::Interface::Netdev::Bridge],
+  'Vlan'                      => Optional[Systemd::Interface::Netdev::Vlan],
+  'MACVLAN'                   => Optional[Systemd::Interface::Netdev::Macvlan],
+  'MACVTAP'                   => Optional[Systemd::Interface::Netdev::Macvlan],
+  'IPVLAN'                    => Optional[Systemd::Interface::Netdev::Ipvlan],
+  'IPVTAP'                    => Optional[Systemd::Interface::Netdev::Ipvlan],
+  'VXLAN'                     => Optional[Systemd::Interface::Netdev::Vxlan],
+  'GENEVE'                    => Optional[Systemd::Interface::Netdev::Geneve],
+  'BareUDP'                   => Optional[Systemd::Interface::Netdev::Bareudp],
+  'L2TP'                      => Optional[Systemd::Interface::Netdev::L2tp],
+  'L2TPSession'               => Optional[Systemd::Interface::Netdev::L2tpsession],
+  'MACsec'                    => Optional[Systemd::Interface::Netdev::Macsec],
+  'MACsecReceiveChannel'      => Optional[Systemd::Interface::Netdev::Macsecreceivechannel],
+  'MACsecTransmitAssociation' => Optional[Systemd::Interface::Netdev::Macsectransmitassociation],
+  'MACsecReceiveAssociation'  => Optional[Systemd::Interface::Netdev::Macsecreceiveassociation],
+  'Tunnel'                    => Optional[Systemd::Interface::Netdev::Tunnel],
+  'FooOverUDP'                => Optional[Systemd::Interface::Netdev::Foooverudp],
+  'Peer'                      => Optional[Systemd::Interface::Netdev::Peer],
+  'VXCAN'                     => Optional[Systemd::Interface::Netdev::Vxcan],
+  'Tun'                       => Optional[Systemd::Interface::Netdev::Tun],
+  'Tap'                       => Optional[Systemd::Interface::Netdev::Tun],
+  'WireGuard'                 => Optional[Systemd::Interface::Netdev::Wireguard],
+  'WireGuardPeer'             => Optional[Systemd::Interface::Netdev::Wireguardpeer],
+  'Bond'                      => Optional[Systemd::Interface::Netdev::Bond],
+  'Xfrm'                      => Optional[Systemd::Interface::Netdev::Xfrm],
+  'VRF'                       => Optional[Systemd::Interface::Netdev::Vrf],
+  'BatmanAdvanced'            => Optional[Systemd::Interface::Netdev::Batmanadvanced],
+  'IPoIB'                     => Optional[Systemd::Interface::Netdev::Ipoib],
+  'WLAN'                      => Optional[Systemd::Interface::Netdev::Wlan],
 }]
 ```
 
@@ -3297,8 +3297,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'DestinationPort' => Integer[1, 65535],
-    'EtherType'       => Enum['ipv4', 'ipv6', 'mpls-uc', 'mpls-mc'],
+  'DestinationPort' => Integer[1, 65535],
+  'EtherType'       => Enum['ipv4', 'ipv6', 'mpls-uc', 'mpls-mc'],
 }]
 ```
 
@@ -3313,16 +3313,16 @@ Alias of
 
 ```puppet
 Struct[{
-    'GatewayMode'           => Optional[Enum['off', 'server', 'client']],
-    'Aggregation'           => Optional[Enum['yes','no']],
-    'BridgeLoopAvoidance'   => Optional[Enum['yes','no']],
-    'DistributedArpTable'   => Optional[Enum['yes','no']],
-    'Fragmentation'         => Optional[Enum['yes','no']],
-    'HopPenalty'            => Optional[Integer[0,255]],
-    'OriginatorIntervalSec' => Optional[String[1]],
-    'GatewayBandwidthDown'  => Optional[String[1]],
-    'GatewayBandwidthUp'    => Optional[String[1]],
-    'RoutingAlgorithm'      => Optional[Enum['batman-v', 'batman-iv']],
+  'GatewayMode'           => Optional[Enum['off', 'server', 'client']],
+  'Aggregation'           => Optional[Enum['yes','no']],
+  'BridgeLoopAvoidance'   => Optional[Enum['yes','no']],
+  'DistributedArpTable'   => Optional[Enum['yes','no']],
+  'Fragmentation'         => Optional[Enum['yes','no']],
+  'HopPenalty'            => Optional[Integer[0,255]],
+  'OriginatorIntervalSec' => Optional[String[1]],
+  'GatewayBandwidthDown'  => Optional[String[1]],
+  'GatewayBandwidthUp'    => Optional[String[1]],
+  'RoutingAlgorithm'      => Optional[Enum['batman-v', 'batman-iv']],
 }]
 ```
 
@@ -3337,34 +3337,34 @@ Alias of
 
 ```puppet
 Struct[{
-    'Mode'                         => Optional[Enum[
-        'balance-rr', 'active-backup', 'balance-xor',
-        'broadcast', '802.3ad', 'balance-tlb', 'balance-alb'
-    ]],
-    'TransmitHashPolicy'           => Optional[Enum['layer2', 'layer3+4', 'layer2+3', 'encap2+3', 'encap3+4']],
-    'LACPTransmitRate'             => Optional[Enum['slow','fast']],
-    'MIIMonitorSec'                => Optional[Integer],
-    'PeerNotifyDelaySec'           => Optional[Integer[0,300]],
-    'UpDelaySec'                   => Optional[Integer[0]],
-    'DownDelaySec'                 => Optional[Integer[0]],
-    'LearnPacketIntervalSec'       => Optional[Integer[1]],
-    'AdSelect'                     => Optional[Enum['stable', 'bandwidth', 'count']],
-    'AdActorSystemPriority'        => Optional[Integer[1,65535]],
-    'AdUserPortKey'                => Optional[Integer[1,1023]],
-    'AdActorSystem'                => Optional[String[1]],
-    'FailOverMACPolicy'            => Optional[Enum['none', 'active', 'follow']],
-    'ARPValidate'                  => Optional[Enum['none', 'active', 'backup', 'all']],
-    'ARPIntervalSec'               => Optional[String[1]],
-    'ARPIPTargets'                 => Optional[String[1]],
-    'ARPAllTargets'                => Optional[Enum['any','all']],
-    'PrimaryReselectPolicy'        => Optional[Enum['alwayas', 'better', 'failure']],
-    'ResendIGMP'                   => Optional[Integer[0,255]],
-    'PacketsPerSlave'              => Optional[Integer[0,65535]],
-    'GratuitousARP'                => Optional[Integer[0,255]],
-    'AllSlavesActive'              => Optional[Enum['yes','no']],
-    'DynamicTransmitLoadBalancing' => Optional[Enum['yes','no']],
-    'MinLinks'                     => Optional[Integer],
-    'ARPMissedMax'                 => Optional[Integer],
+  'Mode'                         => Optional[Enum[
+    'balance-rr', 'active-backup', 'balance-xor',
+    'broadcast', '802.3ad', 'balance-tlb', 'balance-alb'
+  ]],
+  'TransmitHashPolicy'           => Optional[Enum['layer2', 'layer3+4', 'layer2+3', 'encap2+3', 'encap3+4']],
+  'LACPTransmitRate'             => Optional[Enum['slow','fast']],
+  'MIIMonitorSec'                => Optional[Integer],
+  'PeerNotifyDelaySec'           => Optional[Integer[0,300]],
+  'UpDelaySec'                   => Optional[Integer[0]],
+  'DownDelaySec'                 => Optional[Integer[0]],
+  'LearnPacketIntervalSec'       => Optional[Integer[1]],
+  'AdSelect'                     => Optional[Enum['stable', 'bandwidth', 'count']],
+  'AdActorSystemPriority'        => Optional[Integer[1,65535]],
+  'AdUserPortKey'                => Optional[Integer[1,1023]],
+  'AdActorSystem'                => Optional[String[1]],
+  'FailOverMACPolicy'            => Optional[Enum['none', 'active', 'follow']],
+  'ARPValidate'                  => Optional[Enum['none', 'active', 'backup', 'all']],
+  'ARPIntervalSec'               => Optional[String[1]],
+  'ARPIPTargets'                 => Optional[String[1]],
+  'ARPAllTargets'                => Optional[Enum['any','all']],
+  'PrimaryReselectPolicy'        => Optional[Enum['alwayas', 'better', 'failure']],
+  'ResendIGMP'                   => Optional[Integer[0,255]],
+  'PacketsPerSlave'              => Optional[Integer[0,65535]],
+  'GratuitousARP'                => Optional[Integer[0,255]],
+  'AllSlavesActive'              => Optional[Enum['yes','no']],
+  'DynamicTransmitLoadBalancing' => Optional[Enum['yes','no']],
+  'MinLinks'                     => Optional[Integer],
+  'ARPMissedMax'                 => Optional[Integer],
 }]
 ```
 
@@ -3379,19 +3379,19 @@ Alias of
 
 ```puppet
 Struct[{
-    'Description'          => Optional[String[1]],
-    'HelloTimeSec'         => Optional[Integer[1]],
-    'MaxAgeSec'            => Optional[Integer[1]],
-    'ForwardDelaySec'      => Optional[Integer[1]],
-    'AgeingTimeSec'        => Optional[Integer[1]],
-    'Priority'             => Optional[Integer[0, 65535]],
-    'GroupForwardMask'     => Optional[String[1]],
-    'DefaultPVID'          => Optional[Variant[Enum['none'],String[1, 4094]]],
-    'MulticastQuerier'     => Optional[Enum['yes','no']],
-    'MulticastSnooping'    => Optional[Enum['yes','no']],
-    'VLANFiltering'        => Optional[Enum['yes','no']],
-    'STP'                  => Optional[Enum['yes','no']],
-    'MulticastIGMPVersion' => Optional[Integer[2,3]],
+  'Description'          => Optional[String[1]],
+  'HelloTimeSec'         => Optional[Integer[1]],
+  'MaxAgeSec'            => Optional[Integer[1]],
+  'ForwardDelaySec'      => Optional[Integer[1]],
+  'AgeingTimeSec'        => Optional[Integer[1]],
+  'Priority'             => Optional[Integer[0, 65535]],
+  'GroupForwardMask'     => Optional[String[1]],
+  'DefaultPVID'          => Optional[Variant[Enum['none'],String[1, 4094]]],
+  'MulticastQuerier'     => Optional[Enum['yes','no']],
+  'MulticastSnooping'    => Optional[Enum['yes','no']],
+  'VLANFiltering'        => Optional[Enum['yes','no']],
+  'STP'                  => Optional[Enum['yes','no']],
+  'MulticastIGMPVersion' => Optional[Integer[2,3]],
 }]
 ```
 
@@ -3406,12 +3406,12 @@ Alias of
 
 ```puppet
 Struct[{
-    'Encapsulation'             => Optional[Enum['FooOverUDP','GenericUDPEncapsulation']],
-    'Port'                      => Integer[1],
-    'PeerPort'                  => Optional[Integer[1]],
-    'Protocol'                  => Optional[Variant[Enum['gre','ipip'], Integer[1,255]]],
-    'Peer'                      => Optional[String[1]],
-    'Local'                     => Optional[String[1]],
+  'Encapsulation'             => Optional[Enum['FooOverUDP','GenericUDPEncapsulation']],
+  'Port'                      => Integer[1],
+  'PeerPort'                  => Optional[Integer[1]],
+  'Protocol'                  => Optional[Variant[Enum['gre','ipip'], Integer[1,255]]],
+  'Peer'                      => Optional[String[1]],
+  'Local'                     => Optional[String[1]],
 }]
 ```
 
@@ -3426,17 +3426,17 @@ Alias of
 
 ```puppet
 Struct[{
-    'Id'                   => Integer[0,16777215],
-    'Remote'               => Optional[String[1]],
-    'TOS'                  => Optional[Integer[1,255]],
-    'TTL'                  => Optional[Variant[Enum['inherit'], Integer[0,255]]],
-    'UDPChecksum'          => Optional[Enum['yes', 'no']],
-    'UDP6ZeroChecksumTx'   => Optional[Enum['yes', 'no']],
-    'UDP6ZeroChecksumRx'   => Optional[Enum['yes', 'no']],
-    'DestinationPort'      => Optional[Integer[1]],
-    'FlowLabel'            => Optional[String[1]],
-    'IPDoNotFragment'      => Optional[Enum['yes', 'no']],
-    'InheritInnerProtocol' => Optional[Enum['yes', 'no']],
+  'Id'                   => Integer[0,16777215],
+  'Remote'               => Optional[String[1]],
+  'TOS'                  => Optional[Integer[1,255]],
+  'TTL'                  => Optional[Variant[Enum['inherit'], Integer[0,255]]],
+  'UDPChecksum'          => Optional[Enum['yes', 'no']],
+  'UDP6ZeroChecksumTx'   => Optional[Enum['yes', 'no']],
+  'UDP6ZeroChecksumRx'   => Optional[Enum['yes', 'no']],
+  'DestinationPort'      => Optional[Integer[1]],
+  'FlowLabel'            => Optional[String[1]],
+  'IPDoNotFragment'      => Optional[Enum['yes', 'no']],
+  'InheritInnerProtocol' => Optional[Enum['yes', 'no']],
 }]
 ```
 
@@ -3451,9 +3451,9 @@ Alias of
 
 ```puppet
 Struct[{
-    'PartitionKey'                  => Optional[Integer[1]],
-    'Mode'                          => Optional[Enum['datagram','connected']],
-    'IgnoreUserspaceMulticastGroup' => Optional[Enum['yes', 'no']],
+  'PartitionKey'                  => Optional[Integer[1]],
+  'Mode'                          => Optional[Enum['datagram','connected']],
+  'IgnoreUserspaceMulticastGroup' => Optional[Enum['yes', 'no']],
 }]
 ```
 
@@ -3468,8 +3468,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'Mode'  => Optional[Enum['L2', 'L3', 'L3S']],
-    'Flags' => Optional[Enum['bridge', 'private', 'vepa']],
+  'Mode'  => Optional[Enum['L2', 'L3', 'L3S']],
+  'Flags' => Optional[Enum['bridge', 'private', 'vepa']],
 }]
 ```
 
@@ -3484,16 +3484,16 @@ Alias of
 
 ```puppet
 Struct[{
-    'TunnelId'           => Integer[1,4294967295],
-    'PeerTunnelId'       => Integer[1,4294967295],
-    'Remote'             => String[1],
-    'Local'              => Optional[Variant[Enum['auto', 'static', 'dynamic'],String[1]]],
-    'EncapsulationType'  => Optional[Enum['udp','ip']],
-    'UDPSourcePort'      => Optional[Integer[1]],
-    'UDPDestinationPort' => Optional[Integer[1]],
-    'UDPChecksum'        => Optional[Enum['yes' ,'no']],
-    'UDP6ZeroChecksumTx' => Optional[Enum['yes' ,'no']],
-    'UDP6ZeroChecksumRx' => Optional[Enum['yes' ,'no']],
+  'TunnelId'           => Integer[1,4294967295],
+  'PeerTunnelId'       => Integer[1,4294967295],
+  'Remote'             => String[1],
+  'Local'              => Optional[Variant[Enum['auto', 'static', 'dynamic'],String[1]]],
+  'EncapsulationType'  => Optional[Enum['udp','ip']],
+  'UDPSourcePort'      => Optional[Integer[1]],
+  'UDPDestinationPort' => Optional[Integer[1]],
+  'UDPChecksum'        => Optional[Enum['yes' ,'no']],
+  'UDP6ZeroChecksumTx' => Optional[Enum['yes' ,'no']],
+  'UDP6ZeroChecksumRx' => Optional[Enum['yes' ,'no']],
 }]
 ```
 
@@ -3508,10 +3508,10 @@ Alias of
 
 ```puppet
 Struct[{
-    'Name'                 => String[1],
-    'SessionId'            => Integer[1,4294967295],
-    'PeerSessionId'        => Integer[1,4294967295],
-    'Layer2SpecificHeader' => Optional[Enum['none', 'default']],
+  'Name'                 => String[1],
+  'SessionId'            => Integer[1,4294967295],
+  'PeerSessionId'        => Integer[1,4294967295],
+  'Layer2SpecificHeader' => Optional[Enum['none', 'default']],
 }]
 ```
 
@@ -3526,8 +3526,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'Port' => Optional[Integer[1, 65535]],
-    'Encrypt' => Optional[Enum['yes','no']],
+  'Port' => Optional[Integer[1, 65535]],
+  'Encrypt' => Optional[Enum['yes','no']],
 }]
 ```
 
@@ -3542,13 +3542,13 @@ Alias of
 
 ```puppet
 Struct[{
-    'Port'       => Integer[1, 65535],
-    'MACAddress' => String[1],
-    'PacketNumber'   => Optional[Variant[Integer[1,4],Integer[294,295],Integer[967,967]]],
-    'KeyId'          => Optional[Integer[0,255]],
-    'Key'            => Optional[String[1]],
-    'KeyFile'        => Optional[String[1]],
-    'Activate'       => Optional[Enum['yes','no']],
+  'Port'       => Integer[1, 65535],
+  'MACAddress' => String[1],
+  'PacketNumber'   => Optional[Variant[Integer[1,4],Integer[294,295],Integer[967,967]]],
+  'KeyId'          => Optional[Integer[0,255]],
+  'Key'            => Optional[String[1]],
+  'KeyFile'        => Optional[String[1]],
+  'Activate'       => Optional[Enum['yes','no']],
 }]
 ```
 
@@ -3563,8 +3563,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'Port'       => Integer[1, 65535],
-    'MACAddress' => String[1],
+  'Port'       => Integer[1, 65535],
+  'MACAddress' => String[1],
 }]
 ```
 
@@ -3579,12 +3579,12 @@ Alias of
 
 ```puppet
 Struct[{
-    'PacketNumber'   => Optional[Variant[Integer[1,4],Integer[294,295],Integer[967,967]]],
-    'KeyId'          => Optional[Integer[0,255]],
-    'Key'            => Optional[String[1]],
-    'KeyFile'        => Optional[String[1]],
-    'Activate'       => Optional[Enum['yes','no']],
-    'UseForEncoding' => Optional[Enum['yes','no']],
+  'PacketNumber'   => Optional[Variant[Integer[1,4],Integer[294,295],Integer[967,967]]],
+  'KeyId'          => Optional[Integer[0,255]],
+  'Key'            => Optional[String[1]],
+  'KeyFile'        => Optional[String[1]],
+  'Activate'       => Optional[Enum['yes','no']],
+  'UseForEncoding' => Optional[Enum['yes','no']],
 }]
 ```
 
@@ -3599,10 +3599,10 @@ Alias of
 
 ```puppet
 Struct[{
-    'Mode'                          => Optional[Enum['private', 'vepa', 'bridge', 'passthru', 'source']],
-    'SourceMACAddress'              => Optional[Variant[String[1],Array[String[1]]]],
-    'BroadcastMulticastQueueLength' => Optional[Integer[0,4294967294]],
-    'BroadcastQueueThreshold'       => Optional[Variant[Enum['no'],Integer[0,2147483647]]],
+  'Mode'                          => Optional[Enum['private', 'vepa', 'bridge', 'passthru', 'source']],
+  'SourceMACAddress'              => Optional[Variant[String[1],Array[String[1]]]],
+  'BroadcastMulticastQueueLength' => Optional[Integer[0,4294967294]],
+  'BroadcastQueueThreshold'       => Optional[Variant[Enum['no'],Integer[0,2147483647]]],
 }]
 ```
 
@@ -3617,13 +3617,13 @@ Alias of
 
 ```puppet
 Struct[{
-    'Host'              => Optional[String[1]],
-    'Virtualization'    => Optional[String[1]],
-    'KernelCommandLine' => Optional[String[1]],
-    'KernelVersion'     => Optional[String[1]],
-    'Credential'        => Optional[String[1]],
-    'Architecture'      => Optional[String[1]],
-    'Firmware'          => Optional[String[1]],
+  'Host'              => Optional[String[1]],
+  'Virtualization'    => Optional[String[1]],
+  'KernelCommandLine' => Optional[String[1]],
+  'KernelVersion'     => Optional[String[1]],
+  'Credential'        => Optional[String[1]],
+  'Architecture'      => Optional[String[1]],
+  'Firmware'          => Optional[String[1]],
 }]
 ```
 
@@ -3638,11 +3638,11 @@ Alias of
 
 ```puppet
 Struct[{
-    'Description' => Optional[String[1]],
-    'Name'        => Optional[String[1]],
-    'Kind'        => Optional[String[1]],
-    'MTUBytes'    => Optional[String[1]],
-    'MACAddress'  => Optional[String[1]],
+  'Description' => Optional[String[1]],
+  'Name'        => Optional[String[1]],
+  'Kind'        => Optional[String[1]],
+  'MTUBytes'    => Optional[String[1]],
+  'MACAddress'  => Optional[String[1]],
 }]
 ```
 
@@ -3657,8 +3657,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'Name' => String[1],
-    'MACAddress' => Optional[String[1]],
+  'Name' => String[1],
+  'MACAddress' => Optional[String[1]],
 }]
 ```
 
@@ -3673,12 +3673,12 @@ Alias of
 
 ```puppet
 Struct[{
-    'MultiQueue'  => Optional[Enum['yes','no']],
-    'PacketInfo'  => Optional[Enum['yes','no']],
-    'VNetHeader'  => Optional[Enum['yes','no']],
-    'User'        => Optional[String[1]],
-    'Group'       => Optional[String[1]],
-    'KeepCarrier' => Optional[Enum['yes','no']],
+  'MultiQueue'  => Optional[Enum['yes','no']],
+  'PacketInfo'  => Optional[Enum['yes','no']],
+  'VNetHeader'  => Optional[Enum['yes','no']],
+  'User'        => Optional[String[1]],
+  'Group'       => Optional[String[1]],
+  'KeepCarrier' => Optional[Enum['yes','no']],
 }]
 ```
 
@@ -3693,34 +3693,34 @@ Alias of
 
 ```puppet
 Struct[{
-    'External'                  => Optional[Enum['yes','no']],
-    'Local'                     => Optional[Variant[Enum['any', 'ipv4_link_local', 'ipv6_link_local', 'dhcp4', 'dhcp6', 'slaac'], String[1]]],
-    'Remote'                    => Optional[Variant[Enum['any'], String[1]]],
-    'TOS'                       => Optional[String[1]],
-    'TTL'                       => Optional[Integer[1,255]],
-    'DiscoverPathMTU'           => Optional[Enum['yes','no']],
-    'IgnoreDontFragment'        => Optional[Enum['yes','no']],
-    'IPv6FlowLabel'             => Optional[String[1]],
-    'CopyDSCP'                  => Optional[Enum['yes','no']],
-    'EncapsulationLimit'        => Optional[Integer[1,255]],
-    'Key'                       => Optional[String[1]],
-    'InputKey'                  => Optional[String[1]],
-    'OutputKey'                 => Optional[String[1]],
-    'Mode'                      => Optional[Enum['ip6ip6', 'ipip6', 'any']],
-    'Independent'               => Optional[Enum['yes','no']],
-    'AssignToLoopback'          => Optional[Enum['yes','no']],
-    'AllowLocalRemote'          => Optional[Enum['yes','no']],
-    'FooOverUDP'                => Optional[Enum['yes','no']],
-    'FOUDestinationPort'        => Optional[Integer[1]],
-    'FOUSourcePort'             => Optional[Integer[0]],
-    'Encapsulation'             => Optional[Enum['FooOverUDP','GenericUDPEncapsulation']],
-    'IPv6RapidDeploymentPrefix' => Optional[String[1]],
-    'ISATAP'                    => Optional[Enum['yes','no']],
-    'SerializeTunneledPackets'  => Optional[Enum['yes','no']],
-    'ERSPANVersion'             => Optional[Integer[0,2]],
-    'ERSPANIndex'               => Optional[Integer[0,1048575]],
-    'ERSPANDirection'           => Optional[Enum['ingress','egress']],
-    'ERSPANHardwareId'          => Optional[Integer[0,63]],
+  'External'                  => Optional[Enum['yes','no']],
+  'Local'                     => Optional[Variant[Enum['any', 'ipv4_link_local', 'ipv6_link_local', 'dhcp4', 'dhcp6', 'slaac'], String[1]]],
+  'Remote'                    => Optional[Variant[Enum['any'], String[1]]],
+  'TOS'                       => Optional[String[1]],
+  'TTL'                       => Optional[Integer[1,255]],
+  'DiscoverPathMTU'           => Optional[Enum['yes','no']],
+  'IgnoreDontFragment'        => Optional[Enum['yes','no']],
+  'IPv6FlowLabel'             => Optional[String[1]],
+  'CopyDSCP'                  => Optional[Enum['yes','no']],
+  'EncapsulationLimit'        => Optional[Integer[1,255]],
+  'Key'                       => Optional[String[1]],
+  'InputKey'                  => Optional[String[1]],
+  'OutputKey'                 => Optional[String[1]],
+  'Mode'                      => Optional[Enum['ip6ip6', 'ipip6', 'any']],
+  'Independent'               => Optional[Enum['yes','no']],
+  'AssignToLoopback'          => Optional[Enum['yes','no']],
+  'AllowLocalRemote'          => Optional[Enum['yes','no']],
+  'FooOverUDP'                => Optional[Enum['yes','no']],
+  'FOUDestinationPort'        => Optional[Integer[1]],
+  'FOUSourcePort'             => Optional[Integer[0]],
+  'Encapsulation'             => Optional[Enum['FooOverUDP','GenericUDPEncapsulation']],
+  'IPv6RapidDeploymentPrefix' => Optional[String[1]],
+  'ISATAP'                    => Optional[Enum['yes','no']],
+  'SerializeTunneledPackets'  => Optional[Enum['yes','no']],
+  'ERSPANVersion'             => Optional[Integer[0,2]],
+  'ERSPANIndex'               => Optional[Integer[0,1048575]],
+  'ERSPANDirection'           => Optional[Enum['ingress','egress']],
+  'ERSPANHardwareId'          => Optional[Integer[0,63]],
 }]
 ```
 
@@ -3735,14 +3735,14 @@ Alias of
 
 ```puppet
 Struct[{
-    'Id'             => Optional[Integer[0,4094]],
-    'Protocol'       => Optional[Enum['802.1q','802.1ad']],
-    'GVRP'           => Optional[Enum['yes','no']],
-    'MVRP'           => Optional[Enum['yes','no']],
-    'LooseBinding'   => Optional[Enum['yes','no']],
-    'ReorderHeader'  => Optional[Enum['yes','no']],
-    'EgressQOSMaps'  => Optional[String[1]],
-    'IngressQOSMaps' => Optional[String[1]],
+  'Id'             => Optional[Integer[0,4094]],
+  'Protocol'       => Optional[Enum['802.1q','802.1ad']],
+  'GVRP'           => Optional[Enum['yes','no']],
+  'MVRP'           => Optional[Enum['yes','no']],
+  'LooseBinding'   => Optional[Enum['yes','no']],
+  'ReorderHeader'  => Optional[Enum['yes','no']],
+  'EgressQOSMaps'  => Optional[String[1]],
+  'IngressQOSMaps' => Optional[String[1]],
 }]
 ```
 
@@ -3757,7 +3757,7 @@ Alias of
 
 ```puppet
 Struct[{
-    'Table' => Integer[0],
+  'Table' => Integer[0],
 }]
 ```
 
@@ -3772,7 +3772,7 @@ Alias of
 
 ```puppet
 Struct[{
-    'Peer' => String[1],
+  'Peer' => String[1],
 }]
 ```
 
@@ -3787,31 +3787,31 @@ Alias of
 
 ```puppet
 Struct[{
-    'VNI'                      => Optional[Integer[1, 16777215]],
-    'Remote'                   => Optional[String[1]],
-    'Local'                    => Optional[Variant[Enum['ipv4_link_local', 'ipv6_link_local', 'dhcp4', 'dhcp6', 'slaac'], String[1]]],
-    'Group'                    => Optional[String[1]],
-    'TOS'                      => Optional[String[1]],
-    'TTL'                      => Optional[Variant[Enum['inherit'], Integer[0,255]]],
-    'MacLearning'              => Optional[Enum['yes','no']],
-    'FDBAgeingSec'             => Optional[String[1]],
-    'MaximumFDBEntries'        => Optional[Integer[1]],
-    'ReduceARPProxy'           => Optional[Enum['yes','no']],
-    'L2MissNotification'       => Optional[Enum['yes','no']],
-    'L3MissNotification'       => Optional[Enum['yes','no']],
-    'RouteShortCircuit'        => Optional[Enum['yes','no']],
-    'UDPChecksum'              => Optional[Enum['yes','no']],
-    'UDP6ZeroChecksumTx'       => Optional[Enum['yes','no']],
-    'UDP6ZeroChecksumRx'       => Optional[Enum['yes','no']],
-    'RemoteChecksumTx'         => Optional[Enum['yes','no']],
-    'RemoteChecksumRx'         => Optional[Enum['yes','no']],
-    'GroupPolicyExtension'     => Optional[Enum['yes','no']],
-    'GenericProtocolExtension' => Optional[Enum['yes','no']],
-    'DestinationPort'          => Optional[Integer[1]],
-    'PortRange'                => Optional[String[1]],
-    'FlowLabel'                => Optional[Integer[0,1048575]],
-    'IPDoNotFragment'          => Optional[Enum['yes','no']],
-    'Independent'              => Optional[Enum['yes','no']],
+  'VNI'                      => Optional[Integer[1, 16777215]],
+  'Remote'                   => Optional[String[1]],
+  'Local'                    => Optional[Variant[Enum['ipv4_link_local', 'ipv6_link_local', 'dhcp4', 'dhcp6', 'slaac'], String[1]]],
+  'Group'                    => Optional[String[1]],
+  'TOS'                      => Optional[String[1]],
+  'TTL'                      => Optional[Variant[Enum['inherit'], Integer[0,255]]],
+  'MacLearning'              => Optional[Enum['yes','no']],
+  'FDBAgeingSec'             => Optional[String[1]],
+  'MaximumFDBEntries'        => Optional[Integer[1]],
+  'ReduceARPProxy'           => Optional[Enum['yes','no']],
+  'L2MissNotification'       => Optional[Enum['yes','no']],
+  'L3MissNotification'       => Optional[Enum['yes','no']],
+  'RouteShortCircuit'        => Optional[Enum['yes','no']],
+  'UDPChecksum'              => Optional[Enum['yes','no']],
+  'UDP6ZeroChecksumTx'       => Optional[Enum['yes','no']],
+  'UDP6ZeroChecksumRx'       => Optional[Enum['yes','no']],
+  'RemoteChecksumTx'         => Optional[Enum['yes','no']],
+  'RemoteChecksumRx'         => Optional[Enum['yes','no']],
+  'GroupPolicyExtension'     => Optional[Enum['yes','no']],
+  'GenericProtocolExtension' => Optional[Enum['yes','no']],
+  'DestinationPort'          => Optional[Integer[1]],
+  'PortRange'                => Optional[String[1]],
+  'FlowLabel'                => Optional[Integer[0,1048575]],
+  'IPDoNotFragment'          => Optional[Enum['yes','no']],
+  'Independent'              => Optional[Enum['yes','no']],
 }]
 ```
 
@@ -3826,12 +3826,12 @@ Alias of
 
 ```puppet
 Struct[{
-    'PrivateKey'     => Optional[String[1]],
-    'PrivateKeyFile' => Optional[Stdlib::Absolutepath],
-    'ListenPort'     => Optional[Variant[Integer[1,65535], Enum['auto']]],
-    'FirewallMark'   => Optional[Integer[1,4294967295]],
-    'RouteTable'     => Optional[Variant[String[1],Integer[1,4294967295]]],
-    'RouteMetric'    => Optional[Integer[0,4294967295]],
+  'PrivateKey'     => Optional[String[1]],
+  'PrivateKeyFile' => Optional[Stdlib::Absolutepath],
+  'ListenPort'     => Optional[Variant[Integer[1,65535], Enum['auto']]],
+  'FirewallMark'   => Optional[Integer[1,4294967295]],
+  'RouteTable'     => Optional[Variant[String[1],Integer[1,4294967295]]],
+  'RouteMetric'    => Optional[Integer[0,4294967295]],
 }]
 ```
 
@@ -3846,14 +3846,14 @@ Alias of
 
 ```puppet
 Struct[{
-    'PublicKey'           => Optional[String[1]],
-    'PresharedKey'        => Optional[String[1]],
-    'PresharedKeyFile'    => Optional[Stdlib::Absolutepath],
-    'AllowedIPs'          => Optional[Variant[String, Array[String]]],
-    'Endpoint'            => Optional[String[1]],
-    'PersistentKeepalive' => Optional[Variant[Integer[0,65535],Enum['off']]],
-    'RouteTable'          => Optional[Variant[Integer[0,4294967295],String[1]]],
-    'RouteMetric'         => Optional[Integer[0,4294967295]],
+  'PublicKey'           => Optional[String[1]],
+  'PresharedKey'        => Optional[String[1]],
+  'PresharedKeyFile'    => Optional[Stdlib::Absolutepath],
+  'AllowedIPs'          => Optional[Variant[String, Array[String]]],
+  'Endpoint'            => Optional[String[1]],
+  'PersistentKeepalive' => Optional[Variant[Integer[0,65535],Enum['off']]],
+  'RouteTable'          => Optional[Variant[Integer[0,4294967295],String[1]]],
+  'RouteMetric'         => Optional[Integer[0,4294967295]],
 }]
 ```
 
@@ -3868,10 +3868,10 @@ Alias of
 
 ```puppet
 Struct[{
-    'PhysicalDevice' => Optional[Variant[Integer[0], String[1]]],
-    'Type'           => Enum['ad-hoc', 'station', 'ap', 'ap-vlan', 'wds',
-    'monitor', 'mesh-point', 'p2p-client', 'p2p-go', 'p2p-device', 'ocb', 'nan'],
-    'WDS'            => Optional[Enum['yes','no']],
+  'PhysicalDevice' => Optional[Variant[Integer[0], String[1]]],
+  'Type'           => Enum['ad-hoc', 'station', 'ap', 'ap-vlan', 'wds',
+  'monitor', 'mesh-point', 'p2p-client', 'p2p-go', 'p2p-device', 'ocb', 'nan'],
+  'WDS'            => Optional[Enum['yes','no']],
 }]
 ```
 
@@ -3886,8 +3886,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'InterfaceId' => Optional[Variant[Integer[1],String[1]]],
-    'Independent' => Optional[Enum['yes','no']],
+  'InterfaceId' => Optional[Variant[Integer[1],String[1]]],
+  'Independent' => Optional[Enum['yes','no']],
 }]
 ```
 
@@ -3902,91 +3902,91 @@ Alias of
 
 ```puppet
 Struct[{
-    'Match'                           => Optional[Systemd::Interface::Network::Match],
-    'Link'                            => Optional[Systemd::Interface::Network::Link],
-    'SR-IOV'                          => Optional[Systemd::Interface::Network::Sr_iov],
-    'Network'                         => Optional[Systemd::Interface::Network::Network],
-    'Address'                         => Optional[Variant[
-        Systemd::Interface::Network::Address,
-        Array[Systemd::Interface::Network::Address],
-    ]],
-    'Neighbor'                        => Optional[Variant[
-        Systemd::Interface::Network::Neighbor,
-        Array[Systemd::Interface::Network::Neighbor],
-    ]],
-    'IPv6AddressLabel'                => Optional[Systemd::Interface::Network::Ipv6addresslabel],
-    'RoutingPolicyRule'               => Optional[Variant[
-        Systemd::Interface::Network::Routingpolicyrule,
-        Array[Systemd::Interface::Network::Routingpolicyrule],
-    ]],
-    'NextHop'                         => Optional[Variant[
-        Systemd::Interface::Network::Nexthop,
-        Array[Systemd::Interface::Network::Nexthop],
-    ]],
-    'Route'                           => Optional[Variant[
-        Systemd::Interface::Network::Route,
-        Array[Systemd::Interface::Network::Route],
-    ]],
-    'DHCPv4'                          => Optional[Systemd::Interface::Network::Dhcpv4],
-    'DHCPv6'                          => Optional[Systemd::Interface::Network::Dhcpv6],
-    'DHCPPrefixDelegation'            => Optional[Systemd::Interface::Network::Dhcpprefixdelegation],
-    'IPv6AcceptRA'                    => Optional[Systemd::Interface::Network::Ipv6acceptra],
-    'DHCPServer'                      => Optional[Systemd::Interface::Network::Dhcpserver],
-    'DHCPServerStaticLease'           => Optional[Variant[
-        Systemd::Interface::Network::Dhcpserverstaticlease,
-        Array[Systemd::Interface::Network::Dhcpserverstaticlease],
-    ]],
-    'IPv6SendRA'                      => Optional[Systemd::Interface::Network::Ipv6sendra],
-    'IPv6Prefix'                      => Optional[Variant[
-        Systemd::Interface::Network::Ipv6prefix,
-        Array[Systemd::Interface::Network::Ipv6prefix],
-    ]],
-    'IPv6RoutePrefix'                 => Optional[Variant[
-        Systemd::Interface::Network::Ipv6routeprefix,
-        Array[Systemd::Interface::Network::Ipv6routeprefix],
-    ]],
-    'IPv6PREF64Prefix'                => Optional[Variant[
-        Systemd::Interface::Network::Ipv6pref64prefix,
-        Array[Systemd::Interface::Network::Ipv6pref64prefix],
-    ]],
-    'Bridge'                          => Optional[Systemd::Interface::Network::Bridge],
-    'BridgeFDB'                       => Optional[Variant[
-        Systemd::Interface::Network::Bridgefdb,
-        Array[Systemd::Interface::Network::Bridgefdb],
-    ]],
-    'BridgeMDB'                       => Optional[Variant[
-        Systemd::Interface::Network::Bridgemdb,
-        Array[Systemd::Interface::Network::Bridgemdb],
-    ]],
-    'LLDP'                            => Optional[Systemd::Interface::Network::Lldp],
-    'CAN'                             => Optional[Systemd::Interface::Network::Can],
-    'IPoIB'                           => Optional[Systemd::Interface::Network::Ipoib],
-    'QDisc'                           => Optional[Systemd::Interface::Network::Qdisc],
-    'NetworkEmulator'                 => Optional[Systemd::Interface::Network::Networkemulator],
-    'TokenBucketFilter'               => Optional[Systemd::Interface::Network::Tokenbucketfilter],
-    'PIE'                             => Optional[Systemd::Interface::Network::Pie],
-    'FlowQueuePIE'                    => Optional[Systemd::Interface::Network::Flowqueuepie],
-    'StochasticFairBlue'              => Optional[Systemd::Interface::Network::Stochasticfairblue],
-    'StochasticFairnessQueueing'      => Optional[Systemd::Interface::Network::Stochasticfairnessqueueing],
-    'BFIFO'                           => Optional[Systemd::Interface::Network::Bfifo],
-    'PFIFO'                           => Optional[Systemd::Interface::Network::Pfifo],
-    'PFIFOHeadDrop'                   => Optional[Systemd::Interface::Network::Pfifoheaddrop],
-    'PFIFOFast'                       => Optional[Systemd::Interface::Network::Pfifofast],
-    'CAKE'                            => Optional[Systemd::Interface::Network::Cake],
-    'ControlledDelay'                 => Optional[Systemd::Interface::Network::Controlleddelay],
-    'DeficitRoundRobinScheduler'      => Optional[Systemd::Interface::Network::Deficitroundrobinscheduler],
-    'DeficitRoundRobinSchedulerClass' => Optional[Systemd::Interface::Network::Deficitroundrobinschedulerclass],
-    'EnhancedTransmissionSelection'   => Optional[Systemd::Interface::Network::Enhancedtransmissionselection],
-    'GenericRandomEarlyDetection'     => Optional[Systemd::Interface::Network::Genericrandomearlydetection],
-    'FairQueueingControlledDelay'     => Optional[Systemd::Interface::Network::Fairqueueingcontrolleddelay],
-    'FairQueueing'                    => Optional[Systemd::Interface::Network::Fairqueueing],
-    'TrivialLinkEqualizer'            => Optional[Systemd::Interface::Network::Triviallinkequalizer],
-    'HierarchyTokenBucket'            => Optional[Systemd::Interface::Network::Hierarchytokenbucket],
-    'HierarchyTokenBucketClass'       => Optional[Systemd::Interface::Network::Hierarchytokenbucketclass],
-    'HeavyHitterFilter'               => Optional[Systemd::Interface::Network::Heavyhitterfilter],
-    'QuickFairQueueing'               => Optional[Systemd::Interface::Network::Quickfairqueueing],
-    'QuickFairQueueingClass'          => Optional[Systemd::Interface::Network::Quickfairqueueingclass],
-    'BridgeVLAN'                      => Optional[Systemd::Interface::Network::Bridgevlan],
+  'Match'                           => Optional[Systemd::Interface::Network::Match],
+  'Link'                            => Optional[Systemd::Interface::Network::Link],
+  'SR-IOV'                          => Optional[Systemd::Interface::Network::Sr_iov],
+  'Network'                         => Optional[Systemd::Interface::Network::Network],
+  'Address'                         => Optional[Variant[
+    Systemd::Interface::Network::Address,
+    Array[Systemd::Interface::Network::Address],
+  ]],
+  'Neighbor'                        => Optional[Variant[
+    Systemd::Interface::Network::Neighbor,
+    Array[Systemd::Interface::Network::Neighbor],
+  ]],
+  'IPv6AddressLabel'                => Optional[Systemd::Interface::Network::Ipv6addresslabel],
+  'RoutingPolicyRule'               => Optional[Variant[
+    Systemd::Interface::Network::Routingpolicyrule,
+    Array[Systemd::Interface::Network::Routingpolicyrule],
+  ]],
+  'NextHop'                         => Optional[Variant[
+    Systemd::Interface::Network::Nexthop,
+    Array[Systemd::Interface::Network::Nexthop],
+  ]],
+  'Route'                           => Optional[Variant[
+    Systemd::Interface::Network::Route,
+    Array[Systemd::Interface::Network::Route],
+  ]],
+  'DHCPv4'                          => Optional[Systemd::Interface::Network::Dhcpv4],
+  'DHCPv6'                          => Optional[Systemd::Interface::Network::Dhcpv6],
+  'DHCPPrefixDelegation'            => Optional[Systemd::Interface::Network::Dhcpprefixdelegation],
+  'IPv6AcceptRA'                    => Optional[Systemd::Interface::Network::Ipv6acceptra],
+  'DHCPServer'                      => Optional[Systemd::Interface::Network::Dhcpserver],
+  'DHCPServerStaticLease'           => Optional[Variant[
+    Systemd::Interface::Network::Dhcpserverstaticlease,
+    Array[Systemd::Interface::Network::Dhcpserverstaticlease],
+  ]],
+  'IPv6SendRA'                      => Optional[Systemd::Interface::Network::Ipv6sendra],
+  'IPv6Prefix'                      => Optional[Variant[
+    Systemd::Interface::Network::Ipv6prefix,
+    Array[Systemd::Interface::Network::Ipv6prefix],
+  ]],
+  'IPv6RoutePrefix'                 => Optional[Variant[
+    Systemd::Interface::Network::Ipv6routeprefix,
+    Array[Systemd::Interface::Network::Ipv6routeprefix],
+  ]],
+  'IPv6PREF64Prefix'                => Optional[Variant[
+    Systemd::Interface::Network::Ipv6pref64prefix,
+    Array[Systemd::Interface::Network::Ipv6pref64prefix],
+  ]],
+  'Bridge'                          => Optional[Systemd::Interface::Network::Bridge],
+  'BridgeFDB'                       => Optional[Variant[
+    Systemd::Interface::Network::Bridgefdb,
+    Array[Systemd::Interface::Network::Bridgefdb],
+  ]],
+  'BridgeMDB'                       => Optional[Variant[
+    Systemd::Interface::Network::Bridgemdb,
+    Array[Systemd::Interface::Network::Bridgemdb],
+  ]],
+  'LLDP'                            => Optional[Systemd::Interface::Network::Lldp],
+  'CAN'                             => Optional[Systemd::Interface::Network::Can],
+  'IPoIB'                           => Optional[Systemd::Interface::Network::Ipoib],
+  'QDisc'                           => Optional[Systemd::Interface::Network::Qdisc],
+  'NetworkEmulator'                 => Optional[Systemd::Interface::Network::Networkemulator],
+  'TokenBucketFilter'               => Optional[Systemd::Interface::Network::Tokenbucketfilter],
+  'PIE'                             => Optional[Systemd::Interface::Network::Pie],
+  'FlowQueuePIE'                    => Optional[Systemd::Interface::Network::Flowqueuepie],
+  'StochasticFairBlue'              => Optional[Systemd::Interface::Network::Stochasticfairblue],
+  'StochasticFairnessQueueing'      => Optional[Systemd::Interface::Network::Stochasticfairnessqueueing],
+  'BFIFO'                           => Optional[Systemd::Interface::Network::Bfifo],
+  'PFIFO'                           => Optional[Systemd::Interface::Network::Pfifo],
+  'PFIFOHeadDrop'                   => Optional[Systemd::Interface::Network::Pfifoheaddrop],
+  'PFIFOFast'                       => Optional[Systemd::Interface::Network::Pfifofast],
+  'CAKE'                            => Optional[Systemd::Interface::Network::Cake],
+  'ControlledDelay'                 => Optional[Systemd::Interface::Network::Controlleddelay],
+  'DeficitRoundRobinScheduler'      => Optional[Systemd::Interface::Network::Deficitroundrobinscheduler],
+  'DeficitRoundRobinSchedulerClass' => Optional[Systemd::Interface::Network::Deficitroundrobinschedulerclass],
+  'EnhancedTransmissionSelection'   => Optional[Systemd::Interface::Network::Enhancedtransmissionselection],
+  'GenericRandomEarlyDetection'     => Optional[Systemd::Interface::Network::Genericrandomearlydetection],
+  'FairQueueingControlledDelay'     => Optional[Systemd::Interface::Network::Fairqueueingcontrolleddelay],
+  'FairQueueing'                    => Optional[Systemd::Interface::Network::Fairqueueing],
+  'TrivialLinkEqualizer'            => Optional[Systemd::Interface::Network::Triviallinkequalizer],
+  'HierarchyTokenBucket'            => Optional[Systemd::Interface::Network::Hierarchytokenbucket],
+  'HierarchyTokenBucketClass'       => Optional[Systemd::Interface::Network::Hierarchytokenbucketclass],
+  'HeavyHitterFilter'               => Optional[Systemd::Interface::Network::Heavyhitterfilter],
+  'QuickFairQueueing'               => Optional[Systemd::Interface::Network::Quickfairqueueing],
+  'QuickFairQueueingClass'          => Optional[Systemd::Interface::Network::Quickfairqueueingclass],
+  'BridgeVLAN'                      => Optional[Systemd::Interface::Network::Bridgevlan],
 }]
 ```
 
@@ -4001,20 +4001,20 @@ Alias of
 
 ```puppet
 Struct[{
-    'Address'                   => String[1],
-    'Peer'                      => Optional[String[1]],
-    'Broadcast'                 => Optional[String[1]],
-    'Label'                     => Optional[String[1,15]],
-    'PreferredLifetime'         => Optional[Enum['forever', 'infinity', '0']],
-    'Scope'                     => Optional[Variant[Enum['global', 'link', 'host'],Integer[0,255]]],
-    'RouteMetric'               => Optional[Integer[0,4294967295]],
-    'HomeAddress'               => Optional[Enum['yes', 'no']],
-    'DuplicateAddressDetection' => Optional[Enum['ipv4', 'ipv6', 'both', 'none']],
-    'ManageTemporaryAddress'    => Optional[Enum['yes', 'no']],
-    'AddPrefixRoute'            => Optional[Enum['yes', 'no']],
-    'AutoJoin'                  => Optional[Enum['yes', 'no']],
-    'NetLabel'                  => Optional[String[1]],
-    'NFTSet'                    => Optional[String[1]],
+  'Address'                   => String[1],
+  'Peer'                      => Optional[String[1]],
+  'Broadcast'                 => Optional[String[1]],
+  'Label'                     => Optional[String[1,15]],
+  'PreferredLifetime'         => Optional[Enum['forever', 'infinity', '0']],
+  'Scope'                     => Optional[Variant[Enum['global', 'link', 'host'],Integer[0,255]]],
+  'RouteMetric'               => Optional[Integer[0,4294967295]],
+  'HomeAddress'               => Optional[Enum['yes', 'no']],
+  'DuplicateAddressDetection' => Optional[Enum['ipv4', 'ipv6', 'both', 'none']],
+  'ManageTemporaryAddress'    => Optional[Enum['yes', 'no']],
+  'AddPrefixRoute'            => Optional[Enum['yes', 'no']],
+  'AutoJoin'                  => Optional[Enum['yes', 'no']],
+  'NetLabel'                  => Optional[String[1]],
+  'NFTSet'                    => Optional[String[1]],
 }]
 ```
 
@@ -4029,9 +4029,9 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'     => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Handle'     => Optional[String[1]],
-    'LimitBytes' => Optional[String[1]],
+  'Parent'     => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Handle'     => Optional[String[1]],
+  'LimitBytes' => Optional[String[1]],
 }]
 ```
 
@@ -4046,21 +4046,21 @@ Alias of
 
 ```puppet
 Struct[{
-    'UnicastFlood'        => Optional[Enum['yes', 'no']],
-    'MulticastFlood'      => Optional[Enum['yes', 'no']],
-    'MulticastToUnicast'  => Optional[Enum['yes', 'no']],
-    'NeighborSuppression' => Optional[Enum['yes', 'no']],
-    'Learning'            => Optional[Enum['yes', 'no']],
-    'HairPin'             => Optional[Enum['yes', 'no']],
-    'Isolated'            => Optional[Enum['yes', 'no']],
-    'UseBPDU'             => Optional[Enum['yes', 'no']],
-    'FastLeave'           => Optional[Enum['yes', 'no']],
-    'AllowPortToBeRoot'   => Optional[Enum['yes', 'no']],
-    'ProxyARP'            => Optional[Enum['yes', 'no']],
-    'ProxyARPWiFi'        => Optional[Enum['yes', 'no']],
-    'MulticastRouter'     => Optional[Enum['no', 'query', 'permanent', 'temporary']],
-    'Cost'                => Optional[Integer[1, 65535]],
-    'Priority'            => Optional[Integer[0,63]],
+  'UnicastFlood'        => Optional[Enum['yes', 'no']],
+  'MulticastFlood'      => Optional[Enum['yes', 'no']],
+  'MulticastToUnicast'  => Optional[Enum['yes', 'no']],
+  'NeighborSuppression' => Optional[Enum['yes', 'no']],
+  'Learning'            => Optional[Enum['yes', 'no']],
+  'HairPin'             => Optional[Enum['yes', 'no']],
+  'Isolated'            => Optional[Enum['yes', 'no']],
+  'UseBPDU'             => Optional[Enum['yes', 'no']],
+  'FastLeave'           => Optional[Enum['yes', 'no']],
+  'AllowPortToBeRoot'   => Optional[Enum['yes', 'no']],
+  'ProxyARP'            => Optional[Enum['yes', 'no']],
+  'ProxyARPWiFi'        => Optional[Enum['yes', 'no']],
+  'MulticastRouter'     => Optional[Enum['no', 'query', 'permanent', 'temporary']],
+  'Cost'                => Optional[Integer[1, 65535]],
+  'Priority'            => Optional[Integer[0,63]],
 }]
 ```
 
@@ -4075,12 +4075,12 @@ Alias of
 
 ```puppet
 Struct[{
-    'MACAddress'        => String[1],
-    'Destination'       => Optional[String[1]],
-    'VLANId'            => Optional[String[1]],
-    'VNI'               => Optional[Integer[1, 16777215]],
-    'AssociatedWith'    => Optional[Enum['use', 'self', 'master', 'router']],
-    'OutgoingInterface' => Optional[String[1]],
+  'MACAddress'        => String[1],
+  'Destination'       => Optional[String[1]],
+  'VLANId'            => Optional[String[1]],
+  'VNI'               => Optional[Integer[1, 16777215]],
+  'AssociatedWith'    => Optional[Enum['use', 'self', 'master', 'router']],
+  'OutgoingInterface' => Optional[String[1]],
 }]
 ```
 
@@ -4095,8 +4095,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'MulticastGroupAddress' => Optional[String[1]],
-    'VLANID'                => Optional[Integer[0,4094]],
+  'MulticastGroupAddress' => Optional[String[1]],
+  'VLANID'                => Optional[Integer[0,4094]],
 }]
 ```
 
@@ -4111,9 +4111,9 @@ Alias of
 
 ```puppet
 Struct[{
-    'VLAN'           => Optional[Variant[String[1], Array[String[1]]]],
-    'EgressUntagged' => Optional[Variant[String[1], Array[String[1]]]],
-    'PVID'           => Optional[Variant[Enum['no','false'],Integer[1]]],
+  'VLAN'           => Optional[Variant[String[1], Array[String[1]]]],
+  'EgressUntagged' => Optional[Variant[String[1], Array[String[1]]]],
+  'PVID'           => Optional[Variant[Enum['no','false'],Integer[1]]],
 }]
 ```
 
@@ -4128,21 +4128,21 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'                 => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Bandwidth'              => Optional[String[1]],
-    'AutoRateIngress'        => Optional[Enum['yes','no']],
-    'OverheadBytes'          => Optional[Integer[-64,256]],
-    'MPUBytes'               => Optional[Integer[1,256]],
-    'CompensationMode'       => Optional[Enum['none', 'atm', 'ptm']],
-    'UseRawPacketSize'       => Optional[Enum['yes','no']],
-    'FlowIsolationMode'      => Optional[Enum['none','src-host', 'dst-host', 'hosts', 'flows','dual-src-host', 'dual-dst-host', 'triple']],
-    'NAT'                    => Optional[Enum['yes','no']],
-    'PriorityQueueingPreset' => Optional[Enum['besteffort','precedence', 'diffserv8', 'diffserv4', 'diffserv3']],
-    'FirewallMark'           => Optional[Integer[1,4294967295]],
-    'Wash'                   => Optional[Enum['yes','no']],
-    'SplitGSO'               => Optional[Enum['yes','no']],
-    'RTTSec'                 => Optional[String[1]],
-    'AckFilter'              => Optional[Enum['yes','no']],
+  'Parent'                 => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Bandwidth'              => Optional[String[1]],
+  'AutoRateIngress'        => Optional[Enum['yes','no']],
+  'OverheadBytes'          => Optional[Integer[-64,256]],
+  'MPUBytes'               => Optional[Integer[1,256]],
+  'CompensationMode'       => Optional[Enum['none', 'atm', 'ptm']],
+  'UseRawPacketSize'       => Optional[Enum['yes','no']],
+  'FlowIsolationMode'      => Optional[Enum['none','src-host', 'dst-host', 'hosts', 'flows','dual-src-host', 'dual-dst-host', 'triple']],
+  'NAT'                    => Optional[Enum['yes','no']],
+  'PriorityQueueingPreset' => Optional[Enum['besteffort','precedence', 'diffserv8', 'diffserv4', 'diffserv3']],
+  'FirewallMark'           => Optional[Integer[1,4294967295]],
+  'Wash'                   => Optional[Enum['yes','no']],
+  'SplitGSO'               => Optional[Enum['yes','no']],
+  'RTTSec'                 => Optional[String[1]],
+  'AckFilter'              => Optional[Enum['yes','no']],
 }]
 ```
 
@@ -4157,31 +4157,31 @@ Alias of
 
 ```puppet
 Struct[{
-    'BitRate'                 => Optional[String[1]],
-    'SamplePoint'             => Optional[String[1]],
-    'TimeQuantaNSec'          => Optional[String[1]],
-    'PropagationSegment'      => Optional[Integer[0,4294967295]],
-    'PhaseBufferSegment1'     => Optional[Integer[0,4294967295]],
-    'PhaseBufferSegment2'     => Optional[Integer[0,4294967295]],
-    'SyncJumpWidth'           => Optional[Integer[0,4294967295]],
-    'DataBitRate'             => Optional[String[1]],
-    'DataSamplePoint'         => Optional[String[1]],
-    'DataTimeQuantaNSec'      => Optional[String[1]],
-    'DataPropagationSegment'  => Optional[String[1]],
-    'DataPhaseBufferSegment1' => Optional[String[1]],
-    'DataPhaseBufferSegment2' => Optional[String[1]],
-    'DataSyncJumpWidth'       => Optional[String[1]],
-    'FDMode'                  => Optional[Enum['yes','no']],
-    'FDNonISO'                => Optional[Enum['yes','no']],
-    'RestartSec'              => Optional[String[1]],
-    'Termination'             => Optional[Enum['yes','no']],
-    'TripleSampling'          => Optional[Enum['yes','no']],
-    'BusErrorReporting'       => Optional[Enum['yes','no']],
-    'ListenOnly'              => Optional[Enum['yes','no']],
-    'Loopback'                => Optional[Enum['yes','no']],
-    'OneShot'                 => Optional[Enum['yes','no']],
-    'PresumeAck'              => Optional[Enum['yes','no']],
-    'ClassicDataLengthCode'   => Optional[Enum['yes','no']],
+  'BitRate'                 => Optional[String[1]],
+  'SamplePoint'             => Optional[String[1]],
+  'TimeQuantaNSec'          => Optional[String[1]],
+  'PropagationSegment'      => Optional[Integer[0,4294967295]],
+  'PhaseBufferSegment1'     => Optional[Integer[0,4294967295]],
+  'PhaseBufferSegment2'     => Optional[Integer[0,4294967295]],
+  'SyncJumpWidth'           => Optional[Integer[0,4294967295]],
+  'DataBitRate'             => Optional[String[1]],
+  'DataSamplePoint'         => Optional[String[1]],
+  'DataTimeQuantaNSec'      => Optional[String[1]],
+  'DataPropagationSegment'  => Optional[String[1]],
+  'DataPhaseBufferSegment1' => Optional[String[1]],
+  'DataPhaseBufferSegment2' => Optional[String[1]],
+  'DataSyncJumpWidth'       => Optional[String[1]],
+  'FDMode'                  => Optional[Enum['yes','no']],
+  'FDNonISO'                => Optional[Enum['yes','no']],
+  'RestartSec'              => Optional[String[1]],
+  'Termination'             => Optional[Enum['yes','no']],
+  'TripleSampling'          => Optional[Enum['yes','no']],
+  'BusErrorReporting'       => Optional[Enum['yes','no']],
+  'ListenOnly'              => Optional[Enum['yes','no']],
+  'Loopback'                => Optional[Enum['yes','no']],
+  'OneShot'                 => Optional[Enum['yes','no']],
+  'PresumeAck'              => Optional[Enum['yes','no']],
+  'ClassicDataLengthCode'   => Optional[Enum['yes','no']],
 }]
 ```
 
@@ -4196,12 +4196,12 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'         => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Handle'         => Optional[String[1]],
-    'PacketLimit'    => Optional[Integer[0,4294967294]],
-    'TargetSec'      => Optional[String[1]],
-    'IntervalSec'    => Optional[String[1]],
-    'CEThresholdSec' => Optional[String[1]],
+  'Parent'         => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Handle'         => Optional[String[1]],
+  'PacketLimit'    => Optional[Integer[0,4294967294]],
+  'TargetSec'      => Optional[String[1]],
+  'IntervalSec'    => Optional[String[1]],
+  'CEThresholdSec' => Optional[String[1]],
 }]
 ```
 
@@ -4216,8 +4216,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Handle'      => Optional[String[1]],
+  'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Handle'      => Optional[String[1]],
 }]
 ```
 
@@ -4232,9 +4232,9 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'       => Optional[Variant[Enum['root'], String[1]]],
-    'ClassId'      => Optional[String[1]],
-    'QuantumBytes' => Optional[String[1]],
+  'Parent'       => Optional[Variant[Enum['root'], String[1]]],
+  'ClassId'      => Optional[String[1]],
+  'QuantumBytes' => Optional[String[1]],
 }]
 ```
 
@@ -4249,15 +4249,15 @@ Alias of
 
 ```puppet
 Struct[{
-    'UplinkInterface'        => Optional[String[1]],
-    'SubnetId'               => Optional[String[1]],
-    'Announce'               => Optional[Enum['yes','no']],
-    'Assign'                 => Optional[Enum['yes','no']],
-    'Token'                  => Optional[String[1]],
-    'ManageTemporaryAddress' => Optional[Enum['yes', 'no']],
-    'RouteMetric'            => Optional[Integer[0,4294967295]],
-    'NetLabel'               => Optional[String[1]],
-    'NFTSet'                 => Optional[String[1]],
+  'UplinkInterface'        => Optional[String[1]],
+  'SubnetId'               => Optional[String[1]],
+  'Announce'               => Optional[Enum['yes','no']],
+  'Assign'                 => Optional[Enum['yes','no']],
+  'Token'                  => Optional[String[1]],
+  'ManageTemporaryAddress' => Optional[Enum['yes', 'no']],
+  'RouteMetric'            => Optional[Integer[0,4294967295]],
+  'NetLabel'               => Optional[String[1]],
+  'NFTSet'                 => Optional[String[1]],
 }]
 ```
 
@@ -4272,40 +4272,40 @@ Alias of
 
 ```puppet
 Struct[{
-    'ServerAddress'        => Optional[String[1]],
-    'PoolOffset'           => Optional[String[1]],
-    'PoolSize'             => Optional[String[1]],
-    'DefaultLeaseTimeSec'  => Optional[String[1]],
-    'MaxLeaseTimeSec'      => Optional[String[1]],
-    'UplinkInterface'      => Optional[String[1]],
-    'EmitDNS'              => Optional[Enum['yes','no']],
-    'DNS'                  => Optional[String[1]],
-    'EmitNTP'              => Optional[Enum['yes','no']],
-    'NTP'                  => Optional[String[1]],
-    'EmitSIP'              => Optional[Enum['yes','no']],
-    'SIP'                  => Optional[String[1]],
-    'EmitPOP3'             => Optional[Enum['yes','no']],
-    'POP3'                 => Optional[String[1]],
-    'EmitSMTP'             => Optional[Enum['yes','no']],
-    'SMTP'                 => Optional[String[1]],
-    'EmitLPR'              => Optional[Enum['yes','no']],
-    'LPR'                  => Optional[String[1]],
-    'EmitRouter'           => Optional[Enum['yes','no']],
-    'Router'               => Optional[String[1]],
-    'EmitTimezone'         => Optional[Enum['yes','no']],
-    'Timezone'             => Optional[String[1]],
-    'BootServerAddress'    => Optional[String[1]],
-    'BootServerName'       => Optional[String[1]],
-    'BootFilename'         => Optional[String[1]],
-    'IPv6OnlyPreferredSec' => Optional[String[1]],
-    'SendOption'           => Optional[String[1]],
-    'SendVendorOption'     => Optional[String[1]],
-    'BindToInterface'      => Optional[Enum['yes','no']],
-    'RelayTarget'          => Optional[String[1]],
-    'RelayAgentCircuitId'  => Optional[String[1]],
-    'RelayAgentRemoteId'   => Optional[String[1]],
-    'RapidCommit'          => Optional[Enum['yes','no']],
-    'PersistLeases'        => Optional[Enum['yes','no']],
+  'ServerAddress'        => Optional[String[1]],
+  'PoolOffset'           => Optional[String[1]],
+  'PoolSize'             => Optional[String[1]],
+  'DefaultLeaseTimeSec'  => Optional[String[1]],
+  'MaxLeaseTimeSec'      => Optional[String[1]],
+  'UplinkInterface'      => Optional[String[1]],
+  'EmitDNS'              => Optional[Enum['yes','no']],
+  'DNS'                  => Optional[String[1]],
+  'EmitNTP'              => Optional[Enum['yes','no']],
+  'NTP'                  => Optional[String[1]],
+  'EmitSIP'              => Optional[Enum['yes','no']],
+  'SIP'                  => Optional[String[1]],
+  'EmitPOP3'             => Optional[Enum['yes','no']],
+  'POP3'                 => Optional[String[1]],
+  'EmitSMTP'             => Optional[Enum['yes','no']],
+  'SMTP'                 => Optional[String[1]],
+  'EmitLPR'              => Optional[Enum['yes','no']],
+  'LPR'                  => Optional[String[1]],
+  'EmitRouter'           => Optional[Enum['yes','no']],
+  'Router'               => Optional[String[1]],
+  'EmitTimezone'         => Optional[Enum['yes','no']],
+  'Timezone'             => Optional[String[1]],
+  'BootServerAddress'    => Optional[String[1]],
+  'BootServerName'       => Optional[String[1]],
+  'BootFilename'         => Optional[String[1]],
+  'IPv6OnlyPreferredSec' => Optional[String[1]],
+  'SendOption'           => Optional[String[1]],
+  'SendVendorOption'     => Optional[String[1]],
+  'BindToInterface'      => Optional[Enum['yes','no']],
+  'RelayTarget'          => Optional[String[1]],
+  'RelayAgentCircuitId'  => Optional[String[1]],
+  'RelayAgentRemoteId'   => Optional[String[1]],
+  'RapidCommit'          => Optional[Enum['yes','no']],
+  'PersistLeases'        => Optional[Enum['yes','no']],
 }]
 ```
 
@@ -4320,8 +4320,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'MACAddress' => String[1],
-    'Address'    => String[1],
+  'MACAddress' => String[1],
+  'Address'    => String[1],
 }]
 ```
 
@@ -4336,55 +4336,55 @@ Alias of
 
 ```puppet
 Struct[{
-    'RequestAddress'                 => Optional[String[1]],
-    'SendHostname'                   => Optional[Enum['yes','no']],
-    'Hostname'                       => Optional[String[1]],
-    'MUDURL'                         => Optional[String[1]],
-    'ClientIdentifier'               => Optional[String[1]],
-    'VendorClassIdentifier'          => Optional[String[1]],
-    'UserClass'                      => Optional[String[1]],
-    'DUIDType'                       => Optional[String[1]],
-    'DUIDRawData'                    => Optional[String[1]],
-    'IAID'                           => Optional[String[1]],
-    'RapidCommit'                    => Optional[Enum['yes','no']],
-    'Anonymize'                      => Optional[Enum['yes','no']],
-    'RequestOptions'                 => Optional[String[1]],
-    'SendOption'                     => Optional[String[1]],
-    'SendVendorOption'               => Optional[String[1]],
-    'IPServiceType'                  => Optional[Enum['none','CS6', 'CS3']],
-    'SocketPriority'                 => Optional[Integer[0,6]],
-    'Label'                          => Optional[String[1]],
-    'UseDNS'                         => Optional[Enum['yes','no']],
-    'RoutesToDNS'                    => Optional[Enum['yes','no']],
-    'UseNTP'                         => Optional[Enum['yes','no']],
-    'RoutesToNTP'                    => Optional[Enum['yes','no']],
-    'UseSIP'                         => Optional[Enum['yes','no']],
-    'UseCaptivePortal'               => Optional[Enum['yes','no']],
-    'UseMTU'                         => Optional[Enum['yes','no']],
-    'UseHostname'                    => Optional[Enum['yes','no']],
-    'UseDomains'                     => Optional[Enum['yes','no']],
-    'UseRoutes'                      => Optional[Enum['yes','no']],
-    'RouteMetric'                    => Optional[Integer[0,4294967295]],
-    'RouteTable'                     => Optional[Variant[String[1],Integer[0,4294967295]]],
-    'RouteMTUBytes'                  => Optional[String[1]],
-    'QuickAck'                       => Optional[Enum['yes','no']],
-    'InitialCongestionWindow'        => Optional[String[1]],
-    'InitialAdvertisedReceiveWindow' => Optional[String[1]],
-    'UseGateway'                     => Optional[Enum['yes','no']],
-    'UseTimezone'                    => Optional[Enum['yes','no']],
-    'Use6RD'                         => Optional[Enum['yes','no']],
-    'IPv6OnlyMode'                   => Optional[Enum['yes','no']],
-    'FallbackLeaseLifetimeSec'       => Optional[Enum['forever', 'infinity']],
-    'RequestBroadcast'               => Optional[Enum['yes','no']],
-    'MaxAttempts'                    => Optional[Variant[Integer[0],Enum['forever', 'infinity']]],
-    'ListenPort'                     => Optional[String[1]],
-    'ServerPort'                     => Optional[String[1]],
-    'DenyList'                       => Optional[String[1]],
-    'AllowList'                      => Optional[String[1]],
-    'SendRelease'                    => Optional[Enum['yes','no']],
-    'SendDecline'                    => Optional[Enum['yes','no']],
-    'NetLabel'                       => Optional[String[1]],
-    'NFTSet'                         => Optional[String[1]],
+  'RequestAddress'                 => Optional[String[1]],
+  'SendHostname'                   => Optional[Enum['yes','no']],
+  'Hostname'                       => Optional[String[1]],
+  'MUDURL'                         => Optional[String[1]],
+  'ClientIdentifier'               => Optional[String[1]],
+  'VendorClassIdentifier'          => Optional[String[1]],
+  'UserClass'                      => Optional[String[1]],
+  'DUIDType'                       => Optional[String[1]],
+  'DUIDRawData'                    => Optional[String[1]],
+  'IAID'                           => Optional[String[1]],
+  'RapidCommit'                    => Optional[Enum['yes','no']],
+  'Anonymize'                      => Optional[Enum['yes','no']],
+  'RequestOptions'                 => Optional[String[1]],
+  'SendOption'                     => Optional[String[1]],
+  'SendVendorOption'               => Optional[String[1]],
+  'IPServiceType'                  => Optional[Enum['none','CS6', 'CS3']],
+  'SocketPriority'                 => Optional[Integer[0,6]],
+  'Label'                          => Optional[String[1]],
+  'UseDNS'                         => Optional[Enum['yes','no']],
+  'RoutesToDNS'                    => Optional[Enum['yes','no']],
+  'UseNTP'                         => Optional[Enum['yes','no']],
+  'RoutesToNTP'                    => Optional[Enum['yes','no']],
+  'UseSIP'                         => Optional[Enum['yes','no']],
+  'UseCaptivePortal'               => Optional[Enum['yes','no']],
+  'UseMTU'                         => Optional[Enum['yes','no']],
+  'UseHostname'                    => Optional[Enum['yes','no']],
+  'UseDomains'                     => Optional[Enum['yes','no']],
+  'UseRoutes'                      => Optional[Enum['yes','no']],
+  'RouteMetric'                    => Optional[Integer[0,4294967295]],
+  'RouteTable'                     => Optional[Variant[String[1],Integer[0,4294967295]]],
+  'RouteMTUBytes'                  => Optional[String[1]],
+  'QuickAck'                       => Optional[Enum['yes','no']],
+  'InitialCongestionWindow'        => Optional[String[1]],
+  'InitialAdvertisedReceiveWindow' => Optional[String[1]],
+  'UseGateway'                     => Optional[Enum['yes','no']],
+  'UseTimezone'                    => Optional[Enum['yes','no']],
+  'Use6RD'                         => Optional[Enum['yes','no']],
+  'IPv6OnlyMode'                   => Optional[Enum['yes','no']],
+  'FallbackLeaseLifetimeSec'       => Optional[Enum['forever', 'infinity']],
+  'RequestBroadcast'               => Optional[Enum['yes','no']],
+  'MaxAttempts'                    => Optional[Variant[Integer[0],Enum['forever', 'infinity']]],
+  'ListenPort'                     => Optional[String[1]],
+  'ServerPort'                     => Optional[String[1]],
+  'DenyList'                       => Optional[String[1]],
+  'AllowList'                      => Optional[String[1]],
+  'SendRelease'                    => Optional[Enum['yes','no']],
+  'SendDecline'                    => Optional[Enum['yes','no']],
+  'NetLabel'                       => Optional[String[1]],
+  'NFTSet'                         => Optional[String[1]],
 }]
 ```
 
@@ -4399,30 +4399,30 @@ Alias of
 
 ```puppet
 Struct[{
-    'MUDURL'                         => Optional[String[1]],
-    'IAID'                           => Optional[String[1]],
-    'DUIDType'                       => Optional[String[1]],
-    'DUIDRawData'                    => Optional[String[1]],
-    'RequestOptions'                 => Optional[String[1]],
-    'SendOption'                     => Optional[Integer[1,65536]],
-    'SendVendorOption'               => Optional[String[1]],
-    'UserClass'                      => Optional[String[1]],
-    'VendorClass'                    => Optional[String[1]],
-    'PrefixDelegationHint'           => Optional[String[1]],
-    'RapidCommit'                    => Optional[Enum['yes','no']],
-    'SendHostname'                   => Optional[Enum['yes','no']],
-    'Hostname'                       => Optional[String[1]],
-    'UseAddress'                     => Optional[Enum['yes','no']],
-    'UseCaptivePortal'               => Optional[Enum['yes','no']],
-    'UseDelegatedPrefix'             => Optional[Enum['yes','no']],
-    'UseDNS'                         => Optional[Enum['yes','no']],
-    'UseNTP'                         => Optional[Enum['yes','no']],
-    'UseHostname'                    => Optional[Enum['yes','no']],
-    'UseDomains'                     => Optional[Enum['yes','no']],
-    'NetLabel'                       => Optional[Enum['yes','no']],
-    'SendRelease'                    => Optional[Enum['yes','no']],
-    'NFTSet'                         => Optional[String[1]],
-    'WithoutRA'                      => Optional[Enum['no', 'solicit', 'information-request']],
+  'MUDURL'                         => Optional[String[1]],
+  'IAID'                           => Optional[String[1]],
+  'DUIDType'                       => Optional[String[1]],
+  'DUIDRawData'                    => Optional[String[1]],
+  'RequestOptions'                 => Optional[String[1]],
+  'SendOption'                     => Optional[Integer[1,65536]],
+  'SendVendorOption'               => Optional[String[1]],
+  'UserClass'                      => Optional[String[1]],
+  'VendorClass'                    => Optional[String[1]],
+  'PrefixDelegationHint'           => Optional[String[1]],
+  'RapidCommit'                    => Optional[Enum['yes','no']],
+  'SendHostname'                   => Optional[Enum['yes','no']],
+  'Hostname'                       => Optional[String[1]],
+  'UseAddress'                     => Optional[Enum['yes','no']],
+  'UseCaptivePortal'               => Optional[Enum['yes','no']],
+  'UseDelegatedPrefix'             => Optional[Enum['yes','no']],
+  'UseDNS'                         => Optional[Enum['yes','no']],
+  'UseNTP'                         => Optional[Enum['yes','no']],
+  'UseHostname'                    => Optional[Enum['yes','no']],
+  'UseDomains'                     => Optional[Enum['yes','no']],
+  'NetLabel'                       => Optional[Enum['yes','no']],
+  'SendRelease'                    => Optional[Enum['yes','no']],
+  'NFTSet'                         => Optional[String[1]],
+  'WithoutRA'                      => Optional[Enum['no', 'solicit', 'information-request']],
 }]
 ```
 
@@ -4437,12 +4437,12 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'       => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Handle'       => Optional[String[1]],
-    'Bands'        => Optional[Integer[1,16]],
-    'StrictBands'  => Optional[Integer[1,16]],
-    'QuantumBytes' => Optional[String[1]],
-    'PriorityMap'  => Optional[String[1]],
+  'Parent'       => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Handle'       => Optional[String[1]],
+  'Bands'        => Optional[Integer[1,16]],
+  'StrictBands'  => Optional[Integer[1,16]],
+  'QuantumBytes' => Optional[String[1]],
+  'PriorityMap'  => Optional[String[1]],
 }]
 ```
 
@@ -4457,17 +4457,17 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'              => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Handle'              => Optional[String[1]],
-    'PacketLimit'         => Optional[Integer[0,4294967294]],
-    'FlowLimit'           => Optional[Integer[1]],
-    'QuantumBytes'        => Optional[String[1]],
-    'InitialQuantumBytes' => Optional[String[1]],
-    'MaximumRate'         => Optional[String[1]],
-    'Buckets'             => Optional[String[1]],
-    'OrphanMask'          => Optional[Integer[0]],
-    'Pacing'              => Optional[Enum['yes','no']],
-    'CEThresholdSec'      => Optional[String[1]],
+  'Parent'              => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Handle'              => Optional[String[1]],
+  'PacketLimit'         => Optional[Integer[0,4294967294]],
+  'FlowLimit'           => Optional[Integer[1]],
+  'QuantumBytes'        => Optional[String[1]],
+  'InitialQuantumBytes' => Optional[String[1]],
+  'MaximumRate'         => Optional[String[1]],
+  'Buckets'             => Optional[String[1]],
+  'OrphanMask'          => Optional[Integer[0]],
+  'Pacing'              => Optional[Enum['yes','no']],
+  'CEThresholdSec'      => Optional[String[1]],
 }]
 ```
 
@@ -4482,16 +4482,16 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'           => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Handle'           => Optional[String[1]],
-    'PacketLimit'      => Optional[Integer[0,4294967294]],
-    'MemoryLimitBytes' => Optional[String[1]],
-    'Flows'            => Optional[String[1]],
-    'TargetSec'        => Optional[String[1]],
-    'IntervalSec'      => Optional[String[1]],
-    'QuantumBytes'     => Optional[String[1]],
-    'ECN'              => Optional[Enum['yes','no']],
-    'CEThresholdSec'   => Optional[String[1]],
+  'Parent'           => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Handle'           => Optional[String[1]],
+  'PacketLimit'      => Optional[Integer[0,4294967294]],
+  'MemoryLimitBytes' => Optional[String[1]],
+  'Flows'            => Optional[String[1]],
+  'TargetSec'        => Optional[String[1]],
+  'IntervalSec'      => Optional[String[1]],
+  'QuantumBytes'     => Optional[String[1]],
+  'ECN'              => Optional[Enum['yes','no']],
+  'CEThresholdSec'   => Optional[String[1]],
 }]
 ```
 
@@ -4506,9 +4506,9 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Handle'      => Optional[String[1]],
-    'PacketLimit' => Optional[Integer[1,4294967294]],
+  'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Handle'      => Optional[String[1]],
+  'PacketLimit' => Optional[Integer[1,4294967294]],
 }]
 ```
 
@@ -4523,11 +4523,11 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'               => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Handle'               => Optional[String[1]],
-    'VirtualQueues'        => Optional[Integer[1,16]],
-    'DefaultVirtualQueues' => Optional[Integer[1,16]],
-    'GenericRIO'           => Optional[Enum['yes','no']],
+  'Parent'               => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Handle'               => Optional[String[1]],
+  'VirtualQueues'        => Optional[Integer[1,16]],
+  'DefaultVirtualQueues' => Optional[Integer[1,16]],
+  'GenericRIO'           => Optional[Enum['yes','no']],
 }]
 ```
 
@@ -4542,9 +4542,9 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Handle'      => Optional[String[1]],
-    'PacketLimit' => Optional[Integer[0,4294967294]]
+  'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Handle'      => Optional[String[1]],
+  'PacketLimit' => Optional[Integer[0,4294967294]]
 }]
 ```
 
@@ -4559,10 +4559,10 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'        => Optional[Variant[Enum['root','clsact','ingress'], String[1]]],
-    'Handle'        => Optional[String[1]],
-    'DefaultClass'  => Optional[String[1]],
-    'RateToQuantum' => Optional[String[1]],
+  'Parent'        => Optional[Variant[Enum['root','clsact','ingress'], String[1]]],
+  'Handle'        => Optional[String[1]],
+  'DefaultClass'  => Optional[String[1]],
+  'RateToQuantum' => Optional[String[1]],
 }]
 ```
 
@@ -4577,16 +4577,16 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'          => Optional[Variant[Enum['root'], String[1]]],
-    'ClassId'         => Optional[String[1]],
-    'Priority'        => Optional[String[1]],
-    'QuantumBytes'    => Optional[String[1]],
-    'MTUBytes'        => Optional[String[1]],
-    'OverheadBytes'   => Optional[String[1]],
-    'Rate'            => Optional[String[1]],
-    'CeilRate'        => Optional[String[1]],
-    'BufferBytes'     => Optional[String[1]],
-    'CeilBufferBytes' => Optional[String[1]],
+  'Parent'          => Optional[Variant[Enum['root'], String[1]]],
+  'ClassId'         => Optional[String[1]],
+  'Priority'        => Optional[String[1]],
+  'QuantumBytes'    => Optional[String[1]],
+  'MTUBytes'        => Optional[String[1]],
+  'OverheadBytes'   => Optional[String[1]],
+  'Rate'            => Optional[String[1]],
+  'CeilRate'        => Optional[String[1]],
+  'BufferBytes'     => Optional[String[1]],
+  'CeilBufferBytes' => Optional[String[1]],
 }]
 ```
 
@@ -4601,8 +4601,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'Mode'                          => Optional[Enum['datagram','connected']],
-    'IgnoreUserspaceMulticastGroup' => Optional[Enum['yes', 'no']],
+  'Mode'                          => Optional[Enum['datagram','connected']],
+  'IgnoreUserspaceMulticastGroup' => Optional[Enum['yes', 'no']],
 }]
 ```
 
@@ -4617,32 +4617,32 @@ Alias of
 
 ```puppet
 Struct[{
-    'UseRedirect'           => Optional[Enum['yes','no']],
-    'Token'                 => Optional[String[1]],
-    'UseDNS'                => Optional[Enum['yes','no']],
-    'UseDomains'            => Optional[Enum['yes','no']],
-    'RouteTable'            => Optional[Variant[String[1],Integer[0,4294967295]]],
-    'RouteMetric'           => Optional[String[1]],
-    'QuickAck'              => Optional[Enum['yes','no']],
-    'UseMTU'                => Optional[Enum['yes','no']],
-    'UseHopLimit'           => Optional[Enum['yes','no']],
-    'UseReachableTime'      => Optional[Enum['yes','no']],
-    'UseRetransmissionTime' => Optional[Enum['yes','no']],
-    'UseGateway'            => Optional[Enum['yes','no']],
-    'UseRoutePrefix'        => Optional[Enum['yes','no']],
-    'UseCaptivePortal'      => Optional[Enum['yes','no']],
-    'UsePREF64'             => Optional[Enum['yes','no']],
-    'UseAutonomousPrefix'   => Optional[Enum['yes','no']],
-    'UseOnLinkPrefix'       => Optional[Enum['yes','no']],
-    'RouterDenyList'        => Optional[String[1]],
-    'RouterAllowList'       => Optional[String[1]],
-    'PrefixDenyList'        => Optional[String[1]],
-    'PrefixAllowList'       => Optional[String[1]],
-    'RouteDenyList'         => Optional[String[1]],
-    'RouteAllowList'        => Optional[String[1]],
-    'DHCPv6Client'          => Optional[Enum['yes','no', 'always']],
-    'NetLabel'              => Optional[String[1]],
-    'NFTSet'                => Optional[String[1]],
+  'UseRedirect'           => Optional[Enum['yes','no']],
+  'Token'                 => Optional[String[1]],
+  'UseDNS'                => Optional[Enum['yes','no']],
+  'UseDomains'            => Optional[Enum['yes','no']],
+  'RouteTable'            => Optional[Variant[String[1],Integer[0,4294967295]]],
+  'RouteMetric'           => Optional[String[1]],
+  'QuickAck'              => Optional[Enum['yes','no']],
+  'UseMTU'                => Optional[Enum['yes','no']],
+  'UseHopLimit'           => Optional[Enum['yes','no']],
+  'UseReachableTime'      => Optional[Enum['yes','no']],
+  'UseRetransmissionTime' => Optional[Enum['yes','no']],
+  'UseGateway'            => Optional[Enum['yes','no']],
+  'UseRoutePrefix'        => Optional[Enum['yes','no']],
+  'UseCaptivePortal'      => Optional[Enum['yes','no']],
+  'UsePREF64'             => Optional[Enum['yes','no']],
+  'UseAutonomousPrefix'   => Optional[Enum['yes','no']],
+  'UseOnLinkPrefix'       => Optional[Enum['yes','no']],
+  'RouterDenyList'        => Optional[String[1]],
+  'RouterAllowList'       => Optional[String[1]],
+  'PrefixDenyList'        => Optional[String[1]],
+  'PrefixAllowList'       => Optional[String[1]],
+  'RouteDenyList'         => Optional[String[1]],
+  'RouteAllowList'        => Optional[String[1]],
+  'DHCPv6Client'          => Optional[Enum['yes','no', 'always']],
+  'NetLabel'              => Optional[String[1]],
+  'NFTSet'                => Optional[String[1]],
 }]
 ```
 
@@ -4657,8 +4657,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'Label'  => Optional[Integer[0,4294967294]],
-    'Prefix' => Optional[String[1]],
+  'Label'  => Optional[Integer[0,4294967294]],
+  'Prefix' => Optional[String[1]],
 }]
 ```
 
@@ -4673,8 +4673,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'Prefix'       => Optional[String[1]],
-    'LifetimeSec' => Optional[String[1]],
+  'Prefix'       => Optional[String[1]],
+  'LifetimeSec' => Optional[String[1]],
 }]
 ```
 
@@ -4689,14 +4689,14 @@ Alias of
 
 ```puppet
 Struct[{
-    'AddressAutoconfiguration' => Optional[Enum['yes','no']],
-    'OnLink'                   => Optional[Enum['yes','no']],
-    'Prefix'                   => Optional[String[1]],
-    'PreferredLifetimeSec'     => Optional[String[1]],
-    'ValidLifetimeSec'         => Optional[String[1]],
-    'Assign'                   => Optional[Enum['yes','no']],
-    'Token'                    => Optional[String[1]],
-    'RouteMetric'              => Optional[Integer[0, 4294967295]],
+  'AddressAutoconfiguration' => Optional[Enum['yes','no']],
+  'OnLink'                   => Optional[Enum['yes','no']],
+  'Prefix'                   => Optional[String[1]],
+  'PreferredLifetimeSec'     => Optional[String[1]],
+  'ValidLifetimeSec'         => Optional[String[1]],
+  'Assign'                   => Optional[Enum['yes','no']],
+  'Token'                    => Optional[String[1]],
+  'RouteMetric'              => Optional[Integer[0, 4294967295]],
 }]
 ```
 
@@ -4711,8 +4711,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'Route'       => Optional[String[1]],
-    'LifetimeSec' => Optional[String[1]],
+  'Route'       => Optional[String[1]],
+  'LifetimeSec' => Optional[String[1]],
 }]
 ```
 
@@ -4727,22 +4727,22 @@ Alias of
 
 ```puppet
 Struct[{
-    'Managed'              => Optional[Enum['yes','no']],
-    'OtherInformation'     => Optional[Enum['yes','no']],
-    'RouterLifetimeSec'    => Optional[String[1]],
-    'ReachableTimeSec'     => Optional[String[1]],
-    'RetransmitSec'        => Optional[String[1]],
-    'RouterPreference'     => Optional[Enum['high', 'medium', 'low', 'normal', 'default']],
-    'HopLimit'             => Optional[Integer[0,255]],
-    'UplinkInterface'      => Optional[String[1]],
-    'EmitDNS'              => Optional[Enum['yes','no']],
-    'DNS'                  => Optional[String[1]],
-    'EmitDomains'          => Optional[Enum['yes','no']],
-    'Domains'              => Optional[String[1]],
-    'DNSLifetimeSec'       => Optional[String[1]],
-    'HomeAgent'            => Optional[Enum['yes','no']],
-    'HomeAgentLifetimeSec' => Optional[String[1]],
-    'HomeAgentPreference'  => Optional[Integer[0,65535]],
+  'Managed'              => Optional[Enum['yes','no']],
+  'OtherInformation'     => Optional[Enum['yes','no']],
+  'RouterLifetimeSec'    => Optional[String[1]],
+  'ReachableTimeSec'     => Optional[String[1]],
+  'RetransmitSec'        => Optional[String[1]],
+  'RouterPreference'     => Optional[Enum['high', 'medium', 'low', 'normal', 'default']],
+  'HopLimit'             => Optional[Integer[0,255]],
+  'UplinkInterface'      => Optional[String[1]],
+  'EmitDNS'              => Optional[Enum['yes','no']],
+  'DNS'                  => Optional[String[1]],
+  'EmitDomains'          => Optional[Enum['yes','no']],
+  'Domains'              => Optional[String[1]],
+  'DNSLifetimeSec'       => Optional[String[1]],
+  'HomeAgent'            => Optional[Enum['yes','no']],
+  'HomeAgentLifetimeSec' => Optional[String[1]],
+  'HomeAgentPreference'  => Optional[Integer[0,65535]],
 }]
 ```
 
@@ -4757,19 +4757,19 @@ Alias of
 
 ```puppet
 Struct[{
-    'MACAddress'              => Optional[String[1]],
-    'MTUBytes'                => Optional[Integer[1280]],
-    'ARP'                     => Optional[Enum['yes','no']],
-    'Multicast'               => Optional[Enum['yes','no']],
-    'AllMulticast'            => Optional[Enum['yes','no']],
-    'Promiscuous'             => Optional[Enum['yes','no']],
-    'Unmanaged'               => Optional[Enum['yes','no']],
-    'Group'                   => Optional[Integer[0,2147483647]],
-    'RequiredForOnline'       => Optional[String[1]],
-    'RequiredFamilyForOnline' => Optional[Enum['no', 'ipv4', 'ipv6', 'both', 'any']],
-    'ActivationPolicy'        => Optional[Enum[
-        'up', 'always-up', 'manual', 'always-down', 'down', 'bound'
-    ]],
+  'MACAddress'              => Optional[String[1]],
+  'MTUBytes'                => Optional[Integer[1280]],
+  'ARP'                     => Optional[Enum['yes','no']],
+  'Multicast'               => Optional[Enum['yes','no']],
+  'AllMulticast'            => Optional[Enum['yes','no']],
+  'Promiscuous'             => Optional[Enum['yes','no']],
+  'Unmanaged'               => Optional[Enum['yes','no']],
+  'Group'                   => Optional[Integer[0,2147483647]],
+  'RequiredForOnline'       => Optional[String[1]],
+  'RequiredFamilyForOnline' => Optional[Enum['no', 'ipv4', 'ipv6', 'both', 'any']],
+  'ActivationPolicy'        => Optional[Enum[
+    'up', 'always-up', 'manual', 'always-down', 'down', 'bound'
+  ]],
 }]
 ```
 
@@ -4784,7 +4784,7 @@ Alias of
 
 ```puppet
 Struct[{
-    'MUDURL' => Optional[String[1]],
+  'MUDURL' => Optional[String[1]],
 }]
 ```
 
@@ -4799,29 +4799,29 @@ Alias of
 
 ```puppet
 Struct[{
-    'MACAddress'          => Optional[String[1]],
-    'PermanentMACAddress' => Optional[String[1]],
-    'Path'                => Optional[String[1]],
-    'Driver'              => Optional[String[1]],
-    'Type'                => Optional[String[1]],
-    'Kind'                => Optional[String[1]],
-    'Property'            => Optional[String[1]],
-    'Name'                => Optional[String[1]],
-    'WLANInterfaceType'   => Optional[Enum[
-        'ad-hoc', 'station', 'ap', 'ap-vlan', 'wds', 'monitor',
-        'mesh-point', 'p2p-client', 'p2p-go', 'p2p-device', 'ocb', 'nan',
-        '!ad-hoc', '!station', '!ap', '!ap-vlan', '!wds', '!monitor',
-        '!mesh-point', '!p2p-client', '!p2p-go', '!p2p-device', '!ocb', '!nan'
-    ]],
-    'SSID'                => Optional[String[1]],
-    'BSSID'               => Optional[String[1]],
-    'Host'                => Optional[String[1]],
-    'Virtualization'      => Optional[String[1]],
-    'KernelCommandLine'   => Optional[String[1]],
-    'KernelVersion'       => Optional[String[1]],
-    'Credential'          => Optional[String[1]],
-    'Architecture'        => Optional[String[1]],
-    'Firmware'            => Optional[String[1]],
+  'MACAddress'          => Optional[String[1]],
+  'PermanentMACAddress' => Optional[String[1]],
+  'Path'                => Optional[String[1]],
+  'Driver'              => Optional[String[1]],
+  'Type'                => Optional[String[1]],
+  'Kind'                => Optional[String[1]],
+  'Property'            => Optional[String[1]],
+  'Name'                => Optional[String[1]],
+  'WLANInterfaceType'   => Optional[Enum[
+    'ad-hoc', 'station', 'ap', 'ap-vlan', 'wds', 'monitor',
+    'mesh-point', 'p2p-client', 'p2p-go', 'p2p-device', 'ocb', 'nan',
+    '!ad-hoc', '!station', '!ap', '!ap-vlan', '!wds', '!monitor',
+    '!mesh-point', '!p2p-client', '!p2p-go', '!p2p-device', '!ocb', '!nan'
+  ]],
+  'SSID'                => Optional[String[1]],
+  'BSSID'               => Optional[String[1]],
+  'Host'                => Optional[String[1]],
+  'Virtualization'      => Optional[String[1]],
+  'KernelCommandLine'   => Optional[String[1]],
+  'KernelVersion'       => Optional[String[1]],
+  'Credential'          => Optional[String[1]],
+  'Architecture'        => Optional[String[1]],
+  'Firmware'            => Optional[String[1]],
 }]
 ```
 
@@ -4836,8 +4836,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'Address'          => Optional[String[1]],
-    'LinkLayerAddress' => Optional[String[1]],
+  'Address'          => Optional[String[1]],
+  'LinkLayerAddress' => Optional[String[1]],
 }]
 ```
 
@@ -4852,70 +4852,70 @@ Alias of
 
 ```puppet
 Struct[{
-    'Description'                        => Optional[String[1]],
-    'DHCP'                               => Optional[Enum['yes', 'no', 'ipv4', 'ipv6']],
-    'DHCPServer'                         => Optional[Enum['yes', 'no']],
-    'LinkLocalAddressing'                => Optional[Enum['yes', 'no', 'ipv4', 'ipv6']],
-    'IPv6LinkLocalAddressGenerationMode' => Optional[Enum[
-        'eui64', 'none', 'stable-privacy', 'random'
-    ]],
-    'IPv6StableSecretAddress'            => Optional[String[1]],
-    'IPv4LLStartAddress'                 => Optional[String[1]],
-    'IPv4LLRoute'                        => Optional[Enum['yes', 'no']],
-    'DefaultRouteOnDevice'               => Optional[Enum['yes', 'no']],
-    'LLMNR'                              => Optional[Enum['yes', 'no', 'resolve']],
-    'MulticastDNS'                       => Optional[Enum['yes', 'no', 'resolve']],
-    'DNSOverTLS'                         => Optional[Enum['yes', 'no', 'opportunistic']],
-    'DNSSEC'                             => Optional[Enum['yes', 'no', 'allow-downgrade']],
-    'DNSSECNegativeTrustAnchors'         => Optional[String[1]],
-    'LLDP'                               => Optional[Enum['yes', 'no', 'routers-only']],
-    'EmitLLDP'                           => Optional[Enum['yes', 'no', 'nearest-bridge', 'non-tpmr-bridge', 'customer-bridge']],
-    'BindCarrier'                        => Optional[String[1]],
-    'Address'                            => Optional[Variant[Array[String[1]], String[1]]],
-    'Gateway'                            => Optional[Variant[Array[String[1]], String[1]]],
-    'DNS'                                => Optional[Variant[Array[String[1]], String[1]]],
-    'Domains'                            => Optional[String[1]],
-    'UseDomains'                         => Optional[Enum['yes', 'no', 'route']],
-    'DNSDefaultRoute'                    => Optional[Enum['yes', 'no']],
-    'NTP'                                => Optional[Enum['yes', 'no', 'route']],
-    'IPv4Forwarding'                     => Optional[Enum['yes', 'no']],
-    'IPv6Forwarding'                     => Optional[Enum['yes', 'no']],
-    'IPMasquerade'                       => Optional[Enum['ipv4', 'ipv6', 'both', 'no']],
-    'IPv6PrivacyExtensions'              => Optional[Enum['yes', 'no', 'prefer-public', 'kernel']],
-    'IPv6AcceptRA'                       => Optional[Enum['yes', 'no']],
-    'IPv6DuplicateAddressDetection'      => Optional[Integer],
-    'IPv6HopLimit'                       => Optional[Integer[1,255]],
-    'IPv6RetransmissionTimeSec'          => Optional[Integer[0]],
-    'IPv4ReversePathFilter'              => Optional[Enum['no', 'strict', 'loose']],
-    'IPv4AcceptLocal'                    => Optional[Enum['yes', 'no']],
-    'IPv4RouteLocalnet'                  => Optional[Enum['yes', 'no']],
-    'IPv4ProxyARP'                       => Optional[Enum['yes', 'no']],
-    'IPv4ProxyARPPrivateVLAN'            => Optional[Enum['yes', 'no']],
-    'IPv6ProxyNDP'                       => Optional[Enum['yes', 'no']],
-    'IPv6ProxyNDPAddress'                => Optional[Variant[String[1], Array[String[1]]]],
-    'IPv6SendRA'                         => Optional[Enum['yes', 'no']],
-    'DHCPPrefixDelegation'               => Optional[Enum['yes', 'no']],
-    'IPv6MTUBytes'                       => Optional[Integer[1280]],
-    'KeepMaster'                         => Optional[Enum['yes', 'no']],
-    'BatmanAdvanced'                     => Optional[String[1]],
-    'Bond'                               => Optional[String[1]],
-    'Bridge'                             => Optional[String[1]],
-    'VRF'                                => Optional[String[1]],
-    'IPoIB'                              => Optional[Variant[String[1],Array[String[1]]]],
-    'IPVLAN'                             => Optional[Variant[String[1],Array[String[1]]]],
-    'IPVTAP'                             => Optional[Variant[String[1],Array[String[1]]]],
-    'MACsec'                             => Optional[Variant[String[1],Array[String[1]]]],
-    'MACVLAN'                            => Optional[Variant[String[1],Array[String[1]]]],
-    'MACVTAP'                            => Optional[Variant[String[1],Array[String[1]]]],
-    'Tunnel'                             => Optional[Variant[String[1],Array[String[1]]]],
-    'VLAN'                               => Optional[Variant[String[1],Array[String[1]]]],
-    'VXLAN'                              => Optional[Variant[String[1],Array[String[1]]]],
-    'Xfrm'                               => Optional[Variant[String[1],Array[String[1]]]],
-    'ActiveSlave'                        => Optional[Enum['yes', 'no']],
-    'PrimarySlave'                       => Optional[Enum['yes', 'no']],
-    'ConfigureWithoutCarrier'            => Optional[Enum['yes', 'no']],
-    # 'IgnoreCarrierLoss'                  => Optional[Variant[Enum['yes', 'no'],Systemd::Unit::Timespan]],
-    'KeepConfiguration'                  => Optional[Enum['yes', 'no', 'static', 'dhcp-on-stop', 'dhcp']],
+  'Description'                        => Optional[String[1]],
+  'DHCP'                               => Optional[Enum['yes', 'no', 'ipv4', 'ipv6']],
+  'DHCPServer'                         => Optional[Enum['yes', 'no']],
+  'LinkLocalAddressing'                => Optional[Enum['yes', 'no', 'ipv4', 'ipv6']],
+  'IPv6LinkLocalAddressGenerationMode' => Optional[Enum[
+    'eui64', 'none', 'stable-privacy', 'random'
+  ]],
+  'IPv6StableSecretAddress'            => Optional[String[1]],
+  'IPv4LLStartAddress'                 => Optional[String[1]],
+  'IPv4LLRoute'                        => Optional[Enum['yes', 'no']],
+  'DefaultRouteOnDevice'               => Optional[Enum['yes', 'no']],
+  'LLMNR'                              => Optional[Enum['yes', 'no', 'resolve']],
+  'MulticastDNS'                       => Optional[Enum['yes', 'no', 'resolve']],
+  'DNSOverTLS'                         => Optional[Enum['yes', 'no', 'opportunistic']],
+  'DNSSEC'                             => Optional[Enum['yes', 'no', 'allow-downgrade']],
+  'DNSSECNegativeTrustAnchors'         => Optional[String[1]],
+  'LLDP'                               => Optional[Enum['yes', 'no', 'routers-only']],
+  'EmitLLDP'                           => Optional[Enum['yes', 'no', 'nearest-bridge', 'non-tpmr-bridge', 'customer-bridge']],
+  'BindCarrier'                        => Optional[String[1]],
+  'Address'                            => Optional[Variant[Array[String[1]], String[1]]],
+  'Gateway'                            => Optional[Variant[Array[String[1]], String[1]]],
+  'DNS'                                => Optional[Variant[Array[String[1]], String[1]]],
+  'Domains'                            => Optional[String[1]],
+  'UseDomains'                         => Optional[Enum['yes', 'no', 'route']],
+  'DNSDefaultRoute'                    => Optional[Enum['yes', 'no']],
+  'NTP'                                => Optional[Enum['yes', 'no', 'route']],
+  'IPv4Forwarding'                     => Optional[Enum['yes', 'no']],
+  'IPv6Forwarding'                     => Optional[Enum['yes', 'no']],
+  'IPMasquerade'                       => Optional[Enum['ipv4', 'ipv6', 'both', 'no']],
+  'IPv6PrivacyExtensions'              => Optional[Enum['yes', 'no', 'prefer-public', 'kernel']],
+  'IPv6AcceptRA'                       => Optional[Enum['yes', 'no']],
+  'IPv6DuplicateAddressDetection'      => Optional[Integer],
+  'IPv6HopLimit'                       => Optional[Integer[1,255]],
+  'IPv6RetransmissionTimeSec'          => Optional[Integer[0]],
+  'IPv4ReversePathFilter'              => Optional[Enum['no', 'strict', 'loose']],
+  'IPv4AcceptLocal'                    => Optional[Enum['yes', 'no']],
+  'IPv4RouteLocalnet'                  => Optional[Enum['yes', 'no']],
+  'IPv4ProxyARP'                       => Optional[Enum['yes', 'no']],
+  'IPv4ProxyARPPrivateVLAN'            => Optional[Enum['yes', 'no']],
+  'IPv6ProxyNDP'                       => Optional[Enum['yes', 'no']],
+  'IPv6ProxyNDPAddress'                => Optional[Variant[String[1], Array[String[1]]]],
+  'IPv6SendRA'                         => Optional[Enum['yes', 'no']],
+  'DHCPPrefixDelegation'               => Optional[Enum['yes', 'no']],
+  'IPv6MTUBytes'                       => Optional[Integer[1280]],
+  'KeepMaster'                         => Optional[Enum['yes', 'no']],
+  'BatmanAdvanced'                     => Optional[String[1]],
+  'Bond'                               => Optional[String[1]],
+  'Bridge'                             => Optional[String[1]],
+  'VRF'                                => Optional[String[1]],
+  'IPoIB'                              => Optional[Variant[String[1],Array[String[1]]]],
+  'IPVLAN'                             => Optional[Variant[String[1],Array[String[1]]]],
+  'IPVTAP'                             => Optional[Variant[String[1],Array[String[1]]]],
+  'MACsec'                             => Optional[Variant[String[1],Array[String[1]]]],
+  'MACVLAN'                            => Optional[Variant[String[1],Array[String[1]]]],
+  'MACVTAP'                            => Optional[Variant[String[1],Array[String[1]]]],
+  'Tunnel'                             => Optional[Variant[String[1],Array[String[1]]]],
+  'VLAN'                               => Optional[Variant[String[1],Array[String[1]]]],
+  'VXLAN'                              => Optional[Variant[String[1],Array[String[1]]]],
+  'Xfrm'                               => Optional[Variant[String[1],Array[String[1]]]],
+  'ActiveSlave'                        => Optional[Enum['yes', 'no']],
+  'PrimarySlave'                       => Optional[Enum['yes', 'no']],
+  'ConfigureWithoutCarrier'            => Optional[Enum['yes', 'no']],
+  # 'IgnoreCarrierLoss'                  => Optional[Variant[Enum['yes', 'no'],Systemd::Unit::Timespan]],
+  'KeepConfiguration'                  => Optional[Enum['yes', 'no', 'static', 'dhcp-on-stop', 'dhcp']],
 }]
 ```
 
@@ -4930,12 +4930,12 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'         => Optional[Variant[Enum['root', 'clsact','ingress'],String[1]]],
-    'Handle'         => Optional[String[1]],
-    'DelayJitterSec' => Optional[String[1]],
-    'PacketLimit'    => Optional[Integer[0,4294967294]],
-    'LossRate'       => Optional[String[1]],
-    'DuplicateRate'  => Optional[String[1]],
+  'Parent'         => Optional[Variant[Enum['root', 'clsact','ingress'],String[1]]],
+  'Handle'         => Optional[String[1]],
+  'DelayJitterSec' => Optional[String[1]],
+  'PacketLimit'    => Optional[Integer[0,4294967294]],
+  'LossRate'       => Optional[String[1]],
+  'DuplicateRate'  => Optional[String[1]],
 }]
 ```
 
@@ -4950,12 +4950,12 @@ Alias of
 
 ```puppet
 Struct[{
-    'Id'        => Optional[Integer[1, 4294967295]],
-    'Gateway'   => Optional[Variant[Array[String[1]], String[1]]],
-    'Familiy'   => Optional[Enum['ipv4','ipv6']],
-    'OnLink'    => Optional[Enum['yes','no']],
-    'Blackhole' => Optional[Enum['yes','no']],
-    'Group'     => Optional[String[1]],
+  'Id'        => Optional[Integer[1, 4294967295]],
+  'Gateway'   => Optional[Variant[Array[String[1]], String[1]]],
+  'Familiy'   => Optional[Enum['ipv4','ipv6']],
+  'OnLink'    => Optional[Enum['yes','no']],
+  'Blackhole' => Optional[Enum['yes','no']],
+  'Group'     => Optional[String[1]],
 }]
 ```
 
@@ -4970,9 +4970,9 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Handle'      => Optional[String[1]],
-    'PacketLimit' => Optional[Integer[0,4294967294]]
+  'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Handle'      => Optional[String[1]],
+  'PacketLimit' => Optional[Integer[0,4294967294]]
 }]
 ```
 
@@ -4987,8 +4987,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Handle'      => Optional[String[1]],
+  'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Handle'      => Optional[String[1]],
 }]
 ```
 
@@ -5003,9 +5003,9 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Handle'      => Optional[String[1]],
-    'PacketLimit' => Optional[Integer[0,4294967294]],
+  'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Handle'      => Optional[String[1]],
+  'PacketLimit' => Optional[Integer[0,4294967294]],
 }]
 ```
 
@@ -5020,9 +5020,9 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
-    'Handle'      => Optional[String[1]],
-    'PacketLimit' => Optional[Integer[1,4294967294]],
+  'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
+  'Handle'      => Optional[String[1]],
+  'PacketLimit' => Optional[Integer[1,4294967294]],
 }]
 ```
 
@@ -5037,8 +5037,8 @@ Alias of
 
 ```puppet
 Struct[{
-    'Parent' => Optional[Enum['clsact', 'ingress']],
-    'Handle' => Optional[String[1]],
+  'Parent' => Optional[Enum['clsact', 'ingress']],
+  'Handle' => Optional[String[1]],
 }]
 ```
 
@@ -5055,7 +5055,7 @@ Alias of
 Struct[{
     'Parent' => Optional[Variant[Enum['root','clsact','ingress'], String[1]]],
     'Handle' => Optional[String[1]],
-}]
+  }]
 ```
 
 ### <a name="Systemd--Interface--Network--Quickfairqueueingclass"></a>`Systemd::Interface::Network::Quickfairqueueingclass`
@@ -5073,7 +5073,7 @@ Struct[{
     'ClassId'        => Optional[String[1]],
     'Weight'         => Optional[Integer[1,1023]],
     'MaxPacketBytes' => Optional[String[1]],
-}]
+  }]
 ```
 
 ### <a name="Systemd--Interface--Network--Route"></a>`Systemd::Interface::Network::Route`
@@ -5101,7 +5101,8 @@ Struct[{
     'Type'                               => Optional[Enum[
         'unicast', 'local', 'broadcast', 'anycast', 'multicast',
         'blackhole', 'unreachable', 'prohibit', 'throw', 'nat', 'xresolve'
-    ]],
+      ]
+    ],
     'InitialCongestionWindow'            => Optional[Integer[0,1023]],
     'InitialAdvertisedReceiveWindow'     => Optional[Integer[0,1023]],
     'QuickAck'                           => Optional[Enum['yes', 'no',]],
@@ -5112,7 +5113,7 @@ Struct[{
     'TCPRetransmissionTimeoutSeca'       => Optional[Integer[1]],
     'MultiPathRoute'                     => Optional[Variant[String[1],Array[String[1]]]],
     'NextHop'                            => Optional[Integer[1, 4294967295]],
-}]
+  }]
 ```
 
 ### <a name="Systemd--Interface--Network--Routingpolicyrule"></a>`Systemd::Interface::Network::Routingpolicyrule`
@@ -5144,7 +5145,7 @@ Struct[{
     'SuppressPrefixLength'   => Optional[Integer[0,128]],
     'SuppressInterfaceGroup' => Optional[Integer[0,2147483647]],
     'Type'                   => Optional[Enum['blackhole','unreachable','prohibit']],
-}]
+  }]
 ```
 
 ### <a name="Systemd--Interface--Network--Sr_iov"></a>`Systemd::Interface::Network::Sr_iov`
@@ -5167,7 +5168,7 @@ Struct[{
     'Trust'                   => Optional[Enum['no','yes']],
     'LinkState'               => Optional[Enum['no','yes','auto']],
     'MACAddress'              => Optional[String[1]],
-}]
+  }]
 ```
 
 ### <a name="Systemd--Interface--Network--Stochasticfairblue"></a>`Systemd::Interface::Network::Stochasticfairblue`
@@ -5184,7 +5185,7 @@ Struct[{
     'Parent'      => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
     'Handle'      => Optional[String[1]],
     'PacketLimit' => Optional[Integer[1,4294967294]],
-}]
+  }]
 ```
 
 ### <a name="Systemd--Interface--Network--Stochasticfairnessqueueing"></a>`Systemd::Interface::Network::Stochasticfairnessqueueing`
@@ -5201,7 +5202,7 @@ Struct[{
     'Parent'           => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
     'Handle'           => Optional[String[1]],
     'PerturbPeriodSec' => Optional[String[1]],
-}]
+  }]
 ```
 
 ### <a name="Systemd--Interface--Network--Tokenbucketfilter"></a>`Systemd::Interface::Network::Tokenbucketfilter`
@@ -5224,7 +5225,7 @@ Struct[{
     'MPUBytes'   => Optional[String[1]],
     'PeakRate'   => Optional[String[1]],
     'MTUBytes'   => Optional[String[1]],
-}]
+  }]
 ```
 
 ### <a name="Systemd--Interface--Network--Triviallinkequalizer"></a>`Systemd::Interface::Network::Triviallinkequalizer`
@@ -5242,7 +5243,7 @@ Struct[{
     'Handle'        => Optional[String[1]],
     'DefaultClass'  => Optional[String[1]],
     'RateToQuantum' => Optional[Integer[0]]
-}]
+  }]
 ```
 
 ### <a name="Systemd--JournalRemoteSettings"></a>`Systemd::JournalRemoteSettings`

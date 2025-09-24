@@ -222,7 +222,8 @@ define systemd::manage_unit (
     service_parameters      => $service_parameters,
     daemon_reload           => $daemon_reload,
     service_restart         => $service_restart,
-    content                 => epp('systemd/unit_file.epp', {
+    content                 => epp('systemd/unit_file.epp',
+      {
         'unit_entry'    => $unit_entry,
         'slice_entry'   => $slice_entry,
         'service_entry' => $service_entry,
@@ -232,6 +233,7 @@ define systemd::manage_unit (
         'socket_entry'  => $socket_entry,
         'mount_entry'   => $mount_entry,
         'swap_entry'    => $swap_entry,
-    }),
+      },
+    ),
   }
 }

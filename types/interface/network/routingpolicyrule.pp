@@ -1,6 +1,7 @@
 # @summary interface network RoutingPolicyRule section definition
 # @see https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html
-type Systemd::Interface::Network::Routingpolicyrule = Struct[{
+type Systemd::Interface::Network::Routingpolicyrule = Struct[
+  {
     'TypeOfService'          => Optional[Integer[0,255]],
     'From'                   => Optional[String[1]],
     'To'                     => Optional[String[1]],
@@ -19,4 +20,5 @@ type Systemd::Interface::Network::Routingpolicyrule = Struct[{
     'SuppressPrefixLength'   => Optional[Integer[0,128]],
     'SuppressInterfaceGroup' => Optional[Integer[0,2147483647]],
     'Type'                   => Optional[Enum['blackhole','unreachable','prohibit']],
-}]
+  }
+]
