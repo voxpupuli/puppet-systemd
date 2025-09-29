@@ -4,9 +4,14 @@ require 'spec_helper_acceptance'
 
 describe 'systemd with manage_networkd true' do
   has_package = fact('os.family') == 'RedHat'
+  package_name = if fact('os.name') == 'OracleLinux' && fact('os.release.major').to_i == 10
+                   'oracle-epel-release-el10'
+                 else
+                   'epel-release'
+                 end
 
-  # On Enterprise Linux 8 & 9 the package is shipped in EPEL
-  before { install_package(default, 'epel-release') if has_package && %w[8 9].include?(fact('os.release.major')) }
+  # On Enterprise Linux 8 and newer the package is shipped in EPEL
+  before { install_package(default, package_name) if has_package && %w[OracleLinux CentOS AlmaLinux Rocky].include?(fact('os.name')) }
 
   context 'configure systemd-networkd' do
     let(:manifest) do
