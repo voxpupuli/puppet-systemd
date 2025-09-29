@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v9.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v9.1.0) (2025-09-29)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.0.1...v9.1.0)
+
+**Implemented enhancements:**
+
+- Manage SYSTEMD\_RESOLVED\_SYNTHESIZE\_HOSTNAME [\#566](https://github.com/voxpupuli/puppet-systemd/pull/566) ([traylenator](https://github.com/traylenator))
+- Add EL10 support [\#563](https://github.com/voxpupuli/puppet-systemd/pull/563) ([bastelfreak](https://github.com/bastelfreak))
+
+**Fixed bugs:**
+
+- network type: add missing Domains setting in Network section of netwo… [\#565](https://github.com/voxpupuli/puppet-systemd/pull/565) ([trefzer](https://github.com/trefzer))
+
 ## [v9.0.1](https://github.com/voxpupuli/puppet-systemd/tree/v9.0.1) (2025-09-16)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.0.0...v9.0.1)
