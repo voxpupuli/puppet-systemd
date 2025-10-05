@@ -569,24 +569,6 @@ describe 'systemd' do
           }
         end
 
-        context 'when passing service limits' do
-          let(:params) do
-            {
-              service_limits: { 'openstack-nova-compute.service' => { 'limits' => { 'LimitNOFILE' => 32_768 } } },
-            }
-          end
-
-          # systemd::service_limits is deprecated
-          before do
-            Puppet.settings[:strict] = :warning
-          end
-
-          it {
-            is_expected.to compile.with_all_deps
-            is_expected.to contain_systemd__service_limits('openstack-nova-compute.service').with_limits('LimitNOFILE' => 32_768)
-          }
-        end
-
         context 'when passing networks' do
           let :params do
             {

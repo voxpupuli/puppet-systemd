@@ -5,9 +5,6 @@
 # @param default_target
 #   The default systemd boot target, unmanaged if set to undef.
 #
-# @param service_limits
-#   Deprecated, use dropin_files - Hash of `systemd::service_limits` resources
-#
 # @param networks
 #   Hash of `systemd::network` resources
 #
@@ -320,7 +317,6 @@
 class systemd (
   Optional[Pattern['^.+\.target$']]                   $default_target = undef,
   Hash[String,String]                                 $accounting = {},
-  Stdlib::CreateResources                             $service_limits = {},
   Stdlib::CreateResources                             $networks = {},
   Stdlib::CreateResources                             $timers = {},
   Stdlib::CreateResources                             $tmpfiles = {},
@@ -429,11 +425,6 @@ class systemd (
     }
   }
 
-  $service_limits.each |$service_limit, $service_limit_data| {
-    systemd::service_limits { $service_limit:
-      * => $service_limit_data,
-    }
-  }
   $networks.each |$network, $network_data| {
     systemd::network { $network:
       * => $network_data,
