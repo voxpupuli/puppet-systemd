@@ -6088,6 +6088,7 @@ Struct[{
     # Conditions and Asserts
     Optional['AssertPathExists']            => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['AssertPathIsDirectory']       => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
+    Optional['AssertFileNotEmpty']          => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['ConditionPathExists']         => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['ConditionPathExistsGlob']     => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['ConditionPathIsDirectory']    => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],

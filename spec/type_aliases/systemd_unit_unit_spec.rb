@@ -78,7 +78,7 @@ describe 'Systemd::Unit::Unit' do
     end
   end
 
-  %w[ConditionPathExists ConditionPathIsDirectory AssertPathExists AssertPathIsDirectory].each do |assert|
+  %w[ConditionPathExists ConditionPathIsDirectory AssertPathExists AssertPathIsDirectory AssertFileNotEmpty].each do |assert|
     context "with a key of #{assert} can have files or negated files" do
       it { is_expected.to allow_value({ assert.to_s => '/my/existing/file' }) }
       it { is_expected.to allow_value({ assert.to_s => '!/my/existing/file' }) }
