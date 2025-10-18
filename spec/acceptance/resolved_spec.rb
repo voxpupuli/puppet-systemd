@@ -10,7 +10,7 @@ describe 'systemd with manage_resolved true' do
       pp = <<-PUPPET
       class{'systemd':
         manage_resolved    => true,
-        manage_resolv_conf => #{default[:hypervisor] != 'docker'},
+        manage_resolv_conf => #{default[:hypervisor] != 'container_podman'},
       }
       PUPPET
       apply_manifest(pp, catch_failures: true)
@@ -43,7 +43,7 @@ describe 'systemd with manage_resolved true' do
       class{'systemd':
         manage_resolved    => true,
         resolved_ensure    => 'stopped',
-        manage_resolv_conf => #{default[:hypervisor] != 'docker'},
+        manage_resolv_conf => #{default[:hypervisor] != 'container_podman'},
       }
       PUPPET
       apply_manifest(pp, catch_failures: true)
