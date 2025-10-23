@@ -42,7 +42,7 @@ define systemd::daemon_reload (
       }
 
       $_title   = "${module_name}-${name}-systemctl-user-${user}-daemon-reload"
-      $_command = ['systemd-run', '--pipe', '--wait', '--user', '--machine', "${user}@.host", 'systemctl', '--user', 'daemon-reload']
+      $_command = systemd::systemctl_user($user, ['daemon-reload'])
     } else {
       $_title   = "${module_name}-${name}-systemctl-daemon-reload"
       $_command = ['systemctl', 'daemon-reload']

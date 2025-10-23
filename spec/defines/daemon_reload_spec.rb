@@ -6,7 +6,7 @@ describe 'systemd::daemon_reload' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
-        let(:facts) { facts }
+        let(:facts) { facts.merge(systemd_version: '256') }
         let(:title) { 'irregardless' }
 
         it { is_expected.to compile.with_all_deps }
@@ -36,7 +36,7 @@ describe 'systemd::daemon_reload' do
 
               it {
                 is_expected.to contain_exec('systemd-irregardless-systemctl-user-steve-daemon-reload').
-                  with_command(['systemd-run', '--pipe', '--wait', '--user', '--machine', 'steve@.host', 'systemctl', '--user', 'daemon-reload']).
+                  with_command(['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'daemon-reload']).
                   with_refreshonly(true)
               }
 

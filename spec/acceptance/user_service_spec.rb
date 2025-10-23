@@ -9,7 +9,8 @@ describe 'systemd::user_service' do
 
         # systemd-logind.service must be running.
         class{ 'systemd':
-          manage_logind => true,
+          manage_logind   => true,
+          install_runuser => true,
         }
 
         user { 'higgs' :
@@ -19,6 +20,13 @@ describe 'systemd::user_service' do
 
         loginctl_user{'higgs':
           linger  => enabled,
+        }
+
+        # https://github.com/voxpupuli/puppet-systemd/issues/578
+        exec{'/usr/bin/sleep 10 && touch /tmp/sleep-only-once':
+          creates   => '/tmp/sleep-only-once',
+          require   => Loginctl_user['higgs'],
+          before    => File['/home/higgs/.config'],
         }
 
         # Assumes home directory was created as /home/higgs
