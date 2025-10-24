@@ -256,6 +256,10 @@
 #   Config Hash that is used to configure settings in user.conf
 #   NOTE: It's currently impossible to have multiple entries of the same key in
 #   the settings.
+#
+# @param install_runuser
+#   If true, the util-linux package is installed, for runuser command.
+#
 class systemd (
   Optional[Pattern['^.+\.target$']]                   $default_target = undef,
   Hash[String,String]                                 $accounting = {},
@@ -331,6 +335,7 @@ class systemd (
   Systemd::ServiceManagerSettings                     $system_settings = {},
   Boolean                                             $manage_user_conf = false,
   Systemd::ServiceManagerSettings                     $user_settings = {},
+  Boolean                                             $install_runuser = false,
 ) {
   contain systemd::install
 

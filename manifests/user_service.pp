@@ -1,6 +1,9 @@
 # @summary Manage a user service running under systemd --user
 #
 # @example Enable a service for all users
+#  class { 'systemd':
+#    install_runuser => true,
+#  }
 #  systemd::user_service { 'systemd-tmpfiles-clean.timer':
 #    enable => true,
 #    global => true,
@@ -74,31 +77,26 @@ define systemd::user_service (
     }
   } else { # per user services
 
-    $_systemctl_user = [
-      'systemd-run', '--pipe', '--wait', '--user', '--machine', "${user}@.host",
-      'systemctl', '--user',
-    ]
-
     # To accept notifies of this type.
     exec { "try-reload-or-restart-${user}-${unit}":
-      command     => $_systemctl_user + ['try-reload-or-restart', $unit],
+      command     => systemd::systemctl_user($user, ['try-reload-or-restart', $unit]),
       refreshonly => true,
       path        => $facts['path'],
     }
 
     if $_ensure {
       $_ensure_title   = "Start user service ${unit} for user ${user}"
-      $_ensure_command = $_systemctl_user + ['start', $unit]
-      $_ensure_unless  = [$_systemctl_user + ['is-active', $unit]]
+      $_ensure_command = systemd::systemctl_user($user, ['start',$unit])
+      $_ensure_unless  = [systemd::systemctl_user($user, ['is-active',$unit])]
       $_ensure_onlyif  = undef
 
       # Don't reload just after starting
       Exec["try-reload-or-restart-${user}-${unit}"] -> Exec[$_ensure_title]
     } else {
       $_ensure_title   = "Stop user service ${unit} for user ${user}"
-      $_ensure_command = $_systemctl_user + ['stop', $unit]
+      $_ensure_command = systemd::systemctl_user($user, ['stop', $unit])
       $_ensure_unless  = undef
-      $_ensure_onlyif  = [$_systemctl_user + ['is-active', $unit]]
+      $_ensure_onlyif  = [systemd::systemctl_user($user, ['is-active',$unit])]
     }
 
     exec { $_ensure_title:
@@ -110,8 +108,8 @@ define systemd::user_service (
 
     if $enable {
       $_enable_title   = "Enable user service ${unit} for user ${user}"
-      $_enable_command = $_systemctl_user + ['enable', $unit]
-      $_enable_unless  = [$_systemctl_user + ['is-enabled', $unit]]
+      $_enable_command = systemd::systemctl_user($user, ['enable', $unit])
+      $_enable_unless  = [systemd::systemctl_user($user, ['is-enabled', $unit])]
       $_enable_onlyif  = undef
 
       # Puppet does this for services so lets copy that logic
@@ -121,9 +119,9 @@ define systemd::user_service (
       }
     } else {
       $_enable_title   = "Disable user service ${unit} for user ${user}"
-      $_enable_command = $_systemctl_user + ['disable', $unit]
+      $_enable_command = systemd::systemctl_user($user, ['disable', $unit])
       $_enable_unless  = undef
-      $_enable_onlyif  = [$_systemctl_user + ['is-enabled', $unit]]
+      $_enable_onlyif  = [systemd::systemctl_user($user, ['is-enabled', $unit])]
     }
 
     exec { $_enable_title:

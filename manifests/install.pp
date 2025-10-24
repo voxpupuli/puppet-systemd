@@ -39,4 +39,10 @@ class systemd::install {
       ensure => present,
     }
   }
+
+  if $systemd::install_runuser {
+    package { 'util-linux':
+      ensure => installed,
+    }
+  }
 }

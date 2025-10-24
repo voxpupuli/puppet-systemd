@@ -53,6 +53,7 @@
 ### Functions
 
 * [`systemd::escape`](#systemd--escape): Escape strings as systemd-escape does.
+* [`systemd::systemctl_user`](#systemd--systemctl_user): Construct command array for running `systemctl --user` for particular arguments
 * [`systemd::systemd_escape`](#systemd--systemd_escape): Escape strings by call the `systemd-escape` command in the background.
 
 ### Data types
@@ -269,6 +270,7 @@ The following parameters are available in the `systemd` class:
 * [`system_settings`](#-systemd--system_settings)
 * [`manage_user_conf`](#-systemd--manage_user_conf)
 * [`user_settings`](#-systemd--user_settings)
+* [`install_runuser`](#-systemd--install_runuser)
 
 ##### <a name="-systemd--default_target"></a>`default_target`
 
@@ -895,6 +897,14 @@ NOTE: It's currently impossible to have multiple entries of the same key in
 the settings.
 
 Default value: `{}`
+
+##### <a name="-systemd--install_runuser"></a>`install_runuser`
+
+Data type: `Boolean`
+
+If true, the util-linux package is installed, for runuser command.
+
+Default value: `false`
 
 ### <a name="systemd--tmpfiles"></a>`systemd::tmpfiles`
 
@@ -2793,6 +2803,9 @@ Manage a user service running under systemd --user
 ##### Enable a service for all users
 
 ```puppet
+class { 'systemd':
+  install_runuser => true,
+}
 systemd::user_service { 'systemd-tmpfiles-clean.timer':
   enable => true,
   global => true,
@@ -2971,6 +2984,50 @@ Input string
 Data type: `Boolean`
 
 Use path (-p) ornon-path  style escaping.
+
+### <a name="systemd--systemctl_user"></a>`systemd::systemctl_user`
+
+Type: Puppet Language
+
+Construct command array for running `systemctl --user` for particular arguments
+
+#### Examples
+
+##### Start a user service with an exec
+
+```puppet
+exec { 'start_service':
+ command => systemd::systemctl_user('santa', 'start myservice.service'),
+}
+```
+
+#### `systemd::systemctl_user(String[1] $user, Array[String[1],1] $arguments)`
+
+The systemd::systemctl_user function.
+
+Returns: `Array` Array Array of command and arguments
+
+##### Examples
+
+###### Start a user service with an exec
+
+```puppet
+exec { 'start_service':
+ command => systemd::systemctl_user('santa', 'start myservice.service'),
+}
+```
+
+##### `user`
+
+Data type: `String[1]`
+
+User instance of `systemd --user` to connect to.
+
+##### `arguments`
+
+Data type: `Array[String[1],1]`
+
+Arguments to run after `systemctl --user`
 
 ### <a name="systemd--systemd_escape"></a>`systemd::systemd_escape`
 

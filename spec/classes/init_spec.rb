@@ -21,6 +21,7 @@ describe 'systemd' do
         it { is_expected.not_to contain_package('systemd-timesyncd') }
         it { is_expected.not_to contain_package('systemd-resolved') }
         it { is_expected.not_to contain_package('systemd-container') }
+        it { is_expected.not_to contain_package('util-linux') }
         it { is_expected.not_to contain_class('systemd::coredump') }
         it { is_expected.not_to contain_class('systemd::oomd') }
         it { is_expected.not_to contain_exec('systemctl set-default multi-user.target') }
@@ -1187,6 +1188,14 @@ describe 'systemd' do
             it { is_expected.to contain_systemd__dropin_file('coredump_backtrace.conf').with_ensure('file') }
             it { is_expected.to contain_systemd__dropin_file('coredump_backtrace.conf').with_content(%r{^ExecStart=.*--backtrace$}) }
           end
+        end
+
+        context 'with install_runuser true' do
+          let :params do
+            { install_runuser: true }
+          end
+
+          it { is_expected.to contain_package('util-linux').with_ensure('installed') }
         end
       end
     end

@@ -484,6 +484,25 @@ class { 'systemd':
 }
 ```
 
+### User Services
+
+User services can be managed
+
+```puppet
+
+systemd::user_service { 'hour.service':
+  ensure => true,
+  enable => true,
+  user   => 'higgs',
+}
+```
+
+This will run `systemctl --user enable hour.service` and `systemctl --user start hour.service` as the user higgs.
+
+On Debian 12 and RHEL9 the `runuser` command is used for `systemd::user_service` which can be installed with
+the `runuser => true` parameter to the main class. Newer operating systems use `run0` which is always available with `systemd`.
+
+
 ### journald configuration
 
 It also allows you to manage journald settings. You can manage journald settings through setting the `journald_settings` parameter. If you want a parameter to be removed, you can pass its value as params.
