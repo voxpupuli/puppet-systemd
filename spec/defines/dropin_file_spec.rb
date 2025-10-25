@@ -183,6 +183,16 @@ describe 'systemd::dropin_file' do
             expect(subject).not_to create_systemd__daemon_reload(params[:unit])
           }
         end
+
+        context 'with system dropins' do
+          let(:params) do
+            super().merge(unit: 'service')
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it { is_expected.to contain_file("/etc/systemd/system/#{params[:unit]}.d/#{title}") }
+        end
       end
     end
   end
