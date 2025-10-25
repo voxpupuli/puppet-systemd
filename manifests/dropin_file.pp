@@ -20,7 +20,7 @@
 # @param daemon_reload Call systemd::daemon_reload
 #
 define systemd::dropin_file (
-  Systemd::Unit                               $unit,
+  Systemd::Dropin_unit                        $unit,
   Systemd::Dropin                             $filename                = $name,
   Enum['present', 'absent', 'file']           $ensure                  = 'present',
   Stdlib::Absolutepath                        $path                    = '/etc/systemd/system',
