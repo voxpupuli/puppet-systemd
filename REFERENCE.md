@@ -64,6 +64,7 @@
 * [`Systemd::Capabilities`](#Systemd--Capabilities): Defines allowed capabilities
 * [`Systemd::CoredumpSettings`](#Systemd--CoredumpSettings): Configurations for coredump.conf
 * [`Systemd::Dropin`](#Systemd--Dropin): custom datatype that validates filenames/paths for valid systemd dropin files
+* [`Systemd::Dropin_unit`](#Systemd--Dropin_unit): Validates a drop-in unit name
 * [`Systemd::Interface`](#Systemd--Interface): network interface definition
 * [`Systemd::Interface::Link`](#Systemd--Interface--Link): Network device configuration(Link)
 * [`Systemd::Interface::Link::Link`](#Systemd--Interface--Link--Link): Network device configuration(Link) Link section definition
@@ -181,6 +182,7 @@
 * [`Systemd::Unit::Timer`](#Systemd--Unit--Timer): Possible keys for the [Timer] section of a unit file
 * [`Systemd::Unit::Timespan`](#Systemd--Unit--Timespan): Timer specification for systemd time spans, e.g. timers.
 * [`Systemd::Unit::Unit`](#Systemd--Unit--Unit): Possible keys for the [Unit] section of a unit file
+* [`Systemd::Unit_type`](#Systemd--Unit_type): Validates a unit types
 
 ### Tasks
 
@@ -1016,7 +1018,7 @@ The following parameters are available in the `systemd::dropin_file` defined typ
 
 ##### <a name="-systemd--dropin_file--unit"></a>`unit`
 
-Data type: `Systemd::Unit`
+Data type: `Systemd::Dropin_unit`
 
 The target unit file to create
 
@@ -3106,6 +3108,15 @@ Struct[{
 custom datatype that validates filenames/paths for valid systemd dropin files
 
 Alias of `Pattern['^[^/]+\.conf$']`
+
+### <a name="Systemd--Dropin_unit"></a>`Systemd::Dropin_unit`
+
+Validates a drop-in unit name
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
+
+Alias of `Variant[Systemd::Unit, Systemd::Unit_type]`
 
 ### <a name="Systemd--Interface"></a>`Systemd::Interface`
 
@@ -6165,6 +6176,15 @@ Struct[{
     Optional['StartLimitBurst']             => Integer[1],
   }]
 ```
+
+### <a name="Systemd--Unit_type"></a>`Systemd::Unit_type`
+
+Validates a unit types
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
+
+Alias of `Enum['automount', 'device', 'mount', 'path', 'scope', 'service', 'slice', 'socket', 'swap', 'target', 'timer']`
 
 ## Tasks
 
