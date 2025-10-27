@@ -4,6 +4,7 @@
 #
 type Systemd::Unit::Slice = Struct[
   {
+    Optional['AllowedCPUs']         => Pattern[/^\d+(-\d+)?(,\d+(-\d+)?)*$/],
     Optional['CPUAccounting']       => Boolean,
     Optional['CPUQuota']            => Optional[Pattern['^([1-9][0-9]*)%$']], # bigger than 100% is okay.
     Optional['CPUShares']           => Integer[2,262144],

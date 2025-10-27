@@ -13,6 +13,13 @@ describe 'Systemd::Unit::Slice' do
   it { is_expected.to allow_value({ 'IOAccounting' => false }) }
   it { is_expected.to allow_value({ 'IOWeight' => 100 }) }
 
+  # AllowedCPUs valid formats
+  it { is_expected.to allow_value({ 'AllowedCPUs' => '0' }) }
+  it { is_expected.to allow_value({ 'AllowedCPUs' => '0-4' }) }
+  it { is_expected.to allow_value({ 'AllowedCPUs' => '0,1,2,3,4' }) }
+  it { is_expected.to allow_value({ 'AllowedCPUs' => '0-2,4' }) }
+  it { is_expected.to allow_value({ 'AllowedCPUs' => '0-7,16-23' }) }
+
   it { is_expected.to allow_value({ 'DeviceAllow' => '/dev/sda1' }) }
   it { is_expected.to allow_value({ 'DeviceAllow' => 'block-loop' }) }
   it { is_expected.not_to allow_value({ 'DeviceAllow' => 'random' }) }
@@ -32,4 +39,11 @@ describe 'Systemd::Unit::Slice' do
   it { is_expected.not_to allow_value({ 'CPUQuota' => 50 }) }
   it { is_expected.not_to allow_value({ 'CPUQuota' => '0%' }) }
   it { is_expected.not_to allow_value({ 'MemoryHigh' => '1Y' }) }
+
+  # AllowedCPUs invalid formats
+  it { is_expected.not_to allow_value({ 'AllowedCPUs' => '' }) }
+  it { is_expected.not_to allow_value({ 'AllowedCPUs' => '-4' }) }
+  it { is_expected.not_to allow_value({ 'AllowedCPUs' => '0-' }) }
+  it { is_expected.not_to allow_value({ 'AllowedCPUs' => '0,,4' }) }
+  it { is_expected.not_to allow_value({ 'AllowedCPUs' => 'abc' }) }
 end
