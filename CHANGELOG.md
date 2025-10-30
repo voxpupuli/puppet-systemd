@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v9.2.0](https://github.com/voxpupuli/puppet-systemd/tree/v9.2.0) (2025-10-30)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.1.0...v9.2.0)
+
+**Implemented enhancements:**
+
+- Support `AllowedCPUs` in `Systemd::Unit::Slice` [\#581](https://github.com/voxpupuli/puppet-systemd/pull/581) ([johnwarburton](https://github.com/johnwarburton))
+- Add support for system-wide drop-ins [\#580](https://github.com/voxpupuli/puppet-systemd/pull/580) ([smortex](https://github.com/smortex))
+- Allow more security-related options in Service units [\#579](https://github.com/voxpupuli/puppet-systemd/pull/579) ([DarthRL](https://github.com/DarthRL))
+- Use `runuser`/`run0` to connect to `systemd --user` instance [\#577](https://github.com/voxpupuli/puppet-systemd/pull/577) ([traylenator](https://github.com/traylenator))
+- Add `AssertFileNotEmpty` as optional parameter for unit [\#573](https://github.com/voxpupuli/puppet-systemd/pull/573) ([jplindquist](https://github.com/jplindquist))
+
+**Closed issues:**
+
+- systemd::user\_service broken for puppet running in background [\#459](https://github.com/voxpupuli/puppet-systemd/issues/459)
+
+**Merged pull requests:**
+
+- Reorder service options to match upstream documentation [\#582](https://github.com/voxpupuli/puppet-systemd/pull/582) ([DarthRL](https://github.com/DarthRL))
+
 ## [v9.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v9.1.0) (2025-09-29)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.0.1...v9.1.0)
