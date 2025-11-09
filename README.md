@@ -195,6 +195,16 @@ systemd::modules_load { 'impi.conf':
 }
 ```
 
+### sysusers
+
+Module can create sysusers.d files and will run `systemd-sysusers` afterwards.
+
+```puppet
+systemd::sysuser{ 'plato.conf':
+  content => 'u plato - "Be Kind"',
+}
+```
+
 ### tmpfiles
 
 Let this module handle file creation and systemd reloading
