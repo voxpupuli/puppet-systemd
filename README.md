@@ -200,7 +200,7 @@ systemd::modules_load { 'impi.conf':
 Module can create sysusers.d files and will run `systemd-sysusers` afterwards.
 
 ```puppet
-systemd::sysuser{ 'plato.conf':
+systemd::sysuser { 'plato.conf':
   content => 'u plato - "Be Kind"',
 }
 ```

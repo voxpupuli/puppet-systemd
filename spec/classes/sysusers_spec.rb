@@ -20,6 +20,7 @@ describe 'systemd::sysusers' do
               purge: true,
               recurse: true,
               force: true,
+              notify: 'Exec[systemd-sysusers]',
             }
           )
         }

@@ -18,7 +18,8 @@ describe 'systemd::sysuser' do
             ensure: 'file',
             content: 'random stuff',
             validate_cmd: '/usr/bin/systemd-sysusers --dry-run %',
-            mode: '0444'
+            mode: '0444',
+            notify: 'Exec[systemd-sysusers]'
           )
         }
 
@@ -29,6 +30,21 @@ describe 'systemd::sysuser' do
 
           it {
             expect(subject).to create_file('/etc/sysusers.d/random_sysusers.conf').without_validate
+          }
+        end
+
+        context 'with ensure absent' do
+          let(:params) do
+            super().merge(ensure: 'absent')
+          end
+
+          it {
+            expect(subject).to create_file('/etc/sysusers.d/random_sysusers.conf').with(
+              ensure: 'absent',
+              content: 'random stuff',
+              mode: '0444',
+              notify: 'Exec[systemd-sysusers]'
+            ).without_validate
           }
         end
 

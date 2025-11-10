@@ -17,6 +17,7 @@ class systemd::sysusers (
     purge   => $purgedir,
     recurse => $purgedir,
     force   => $purgedir,
+    notify  => Exec['systemd-sysusers'],
   }
 
   exec { 'systemd-sysusers':

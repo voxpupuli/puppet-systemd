@@ -2190,7 +2190,7 @@ Creates a sysusers.d configuration file
 ##### Add a user with systemd-sysusers
 
 ```puppet
-systemd::sysuser{ 'plato':
+systemd::sysuser { 'plato':
   content => 'u plato - "be kind"',
 }
 ```
@@ -2198,10 +2198,10 @@ systemd::sysuser{ 'plato':
 ##### Manage /etc/sysusers.d directory with purge disabled
 
 ```puppet
-class{' systemd::sysusers:
+class { 'systemd::sysusers:
   purgedir => false,
 }
-systemd::sysuser{ 'plato':
+systemd::sysuser { 'plato':
   content => 'u plato - "be kind"',
 }
 ```

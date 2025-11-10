@@ -24,25 +24,25 @@
 #   Validate the file `systemd-sysusers --dry-run`, The parameter is ignored for systemd version less than 250 where validation is not available.
 #
 # @example Add a user with systemd-sysusers
-#   systemd::sysuser{ 'plato':
+#   systemd::sysuser { 'plato':
 #     content => 'u plato - "be kind"',
 #   }
 #
 # @example Manage /etc/sysusers.d directory with purge disabled
-#   class{' systemd::sysusers:
+#   class { 'systemd::sysusers:
 #     purgedir => false,
 #   }
-#   systemd::sysuser{ 'plato':
+#   systemd::sysuser { 'plato':
 #     content => 'u plato - "be kind"',
 #   }
 #
 define systemd::sysuser (
-  Enum['present', 'absent']         $ensure   = 'present',
-  Systemd::Dropin                   $filename = $name,
-  Stdlib::Absolutepath              $path     = '/etc/sysusers.d',
-  Boolean                           $validate = true,
-  Optional[String]                  $content  = undef,
-  Optional[String]                  $source   = undef,
+  Enum['present', 'absent'] $ensure = 'present',
+  Systemd::Dropin $filename = $name,
+  Stdlib::Absolutepath $path = '/etc/sysusers.d',
+  Boolean $validate = true,
+  Optional[String] $content = undef,
+  Optional[String] $source = undef,
 ) {
   include systemd::sysusers
 
@@ -51,7 +51,7 @@ define systemd::sysuser (
     default   => $ensure,
   }
 
-  $_validate_cmd = ($validate and Integer($facts['systemd_version']) >= 250 ) ? {
+  $_validate_cmd = ($validate and Integer($facts['systemd_version']) >= 250 and $ensure == 'present') ? {
     true    => '/usr/bin/systemd-sysusers --dry-run %',
     default => undef,
   }
