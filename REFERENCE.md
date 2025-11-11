@@ -9,6 +9,7 @@
 #### Public Classes
 
 * [`systemd`](#systemd): This module allows triggering systemd commands once for all modules
+* [`systemd::sysusers`](#systemd--sysusers): Prepare systemd sysusers files
 * [`systemd::tmpfiles`](#systemd--tmpfiles): Update the systemd temp files
 
 #### Private Classes
@@ -39,6 +40,7 @@
 * [`systemd::network`](#systemd--network): Creates network config for systemd-networkd
 * [`systemd::networkd::interface`](#systemd--networkd--interface): This class implements a network interface file for systemd-networkd
 * [`systemd::service_limits`](#systemd--service_limits): Deprecated - Adds a set of custom limits to the service
+* [`systemd::sysuser`](#systemd--sysuser): Creates a sysusers.d configuration file
 * [`systemd::timer`](#systemd--timer): Create a timer and optionally a service unit to execute with the timer unit
 * [`systemd::timer_wrapper`](#systemd--timer_wrapper): Helper to define timer and accompanying services for a given task (cron like interface).
 * [`systemd::tmpfile`](#systemd--tmpfile): Creates a systemd tmpfile
@@ -907,6 +909,27 @@ Data type: `Boolean`
 If true, the util-linux package is installed, for runuser command.
 
 Default value: `false`
+
+### <a name="systemd--sysusers"></a>`systemd::sysusers`
+
+Prepare systemd sysusers files
+
+* **See also**
+  * systemd-sysusers(8)
+
+#### Parameters
+
+The following parameters are available in the `systemd::sysusers` class:
+
+* [`purgedir`](#-systemd--sysusers--purgedir)
+
+##### <a name="-systemd--sysusers--purgedir"></a>`purgedir`
+
+Data type: `Boolean`
+
+If true /etc/sysusers.d will be purged of unmanaged files.
+
+Default value: `true`
 
 ### <a name="systemd--tmpfiles"></a>`systemd::tmpfiles`
 
@@ -2153,6 +2176,96 @@ Data type: `Boolean`
 Unused parameter for compatibility with older versions. Will fail if true is passed in.
 
 Default value: `false`
+
+### <a name="systemd--sysuser"></a>`systemd::sysuser`
+
+Creates a sysusers.d configuration file
+
+* **See also**
+  * systemd-sysusers(8)
+  * sysusers.d(5)
+
+#### Examples
+
+##### Add a user with systemd-sysusers
+
+```puppet
+systemd::sysuser { 'plato':
+  content => 'u plato - "be kind"',
+}
+```
+
+##### Manage /etc/sysusers.d directory with purge disabled
+
+```puppet
+class { 'systemd::sysusers:
+  purgedir => false,
+}
+systemd::sysuser { 'plato':
+  content => 'u plato - "be kind"',
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `systemd::sysuser` defined type:
+
+* [`filename`](#-systemd--sysuser--filename)
+* [`ensure`](#-systemd--sysuser--ensure)
+* [`path`](#-systemd--sysuser--path)
+* [`content`](#-systemd--sysuser--content)
+* [`source`](#-systemd--sysuser--source)
+* [`validate`](#-systemd--sysuser--validate)
+
+##### <a name="-systemd--sysuser--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The name of the sysusers file to create
+
+Default value: `$name`
+
+##### <a name="-systemd--sysuser--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+Whether to drop a file or remove it
+
+Default value: `'present'`
+
+##### <a name="-systemd--sysuser--path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The path to the main systemd sysusers.d directory
+
+Default value: `'/etc/sysusers.d'`
+
+##### <a name="-systemd--sysuser--content"></a>`content`
+
+Data type: `Optional[String]`
+
+The literal content to write to the file
+
+* Mutually exclusive with `$source`
+
+Default value: `undef`
+
+##### <a name="-systemd--sysuser--source"></a>`source`
+
+Data type: `Optional[String]`
+
+A `File` resource compatible ``source``
+
+Default value: `undef`
+
+##### <a name="-systemd--sysuser--validate"></a>`validate`
+
+Data type: `Boolean`
+
+Validate the file `systemd-sysusers --dry-run`, The parameter is ignored for systemd version less than 250 where validation is not available.
+
+Default value: `true`
 
 ### <a name="systemd--timer"></a>`systemd::timer`
 
