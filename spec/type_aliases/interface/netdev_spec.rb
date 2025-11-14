@@ -7,6 +7,7 @@ describe 'Systemd::Interface::Netdev' do
     context 'with valid types' do
       [
         {},
+        { 'VLAN' => { 'Id' => 42 } },
       ].each do |value|
         describe value.inspect do
           it { is_expected.to allow_value(value) }
