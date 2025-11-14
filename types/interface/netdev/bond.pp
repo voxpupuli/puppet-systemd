@@ -7,7 +7,7 @@ type Systemd::Interface::Netdev::Bond = Struct[{
   ]],
   'TransmitHashPolicy'           => Optional[Enum['layer2', 'layer3+4', 'layer2+3', 'encap2+3', 'encap3+4']],
   'LACPTransmitRate'             => Optional[Enum['slow','fast']],
-  'MIIMonitorSec'                => Optional[Integer],
+  'MIIMonitorSec'                => Optional[Numeric],
   'PeerNotifyDelaySec'           => Optional[Integer[0,300]],
   'UpDelaySec'                   => Optional[Integer[0]],
   'DownDelaySec'                 => Optional[Integer[0]],

@@ -2,12 +2,13 @@
 
 require 'spec_helper'
 
-describe 'Systemd::Interface::Netdev' do
+describe 'Systemd::Interface::Netdev::Bond' do
   describe 'valid types' do
     context 'with valid types' do
       [
         {},
-        { 'VLAN' => { 'Id' => 42 } },
+        { 'MIIMonitorSec' => 42 },
+        { 'MIIMonitorSec' => 0.42 },
       ].each do |value|
         describe value.inspect do
           it { is_expected.to allow_value(value) }
