@@ -18,6 +18,7 @@ type Systemd::Interface::Network::Dhcpv6 = Struct[{
   'UseCaptivePortal'               => Optional[Enum['yes','no']],
   'UseDelegatedPrefix'             => Optional[Enum['yes','no']],
   'UseDNS'                         => Optional[Enum['yes','no']],
+  'UseDNR'                         => Optional[Enum['yes','no']],
   'UseNTP'                         => Optional[Enum['yes','no']],
   'UseHostname'                    => Optional[Enum['yes','no']],
   'UseDomains'                     => Optional[Enum['yes','no']],
