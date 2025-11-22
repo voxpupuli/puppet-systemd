@@ -20,6 +20,7 @@ type Systemd::Interface::Network::Dhcpv4 = Struct[{
   'SocketPriority'                 => Optional[Integer[0,6]],
   'Label'                          => Optional[String[1]],
   'UseDNS'                         => Optional[Enum['yes','no']],
+  'UseDNR'                         => Optional[Enum['yes','no']],
   'RoutesToDNS'                    => Optional[Enum['yes','no']],
   'UseNTP'                         => Optional[Enum['yes','no']],
   'RoutesToNTP'                    => Optional[Enum['yes','no']],
