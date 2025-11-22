@@ -4,6 +4,7 @@ type Systemd::Interface::Network::Ipv6acceptra = Struct[{
   'UseRedirect'           => Optional[Enum['yes','no']],
   'Token'                 => Optional[String[1]],
   'UseDNS'                => Optional[Enum['yes','no']],
+  'UseDNR'                => Optional[Enum['yes','no']],
   'UseDomains'            => Optional[Enum['yes','no']],
   'RouteTable'            => Optional[Variant[String[1],Integer[0,4294967295]]],
   'RouteMetric'           => Optional[String[1]],
