@@ -15,10 +15,8 @@ describe Facter.fact(:systemd_version) do
 
       let(:facts) { { systemd: true } }
 
-      # rubocop:disable RSpec/StubbedMock
-      # rubocop:disable RSpec/MessageSpies
       it do
-        expect(Facter::Util::Resolution).to receive(:exec).with("systemctl --version | awk '/systemd/{ print $2 }'").and_return('229')
+        allow(Facter::Util::Resolution).to receive(:exec).with("systemctl --version | awk '/systemd/{ print $2 }'").and_return('229')
         expect(Facter.value(:systemd_version)).to eq('229')
       end
     end
@@ -34,8 +32,6 @@ describe Facter.fact(:systemd_version) do
         expect(Facter::Util::Resolution).not_to receive(:exec).with("systemctl --version | awk '/systemd/{ print $2 }'")
         expect(Facter.value(:systemd_version)).to be_nil
       end
-      # rubocop:enable RSpec/StubbedMock
-      # rubocop:enable RSpec/MessageSpies
     end
   end
 end

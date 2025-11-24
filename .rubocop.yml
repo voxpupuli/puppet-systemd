@@ -4,3 +4,5 @@
 
 inherit_gem:
   voxpupuli-test: rubocop.yml
+RSpec/MessageSpies:
+  EnforcedStyle: receive
