@@ -9,6 +9,7 @@ describe provider_class do
     {
       title: 'foo',
       linger: 'enabled',
+      provider: 'ruby',
     }
   end
 
