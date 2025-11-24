@@ -34,7 +34,9 @@ describe 'systemd with manage_networkd true' do
       it { is_expected.to be_enabled }
     end
 
-    it { expect(package('systemd-networkd')).to be_installed } if has_package
+    describe package('systemd-networkd'), if: has_package do
+      it { is_expected.to be_installed }
+    end
   end
 
   context 'configure systemd stopped' do
