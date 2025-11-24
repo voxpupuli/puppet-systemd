@@ -11,12 +11,12 @@ describe 'systemd' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('systemd') }
         it { is_expected.to contain_class('systemd::journald') }
-        it { is_expected.to create_service('systemd-journald') }
+        it { is_expected.to contain_service('systemd-journald') }
         it { is_expected.to have_ini_setting_resource_count(0) }
         it { is_expected.not_to contain_class('systemd::machine_info') }
-        it { is_expected.not_to create_service('systemd-resolved') }
-        it { is_expected.not_to create_service('systemd-networkd') }
-        it { is_expected.not_to create_service('systemd-timesyncd') }
+        it { is_expected.not_to contain_service('systemd-resolved') }
+        it { is_expected.not_to contain_service('systemd-networkd') }
+        it { is_expected.not_to contain_service('systemd-timesyncd') }
         it { is_expected.not_to contain_package('systemd-networkd') }
         it { is_expected.not_to contain_package('systemd-timesyncd') }
         it { is_expected.not_to contain_package('systemd-resolved') }
@@ -34,12 +34,12 @@ describe 'systemd' do
             }
           end
 
-          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
-          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to contain_service('systemd-resolved').with_enable(true) }
           it { is_expected.to contain_file('/etc/resolv.conf').with_ensure('symlink') }
           it { is_expected.not_to contain_exec('restore_resolv.conf_if_possible') }
-          it { is_expected.to create_service('systemd-networkd').with_ensure('running') }
-          it { is_expected.to create_service('systemd-networkd').with_enable(true) }
+          it { is_expected.to contain_service('systemd-networkd').with_ensure('running') }
+          it { is_expected.to contain_service('systemd-networkd').with_enable(true) }
           it { is_expected.not_to contain_file('/etc/systemd/network') }
           it { is_expected.to contain_systemd__manage_dropin('synthesize_hostname.conf').with_ensure('absent') }
 
@@ -87,8 +87,8 @@ describe 'systemd' do
             }
           end
 
-          it { is_expected.to create_service('systemd-resolved').with_ensure('stopped') }
-          it { is_expected.to create_service('systemd-resolved').with_enable(false) }
+          it { is_expected.to contain_service('systemd-resolved').with_ensure('stopped') }
+          it { is_expected.to contain_service('systemd-resolved').with_enable(false) }
           it { is_expected.not_to contain_file('/etc/resolv.conf') }
           it { is_expected.to contain_exec('restore_resolv.conf_if_possible') }
 
@@ -116,8 +116,8 @@ describe 'systemd' do
             }
           end
 
-          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
-          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to contain_service('systemd-resolved').with_enable(true) }
           it { is_expected.to contain_ini_setting('dns') }
           it { is_expected.to contain_ini_setting('fallback_dns') }
           it { is_expected.not_to contain_ini_setting('domains') }
@@ -138,8 +138,8 @@ describe 'systemd' do
             }
           end
 
-          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
-          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to contain_service('systemd-resolved').with_enable(true) }
           it { is_expected.to contain_ini_setting('dns') }
           it { is_expected.to contain_ini_setting('fallback_dns') }
           it { is_expected.not_to contain_ini_setting('domains') }
@@ -161,8 +161,8 @@ describe 'systemd' do
             }
           end
 
-          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
-          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to contain_service('systemd-resolved').with_enable(true) }
           it { is_expected.to contain_ini_setting('dns_stub_listener').with_ensure('absent') }
         end
 
@@ -176,8 +176,8 @@ describe 'systemd' do
             }
           end
 
-          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
-          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to contain_service('systemd-resolved').with_enable(true) }
           it { is_expected.to contain_ini_setting('dns_stub_listener_extra').with_ensure('absent') }
         end
 
@@ -198,8 +198,8 @@ describe 'systemd' do
             }
           end
 
-          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
-          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to contain_service('systemd-resolved').with_enable(true) }
           it { is_expected.to contain_ini_setting('dns') }
           it { is_expected.to contain_ini_setting('fallback_dns') }
           it { is_expected.to contain_ini_setting('domains') }
@@ -232,8 +232,8 @@ describe 'systemd' do
             }
           end
 
-          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
-          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to contain_service('systemd-resolved').with_enable(true) }
 
           it {
             expect(subject).to contain_ini_setting('cache').with(
@@ -251,8 +251,8 @@ describe 'systemd' do
             }
           end
 
-          it { is_expected.to create_service('systemd-resolved').with_ensure('running') }
-          it { is_expected.to create_service('systemd-resolved').with_enable(true) }
+          it { is_expected.to contain_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to contain_service('systemd-resolved').with_enable(true) }
 
           it {
             expect(subject).to contain_ini_setting('cache').with(
@@ -317,8 +317,8 @@ describe 'systemd' do
             }
           end
 
-          it { is_expected.to create_service('systemd-oomd').with_ensure('running') }
-          it { is_expected.to create_service('systemd-oomd').with_enable(true) }
+          it { is_expected.to contain_service('systemd-oomd').with_ensure('running') }
+          it { is_expected.to contain_service('systemd-oomd').with_enable(true) }
         end
 
         context 'when enabling oomd with settings' do
@@ -333,8 +333,8 @@ describe 'systemd' do
             }
           end
 
-          it { is_expected.to create_service('systemd-oomd').with_ensure('running') }
-          it { is_expected.to create_service('systemd-oomd').with_enable(true) }
+          it { is_expected.to contain_service('systemd-oomd').with_ensure('running') }
+          it { is_expected.to contain_service('systemd-oomd').with_enable(true) }
           it { is_expected.to have_ini_setting_resource_count(3) }
 
           it {
@@ -394,12 +394,12 @@ describe 'systemd' do
             }
           end
 
-          it { is_expected.to create_service('systemd-timesyncd').with_ensure('running') }
-          it { is_expected.to create_service('systemd-timesyncd').with_enable(true) }
-          it { is_expected.not_to create_service('systemd-resolved').with_ensure('running') }
-          it { is_expected.not_to create_service('systemd-resolved').with_enable(true) }
-          it { is_expected.not_to create_service('systemd-networkd').with_ensure('running') }
-          it { is_expected.not_to create_service('systemd-networkd').with_enable(true) }
+          it { is_expected.to contain_service('systemd-timesyncd').with_ensure('running') }
+          it { is_expected.to contain_service('systemd-timesyncd').with_enable(true) }
+          it { is_expected.not_to contain_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.not_to contain_service('systemd-resolved').with_enable(true) }
+          it { is_expected.not_to contain_service('systemd-networkd').with_ensure('running') }
+          it { is_expected.not_to contain_service('systemd-networkd').with_enable(true) }
 
           if (facts[:os]['name'] == 'Ubuntu' && Puppet::Util::Package.versioncmp(facts[:os]['release']['full'], '20.04') >= 0) || (facts[:os]['name'] == 'Debian')
             it { is_expected.to contain_package('systemd-timesyncd') }
