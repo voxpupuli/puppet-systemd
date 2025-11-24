@@ -198,6 +198,24 @@ class systemd::resolved (
       path    => '/etc/systemd/resolved.conf',
       notify  => Service['systemd-resolved'],
     }
+
+    # Debian 13 started disabling mDNS by default, so we need to override that
+    # if we want to manage mDNS. See https://bugs.debian.org/1098914 and
+    # https://salsa.debian.org/systemd-team/systemd/-/commit/46432631232015b78071f84e5a3fb944621c83f7
+    if stdlib::os_version_gte('Debian', '13') {
+      file { '/etc/systemd/resolved.conf.d':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+      }
+
+      file { '/etc/systemd/resolved.conf.d/00-disable-mdns.conf':
+        ensure => link,
+        target => '/dev/null',
+        notify => Service['systemd-resolved'],
+      }
+    }
   }
 
   $_dnssec = $dnssec ? {

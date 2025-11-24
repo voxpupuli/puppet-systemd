@@ -224,6 +224,43 @@ describe 'systemd' do
           }
         end
 
+        context 'when enabling resolved with MulticastDNS enabled' do
+          let(:params) do
+            {
+              manage_resolved: true,
+              multicast_dns: true,
+            }
+          end
+
+          it { is_expected.to contain_service('systemd-resolved').with_ensure('running') }
+          it { is_expected.to contain_service('systemd-resolved').with_enable(true) }
+
+          it do
+            is_expected.to contain_ini_setting('multicast_dns').with(
+              path: '/etc/systemd/resolved.conf',
+              value: 'yes'
+            )
+          end
+
+          context 'on Debian 13 or newer', if: facts[:os]['name'] == 'Debian' && facts[:os]['release']['major'].to_i >= 13 do
+            it do
+              is_expected.to contain_file('/etc/systemd/resolved.conf.d').with(
+                ensure: 'directory',
+                owner: 'root',
+                group: 'root',
+                mode: '0755'
+              )
+            end
+
+            it do
+              is_expected.to contain_file('/etc/systemd/resolved.conf.d/00-disable-mdns.conf').with(
+                ensure: 'link',
+                target: '/dev/null'
+              ).that_notifies('Service[systemd-resolved]')
+            end
+          end
+        end
+
         context 'when enabling resolved with no-negative cache variant' do
           let(:params) do
             {

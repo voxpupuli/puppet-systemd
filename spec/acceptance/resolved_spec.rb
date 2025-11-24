@@ -41,6 +41,25 @@ describe 'systemd with manage_resolved true' do
     end
   end
 
+  context 'with mDNS enabled' do
+    it 'works idempotently with no errors' do
+      pp = <<-PUPPET
+      class { 'systemd':
+        manage_resolved    => true,
+        multicast_dns      => true,
+        manage_resolv_conf => #{default[:hypervisor] != 'container_podman'},
+      }
+      PUPPET
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+
+    # EL8 uses the "MulticastDNS setting: yes" format. Newer systemd versions use the "+mDNS" format.
+    describe command('resolvectl status | grep --fixed-strings --quiet --regexp=+mDNS --regexp="MulticastDNS setting: yes"') do
+      its(:exit_status) { is_expected.to eq 0 }
+    end
+  end
+
   context 'configure systemd stopped' do
     it 'works idempotently with no errors' do
       pp = <<-PUPPET
