@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v9.3.0](https://github.com/voxpupuli/puppet-systemd/tree/v9.3.0) (2025-11-25)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.2.0...v9.3.0)
+
+**Implemented enhancements:**
+
+- `resolved`: Override Debian 13's disablement of multicast DNS if managing multicast DNS [\#591](https://github.com/voxpupuli/puppet-systemd/pull/591) ([kenyon](https://github.com/kenyon))
+- Add `UseDNR` option to `DHCPv4`, `DHCPv6`, and `IPv6AcceptRA` in network interface type [\#588](https://github.com/voxpupuli/puppet-systemd/pull/588) ([FredL69](https://github.com/FredL69))
+- Support creation of `sysusers.d` entries [\#585](https://github.com/voxpupuli/puppet-systemd/pull/585) ([traylenator](https://github.com/traylenator))
+
+**Fixed bugs:**
+
+- Fix incorrect network options \(multiple\) [\#587](https://github.com/voxpupuli/puppet-systemd/pull/587) ([trefzer](https://github.com/trefzer))
+
 ## [v9.2.0](https://github.com/voxpupuli/puppet-systemd/tree/v9.2.0) (2025-10-30)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.1.0...v9.2.0)
