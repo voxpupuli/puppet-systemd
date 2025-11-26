@@ -43,6 +43,18 @@ describe 'systemd::timer_wrapper' do
             is_expected.to contain_Systemd__Manage_unit("#{title}.timer")
             is_expected.to contain_Systemd__Unit_file("#{title}.timer")
           end
+
+          context 'with two commands' do
+            let :params do
+              super().merge({ command: ['/usr/bin/echo run this', '/usr/bin/echo and this'] })
+            end
+
+            it do
+              is_expected.to contain_file("/etc/systemd/system/#{title}.service").
+                with_content(%r{ExecStart=/usr/bin/echo run this}).
+                with_content(%r{ExecStart=/usr/bin/echo and this})
+            end
+          end
         end
 
         context 'failue when not passing calendar spec' do
