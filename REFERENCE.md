@@ -2493,7 +2493,7 @@ whether the timer and service should be present or absent
 
 ##### <a name="-systemd--timer_wrapper--pre_command"></a>`pre_command`
 
-Data type: `Optional[Systemd::Unit::Service::Exec]`
+Data type: `Optional[Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]]]`
 
 the ExecStartPre for the systemd service to execute
 
@@ -2501,7 +2501,7 @@ Default value: `undef`
 
 ##### <a name="-systemd--timer_wrapper--command"></a>`command`
 
-Data type: `Optional[Systemd::Unit::Service::Exec]`
+Data type: `Optional[Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]]]`
 
 the command for the systemd service to execute
 
@@ -2509,7 +2509,7 @@ Default value: `undef`
 
 ##### <a name="-systemd--timer_wrapper--post_command"></a>`post_command`
 
-Data type: `Optional[Systemd::Unit::Service::Exec]`
+Data type: `Optional[Variant[Systemd::Unit::Service::Exec,Array[Systemd::Unit::Service::Exec,1]]]`
 
 the ExecStartPost for the systemd service to execute
 
