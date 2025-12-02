@@ -5503,7 +5503,7 @@ Struct[{
     Optional['MaxLevelConsole']      => Variant[Enum['emerg','alert','crit','err','warning','notice','info','debug'],Integer[0,7],Systemd::JournaldSettings::Ensure],
     Optional['MaxLevelSocket']       => Variant[Enum['emerg','alert','crit','err','warning','notice','info','debug'],Integer[0,7],Systemd::JournaldSettings::Ensure],
     Optional['MaxLevelWall']         => Variant[Enum['emerg','alert','crit','err','warning','notice','info','debug'],Integer[0,7],Systemd::JournaldSettings::Ensure],
-    Optional['Audit']                => Variant[Enum['yes','no'],Systemd::JournaldSettings::Ensure],
+    Optional['Audit']                => Variant[Enum['yes','no', 'keep'],Systemd::JournaldSettings::Ensure],
     Optional['ReadKMsg']             => Variant[Enum['yes','no'],Systemd::JournaldSettings::Ensure],
     Optional['TTYPath']              => Variant[Stdlib::Absolutepath,Systemd::JournaldSettings::Ensure],
     Optional['LineMax']              => Variant[Systemd::Unit::Amount,Systemd::JournaldSettings::Ensure],
