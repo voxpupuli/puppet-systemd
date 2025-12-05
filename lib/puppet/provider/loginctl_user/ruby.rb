@@ -5,29 +5,17 @@
 # @see https://wiki.archlinux.org/title/Systemd/User
 Puppet::Type.type(:loginctl_user).provide(:ruby) do
   desc 'custom provider to manage systemd user sessions/linger'
+
   commands loginctl: 'loginctl'
 
-  def self.instances
-    users = loginctl('list-users', '--no-legend').split("\n").map { |l| l.split[1] }
-    loginctl('show-user', '-p', 'Name', '-p', 'Linger', *users).split("\n\n").map do |u|
-      user = u.split("\n").to_h { |f| f.split('=') }
-      linger = if user['Linger'] == 'yes'
-                 'enabled'
-               else
-                 'disabled'
-               end
-      new(name: user['Name'],
-          linger: linger)
-    end
+  def linger
+    # loginctl is only successful if the user has an active session (so either logged in or lingering
+    # so if loginctl fails, linger is definitly disabled, for users with an active session
+    # (eg. logged in or running a timer or ...), the Linger property displays if lingering is activated.
+    :enabled if loginctl('show-user', resource[:name], '--property=Linger', '--value').chomp == 'yes'
+  rescue Puppet::ExecutionFailure
+    :disabled
   end
-
-  def self.prefetch(resources)
-    instances.each do |prov|
-      resources[prov.name].provider = prov if resources[prov.name]
-    end
-  end
-
-  mk_resource_methods
 
   def linger=(value)
     case value
