@@ -13,4 +13,6 @@ Puppet::Type.newtype(:loginctl_user) do
     newvalues :enabled, :disabled
     defaultto :disabled
   end
+
+  autorequire(:user) { self[:name] }
 end
