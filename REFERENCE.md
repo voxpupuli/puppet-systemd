@@ -228,6 +228,25 @@ The following parameters are available in the `systemd` class:
 * [`manage_networkd`](#-systemd--manage_networkd)
 * [`networkd_ensure`](#-systemd--networkd_ensure)
 * [`networkd_package`](#-systemd--networkd_package)
+* [`speed_meter`](#-systemd--speed_meter)
+* [`speed_meter_interval`](#-systemd--speed_meter_interval)
+* [`manage_foreign_routing_policy_rules`](#-systemd--manage_foreign_routing_policy_rules)
+* [`manage_foreign_routes`](#-systemd--manage_foreign_routes)
+* [`manage_foreign_next_hops`](#-systemd--manage_foreign_next_hops)
+* [`route_table`](#-systemd--route_table)
+* [`ipv4_forwarding`](#-systemd--ipv4_forwarding)
+* [`ipv6_forwarding`](#-systemd--ipv6_forwarding)
+* [`ipv6_privacy_extensions`](#-systemd--ipv6_privacy_extensions)
+* [`use_domains`](#-systemd--use_domains)
+* [`ipv6_accept_ra_use_domains`](#-systemd--ipv6_accept_ra_use_domains)
+* [`dhcpv4_client_identifier`](#-systemd--dhcpv4_client_identifier)
+* [`dhcpv4_duid_type`](#-systemd--dhcpv4_duid_type)
+* [`dhcpv4_duid_raw_data`](#-systemd--dhcpv4_duid_raw_data)
+* [`dhcpv4_use_domains`](#-systemd--dhcpv4_use_domains)
+* [`dhcpv6_duid_type`](#-systemd--dhcpv6_duid_type)
+* [`dhcpv6_duid_raw_data`](#-systemd--dhcpv6_duid_raw_data)
+* [`dhcpv6_use_domains`](#-systemd--dhcpv6_use_domains)
+* [`dhcp_server_persist_leases`](#-systemd--dhcp_server_persist_leases)
 * [`manage_timesyncd`](#-systemd--manage_timesyncd)
 * [`timesyncd_ensure`](#-systemd--timesyncd_ensure)
 * [`timesyncd_package`](#-systemd--timesyncd_package)
@@ -511,6 +530,158 @@ Default value: `'running'`
 Data type: `Optional[String[1]]`
 
 Name of the package required for systemd-networkd, if any
+
+Default value: `undef`
+
+##### <a name="-systemd--speed_meter"></a>`speed_meter`
+
+Data type: `Optional[Boolean]`
+
+The value of the `/etc/systemd/networkd.conf` [Network] section `SpeedMeter` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--speed_meter_interval"></a>`speed_meter_interval`
+
+Data type: `Optional[Systemd::Timespan]`
+
+The value of the `/etc/systemd/networkd.conf` [Network] section `SpeedMeterIntervalSec` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_foreign_routing_policy_rules"></a>`manage_foreign_routing_policy_rules`
+
+Data type: `Optional[Boolean]`
+
+The value of the `/etc/systemd/networkd.conf` [Network] section `ManageForeignRoutingPolicyRules` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_foreign_routes"></a>`manage_foreign_routes`
+
+Data type: `Optional[Boolean]`
+
+The value of the `/etc/systemd/networkd.conf` [Network] section `ManageForeignRoutes` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_foreign_next_hops"></a>`manage_foreign_next_hops`
+
+Data type: `Optional[Boolean]`
+
+The value of the `/etc/systemd/networkd.conf` [Network] section `ManageForeignNextHops` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--route_table"></a>`route_table`
+
+Data type: `Optional[String[1]]`
+
+The value of the `/etc/systemd/networkd.conf` [Network] section `ManageForeignNextHops` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--ipv4_forwarding"></a>`ipv4_forwarding`
+
+Data type: `Optional[Boolean]`
+
+The value of the `/etc/systemd/networkd.conf` [Network] section `IPv4Forwarding` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--ipv6_forwarding"></a>`ipv6_forwarding`
+
+Data type: `Optional[Boolean]`
+
+The value of the `/etc/systemd/networkd.conf` [Network] section `IPv6Forwarding` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--ipv6_privacy_extensions"></a>`ipv6_privacy_extensions`
+
+Data type: `Optional[Variant[Boolean,Enum['prefer-public','kernel']]]`
+
+The value of the `/etc/systemd/networkd.conf` [Network] section `IPv6PrivacyExtensions` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--use_domains"></a>`use_domains`
+
+Data type: `Optional[Variant[Boolean,Enum['route']]]`
+
+The value of the `/etc/systemd/networkd.conf` [Network] section `UseDomains` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--ipv6_accept_ra_use_domains"></a>`ipv6_accept_ra_use_domains`
+
+Data type: `Optional[Variant[Boolean,Enum['route']]]`
+
+The value of the `/etc/systemd/networkd.conf` [IPv6AcceptRA] section `UseDomains` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--dhcpv4_client_identifier"></a>`dhcpv4_client_identifier`
+
+Data type: `Optional[Enum['mac','duid']]`
+
+The value of the `/etc/systemd/networkd.conf` [DHCPv4] section `ClientIdentifier` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--dhcpv4_duid_type"></a>`dhcpv4_duid_type`
+
+Data type: `Optional[Variant[Integer[0,65535],String[1]]]`
+
+The value of the `/etc/systemd/networkd.conf` [DHCPv4] section `DUIDType` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--dhcpv4_duid_raw_data"></a>`dhcpv4_duid_raw_data`
+
+Data type: `Optional[String[1]]`
+
+The value of the `/etc/systemd/networkd.conf` [DHCPv4] section `DUIDRawData` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--dhcpv4_use_domains"></a>`dhcpv4_use_domains`
+
+Data type: `Optional[Variant[Boolean,Enum['route']]]`
+
+The value of the `/etc/systemd/networkd.conf` [DHCPv4] section `UseDomains` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--dhcpv6_duid_type"></a>`dhcpv6_duid_type`
+
+Data type: `Optional[Variant[Integer[0,65535],String[1]]]`
+
+The value of the `/etc/systemd/networkd.conf` [DHCPv6] section `DUIDType` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--dhcpv6_duid_raw_data"></a>`dhcpv6_duid_raw_data`
+
+Data type: `Optional[String[1]]`
+
+The value of the `/etc/systemd/networkd.conf` [DHCPv6] section `DUIDRawData` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--dhcpv6_use_domains"></a>`dhcpv6_use_domains`
+
+Data type: `Optional[Variant[Boolean,Enum['route']]]`
+
+The value of the `/etc/systemd/networkd.conf` [DHCPv6] section `UseDomains` setting.
+
+Default value: `undef`
+
+##### <a name="-systemd--dhcp_server_persist_leases"></a>`dhcp_server_persist_leases`
+
+Data type: `Optional[Variant[Boolean,Enum['runtime']]]`
+
+The value of the `/etc/systemd/networkd.conf` [DHCPServer] section `PersistLeases` setting.
 
 Default value: `undef`
 

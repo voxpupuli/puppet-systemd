@@ -77,6 +77,30 @@ describe 'systemd' do
 
             it { is_expected.to contain_file('/etc/resolv.conf') }
           end
+
+          context 'when configuring networkd' do
+            let(:params) do
+              super().merge(
+                speed_meter: true,
+                ipv6_forwarding: true,
+                use_domains: true
+              )
+            end
+
+            %w[
+              speed_meter
+              ipv6_forwarding
+              use_domains
+            ].each do |setting|
+              it do
+                is_expected.to contain_ini_setting(setting).with(
+                  path: '/etc/systemd/networkd.conf',
+                  section: 'Network',
+                  value: 'true'
+                ).that_notifies('Service[systemd-networkd]')
+              end
+            end
+          end
         end
 
         context 'when resolved_ensure is stopped' do
