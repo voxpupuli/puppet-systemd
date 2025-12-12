@@ -66,6 +66,183 @@ class systemd::networkd (
     ensure => $ensure,
     enable => $_enable_networkd,
   }
+
+  $common_ini_setting_attributes = {
+    path   => '/etc/systemd/networkd.conf',
+    notify => Service['systemd-networkd'],
+  }
+
+  if $systemd::speed_meter {
+    ini_setting { 'speed_meter':
+      section => 'Network',
+      setting => 'SpeedMeter',
+      value   => $systemd::speed_meter,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::speed_meter_interval {
+    ini_setting { 'speed_meter_interval':
+      section => 'Network',
+      setting => 'SpeedMeterIntervalSec',
+      value   => $systemd::speed_meter_interval,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::manage_foreign_routing_policy_rules {
+    ini_setting { 'manage_foreign_routing_policy_rules':
+      section => 'Network',
+      setting => 'ManageForeignRoutingPolicyRules',
+      value   => $systemd::manage_foreign_routing_policy_rules,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::manage_foreign_routes {
+    ini_setting { 'manage_foreign_routes':
+      section => 'Network',
+      setting => 'ManageForeignRoutes',
+      value   => $systemd::manage_foreign_routes,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::manage_foreign_next_hops {
+    ini_setting { 'manage_foreign_next_hops':
+      section => 'Network',
+      setting => 'ManageForeignNextHops',
+      value   => $systemd::manage_foreign_next_hops,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::route_table {
+    ini_setting { 'route_table':
+      section => 'Network',
+      setting => 'RouteTable',
+      value   => $systemd::route_table,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::ipv4_forwarding {
+    ini_setting { 'ipv4_forwarding':
+      section => 'Network',
+      setting => 'IPv4Forwarding',
+      value   => $systemd::ipv4_forwarding,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::ipv6_forwarding {
+    ini_setting { 'ipv6_forwarding':
+      section => 'Network',
+      setting => 'IPv6Forwarding',
+      value   => $systemd::ipv6_forwarding,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::ipv6_privacy_extensions {
+    ini_setting { 'ipv6_privacy_extensions':
+      section => 'Network',
+      setting => 'IPv6PrivacyExtensions',
+      value   => $systemd::ipv6_privacy_extensions,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::use_domains {
+    ini_setting { 'use_domains':
+      section => 'Network',
+      setting => 'UseDomains',
+      value   => $systemd::use_domains,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::ipv6_accept_ra_use_domains {
+    ini_setting { 'ipv6_accept_ra_use_domains':
+      section => 'IPv6AcceptRA',
+      setting => 'UseDomains',
+      value   => $systemd::ipv6_accept_ra_use_domains,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::dhcpv4_client_identifier {
+    ini_setting { 'dhcpv4_client_identifier':
+      section => 'DHCPv4',
+      setting => 'ClientIdentifier',
+      value   => $systemd::dhcpv4_client_identifier,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::dhcpv4_duid_type {
+    ini_setting { 'dhcpv4_duid_type':
+      section => 'DHCPv4',
+      setting => 'DUIDType',
+      value   => $systemd::dhcpv4_duid_type,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::dhcpv4_duid_raw_data {
+    ini_setting { 'dhcpv4_duid_raw_data':
+      section => 'DHCPv4',
+      setting => 'DUIDRawData',
+      value   => $systemd::dhcpv4_duid_raw_data,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::dhcpv4_use_domains {
+    ini_setting { 'dhcpv4_use_domains':
+      section => 'DHCPv4',
+      setting => 'UseDomains',
+      value   => $systemd::dhcpv4_use_domains,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::dhcpv6_duid_type {
+    ini_setting { 'dhcpv6_duid_type':
+      section => 'DHCPv6',
+      setting => 'DUIDType',
+      value   => $systemd::dhcpv6_duid_type,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::dhcpv6_duid_raw_data {
+    ini_setting { 'dhcpv6_duid_raw_data':
+      section => 'DHCPv6',
+      setting => 'DUIDRawData',
+      value   => $systemd::dhcpv6_duid_raw_data,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::dhcpv6_use_domains {
+    ini_setting { 'dhcpv6_use_domains':
+      section => 'DHCPv6',
+      setting => 'UseDomains',
+      value   => $systemd::dhcpv6_use_domains,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
+  if $systemd::dhcp_server_persist_leases {
+    ini_setting { 'dhcp_server_persist_leases':
+      section => 'DHCPServer',
+      setting => 'PersistLeases',
+      value   => $systemd::dhcp_server_persist_leases,
+      *       => $common_ini_setting_attributes,
+    }
+  }
+
   # this directory is created by systemd
   # we define it here to purge non-managed files
   if $manage_all_network_files {

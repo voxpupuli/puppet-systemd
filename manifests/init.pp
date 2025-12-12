@@ -100,6 +100,63 @@
 # @param networkd_package
 #   Name of the package required for systemd-networkd, if any
 #
+# @param speed_meter
+#   The value of the `/etc/systemd/networkd.conf` [Network] section `SpeedMeter` setting.
+#
+# @param speed_meter_interval
+#   The value of the `/etc/systemd/networkd.conf` [Network] section `SpeedMeterIntervalSec` setting.
+#
+# @param manage_foreign_routing_policy_rules
+#   The value of the `/etc/systemd/networkd.conf` [Network] section `ManageForeignRoutingPolicyRules` setting.
+#
+# @param manage_foreign_routes
+#   The value of the `/etc/systemd/networkd.conf` [Network] section `ManageForeignRoutes` setting.
+#
+# @param manage_foreign_next_hops
+#   The value of the `/etc/systemd/networkd.conf` [Network] section `ManageForeignNextHops` setting.
+#
+# @param route_table
+#   The value of the `/etc/systemd/networkd.conf` [Network] section `ManageForeignNextHops` setting.
+#
+# @param ipv4_forwarding
+#   The value of the `/etc/systemd/networkd.conf` [Network] section `IPv4Forwarding` setting.
+#
+# @param ipv6_forwarding
+#   The value of the `/etc/systemd/networkd.conf` [Network] section `IPv6Forwarding` setting.
+#
+# @param ipv6_privacy_extensions
+#   The value of the `/etc/systemd/networkd.conf` [Network] section `IPv6PrivacyExtensions` setting.
+#
+# @param use_domains
+#   The value of the `/etc/systemd/networkd.conf` [Network] section `UseDomains` setting.
+#
+# @param ipv6_accept_ra_use_domains
+#   The value of the `/etc/systemd/networkd.conf` [IPv6AcceptRA] section `UseDomains` setting.
+#
+# @param dhcpv4_client_identifier
+#   The value of the `/etc/systemd/networkd.conf` [DHCPv4] section `ClientIdentifier` setting.
+#
+# @param dhcpv4_duid_type
+#   The value of the `/etc/systemd/networkd.conf` [DHCPv4] section `DUIDType` setting.
+#
+# @param dhcpv4_duid_raw_data
+#   The value of the `/etc/systemd/networkd.conf` [DHCPv4] section `DUIDRawData` setting.
+#
+# @param dhcpv4_use_domains
+#   The value of the `/etc/systemd/networkd.conf` [DHCPv4] section `UseDomains` setting.
+#
+# @param dhcpv6_duid_type
+#   The value of the `/etc/systemd/networkd.conf` [DHCPv6] section `DUIDType` setting.
+#
+# @param dhcpv6_duid_raw_data
+#   The value of the `/etc/systemd/networkd.conf` [DHCPv6] section `DUIDRawData` setting.
+#
+# @param dhcpv6_use_domains
+#   The value of the `/etc/systemd/networkd.conf` [DHCPv6] section `UseDomains` setting.
+#
+# @param dhcp_server_persist_leases
+#   The value of the `/etc/systemd/networkd.conf` [DHCPServer] section `PersistLeases` setting.
+#
 # @param manage_timesyncd
 #   Manage the systemd timesyncd daemon
 #
@@ -288,6 +345,25 @@ class systemd (
   Boolean                                             $manage_networkd = false,
   Enum['stopped','running']                           $networkd_ensure = 'running',
   Optional[String[1]]                                 $networkd_package = undef,
+  Optional[Boolean]                                   $speed_meter = undef,
+  Optional[Systemd::Timespan]                         $speed_meter_interval = undef,
+  Optional[Boolean]                                   $manage_foreign_routing_policy_rules = undef,
+  Optional[Boolean]                                   $manage_foreign_routes = undef,
+  Optional[Boolean]                                   $manage_foreign_next_hops = undef,
+  Optional[String[1]]                                 $route_table = undef,
+  Optional[Boolean]                                   $ipv4_forwarding = undef,
+  Optional[Boolean]                                   $ipv6_forwarding = undef,
+  Optional[Variant[Boolean,Enum['prefer-public','kernel']]] $ipv6_privacy_extensions = undef,
+  Optional[Variant[Boolean,Enum['route']]]            $use_domains = undef,
+  Optional[Variant[Boolean,Enum['route']]]            $ipv6_accept_ra_use_domains = undef,
+  Optional[Enum['mac','duid']]                        $dhcpv4_client_identifier = undef,
+  Optional[Variant[Integer[0,65535],String[1]]]       $dhcpv4_duid_type = undef,
+  Optional[String[1]]                                 $dhcpv4_duid_raw_data = undef,
+  Optional[Variant[Boolean,Enum['route']]]            $dhcpv4_use_domains = undef,
+  Optional[Variant[Integer[0,65535],String[1]]]       $dhcpv6_duid_type = undef,
+  Optional[String[1]]                                 $dhcpv6_duid_raw_data = undef,
+  Optional[Variant[Boolean,Enum['route']]]            $dhcpv6_use_domains = undef,
+  Optional[Variant[Boolean,Enum['runtime']]]          $dhcp_server_persist_leases = undef,
   Boolean                                             $manage_timesyncd = false,
   Enum['stopped','running']                           $timesyncd_ensure = 'running',
   Optional[String[1]]                                 $timesyncd_package = undef,
