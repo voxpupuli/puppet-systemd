@@ -460,7 +460,7 @@ class systemd (
     Class['systemd::install'] -> Class['systemd::resolved']
   }
 
-  if $manage_networkd and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-networkd.service'] {
+  if $manage_networkd {
     contain systemd::networkd
     Class['systemd::install'] -> Class['systemd::networkd']
   }
