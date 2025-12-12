@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v9.4.0](https://github.com/voxpupuli/puppet-systemd/tree/v9.4.0) (2025-12-12)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.3.0...v9.4.0)
+
+**Implemented enhancements:**
+
+- `networkd`: allow management of `/etc/systemd/networkd.conf` settings [\#601](https://github.com/voxpupuli/puppet-systemd/pull/601) ([kenyon](https://github.com/kenyon))
+- add autorequire user resource to `loginctl_user` type [\#598](https://github.com/voxpupuli/puppet-systemd/pull/598) ([trefzer](https://github.com/trefzer))
+- Let timer\_wrapper support a list of commands [\#595](https://github.com/voxpupuli/puppet-systemd/pull/595) ([traylenator](https://github.com/traylenator))
+- Also permit `keep` for journald `Audit` [\#594](https://github.com/voxpupuli/puppet-systemd/pull/594) ([jcpunk](https://github.com/jcpunk))
+
 ## [v9.3.0](https://github.com/voxpupuli/puppet-systemd/tree/v9.3.0) (2025-11-25)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.2.0...v9.3.0)
