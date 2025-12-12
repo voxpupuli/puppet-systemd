@@ -347,10 +347,12 @@ It does contain a workaround for [PUP-9473](https://tickets.puppetlabs.com/brows
 
 ### network
 
-systemd-networkd is able to manage your network configuration. We provide a
-defined resource which can write the interface configurations. systemd-networkd
-needs to be restarted to apply the configs. The defined resource can do this
-for you:
+`systemd-networkd` manages your network configuration.
+Most settings in `/etc/systemd/networkd.conf` can be configured via `init.pp` class parameters.
+
+We provide a defined resource which can write the interface configurations.
+systemd-networkd needs to be restarted to apply the configs. The defined
+resource can do this for you:
 
 ```puppet
 systemd::network { 'eth0.network':
