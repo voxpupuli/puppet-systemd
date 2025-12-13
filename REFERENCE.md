@@ -39,7 +39,6 @@
 * [`systemd::modules_load`](#systemd--modules_load): Creates a modules-load.d drop file
 * [`systemd::network`](#systemd--network): Creates network config for systemd-networkd
 * [`systemd::networkd::interface`](#systemd--networkd--interface): This class implements a network interface file for systemd-networkd
-* [`systemd::service_limits`](#systemd--service_limits): Deprecated - Adds a set of custom limits to the service
 * [`systemd::sysuser`](#systemd--sysuser): Creates a sysusers.d configuration file
 * [`systemd::timer`](#systemd--timer): Create a timer and optionally a service unit to execute with the timer unit
 * [`systemd::timer_wrapper`](#systemd--timer_wrapper): Helper to define timer and accompanying services for a given task (cron like interface).
@@ -165,7 +164,6 @@
 * [`Systemd::MachineInfoSettings`](#Systemd--MachineInfoSettings): Matches Systemd machine-info (hostnamectl) file Struct
 * [`Systemd::OomdSettings`](#Systemd--OomdSettings): Configurations for oomd.conf
 * [`Systemd::Output`](#Systemd--Output): Defines allowed output values
-* [`Systemd::ServiceLimits`](#Systemd--ServiceLimits): Deprecated - Matches Systemd Service Limit Struct
 * [`Systemd::ServiceManagerSettings`](#Systemd--ServiceManagerSettings): Matches Systemd system.conf/user.conf settings
 * [`Systemd::SettingEnsure`](#Systemd--SettingEnsure): Defines allowed ensure states for an ini_setting
 * [`Systemd::Timespan`](#Systemd--Timespan): Defines a timespan type
@@ -201,7 +199,6 @@ This module allows triggering systemd commands once for all modules
 The following parameters are available in the `systemd` class:
 
 * [`default_target`](#-systemd--default_target)
-* [`service_limits`](#-systemd--service_limits)
 * [`networks`](#-systemd--networks)
 * [`timers`](#-systemd--timers)
 * [`tmpfiles`](#-systemd--tmpfiles)
@@ -302,14 +299,6 @@ Data type: `Optional[Pattern['^.+\.target$']]`
 The default systemd boot target, unmanaged if set to undef.
 
 Default value: `undef`
-
-##### <a name="-systemd--service_limits"></a>`service_limits`
-
-Data type: `Stdlib::CreateResources`
-
-Deprecated, use dropin_files - Hash of `systemd::service_limits` resources
-
-Default value: `{}`
 
 ##### <a name="-systemd--networks"></a>`networks`
 
@@ -2270,83 +2259,6 @@ Hash of a network profile
 The structure is equal to the 'network' parameter of an interface.
 
 Default value: `{}`
-
-### <a name="systemd--service_limits"></a>`systemd::service_limits`
-
-Deprecated - Adds a set of custom limits to the service
-
-* **See also**
-  * systemd.exec(5)
-
-#### Parameters
-
-The following parameters are available in the `systemd::service_limits` defined type:
-
-* [`name`](#-systemd--service_limits--name)
-* [`ensure`](#-systemd--service_limits--ensure)
-* [`path`](#-systemd--service_limits--path)
-* [`selinux_ignore_defaults`](#-systemd--service_limits--selinux_ignore_defaults)
-* [`limits`](#-systemd--service_limits--limits)
-* [`source`](#-systemd--service_limits--source)
-* [`restart_service`](#-systemd--service_limits--restart_service)
-
-##### <a name="-systemd--service_limits--name"></a>`name`
-
-Data type: `Pattern['^.+\.(service|socket|mount|swap)$']`
-
-The name of the service that you will be modifying
-
-##### <a name="-systemd--service_limits--ensure"></a>`ensure`
-
-Data type: `Enum['present', 'absent', 'file']`
-
-Whether to drop a file or remove it
-
-Default value: `'present'`
-
-##### <a name="-systemd--service_limits--path"></a>`path`
-
-Data type: `Stdlib::Absolutepath`
-
-The path to the main systemd settings directory
-
-Default value: `'/etc/systemd/system'`
-
-##### <a name="-systemd--service_limits--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
-
-Data type: `Boolean`
-
-If Puppet should ignore the default SELinux labels.
-
-Default value: `false`
-
-##### <a name="-systemd--service_limits--limits"></a>`limits`
-
-Data type: `Optional[Systemd::ServiceLimits]`
-
-A Hash of service limits matching the settings in ``systemd.exec(5)``
-
-* Mutually exclusive with ``$source``
-
-Default value: `undef`
-
-##### <a name="-systemd--service_limits--source"></a>`source`
-
-Data type: `Optional[String]`
-
-A ``File`` resource compatible ``source``
-
-* Mutually exclusive with ``$limits``
-
-Default value: `undef`
-
-##### <a name="-systemd--service_limits--restart_service"></a>`restart_service`
-
-Data type: `Boolean`
-
-Unused parameter for compatibility with older versions. Will fail if true is passed in.
-
-Default value: `false`
 
 ### <a name="systemd--sysuser"></a>`systemd::sysuser`
 
@@ -5786,59 +5698,6 @@ Struct[{
 Used in DefaultStandardOutput/DefaultStandardError e.g.
 
 Alias of `Enum['inherit', 'null', 'tty', 'journal', 'journal+console', 'kmsg', 'kmsg+console']`
-
-### <a name="Systemd--ServiceLimits"></a>`Systemd::ServiceLimits`
-
-Deprecated - Matches Systemd Service Limit Struct
-
-Alias of
-
-```puppet
-Struct[{
-    Optional['LimitCPU']            => Pattern['^\d+(s|m|h|d|w|M|y)?(:\d+(s|m|h|d|w|M|y)?)?$'],
-    Optional['LimitFSIZE']          => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
-    Optional['LimitDATA']           => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
-    Optional['LimitSTACK']          => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
-    Optional['LimitCORE']           => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
-    Optional['LimitRSS']            => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
-    Optional['LimitNOFILE']         => Variant[Integer[-1],Pattern['^(infinity|\d+(:(infinity|\d+))?)$']],
-    Optional['LimitAS']             => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
-    Optional['LimitNPROC']          => Variant[Integer[-1],Pattern['^(infinity|\d+(:(infinity|\d+))?)$']],
-    Optional['LimitMEMLOCK']        => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
-    Optional['LimitLOCKS']          => Integer[1],
-    Optional['LimitSIGPENDING']     => Integer[1],
-    Optional['LimitMSGQUEUE']       => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
-    Optional['LimitNICE']           => Variant[Integer[0,40], Pattern['^(-\+([0-1]?[0-9]|20))|([0-3]?[0-9]|40)$']],
-    Optional['LimitRTPRIO']         => Integer[0],
-    Optional['LimitRTTIME']         => Pattern['^\d+(ms|s|m|h|d|w|M|y)?(:\d+(ms|s|m|h|d|w|M|y)?)?$'],
-    Optional['CPUAccounting']       => Boolean,
-    Optional['CPUShares']           => Integer[2,262144],
-    Optional['StartupCPUShares']    => Integer[2,262144],
-    Optional['CPUQuota']            => Optional[Pattern['^([1-9][0-9]*)%$']],
-    Optional['MemoryAccounting']    => Boolean,
-    Optional['MemoryLow']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemoryMin']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemoryHigh']          => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemoryMax']           => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemoryLimit']         => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['MemorySwapMax']       => Pattern['\A(infinity|\d+(K|M|G|T|%)?(:\d+(K|M|G|T|%)?)?)\z'],
-    Optional['TasksAccounting']     => Boolean,
-    Optional['TasksMax']            => Variant[Integer[1],Pattern['^(infinity|([1-9][0-9]?$|^100)%)$']],
-    Optional['IOAccounting']        => Boolean,
-    Optional['IOWeight']            => Integer[1,10000],
-    Optional['StartupIOWeight']     => Integer[1,10000],
-    Optional['IODeviceWeight']      => Array[Hash[Stdlib::Absolutepath, Integer[1,10000], 1, 1]],
-    Optional['IOReadBandwidthMax']  => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
-    Optional['IOWriteBandwidthMax'] => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
-    Optional['IOReadIOPSMax']       => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
-    Optional['IOWriteIOPSMax']      => Array[Hash[Stdlib::Absolutepath, Pattern['^(\d+(K|M|G|T)?)$'], 1, 1]],
-    Optional['DeviceAllow']         => String[1],
-    Optional['DevicePolicy']        => Enum['auto','closed','strict'],
-    Optional['Slice']               => String[1],
-    Optional['Delegate']            => Boolean,
-    Optional['OOMScoreAdjust']      => Integer[-1000,1000]
-  }]
-```
 
 ### <a name="Systemd--ServiceManagerSettings"></a>`Systemd::ServiceManagerSettings`
 
