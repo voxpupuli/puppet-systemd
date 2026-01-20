@@ -92,8 +92,12 @@ define systemd::unit_file (
 
   if $enable == 'mask' {
     $_target = '/dev/null'
+    $_content = undef
+    $_source  = undef
   } else {
     $_target = $target
+    $_content = $content
+    $_source  = $source
   }
 
   if $_target {
@@ -104,8 +108,8 @@ define systemd::unit_file (
 
   file { "${path}/${name}":
     ensure                  => $_ensure,
-    content                 => $content,
-    source                  => $source,
+    content                 => $_content,
+    source                  => $_source,
     target                  => $_target,
     owner                   => $owner,
     group                   => $group,

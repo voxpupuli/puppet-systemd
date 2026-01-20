@@ -127,6 +127,25 @@ describe 'systemd::manage_unit' do
           }
         end
 
+        context 'when masking a unit' do
+          let(:title) { 'tmpfs.mount' }
+
+          let(:params) do
+            {
+              enable: 'mask',
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_file('/etc/systemd/system/tmpfs.mount').with(
+              ensure: 'link',
+              target: '/dev/null'
+            )
+          }
+        end
+
         context 'on a swap' do
           let(:title) { 'file.swap' }
 
