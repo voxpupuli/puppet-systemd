@@ -4,6 +4,7 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
 group :test do
+  gem 'openvox-strings', github: 'slauger/openvox-strings', branch: 'feature/hiera-defaults-support'
   gem 'voxpupuli-test', '~> 13.0',  :require => false
   gem 'puppet_metadata', '~> 5.0',  :require => false
 end
