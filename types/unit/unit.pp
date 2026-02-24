@@ -50,6 +50,6 @@ type Systemd::Unit::Unit = Struct[
     Optional['ConditionFileNotEmpty']       => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['ConditionFileIsExecutable']   => Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/],Array[Variant[Enum[''],Stdlib::Unixpath,Pattern[/^!.*$/]],1]],
     Optional['StartLimitIntervalSec']       => String[1],
-    Optional['StartLimitBurst']             => Integer[1],
+    Optional['StartLimitBurst']             => Variant[Enum['infinity'],Integer[1]],
   }
 ]
