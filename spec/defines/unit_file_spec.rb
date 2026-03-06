@@ -18,9 +18,9 @@ describe 'systemd::unit_file' do
           end
 
           it do
-            expect(subject).to contain_file("/etc/systemd/system/#{title}").
-              with_selinux_ignore_defaults(false).
-              that_notifies("Systemd::Daemon_reload[#{title}]")
+            expect(subject).to contain_file("/etc/systemd/system/#{title}")
+              .with_selinux_ignore_defaults(false)
+              .that_notifies("Systemd::Daemon_reload[#{title}]")
           end
         end
 
@@ -28,8 +28,8 @@ describe 'systemd::unit_file' do
           let(:params) { { selinux_ignore_defaults: false } }
 
           it do
-            expect(subject).to contain_file("/etc/systemd/system/#{title}").
-              with_selinux_ignore_defaults(false)
+            expect(subject).to contain_file("/etc/systemd/system/#{title}")
+              .with_selinux_ignore_defaults(false)
           end
         end
 
@@ -37,8 +37,8 @@ describe 'systemd::unit_file' do
           let(:params) { { selinux_ignore_defaults: true } }
 
           it do
-            expect(subject).to contain_file("/etc/systemd/system/#{title}").
-              with_selinux_ignore_defaults(true)
+            expect(subject).to contain_file("/etc/systemd/system/#{title}")
+              .with_selinux_ignore_defaults(true)
           end
         end
 
@@ -46,10 +46,10 @@ describe 'systemd::unit_file' do
           let(:params) { { content: 'non-sensitive Content' } }
 
           it do
-            expect(subject).to create_file("/etc/systemd/system/#{title}").
-              with_ensure('file').
-              with_content(params[:content]).
-              with_mode('0444')
+            expect(subject).to create_file("/etc/systemd/system/#{title}")
+              .with_ensure('file')
+              .with_content(params[:content])
+              .with_mode('0444')
           end
         end
 
@@ -60,8 +60,8 @@ describe 'systemd::unit_file' do
             resource = catalogue.resource("File[/etc/systemd/system/#{title}]")
             expect(resource[:content]).to eq(params[:content].unwrap)
 
-            expect(subject).to contain_file("/etc/systemd/system/#{title}").
-              with({ content: sensitive('sensitive Content') })
+            expect(subject).to contain_file("/etc/systemd/system/#{title}")
+              .with({ content: sensitive('sensitive Content') })
           end
         end
 
@@ -81,23 +81,23 @@ describe 'systemd::unit_file' do
           let(:params) do
             super().merge(
               enable: true,
-              active: true
+              active: true,
             )
           end
 
           it { is_expected.to compile.with_all_deps }
 
           it do
-            expect(subject).to contain_service('test.service').
-              with_ensure(true).
-              with_enable(true).
-              with_provider('systemd').
-              without_hasstatus.
-              without_hasrestart.
-              without_flags.
-              without_timeout.
-              that_subscribes_to("File[/etc/systemd/system/#{title}]").
-              that_subscribes_to("Systemd::Daemon_reload[#{title}]")
+            expect(subject).to contain_service('test.service')
+              .with_ensure(true)
+              .with_enable(true)
+              .with_provider('systemd')
+              .without_hasstatus
+              .without_hasrestart
+              .without_flags
+              .without_timeout
+              .that_subscribes_to("File[/etc/systemd/system/#{title}]")
+              .that_subscribes_to("Systemd::Daemon_reload[#{title}]")
           end
         end
 
@@ -108,23 +108,23 @@ describe 'systemd::unit_file' do
               active: true,
               service_parameters: {
                 flags: '--awesome',
-                timeout: 1337
-              }
+                timeout: 1337,
+              },
             )
           end
 
           it { is_expected.to compile.with_all_deps }
 
           it do
-            expect(subject).to contain_service('test.service').
-              with_ensure(true).
-              with_enable(true).
-              with_provider('systemd').
-              without_hasstatus.
-              without_hasrestart.
-              with_flags('--awesome').
-              with_timeout(1337).
-              that_subscribes_to("File[/etc/systemd/system/#{title}]")
+            expect(subject).to contain_service('test.service')
+              .with_ensure(true)
+              .with_enable(true)
+              .with_provider('systemd')
+              .without_hasstatus
+              .without_hasrestart
+              .with_flags('--awesome')
+              .with_timeout(1337)
+              .that_subscribes_to("File[/etc/systemd/system/#{title}]")
           end
         end
 
@@ -133,26 +133,26 @@ describe 'systemd::unit_file' do
             super().merge(
               enable: true,
               active: true,
-              service_restart: false
+              service_restart: false,
             )
           end
 
           it { is_expected.to compile.with_all_deps }
 
           it do
-            expect(subject).to contain_service('test.service').
-              with_ensure(true).
-              with_enable(true).
-              with_provider('systemd').
-              without_hasstatus.
-              without_hasrestart.
-              without_flags.
-              without_timeout
+            expect(subject).to contain_service('test.service')
+              .with_ensure(true)
+              .with_enable(true)
+              .with_provider('systemd')
+              .without_hasstatus
+              .without_hasrestart
+              .without_flags
+              .without_timeout
           end
 
           it do
-            expect(subject).not_to contain_service('test.service').
-              that_subscribes_to("Systemd::Daemon_reload[#{title}]")
+            expect(subject).not_to contain_service('test.service')
+              .that_subscribes_to("Systemd::Daemon_reload[#{title}]")
           end
         end
 
@@ -175,18 +175,18 @@ describe 'systemd::unit_file' do
             let(:params) do
               super().merge(
                 enable: false,
-                active: false
+                active: false,
               )
             end
 
             it { is_expected.to compile.with_all_deps }
 
             it do
-              expect(subject).to contain_service('test.service').
-                with_ensure(false).
-                with_enable(false).
-                with_provider('systemd').
-                that_comes_before("File[/etc/systemd/system/#{title}]")
+              expect(subject).to contain_service('test.service')
+                .with_ensure(false)
+                .with_enable(false)
+                .with_provider('systemd')
+                .that_comes_before("File[/etc/systemd/system/#{title}]")
             end
           end
         end
@@ -195,9 +195,9 @@ describe 'systemd::unit_file' do
           let(:params) { { enable: 'mask' } }
 
           it do
-            expect(subject).to create_file("/etc/systemd/system/#{title}").
-              with_ensure('link').
-              with_target('/dev/null')
+            expect(subject).to create_file("/etc/systemd/system/#{title}")
+              .with_ensure('link')
+              .with_target('/dev/null')
           end
         end
 
@@ -221,9 +221,9 @@ describe 'systemd::unit_file' do
           it { is_expected.to compile.with_all_deps }
 
           it do
-            expect(subject).to create_file("/etc/systemd/system/#{title}").
-              with_ensure('absent').
-              with_target('/tmp/service-target')
+            expect(subject).to create_file("/etc/systemd/system/#{title}")
+              .with_ensure('absent')
+              .with_target('/tmp/service-target')
           end
         end
       end

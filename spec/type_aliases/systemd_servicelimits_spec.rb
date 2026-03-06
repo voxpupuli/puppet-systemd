@@ -15,7 +15,7 @@ describe 'Systemd::ServiceLimits' do
         'MemoryHigh' => '8G',
         'MemoryMax' => 'infinity',
         'MemorySwapMax' => '1T',
-      }
+      },
     )
   }
 

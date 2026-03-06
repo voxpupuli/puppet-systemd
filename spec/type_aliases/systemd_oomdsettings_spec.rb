@@ -9,7 +9,7 @@ describe 'Systemd::OomdSettings' do
         'SwapUsedLimit' => '100%',
         'DefaultMemoryPressureLimit' => '0%',
         'DefaultMemoryPressureDurationSec' => 0,
-      }
+      },
     )
   }
 
@@ -19,7 +19,7 @@ describe 'Systemd::OomdSettings' do
         'SwapUsedLimit' => '1‰',
         'DefaultMemoryPressureLimit' => '100%',
         'DefaultMemoryPressureDurationSec' => 100_000_000,
-      }
+      },
     )
   }
 
@@ -29,7 +29,7 @@ describe 'Systemd::OomdSettings' do
         'SwapUsedLimit' => '90‱',
         'DefaultMemoryPressureLimit' => '30%',
         'DefaultMemoryPressureDurationSec' => 10,
-      }
+      },
     )
   }
 

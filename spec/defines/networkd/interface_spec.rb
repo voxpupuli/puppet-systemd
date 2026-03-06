@@ -58,7 +58,7 @@ describe 'systemd::networkd::interface' do
                 Network: {
                   Gateway: '192.168.0.1',
                 },
-              }
+              },
             }
           end
 
@@ -82,8 +82,8 @@ describe 'systemd::networkd::interface' do
           it_behaves_like 'systemd::networkd::interface example'
 
           it {
-            is_expected.to contain_file('/etc/systemd/network/51-static.network').
-              with_content(interface_file)
+            is_expected.to contain_file('/etc/systemd/network/51-static.network')
+              .with_content(interface_file)
           }
         end
 
@@ -109,8 +109,8 @@ describe 'systemd::networkd::interface' do
                   VRF: {
                     Table: 42,
                   },
-                }
-              }
+                },
+              },
             }
           end
 

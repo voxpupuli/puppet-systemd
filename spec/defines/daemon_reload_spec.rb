@@ -13,9 +13,9 @@ describe 'systemd::daemon_reload' do
 
         context 'with defaults' do
           it do
-            expect(subject).to contain_exec("systemd-#{title}-systemctl-daemon-reload").
-              with_command(%w[systemctl daemon-reload]).
-              with_refreshonly(true)
+            expect(subject).to contain_exec("systemd-#{title}-systemctl-daemon-reload")
+              .with_command(%w[systemctl daemon-reload])
+              .with_refreshonly(true)
           end
 
           context 'with a username specfied' do
@@ -35,9 +35,9 @@ describe 'systemd::daemon_reload' do
               it { is_expected.to compile }
 
               it {
-                is_expected.to contain_exec('systemd-irregardless-systemctl-user-steve-daemon-reload').
-                  with_command(['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'daemon-reload']).
-                  with_refreshonly(true)
+                is_expected.to contain_exec('systemd-irregardless-systemctl-user-steve-daemon-reload')
+                  .with_command(['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'daemon-reload'])
+                  .with_refreshonly(true)
               }
 
             end

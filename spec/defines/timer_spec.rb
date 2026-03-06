@@ -22,13 +22,13 @@ describe 'systemd::timer' do
 
           it {
             expect(subject).to contain_systemd__unit_file('foobar.timer').with(
-              content: "[Timer]\nOnCalendar=weekly"
+              content: "[Timer]\nOnCalendar=weekly",
             )
           }
 
           it {
             expect(subject).to contain_systemd__unit_file('foobar.service').with(
-              content: "[Service]\nExecStart=/bin/touch /tmp/foobar"
+              content: "[Service]\nExecStart=/bin/touch /tmp/foobar",
             ).that_comes_before('Systemd::Unit_file[foobar.timer]')
           }
         end

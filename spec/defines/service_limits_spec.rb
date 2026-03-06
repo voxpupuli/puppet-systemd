@@ -42,19 +42,19 @@ describe 'systemd::service_limits' do
           it { is_expected.to contain_systemd__manage_dropin("#{title}-90-limits.conf").with_ensure('present') }
 
           it {
-            expect(subject).to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").
-              with(ensure: 'file', mode: '0444').
-              with_content(%r{LimitCPU=10m}).
-              with_content(%r{LimitFSIZE=infinity}).
-              with_content(%r{LimitDATA=10K}).
-              with_content(%r{LimitNOFILE=20:infinity}).
-              with_content(%r{LimitNICE=-10}).
-              with_content(%r{LimitRTPRIO=50}).
-              with_content(%r{MemorySwapMax=0}).
-              with_content(%r{CPUQuota=125%}).
-              with_content(%r{IODeviceWeight=/dev/weight 10}).
-              with_content(%r{IODeviceWeight=/dev/weight2 20}).
-              with_content(%r{IOReadBandwidthMax=/bw/max 10K})
+            expect(subject).to create_file("/etc/systemd/system/#{title}.d/90-limits.conf")
+              .with(ensure: 'file', mode: '0444')
+              .with_content(%r{LimitCPU=10m})
+              .with_content(%r{LimitFSIZE=infinity})
+              .with_content(%r{LimitDATA=10K})
+              .with_content(%r{LimitNOFILE=20:infinity})
+              .with_content(%r{LimitNICE=-10})
+              .with_content(%r{LimitRTPRIO=50})
+              .with_content(%r{MemorySwapMax=0})
+              .with_content(%r{CPUQuota=125%})
+              .with_content(%r{IODeviceWeight=/dev/weight 10})
+              .with_content(%r{IODeviceWeight=/dev/weight2 20})
+              .with_content(%r{IOReadBandwidthMax=/bw/max 10K})
           }
 
           describe 'with service managed' do
@@ -68,8 +68,8 @@ describe 'systemd::service_limits' do
             it { is_expected.to compile.with_all_deps }
 
             it do
-              is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").
-                that_notifies('Service[test]')
+              is_expected.to create_file("/etc/systemd/system/#{title}.d/90-limits.conf")
+                .that_notifies('Service[test]')
             end
           end
         end
@@ -87,8 +87,8 @@ describe 'systemd::service_limits' do
           it { is_expected.to compile.with_all_deps }
 
           it do
-            expect(subject).to create_file("/etc/systemd/system/#{title}.d/90-limits.conf").
-              with_ensure('absent')
+            expect(subject).to create_file("/etc/systemd/system/#{title}.d/90-limits.conf")
+              .with_ensure('absent')
           end
         end
       end

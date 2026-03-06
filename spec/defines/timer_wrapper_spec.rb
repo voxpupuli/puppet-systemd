@@ -21,19 +21,19 @@ describe 'systemd::timer_wrapper' do
 
           it do
             is_expected.to compile.with_all_deps
-            is_expected.to contain_file("/etc/systemd/system/#{title}.service").
-              with_content(%r{# Deployed with puppet}).
-              with_content(%r{Type=oneshot}).
-              with_content(%r{ExecStart=/bin/date}).
-              with_content(%r{Type=oneshot}).
-              with_content(%r{User=root})
-            is_expected.to contain_file("/etc/systemd/system/#{title}.timer").
-              with_content(%r{OnCalendar=\*:0/10}).
-              with_content(%r{WantedBy=timers.target})
-            is_expected.to contain_Systemd__Unit_file("#{title}.service").
-              that_comes_before("Systemd::Unit_file[#{title}.timer]")
-            is_expected.to contain_Systemd__Unit_file("#{title}.service").
-              that_comes_before("Systemd::Unit_file[#{title}.timer]")
+            is_expected.to contain_file("/etc/systemd/system/#{title}.service")
+              .with_content(%r{# Deployed with puppet})
+              .with_content(%r{Type=oneshot})
+              .with_content(%r{ExecStart=/bin/date})
+              .with_content(%r{Type=oneshot})
+              .with_content(%r{User=root})
+            is_expected.to contain_file("/etc/systemd/system/#{title}.timer")
+              .with_content(%r{OnCalendar=\*:0/10})
+              .with_content(%r{WantedBy=timers.target})
+            is_expected.to contain_Systemd__Unit_file("#{title}.service")
+              .that_comes_before("Systemd::Unit_file[#{title}.timer]")
+            is_expected.to contain_Systemd__Unit_file("#{title}.service")
+              .that_comes_before("Systemd::Unit_file[#{title}.timer]")
             is_expected.to contain_Exec("systemd-#{title}.service-systemctl-daemon-reload")
             is_expected.to contain_Exec("systemd-#{title}.timer-systemctl-daemon-reload")
             is_expected.to contain_Service("#{title}.timer")
@@ -50,9 +50,9 @@ describe 'systemd::timer_wrapper' do
             end
 
             it do
-              is_expected.to contain_file("/etc/systemd/system/#{title}.service").
-                with_content(%r{ExecStart=/usr/bin/echo run this}).
-                with_content(%r{ExecStart=/usr/bin/echo and this})
+              is_expected.to contain_file("/etc/systemd/system/#{title}.service")
+                .with_content(%r{ExecStart=/usr/bin/echo run this})
+                .with_content(%r{ExecStart=/usr/bin/echo and this})
             end
           end
         end
@@ -97,16 +97,16 @@ describe 'systemd::timer_wrapper' do
           end
 
           it {
-            is_expected.to contain_Systemd__Manage_unit("#{title}.timer").
-              with_ensure('absent')
-            is_expected.to contain_Systemd__Manage_unit("#{title}.service").
-              with_ensure('absent')
-            is_expected.to contain_Service("#{title}.timer").
-              that_comes_before("Systemd::Unit_file[#{title}.timer]").
-              with_ensure(false)
-            is_expected.to contain_Systemd__Unit_file("#{title}.timer").
-              that_comes_before("Systemd::Unit_file[#{title}.service]").
-              with_ensure('absent')
+            is_expected.to contain_Systemd__Manage_unit("#{title}.timer")
+              .with_ensure('absent')
+            is_expected.to contain_Systemd__Manage_unit("#{title}.service")
+              .with_ensure('absent')
+            is_expected.to contain_Service("#{title}.timer")
+              .that_comes_before("Systemd::Unit_file[#{title}.timer]")
+              .with_ensure(false)
+            is_expected.to contain_Systemd__Unit_file("#{title}.timer")
+              .that_comes_before("Systemd::Unit_file[#{title}.service]")
+              .with_ensure('absent')
           }
         end
 
@@ -122,8 +122,8 @@ describe 'systemd::timer_wrapper' do
           end
 
           it {
-            is_expected.to contain_file("/etc/systemd/system/#{title}.service").
-              with_content(%r{Group=bob})
+            is_expected.to contain_file("/etc/systemd/system/#{title}.service")
+              .with_content(%r{Group=bob})
           }
         end
 
@@ -139,8 +139,8 @@ describe 'systemd::timer_wrapper' do
           end
 
           it {
-            is_expected.to contain_file("/etc/systemd/system/#{title}.service").
-              with_content(%r{Wants=network-online.target})
+            is_expected.to contain_file("/etc/systemd/system/#{title}.service")
+              .with_content(%r{Wants=network-online.target})
           }
         end
 
@@ -156,8 +156,8 @@ describe 'systemd::timer_wrapper' do
           end
 
           it {
-            is_expected.to contain_file("/etc/systemd/system/#{title}.timer").
-              with_content(%r{OnBootSec=200})
+            is_expected.to contain_file("/etc/systemd/system/#{title}.timer")
+              .with_content(%r{OnBootSec=200})
           }
         end
 
@@ -173,8 +173,8 @@ describe 'systemd::timer_wrapper' do
           end
 
           it {
-            is_expected.to contain_file("/etc/systemd/system/#{title}.timer").
-              with_content(%r{Wants=network-online.target})
+            is_expected.to contain_file("/etc/systemd/system/#{title}.timer")
+              .with_content(%r{Wants=network-online.target})
           }
         end
 
@@ -190,8 +190,8 @@ describe 'systemd::timer_wrapper' do
           end
 
           it {
-            is_expected.to contain_file("/etc/systemd/system/#{title}.service").
-              with_content(%r{ExecStartPre=/usr/bin/date})
+            is_expected.to contain_file("/etc/systemd/system/#{title}.service")
+              .with_content(%r{ExecStartPre=/usr/bin/date})
           }
         end
 
@@ -207,8 +207,8 @@ describe 'systemd::timer_wrapper' do
           end
 
           it {
-            is_expected.to contain_file("/etc/systemd/system/#{title}.service").
-              with_content(%r{ExecStartPost=/usr/bin/date})
+            is_expected.to contain_file("/etc/systemd/system/#{title}.service")
+              .with_content(%r{ExecStartPost=/usr/bin/date})
           }
         end
       end

@@ -24,17 +24,17 @@ describe 'systemd::manage_dropin' do
             let(:params) do
               super().merge(
                 unit_entry: {},
-                service_entry: {}
+                service_entry: {},
               )
             end
 
             it { is_expected.to compile.with_all_deps }
 
             it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
-                with_content(%r{^\[Unit\]$}).
-                with_content(%r{^\[Service\]$}).
-                without_content(%r{^\[Slice\]$})
+              is_expected.to contain_systemd__dropin_file('foobar.conf')
+                .with_content(%r{^\[Unit\]$})
+                .with_content(%r{^\[Service\]$})
+                .without_content(%r{^\[Slice\]$})
             }
           end
 
@@ -42,7 +42,7 @@ describe 'systemd::manage_dropin' do
             let(:params) do
               super().merge(
                 unit_entry: {
-                  DefaultDependencies: true
+                  DefaultDependencies: true,
                 },
                 service_entry: {
                   SyslogIdentifier: 'simple',
@@ -53,19 +53,19 @@ describe 'systemd::manage_dropin' do
                       ['/dev/weight2', 20],
                     ],
                   IOReadBandwidthMax: ['/dev/weight3', '50K'],
-                }
+                },
               )
             end
 
             it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
-                with_content(%r{^LimitCORE=infinity$}).
-                with_content(%r{^DefaultDependencies=true$}).
-                with_content(%r{^SyslogIdentifier=simple$}).
-                with_content(%r{^IODeviceWeight=/dev/weight 10$}).
-                with_content(%r{^IODeviceWeight=/dev/weight2 20$}).
-                with_content(%r{^IOReadBandwidthMax=/dev/weight3 50K$}).
-                without_content(%r{^\[Slice\]$})
+              is_expected.to contain_systemd__dropin_file('foobar.conf')
+                .with_content(%r{^LimitCORE=infinity$})
+                .with_content(%r{^DefaultDependencies=true$})
+                .with_content(%r{^SyslogIdentifier=simple$})
+                .with_content(%r{^IODeviceWeight=/dev/weight 10$})
+                .with_content(%r{^IODeviceWeight=/dev/weight2 20$})
+                .with_content(%r{^IOReadBandwidthMax=/dev/weight3 50K$})
+                .without_content(%r{^\[Slice\]$})
             }
           end
 
@@ -75,20 +75,20 @@ describe 'systemd::manage_dropin' do
                 service_entry: {
                   Type:      'oneshot',
                   ExecStart: ['', '/usr/bin/doit.sh'],
-                }
+                },
               )
             end
 
             it { is_expected.to compile.with_all_deps }
 
             it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
-                with_content(%r{^\[Service\]$}).
-                without_content(%r{^\[Unit\]$}).
-                without_content(%r{^\[Install\]$}).
-                with_content(%r{^ExecStart=$}).
-                with_content(%r{^ExecStart=/usr/bin/doit.sh$}).
-                with_content(%r{^Type=oneshot$})
+              is_expected.to contain_systemd__dropin_file('foobar.conf')
+                .with_content(%r{^\[Service\]$})
+                .without_content(%r{^\[Unit\]$})
+                .without_content(%r{^\[Install\]$})
+                .with_content(%r{^ExecStart=$})
+                .with_content(%r{^ExecStart=/usr/bin/doit.sh$})
+                .with_content(%r{^Type=oneshot$})
             }
           end
 
@@ -98,14 +98,14 @@ describe 'systemd::manage_dropin' do
                 unit_entry: {
                   'After'    => ['user-runtime-dir@%i.service'],
                   'Requires' => ['user-runtime-dir@%i.service'],
-                }
+                },
               )
             end
 
             it {
-              is_expected.to contain_systemd__dropin_file('foobar.conf').
-                with_content(%r{^After=user-runtime-dir@%i.service$}).
-                with_content(%r{^Requires=user-runtime-dir@%i.service$})
+              is_expected.to contain_systemd__dropin_file('foobar.conf')
+                .with_content(%r{^After=user-runtime-dir@%i.service$})
+                .with_content(%r{^Requires=user-runtime-dir@%i.service$})
             }
           end
 
@@ -114,7 +114,7 @@ describe 'systemd::manage_dropin' do
               super().merge(
                 timer_entry: {
                   'OnCalendar' => 'soon',
-                }
+                },
               )
             end
 
@@ -126,7 +126,7 @@ describe 'systemd::manage_dropin' do
               super().merge(
                 slice_entry: {
                   'MemoryMax' => '100G',
-                }
+                },
               )
             end
 
@@ -140,17 +140,17 @@ describe 'systemd::manage_dropin' do
               unit: 'file.swap',
               swap_entry: {
                 'Priority' => 10,
-              }
+              },
             }
           end
 
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__dropin_file('foobar.conf').
-              with_unit('file.swap').
-              with_content(%r{^\[Swap\]$}).
-              with_content(%r{^Priority=10$})
+            is_expected.to contain_systemd__dropin_file('foobar.conf')
+              .with_unit('file.swap')
+              .with_content(%r{^\[Swap\]$})
+              .with_content(%r{^Priority=10$})
           }
         end
 
@@ -160,16 +160,16 @@ describe 'systemd::manage_dropin' do
               unit: 'special.timer',
               timer_entry: {
                 'OnCalendar' => 'soon',
-              }
+              },
             }
           end
 
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__dropin_file('foobar.conf').
-              with_unit('special.timer').
-              with_content(%r{^OnCalendar=soon$})
+            is_expected.to contain_systemd__dropin_file('foobar.conf')
+              .with_unit('special.timer')
+              .with_content(%r{^OnCalendar=soon$})
           }
         end
 
@@ -179,16 +179,16 @@ describe 'systemd::manage_dropin' do
               unit: 'var-lib-sss-db.mount',
               mount_entry: {
                 'SloppyOptions' => true,
-              }
+              },
             }
           end
 
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__dropin_file('foobar.conf').
-              with_unit('var-lib-sss-db.mount').
-              with_content(%r{^SloppyOptions=true$})
+            is_expected.to contain_systemd__dropin_file('foobar.conf')
+              .with_unit('var-lib-sss-db.mount')
+              .with_content(%r{^SloppyOptions=true$})
           }
         end
 
@@ -202,21 +202,21 @@ describe 'systemd::manage_dropin' do
                 'IOWriteBandwidthMax' => [
                   ['/dev/afs', '50P'],
                   ['/dev/gluster', 50],
-                ]
-              }
+                ],
+              },
             }
           end
 
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__dropin_file('foobar.conf').
-              with_unit('user-.slice').
-              with_content(%r{^IOWriteBandwidthMax=/dev/afs 50P$}).
-              with_content(%r{^IOWriteBandwidthMax=/dev/gluster 50$}).
-              with_content(%r{^MemoryMax=10G$}).
-              with_content(%r{^MemoryAccounting=true$}).
-              without_content(%r{^\[Service\]$})
+            is_expected.to contain_systemd__dropin_file('foobar.conf')
+              .with_unit('user-.slice')
+              .with_content(%r{^IOWriteBandwidthMax=/dev/afs 50P$})
+              .with_content(%r{^IOWriteBandwidthMax=/dev/gluster 50$})
+              .with_content(%r{^MemoryMax=10G$})
+              .with_content(%r{^MemoryAccounting=true$})
+              .without_content(%r{^\[Service\]$})
           }
         end
 
@@ -226,17 +226,17 @@ describe 'systemd::manage_dropin' do
               unit: 'special.path',
               path_entry: {
                 'PathExists' => '/etc/hosts',
-              }
+              },
             }
           end
 
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__dropin_file('foobar.conf').
-              with_unit('special.path').
-              with_content(%r{^\[Path\]$}).
-              with_content(%r{^PathExists=/etc/hosts$})
+            is_expected.to contain_systemd__dropin_file('foobar.conf')
+              .with_unit('special.path')
+              .with_content(%r{^\[Path\]$})
+              .with_content(%r{^PathExists=/etc/hosts$})
           }
         end
 
@@ -246,17 +246,17 @@ describe 'systemd::manage_dropin' do
               unit: 'special.socket',
               socket_entry: {
                 'ListenMessageQueue' => '/panic',
-              }
+              },
             }
           end
 
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__dropin_file('foobar.conf').
-              with_unit('special.socket').
-              with_content(%r{^\[Socket\]$}).
-              with_content(%r{^ListenMessageQueue=/panic$})
+            is_expected.to contain_systemd__dropin_file('foobar.conf')
+              .with_unit('special.socket')
+              .with_content(%r{^\[Socket\]$})
+              .with_content(%r{^ListenMessageQueue=/panic$})
           }
         end
       end

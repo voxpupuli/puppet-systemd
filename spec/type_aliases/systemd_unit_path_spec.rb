@@ -41,7 +41,7 @@ describe 'Systemd::Unit::Path' do
 
   %w[TriggerLimitIntervalSec].each do |assert|
     context "with a key of #{assert} can have value of a time period" do
-      it { is_expected.to allow_value({ assert => '' }) }   # ? Not sure actually
+      it { is_expected.to allow_value({ assert => '' }) } # ? Not sure actually
       it { is_expected.to allow_value({ assert => '24hours' }) }
       it { is_expected.to allow_value({ assert => '1min 30s' }) }
       it { is_expected.not_to allow_value({ assert => ['', '1min 30s'] }) }

@@ -83,7 +83,7 @@ describe 'systemd' do
               super().merge(
                 speed_meter: true,
                 ipv6_forwarding: true,
-                use_domains: true
+                use_domains: true,
               )
             end
 
@@ -96,7 +96,7 @@ describe 'systemd' do
                 is_expected.to contain_ini_setting(setting).with(
                   path: '/etc/systemd/networkd.conf',
                   section: 'Network',
-                  value: 'true'
+                  value: 'true',
                 ).that_notifies('Service[systemd-networkd]')
               end
             end
@@ -181,7 +181,7 @@ describe 'systemd' do
               manage_resolved: true,
               dns: ['8.8.8.8', '8.8.4.4'],
               fallback_dns: ['2001:4860:4860::8888', '2001:4860:4860::8844'],
-              dns_stub_listener: 'absent'
+              dns_stub_listener: 'absent',
             }
           end
 
@@ -196,7 +196,7 @@ describe 'systemd' do
               manage_resolved: true,
               dns: ['8.8.8.8', '8.8.4.4'],
               fallback_dns: ['2001:4860:4860::8888', '2001:4860:4860::8844'],
-              dns_stub_listener_extra: 'absent'
+              dns_stub_listener_extra: 'absent',
             }
           end
 
@@ -235,16 +235,16 @@ describe 'systemd' do
           it {
             expect(subject).to contain_ini_setting('cache').with(
               path: '/etc/systemd/resolved.conf',
-              value: 'yes'
+              value: 'yes',
             )
           }
 
           it { is_expected.to contain_ini_setting('dns_stub_listener').with_ensure('present') }
 
           it {
-            is_expected.to contain_ini_setting('dns_stub_listener_extra').
-              with_value(['192.0.2.1', '2001:db8::1']).
-              with_ensure('present')
+            is_expected.to contain_ini_setting('dns_stub_listener_extra')
+              .with_value(['192.0.2.1', '2001:db8::1'])
+              .with_ensure('present')
           }
         end
 
@@ -262,7 +262,7 @@ describe 'systemd' do
           it do
             is_expected.to contain_ini_setting('multicast_dns').with(
               path: '/etc/systemd/resolved.conf',
-              value: 'yes'
+              value: 'yes',
             )
           end
 
@@ -272,14 +272,14 @@ describe 'systemd' do
                 ensure: 'directory',
                 owner: 'root',
                 group: 'root',
-                mode: '0755'
+                mode: '0755',
               )
             end
 
             it do
               is_expected.to contain_file('/etc/systemd/resolved.conf.d/00-disable-mdns.conf').with(
                 ensure: 'link',
-                target: '/dev/null'
+                target: '/dev/null',
               ).that_notifies('Service[systemd-resolved]')
             end
           end
@@ -299,7 +299,7 @@ describe 'systemd' do
           it {
             expect(subject).to contain_ini_setting('cache').with(
               path: '/etc/systemd/resolved.conf',
-              value: 'no-negative'
+              value: 'no-negative',
             )
           }
         end
@@ -318,7 +318,7 @@ describe 'systemd' do
           it {
             expect(subject).to contain_ini_setting('cache').with(
               path: '/etc/systemd/resolved.conf',
-              value: 'no'
+              value: 'no',
             )
           }
         end
@@ -336,7 +336,7 @@ describe 'systemd' do
               {
                 ensure: 'present',
                 service_entry: { 'Environment' => 'SYSTEMD_RESOLVED_SYNTHESIZE_HOSTNAME=1' },
-              }
+              },
             )
           }
         end
@@ -355,7 +355,7 @@ describe 'systemd' do
                 ensure: 'present',
                 unit: 'systemd-resolved.service',
                 service_entry: { 'Environment' => 'SYSTEMD_RESOLVED_SYNTHESIZE_HOSTNAME=0' },
-              }
+              },
             )
           }
         end
@@ -403,7 +403,7 @@ describe 'systemd' do
               path: '/etc/systemd/oomd.conf',
               section: 'OOM',
               notify: 'Service[systemd-oomd]',
-              value: '10‰'
+              value: '10‰',
             )
           }
 
@@ -412,7 +412,7 @@ describe 'systemd' do
               path: '/etc/systemd/oomd.conf',
               section: 'OOM',
               notify: 'Service[systemd-oomd]',
-              value: '10%'
+              value: '10%',
             )
           }
 
@@ -421,7 +421,7 @@ describe 'systemd' do
               path: '/etc/systemd/oomd.conf',
               section: 'OOM',
               notify: 'Service[systemd-oomd]',
-              value: 10
+              value: 10,
             )
           }
         end
@@ -513,7 +513,7 @@ describe 'systemd' do
         context 'when setting rtc-local is true' do
           let(:params) do
             {
-              set_local_rtc: true
+              set_local_rtc: true,
             }
           end
 
@@ -525,7 +525,7 @@ describe 'systemd' do
         context 'when setting rtc-local is false' do
           let(:params) do
             {
-              set_local_rtc: false
+              set_local_rtc: false,
             }
           end
 
@@ -553,7 +553,7 @@ describe 'systemd' do
         context 'when passing networks' do
           let :params do
             {
-              networks: { 'uplink.network' => { 'content' => 'foo' }, 'uplink.netdev' => { 'content' => 'bar' }, },
+              networks: { 'uplink.network' => { 'content' => 'foo' }, 'uplink.netdev' => { 'content' => 'bar' } },
             }
           end
 
@@ -568,7 +568,7 @@ describe 'systemd' do
         context 'when passing timers' do
           let :params do
             {
-              timers: { 'first.timer' => { 'timer_content' => 'foo' }, 'second.timer' => { 'timer_content' => 'bar' }, },
+              timers: { 'first.timer' => { 'timer_content' => 'foo' }, 'second.timer' => { 'timer_content' => 'bar' } },
             }
           end
 
@@ -586,7 +586,7 @@ describe 'systemd' do
         context 'when passing tmpfiles' do
           let :params do
             {
-              tmpfiles: { 'first_tmpfile.conf' => { 'content' => 'foo' }, 'second_tmpfile.conf' => { 'content' => 'bar' }, },
+              tmpfiles: { 'first_tmpfile.conf' => { 'content' => 'foo' }, 'second_tmpfile.conf' => { 'content' => 'bar' } },
             }
           end
 
@@ -601,7 +601,7 @@ describe 'systemd' do
         context 'when passing unit_files' do
           let :params do
             {
-              unit_files: { 'first.service' => { 'content' => 'foo' }, 'second.service' => { 'content' => 'bar' }, },
+              unit_files: { 'first.service' => { 'content' => 'foo' }, 'second.service' => { 'content' => 'bar' } },
             }
           end
 
@@ -643,7 +643,7 @@ describe 'systemd' do
                   'DefaultTimeoutStartSec' => '120s',
                   'DefaultCPUAccounting' => true,
                   'DefaultMemoryAccounting' => { 'ensure' => 'absent' },
-                }
+                },
               )
             end
 
@@ -666,7 +666,7 @@ describe 'systemd' do
                 'DefaultTimeoutStartSec' => '120s',
                 'DefaultCPUAccounting' => true,
                 'DefaultMemoryAccounting' => { 'ensure' => 'absent' },
-              }
+              },
             }
           end
 
@@ -678,7 +678,7 @@ describe 'systemd' do
             is_expected.to contain_ini_setting('system/DefaultTimeoutStartSec').with(
               ensure: 'present',
               path: '/etc/systemd/system.conf',
-              value: '120s'
+              value: '120s',
             )
           end
 
@@ -686,7 +686,7 @@ describe 'systemd' do
             is_expected.to contain_ini_setting('system/DefaultCPUAccounting').with(
               ensure: 'present',
               path: '/etc/systemd/system.conf',
-              value: true
+              value: true,
             )
           end
         end
@@ -699,7 +699,7 @@ describe 'systemd' do
                 'DefaultTimeoutStartSec' => '123s',
                 'DefaultLimitCORE' => 'infinity',
                 'DefaultLimitCPU' => { 'ensure' => 'absent' },
-              }
+              },
             }
           end
 
@@ -711,7 +711,7 @@ describe 'systemd' do
             is_expected.to contain_ini_setting('user/DefaultTimeoutStartSec').with(
               ensure: 'present',
               path: '/etc/systemd/user.conf',
-              value: '123s'
+              value: '123s',
             )
           end
 
@@ -719,7 +719,7 @@ describe 'systemd' do
             is_expected.to contain_ini_setting('user/DefaultLimitCORE').with(
               ensure: 'present',
               path: '/etc/systemd/user.conf',
-              value: 'infinity'
+              value: 'infinity',
             )
           end
         end
@@ -742,7 +742,7 @@ describe 'systemd' do
 
           it {
             expect(subject).to contain_service('systemd-journald').with(
-              ensure: 'running'
+              ensure: 'running',
             )
           }
 
@@ -753,7 +753,7 @@ describe 'systemd' do
               path: '/etc/systemd/journald.conf',
               section: 'Journal',
               notify: 'Service[systemd-journald]',
-              value: 'auto'
+              value: 'auto',
             )
           }
 
@@ -762,7 +762,7 @@ describe 'systemd' do
               path: '/etc/systemd/journald.conf',
               section: 'Journal',
               notify: 'Service[systemd-journald]',
-              value: '5day'
+              value: '5day',
             )
           }
 
@@ -771,7 +771,7 @@ describe 'systemd' do
               path: '/etc/systemd/journald.conf',
               section: 'Journal',
               notify: 'Service[systemd-journald]',
-              ensure: 'absent'
+              ensure: 'absent',
             )
           }
         end
@@ -816,13 +816,13 @@ describe 'systemd' do
           it {
             is_expected.to contain_service('systemd-journal-upload').with(
               ensure: 'running',
-              enable: true
+              enable: true,
             )
           }
 
           it {
             is_expected.to contain_service('systemd-journal-remote').with(
-              ensure: 'running'
+              ensure: 'running',
             )
           }
 
@@ -834,7 +834,7 @@ describe 'systemd' do
               section: 'Upload',
               setting: 'TrustedCertificateFile',
               notify: 'Service[systemd-journal-upload]',
-              value: '/tmp/cert-upload.pem'
+              value: '/tmp/cert-upload.pem',
             )
           }
 
@@ -844,7 +844,7 @@ describe 'systemd' do
               section: 'Remote',
               setting: 'TrustedCertificateFile',
               notify: 'Service[systemd-journal-remote]',
-              ensure: 'absent'
+              ensure: 'absent',
             )
           }
 
@@ -854,7 +854,7 @@ describe 'systemd' do
               section: 'Upload',
               setting: 'ServerCertificateFile',
               notify: 'Service[systemd-journal-upload]',
-              ensure: 'absent'
+              ensure: 'absent',
             )
           }
 
@@ -864,7 +864,7 @@ describe 'systemd' do
               section: 'Remote',
               setting: 'ServerCertificateFile',
               notify: 'Service[systemd-journal-remote]',
-              value: '/tmp/cert-remote.pem'
+              value: '/tmp/cert-remote.pem',
             )
           }
         end
@@ -911,23 +911,23 @@ describe 'systemd' do
           it { is_expected.to compile.with_all_deps }
 
           it {
-            expect(subject).to contain_service('systemd-udevd').
-              with(enable: true,
-                   ensure: 'running')
+            expect(subject).to contain_service('systemd-udevd')
+              .with(enable: true,
+                    ensure: 'running')
           }
 
           it {
-            expect(subject).to contain_file('/etc/udev/udev.conf').
-              with(ensure: 'file',
-                   owner: 'root',
-                   group: 'root',
-                   mode: '0444').
-              with_content(%r{^udev_log=daemon$}).
-              with_content(%r{^children_max=1$}).
-              with_content(%r{^exec_delay=2$}).
-              with_content(%r{^event_timeout=3$}).
-              with_content(%r{^resolve_names=early$}).
-              with_content(%r{^timeout_signal=SIGKILL$})
+            expect(subject).to contain_file('/etc/udev/udev.conf')
+              .with(ensure: 'file',
+                    owner: 'root',
+                    group: 'root',
+                    mode: '0444')
+              .with_content(%r{^udev_log=daemon$})
+              .with_content(%r{^children_max=1$})
+              .with_content(%r{^exec_delay=2$})
+              .with_content(%r{^event_timeout=3$})
+              .with_content(%r{^resolve_names=early$})
+              .with_content(%r{^timeout_signal=SIGKILL$})
           }
 
           it { is_expected.to contain_file('/etc/udev/rules.d').with_ensure('directory').with_purge(false) }
@@ -971,32 +971,32 @@ describe 'systemd' do
           it { is_expected.to compile.with_all_deps }
 
           it {
-            expect(subject).to contain_service('systemd-udevd').
-              with(enable: true,
-                   ensure: 'running')
+            expect(subject).to contain_service('systemd-udevd')
+              .with(enable: true,
+                    ensure: 'running')
           }
 
           it {
-            expect(subject).to contain_file('/etc/udev/udev.conf').
-              with(ensure: 'file',
-                   owner: 'root',
-                   group: 'root',
-                   mode: '0444').
-              with_content(%r{^udev_log=daemon$}).
-              with_content(%r{^children_max=1$}).
-              with_content(%r{^exec_delay=2$}).
-              with_content(%r{^event_timeout=3$}).
-              with_content(%r{^resolve_names=early$}).
-              with_content(%r{^timeout_signal=SIGKILL$})
+            expect(subject).to contain_file('/etc/udev/udev.conf')
+              .with(ensure: 'file',
+                    owner: 'root',
+                    group: 'root',
+                    mode: '0444')
+              .with_content(%r{^udev_log=daemon$})
+              .with_content(%r{^children_max=1$})
+              .with_content(%r{^exec_delay=2$})
+              .with_content(%r{^event_timeout=3$})
+              .with_content(%r{^resolve_names=early$})
+              .with_content(%r{^timeout_signal=SIGKILL$})
           }
 
           it {
-            expect(subject).to contain_systemd__udev__rule('example_raw.rules').
-              with(rules: [
-                     '# I am a comment',
-                     'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"',
-                     'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
-                   ])
+            expect(subject).to contain_systemd__udev__rule('example_raw.rules')
+              .with(rules: [
+                      '# I am a comment',
+                      'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"',
+                      'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
+                    ])
           }
 
           it { is_expected.to contain_exec('systemd-udev_reload') }
@@ -1008,7 +1008,7 @@ describe 'systemd' do
             {
               machine_info_settings: {
                 'PRETTY_HOSTNAME' => 'example hostname',
-              }
+              },
             }
           end
 
@@ -1039,7 +1039,7 @@ describe 'systemd' do
 
           it {
             expect(subject).to contain_service('systemd-logind').with(
-              ensure: 'running'
+              ensure: 'running',
             )
           }
 
@@ -1050,7 +1050,7 @@ describe 'systemd' do
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
-              value: 'ignore'
+              value: 'ignore',
             )
           }
 
@@ -1059,7 +1059,7 @@ describe 'systemd' do
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
-              value: 'no'
+              value: 'no',
             )
           }
 
@@ -1068,7 +1068,7 @@ describe 'systemd' do
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
-              value: 'a b'
+              value: 'a b',
             )
           }
 
@@ -1077,7 +1077,7 @@ describe 'systemd' do
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
-              ensure: 'absent'
+              ensure: 'absent',
             )
           }
 
@@ -1086,7 +1086,7 @@ describe 'systemd' do
               path: '/etc/systemd/logind.conf',
               section: 'Login',
               notify: 'Service[systemd-logind]',
-              value: '10000'
+              value: '10000',
             )
           }
 
@@ -1122,10 +1122,10 @@ describe 'systemd' do
           end
 
           it {
-            is_expected.to contain_systemd__manage_unit('special.service').
-              with_ensure('present').
-              with_unit_entry({ 'Description' => 'My Special Unit' }).
-              with_service_entry({ 'TimeoutStartSec' => '100h' })
+            is_expected.to contain_systemd__manage_unit('special.service')
+              .with_ensure('present')
+              .with_unit_entry({ 'Description' => 'My Special Unit' })
+              .with_service_entry({ 'TimeoutStartSec' => '100h' })
           }
         end
 
@@ -1147,15 +1147,15 @@ describe 'systemd' do
           end
 
           it {
-            is_expected.to contain_systemd__manage_dropin('foo.conf').
-              with_unit('special.slice').
-              with_slice_entry({ 'CPUQuota' => '999%' })
+            is_expected.to contain_systemd__manage_dropin('foo.conf')
+              .with_unit('special.slice')
+              .with_slice_entry({ 'CPUQuota' => '999%' })
           }
 
           it {
-            is_expected.to contain_systemd__manage_dropin('bar.conf').
-              with_unit('special.timer').
-              with_timer_entry({ 'OnCalendar' => ['', 'Daily'] })
+            is_expected.to contain_systemd__manage_dropin('bar.conf')
+              .with_unit('special.timer')
+              .with_timer_entry({ 'OnCalendar' => ['', 'Daily'] })
           }
         end
 
@@ -1191,7 +1191,7 @@ describe 'systemd' do
                 'Storage' => 'none',
                 'ProcessSizeMax' => '5000E',
                 'Compress' => 'yes',
-              }
+              },
             }
           end
 
@@ -1207,7 +1207,7 @@ describe 'systemd' do
                 section: 'Coredump',
                 setting: 'Storage',
                 value: 'none',
-              }
+              },
             )
           }
 
@@ -1218,7 +1218,7 @@ describe 'systemd' do
                 section: 'Coredump',
                 setting: 'ProcessSizeMax',
                 value: '5000E',
-              }
+              },
             )
           }
 
@@ -1229,7 +1229,7 @@ describe 'systemd' do
                 section: 'Coredump',
                 setting: 'Compress',
                 value: 'yes',
-              }
+              },
             )
           }
 
