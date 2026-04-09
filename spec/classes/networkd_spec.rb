@@ -53,6 +53,34 @@ describe 'systemd::networkd' do
       it {
         is_expected.to contain_file('/etc/systemd/network/50-vrf.link')
       }
+
+      context 'with networkd_ensure => stopped' do
+        let(:facts) { os_facts.merge({ systemd_networkd_socket_units: ['systemd-networkd.socket'] }) }
+        let(:pre_condition) do
+          [
+            'class { "systemd": manage_networkd => true, networkd_ensure => "stopped" }',
+            'function assert_private () { }',
+          ]
+        end
+
+        it {
+          is_expected.to contain_service('systemd-networkd.socket')
+            .with_ensure('stopped')
+            .that_comes_before('Service[systemd-networkd]')
+        }
+      end
+
+      context 'with networkd_ensure => running' do
+        let(:facts) { os_facts.merge({ systemd_networkd_socket_units: ['systemd-networkd.socket'] }) }
+        let(:pre_condition) do
+          [
+            'class { "systemd": manage_networkd => true, networkd_ensure => "running" }',
+            'function assert_private () { }',
+          ]
+        end
+
+        it { is_expected.not_to contain_service('systemd-networkd.socket') }
+      end
     end
   end
 end

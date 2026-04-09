@@ -49,6 +49,28 @@ Facter.add(:systemd_version) do
   end
 end
 
+# Fact: systemd_networkd_socket_units
+#
+# Purpose:
+#   List all systemd-networkd socket units present on the system
+#
+# Resolution:
+#   Check unit files matching systemd-networkd*.socket. The set of socket units
+#   has grown over time (systemd 260+ ships additional varlink socket units);
+#   this fact returns whatever is present so the manifest can manage them all.
+#
+# Caveats:
+#
+Facter.add(:systemd_networkd_socket_units) do
+  confine systemd: true
+  setcode do
+    command_output = Facter::Util::Resolution.exec(
+      'systemctl list-unit-files --no-legend --no-pager "systemd-networkd*.socket" 2>/dev/null',
+    )
+    command_output.lines.map { |line| line.split.first }.compact
+  end
+end
+
 Facter.add(:systemd_internal_services) do
   confine systemd: true
   setcode do

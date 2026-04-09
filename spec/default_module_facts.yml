@@ -1,4 +1,6 @@
 ---
+systemd_networkd_socket_units:
+  - systemd-networkd.socket
 systemd_internal_services:
   systemd-fsck-root.service: enabled-runtime
   systemd-journal-gatewayd.service: indirect

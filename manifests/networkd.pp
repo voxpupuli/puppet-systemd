@@ -2,7 +2,10 @@
 #
 # @summary This class provides an abstract way to trigger systemd-networkd
 #
-# @param ensure The state that the ``networkd`` service should be in
+# @param ensure The state that the ``networkd`` service should be in.
+#   When set to ``stopped``, any ``systemd-networkd*.socket`` units present on
+#   the node are also stopped before the service to prevent socket activation
+#   from immediately restarting it.
 # @param path path where all networkd files are placed in
 # @param manage_all_network_files if enabled, all networkd files that aren't managed by puppet will be purged
 # @param link_profiles
@@ -60,6 +63,23 @@ class systemd::networkd (
     'stopped' => false,
     'running' => true,
     default   => $ensure,
+  }
+
+  # Newer systemd versions (260+) ship additional socket units for networkd
+  # (systemd-networkd-varlink.socket, systemd-networkd-varlink-metrics.socket,
+  # systemd-networkd-resolve-hook.socket). When any remain active, systemd
+  # re-activates systemd-networkd.service immediately via socket activation.
+  # Stop all present socket units before the service to prevent this.
+  # Only act when stopping — starting networkd does not require managing sockets
+  # explicitly, and doing so would override a user's deliberate socket configuration.
+  # Guard against undef in case the fact is not collected (e.g. non-systemd node).
+  if $ensure == 'stopped' and $facts['systemd_networkd_socket_units'] =~ Array {
+    $facts['systemd_networkd_socket_units'].each |$socket| {
+      service { $socket:
+        ensure => stopped,
+        before => Service['systemd-networkd'],
+      }
+    }
   }
 
   service { 'systemd-networkd':
