@@ -16,7 +16,7 @@ describe 'systemd::tmpfile' do
           expect(subject).to create_file("/etc/tmpfiles.d/#{title}").with(
             ensure: 'file',
             content: %r{#{params[:content]}},
-            mode: '0444'
+            mode: '0444',
           )
         }
 
@@ -53,7 +53,7 @@ describe 'systemd::tmpfile' do
             expect(subject).to create_file('/etc/tmpfiles.d/goodname.conf').with(
               ensure: 'file',
               content: %r{#{params[:content]}},
-              mode: '0444'
+              mode: '0444',
             )
           }
         end

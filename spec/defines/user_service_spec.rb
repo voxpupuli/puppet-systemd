@@ -39,10 +39,10 @@ describe 'systemd::user_service' do
           }
 
           it {
-            is_expected.to contain_exec('Enable user service mine.timer globally').
-              with_command(['systemctl', '--global', 'enable', 'mine.timer']).
-              with_unless([['systemctl', '--global', 'is-enabled', 'mine.timer']]).
-              without_onlyif
+            is_expected.to contain_exec('Enable user service mine.timer globally')
+              .with_command(['systemctl', '--global', 'enable', 'mine.timer'])
+              .with_unless([['systemctl', '--global', 'is-enabled', 'mine.timer']])
+              .without_onlyif
           }
         end
 
@@ -52,10 +52,10 @@ describe 'systemd::user_service' do
           end
 
           it {
-            is_expected.to contain_exec('Disable user service mine.timer globally').
-              with_command(['systemctl', '--global', 'disable', 'mine.timer']).
-              without_unless.
-              with_onlyif([['systemctl', '--global', 'is-enabled', 'mine.timer']])
+            is_expected.to contain_exec('Disable user service mine.timer globally')
+              .with_command(['systemctl', '--global', 'disable', 'mine.timer'])
+              .without_unless
+              .with_onlyif([['systemctl', '--global', 'is-enabled', 'mine.timer']])
           }
         end
 
@@ -72,25 +72,25 @@ describe 'systemd::user_service' do
             end
 
             it {
-              is_expected.to contain_exec('Stop user service mine.timer for user steve').
-                with_command(
-                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'stop', 'mine.timer']
-                ).
-                with_onlyif(
-                  [['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'is-active', 'mine.timer']]
-                ).
-                without_unless
+              is_expected.to contain_exec('Stop user service mine.timer for user steve')
+                .with_command(
+                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'stop', 'mine.timer'],
+                )
+                .with_onlyif(
+                  [['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'is-active', 'mine.timer']],
+                )
+                .without_unless
             }
 
             it {
-              is_expected.to contain_exec('Disable user service mine.timer for user steve').
-                with_command(
-                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'disable', 'mine.timer']
-                ).
-                with_onlyif(
-                  [['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'is-enabled', 'mine.timer']]
-                ).
-                without_unless
+              is_expected.to contain_exec('Disable user service mine.timer for user steve')
+                .with_command(
+                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'disable', 'mine.timer'],
+                )
+                .with_onlyif(
+                  [['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'is-enabled', 'mine.timer']],
+                )
+                .without_unless
             }
           end
 
@@ -100,24 +100,24 @@ describe 'systemd::user_service' do
             end
 
             it {
-              is_expected.to contain_exec('Start user service mine.timer for user steve').
-                with_command(
-                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'start', 'mine.timer']
-                ).
-                without_onlyif.
-                with_unless(
-                  [['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'is-active', 'mine.timer']]
+              is_expected.to contain_exec('Start user service mine.timer for user steve')
+                .with_command(
+                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'start', 'mine.timer'],
+                )
+                .without_onlyif
+                .with_unless(
+                  [['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'is-active', 'mine.timer']],
                 )
             }
 
             it {
-              is_expected.to contain_exec('Enable user service mine.timer for user steve').
-                with_command(
-                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'enable', 'mine.timer']
-                ).
-                without_onlif.
-                with_unless(
-                  [['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'is-enabled', 'mine.timer']]
+              is_expected.to contain_exec('Enable user service mine.timer for user steve')
+                .with_command(
+                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'enable', 'mine.timer'],
+                )
+                .without_onlif
+                .with_unless(
+                  [['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'is-enabled', 'mine.timer']],
                 )
             }
           end

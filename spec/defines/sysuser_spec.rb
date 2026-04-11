@@ -19,7 +19,7 @@ describe 'systemd::sysuser' do
             content: 'random stuff',
             validate_cmd: '/usr/bin/systemd-sysusers --dry-run %',
             mode: '0444',
-            notify: 'Exec[systemd-sysusers]'
+            notify: 'Exec[systemd-sysusers]',
           )
         }
 
@@ -43,7 +43,7 @@ describe 'systemd::sysuser' do
               ensure: 'absent',
               content: 'random stuff',
               mode: '0444',
-              notify: 'Exec[systemd-sysusers]'
+              notify: 'Exec[systemd-sysusers]',
             ).without_validate
           }
         end
@@ -92,7 +92,7 @@ describe 'systemd::sysuser' do
             expect(subject).to create_file('/etc/sysusers.d/goodname.conf').with(
               ensure: 'file',
               content: 'random stuff',
-              mode: '0444'
+              mode: '0444',
             )
           }
         end

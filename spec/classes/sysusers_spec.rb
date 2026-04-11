@@ -21,7 +21,7 @@ describe 'systemd::sysusers' do
               recurse: true,
               force: true,
               notify: 'Exec[systemd-sysusers]',
-            }
+            },
           )
         }
 
@@ -42,7 +42,7 @@ describe 'systemd::sysusers' do
                 purge: false,
                 recurse: false,
                 force: false,
-              }
+              },
             )
           }
         end

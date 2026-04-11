@@ -12,8 +12,8 @@ describe 'systemd::systemctl_user' do
         is_expected.to run.with_params('foo', ['status', 'my.service']).and_return(
           [
             'runuser', '-u', 'foo', '--', '/usr/bin/bash', '-c',
-            'env XDG_RUNTIME_DIR=/run/user/$(id -u) /usr/bin/systemctl --user status my.service'
-          ]
+            'env XDG_RUNTIME_DIR=/run/user/$(id -u) /usr/bin/systemctl --user status my.service',
+          ],
         )
       }
 
@@ -21,8 +21,8 @@ describe 'systemd::systemctl_user' do
         is_expected.to run.with_params('foo', ['is-enabled', 'my.service']).and_return(
           [
             'runuser', '-u', 'foo', '--', '/usr/bin/bash', '-c',
-            'env XDG_RUNTIME_DIR=/run/user/$(id -u) /usr/bin/systemctl --user is-enabled my.service'
-          ]
+            'env XDG_RUNTIME_DIR=/run/user/$(id -u) /usr/bin/systemctl --user is-enabled my.service',
+          ],
         )
       }
     end
@@ -36,13 +36,13 @@ describe 'systemd::systemctl_user' do
     context 'with valid input' do
       it {
         is_expected.to run.with_params('foo', ['status', 'my.service']).and_return(
-          ['run0', '--user', 'foo', '/usr/bin/systemctl', '--user', 'status', 'my.service']
+          ['run0', '--user', 'foo', '/usr/bin/systemctl', '--user', 'status', 'my.service'],
         )
       }
 
       it {
         is_expected.to run.with_params('foo', ['is-enabled', 'my.service']).and_return(
-          ['run0', '--user', 'foo', '/usr/bin/systemctl', '--user', 'is-enabled', 'my.service']
+          ['run0', '--user', 'foo', '/usr/bin/systemctl', '--user', 'is-enabled', 'my.service'],
         )
       }
     end

@@ -24,7 +24,7 @@ describe 'systemd::dropin_file' do
             ensure: 'directory',
             recurse: 'true',
             purge: 'true',
-            selinux_ignore_defaults: false
+            selinux_ignore_defaults: false,
           )
         }
 
@@ -37,9 +37,9 @@ describe 'systemd::dropin_file' do
             ensure: 'file',
             content: %r{#{params[:content]}},
             mode: '0444',
-            selinux_ignore_defaults: false
-          ).
-            that_notifies("Systemd::Daemon_reload[#{params[:unit]}]")
+            selinux_ignore_defaults: false,
+          )
+                                                                                           .that_notifies("Systemd::Daemon_reload[#{params[:unit]}]")
         }
 
         context 'notifies services' do
@@ -150,7 +150,7 @@ describe 'systemd::dropin_file' do
             expect(subject).to create_file("/etc/systemd/system/#{params[:unit]}.d/#{params[:filename]}").with(
               ensure: 'file',
               content: %r{#{params[:content]}},
-              mode: '0444'
+              mode: '0444',
             )
           }
         end
@@ -167,7 +167,7 @@ describe 'systemd::dropin_file' do
           it {
             expect(subject).to create_file("/etc/systemd/system/#{params[:unit]}.d/#{title}").with(
               ensure: 'file',
-              content: sensitive('TEST_CONTENT')
+              content: sensitive('TEST_CONTENT'),
             )
           }
         end

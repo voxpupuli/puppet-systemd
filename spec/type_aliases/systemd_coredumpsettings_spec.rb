@@ -15,7 +15,7 @@ describe 'Systemd::CoredumpSettings' do
         'JournalSizeMax' => '45T',
         'MaxUse' => '1P',
         'KeepFree' => '1E',
-      }
+      },
     )
   }
 
@@ -29,7 +29,7 @@ describe 'Systemd::CoredumpSettings' do
         'JournalSizeMax' => '45',
         'MaxUse' => '1',
         'KeepFree' => '5',
-      }
+      },
     )
   }
 

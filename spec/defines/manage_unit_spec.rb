@@ -26,26 +26,26 @@ describe 'systemd::manage_unit' do
               },
               install_entry: {
                 WantedBy: 'multi-user.target',
-              }
+              },
             }
           end
 
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__unit_file('foobar.service').
-              with_content(%r{^\[Unit\]$}).
-              with_content(%r{^DefaultDependencies=true$}).
-              with_content(%r{^\[Service\]$}).
-              with_content(%r{^SyslogIdentifier=doit-backwards\.sh$}).
-              with_content(%r{^Environment=bla=foo$}).
-              with_content(%r{^Environment=foo=bla$}).
-              with_content(%r{^\[Install\]$}).
-              with_content(%r{^Description=My great service$}).
-              with_content(%r{^Description=has two lines of description$}).
-              with_content(%r{^Type=oneshot$}).
-              with_content(%r{^IOReadIOPSMax=/dev/afs 1K$}).
-              without_content(%r{^\[Slice\]$})
+            is_expected.to contain_systemd__unit_file('foobar.service')
+              .with_content(%r{^\[Unit\]$})
+              .with_content(%r{^DefaultDependencies=true$})
+              .with_content(%r{^\[Service\]$})
+              .with_content(%r{^SyslogIdentifier=doit-backwards\.sh$})
+              .with_content(%r{^Environment=bla=foo$})
+              .with_content(%r{^Environment=foo=bla$})
+              .with_content(%r{^\[Install\]$})
+              .with_content(%r{^Description=My great service$})
+              .with_content(%r{^Description=has two lines of description$})
+              .with_content(%r{^Type=oneshot$})
+              .with_content(%r{^IOReadIOPSMax=/dev/afs 1K$})
+              .without_content(%r{^\[Slice\]$})
           }
 
           context 'with no service_entry' do
@@ -119,11 +119,11 @@ describe 'systemd::manage_unit' do
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__unit_file('var-lib-sss-db.mount').
-              with_content(%r{^\[Mount\]$}).
-              with_content(%r{^What=tmpfs$}).
-              with_content(%r{^Where=/var/lib/sss/db$}).
-              with_content(%r{^Options=size=300M$})
+            is_expected.to contain_systemd__unit_file('var-lib-sss-db.mount')
+              .with_content(%r{^\[Mount\]$})
+              .with_content(%r{^What=tmpfs$})
+              .with_content(%r{^Where=/var/lib/sss/db$})
+              .with_content(%r{^Options=size=300M$})
           }
         end
 
@@ -141,7 +141,7 @@ describe 'systemd::manage_unit' do
           it {
             is_expected.to contain_file('/etc/systemd/system/tmpfs.mount').with(
               ensure: 'link',
-              target: '/dev/null'
+              target: '/dev/null',
             )
           }
         end
@@ -166,12 +166,12 @@ describe 'systemd::manage_unit' do
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__unit_file('file.swap').
-              with_content(%r{^\[Swap\]$}).
-              with_content(%r{^What=/file$}).
-              with_content(%r{^TimeoutSec=100$}).
-              with_content(%r{^Options=trim$}).
-              with_content(%r{^Priority=10$})
+            is_expected.to contain_systemd__unit_file('file.swap')
+              .with_content(%r{^\[Swap\]$})
+              .with_content(%r{^What=/file$})
+              .with_content(%r{^TimeoutSec=100$})
+              .with_content(%r{^Options=trim$})
+              .with_content(%r{^Priority=10$})
           }
         end
 
@@ -196,29 +196,29 @@ describe 'systemd::manage_unit' do
                 'OnClockChange' => false,
                 'OnTimezoneChange' => true,
                 'Unit' => 'summer.service',
-              }
+              },
             }
           end
 
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__unit_file('winter.timer').
-              with_content(%r{^\[Timer\]$}).
-              with_content(%r{^OnActiveSec=5min$}).
-              with_content(%r{^OnBootSec=$}).
-              with_content(%r{^OnBootSec=1min 5s$}).
-              with_content(%r{^OnStartUpSec=10$}).
-              with_content(%r{^OnUnitActiveSec=5s$}).
-              with_content(%r{^OnUnitInactiveSec=$}).
-              with_content(%r{^OnUnitInactiveSec=10$}).
-              with_content(%r{^OnCalendar=soon$}).
-              with_content(%r{^AccuracySec=24h$}).
-              with_content(%r{^RandomizedDelaySec=4min 20s$}).
-              with_content(%r{^FixedRandomDelay=true$}).
-              with_content(%r{^OnClockChange=false$}).
-              with_content(%r{^OnTimezoneChange=true$}).
-              with_content(%r{^Unit=summer.service$})
+            is_expected.to contain_systemd__unit_file('winter.timer')
+              .with_content(%r{^\[Timer\]$})
+              .with_content(%r{^OnActiveSec=5min$})
+              .with_content(%r{^OnBootSec=$})
+              .with_content(%r{^OnBootSec=1min 5s$})
+              .with_content(%r{^OnStartUpSec=10$})
+              .with_content(%r{^OnUnitActiveSec=5s$})
+              .with_content(%r{^OnUnitInactiveSec=$})
+              .with_content(%r{^OnUnitInactiveSec=10$})
+              .with_content(%r{^OnCalendar=soon$})
+              .with_content(%r{^AccuracySec=24h$})
+              .with_content(%r{^RandomizedDelaySec=4min 20s$})
+              .with_content(%r{^FixedRandomDelay=true$})
+              .with_content(%r{^OnClockChange=false$})
+              .with_content(%r{^OnTimezoneChange=true$})
+              .with_content(%r{^Unit=summer.service$})
           }
         end
 
@@ -232,19 +232,19 @@ describe 'systemd::manage_unit' do
               socket_entry: {
                 'ListenStream' => 4241,
                 'Accept'       => true,
-                'BindIPv6Only' => 'both'
-              }
+                'BindIPv6Only' => 'both',
+              },
             }
           end
 
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__unit_file('arcd.socket').
-              with_content(%r{^\[Socket\]$}).
-              with_content(%r{^ListenStream=4241$}).
-              with_content(%r{^Accept=true$}).
-              with_content(%r{^BindIPv6Only=both$})
+            is_expected.to contain_systemd__unit_file('arcd.socket')
+              .with_content(%r{^\[Socket\]$})
+              .with_content(%r{^ListenStream=4241$})
+              .with_content(%r{^Accept=true$})
+              .with_content(%r{^BindIPv6Only=both$})
           }
         end
 
@@ -269,13 +269,13 @@ describe 'systemd::manage_unit' do
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__unit_file('myslice.slice').
-              with_content(%r{^\[Slice\]$}).
-              with_content(%r{^MemoryMax=10G$}).
-              with_content(%r{^IOAccounting=true$}).
-              with_content(%r{^IOWriteIOPSMax=/dev/gluster 20$}).
-              with_content(%r{^IOWriteIOPSMax=/dev/afs 50K$}).
-              without_content(%r{^\[Service\]$})
+            is_expected.to contain_systemd__unit_file('myslice.slice')
+              .with_content(%r{^\[Slice\]$})
+              .with_content(%r{^MemoryMax=10G$})
+              .with_content(%r{^IOAccounting=true$})
+              .with_content(%r{^IOWriteIOPSMax=/dev/gluster 20$})
+              .with_content(%r{^IOWriteIOPSMax=/dev/afs 50K$})
+              .without_content(%r{^\[Service\]$})
           }
         end
 
@@ -298,27 +298,27 @@ describe 'systemd::manage_unit' do
                 'DirectoryMode'           => '0777',
                 'TriggerLimitIntervalSec' => '10s',
                 'TriggerLimitBurst'       => 100,
-              }
+              },
             }
           end
 
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_systemd__unit_file('etc-passwd.path').
-              without_content(%r{^\[Service\]$}).
-              with_content(%r{^\[Path\]$}).
-              with_content(%r{^PathExists=/etc/passwd$}).
-              with_content(%r{^PathExistsGlob=/etc/krb5.conf.d/\*.conf$}).
-              with_content(%r{^PathChanged=$}).
-              with_content(%r{^PathModified=$}).
-              with_content(%r{^PathModified=/etc/httpd/conf.d/\*.conf$}).
-              with_content(%r{^DirectoryNotEmpty=/tmp$}).
-              with_content(%r{^Unit=my.service$}).
-              with_content(%r{^MakeDirectory=true$}).
-              with_content(%r{^DirectoryMode=0777$}).
-              with_content(%r{^TriggerLimitIntervalSec=10s$}).
-              with_content(%r{^TriggerLimitBurst=100$})
+            is_expected.to contain_systemd__unit_file('etc-passwd.path')
+              .without_content(%r{^\[Service\]$})
+              .with_content(%r{^\[Path\]$})
+              .with_content(%r{^PathExists=/etc/passwd$})
+              .with_content(%r{^PathExistsGlob=/etc/krb5.conf.d/\*.conf$})
+              .with_content(%r{^PathChanged=$})
+              .with_content(%r{^PathModified=$})
+              .with_content(%r{^PathModified=/etc/httpd/conf.d/\*.conf$})
+              .with_content(%r{^DirectoryNotEmpty=/tmp$})
+              .with_content(%r{^Unit=my.service$})
+              .with_content(%r{^MakeDirectory=true$})
+              .with_content(%r{^DirectoryMode=0777$})
+              .with_content(%r{^TriggerLimitIntervalSec=10s$})
+              .with_content(%r{^TriggerLimitBurst=100$})
           }
         end
       end

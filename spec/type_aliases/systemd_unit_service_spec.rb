@@ -104,7 +104,7 @@ describe 'Systemd::Unit::Service' do
         'MemoryHigh' => '8G',
         'MemoryMax' => 'infinity',
         'MemorySwapMax' => '1T',
-      }
+      },
     )
   }
 

@@ -21,7 +21,7 @@ describe 'systemd::modules_load' do
           {
             ensure: 'file',
             content: 'random stuff',
-            mode: '0444'
+            mode: '0444',
           }
         }
 

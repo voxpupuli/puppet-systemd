@@ -30,7 +30,7 @@ describe 'systemd::network' do
           expect(subject).to create_file("/etc/systemd/network/#{title}").with(
             ensure: 'file',
             content: %r{#{params[:content]}},
-            mode: '0444'
+            mode: '0444',
           )
         }
 
@@ -57,7 +57,7 @@ describe 'systemd::network' do
               content: %r{#{params[:content]}},
               group: 'systemd-network',
               mode: '0640',
-              show_diff: false
+              show_diff: false,
             )
           }
 
@@ -76,7 +76,7 @@ describe 'systemd::network' do
           let :params do
             {
               content: 'bla',
-              source: 'foo'
+              source: 'foo',
             }
           end
 

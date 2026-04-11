@@ -38,8 +38,8 @@ describe 'systemd::networkd' do
       it { is_expected.to compile.with_all_deps }
 
       it {
-        is_expected.to contain_file('/etc/systemd/network/50-static.network').
-          with_content(interface_file)
+        is_expected.to contain_file('/etc/systemd/network/50-static.network')
+          .with_content(interface_file)
       }
 
       it {
