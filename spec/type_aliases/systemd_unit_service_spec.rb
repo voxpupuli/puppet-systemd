@@ -64,10 +64,30 @@ describe 'Systemd::Unit::Service' do
   it { is_expected.to allow_value({ 'SupplementaryGroups' => ['', 'reset'] }) }
   it { is_expected.not_to allow_value({ 'SupplementaryGroups' => [] }) }
 
+  it { is_expected.to allow_value({ 'MountAPIVFS' => true }) }
+
   it { is_expected.to allow_value({ 'WorkingDirectory' => '/var/lib/here' }) }
   it { is_expected.to allow_value({ 'WorkingDirectory' => '-/var/lib/here' }) }
   it { is_expected.to allow_value({ 'WorkingDirectory' => '~' }) }
   it { is_expected.to allow_value({ 'WorkingDirectory' => '' }) }
+
+  it { is_expected.to allow_value({ 'RuntimeDirectory' => '/var/lib/there' }) }
+  it { is_expected.to allow_value({ 'RuntimeDirectory' => 'test1' }) }
+
+  it { is_expected.to allow_value({ 'LogsDirectory' => '/var/lib/fair' }) }
+  it { is_expected.to allow_value({ 'LogsDirectory' => 'test2' }) }
+
+  it { is_expected.to allow_value({ 'StateDirectory' => '/var/lib/ere' }) }
+  it { is_expected.to allow_value({ 'StateDirectory' => 'test3' }) }
+
+  it { is_expected.to allow_value({ 'CacheDirectory' => '/var/lib/pair' }) }
+  it { is_expected.to allow_value({ 'CacheDirectory' => 'test4' }) }
+
+  it { is_expected.to allow_value({ 'RuntimeDirectory' => '/var/lib/care' }) }
+  it { is_expected.to allow_value({ 'RuntimeDirectory' => 'test5' }) }
+
+  it { is_expected.to allow_value({ 'TemporaryFileSystem' => '/tmp:size=5k,nr_inodes=1k,mode=1777' }) }
+  it { is_expected.to allow_value({ 'TemporaryFileSystem' => ['/tmp:size=5k,nr_inodes=1k,mode=1777'] }) }
 
   it { is_expected.to allow_value({ 'LogLevelMax' => 'alert' }) }
   it { is_expected.not_to allow_value({ 'LogLevelMax' => 'top' }) }
@@ -75,6 +95,8 @@ describe 'Systemd::Unit::Service' do
   it { is_expected.to allow_value({ 'Nice' => -20 }) }
   it { is_expected.to allow_value({ 'Nice' => 19 }) }
   it { is_expected.not_to allow_value({ 'Nice' => '0' }) }
+
+  it { is_expected.to allow_value({ 'KeyringMode' => 'inherit' }) }
 
   it { is_expected.to allow_value({ 'CPUSchedulingPolicy' => 'idle' }) }
   it { is_expected.to allow_value({ 'CPUSchedulingPolicy' => '' }) }
@@ -95,6 +117,11 @@ describe 'Systemd::Unit::Service' do
   it { is_expected.to allow_value({ 'CPUQuota' => '1%' }) }
   it { is_expected.to allow_value({ 'CPUQuota' => :undef }) }
   it { is_expected.to allow_value({ 'CPUQuota' => '110%' }) }
+
+  it { is_expected.to allow_value({ 'AmbientCapabilities' => '' }) }
+  it { is_expected.to allow_value({ 'AmbientCapabilities' => 'CAP_SYSADMIN' }) }
+  it { is_expected.to allow_value({ 'AmbientCapabilities' => ['CAP_SYSADMIN'] }) }
+  it { is_expected.to allow_value({ 'AmbientCapabilities' => ['', 'CAP_SYSADMIN'] }) }
 
   it {
     is_expected.to allow_value(
