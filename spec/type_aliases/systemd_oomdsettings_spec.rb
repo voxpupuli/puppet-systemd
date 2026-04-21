@@ -33,8 +33,19 @@ describe 'Systemd::OomdSettings' do
     )
   }
 
+  it {
+    is_expected.to allow_value(
+      {
+        'SwapUsedLimit' => '500‰',
+        'DefaultMemoryPressureLimit' => '5000‱',
+      },
+    )
+  }
+
   it { is_expected.not_to allow_value({ 'SwapUsedLimit' => '60' }) }
   it { is_expected.not_to allow_value({ 'SwapUsedLimit' => '%' }) }
+  it { is_expected.not_to allow_value({ 'SwapUsedLimit' => '60|' }) }
   it { is_expected.not_to allow_value({ 'DefaultMemoryPressureLimit' => '10' }) }
+  it { is_expected.not_to allow_value({ 'DefaultMemoryPressureLimit' => '10|' }) }
   it { is_expected.not_to allow_value({ 'DefaultMemoryPressureDurationSec' => -10 }) }
 end

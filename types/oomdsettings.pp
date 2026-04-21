@@ -3,8 +3,8 @@
 #
 type Systemd::OomdSettings = Struct[
   {
-    Optional['SwapUsedLimit']                    => Pattern[/^[0-9]+[%|‰|‱]$/],
-    Optional['DefaultMemoryPressureLimit']       => Pattern[/^[0-9]+%$/],
+    Optional['SwapUsedLimit']                    => Variant[Systemd::Unit::Percent,Systemd::Unit::Permille,Systemd::Unit::Permyriad],
+    Optional['DefaultMemoryPressureLimit']       => Variant[Systemd::Unit::Percent,Systemd::Unit::Permille,Systemd::Unit::Permyriad],
     Optional['DefaultMemoryPressureDurationSec'] => Integer[0],
   }
 ]
