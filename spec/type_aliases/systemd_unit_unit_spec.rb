@@ -64,6 +64,11 @@ NEGATABLE_PATH_INVALID = [
 BOOL_VALID   = [true, false].freeze
 BOOL_INVALID = ['yes', '', 1].freeze
 
+# Variant[Integer[0], String] - timeout values: non-negative integer or string
+# (e.g. 'infinity', '5min').
+TIMEOUT_VALID   = [0, 30, 'infinity', '5min', '30s'].freeze
+TIMEOUT_INVALID = [-1, []].freeze
+
 # =============================================================================
 # Key groups - grouped first by value type, then alphabetically within Assert*
 # and Condition* sections.  All constants live at file scope to satisfy
@@ -116,7 +121,7 @@ UNIT_BOOL_KEYS = %w[
 COLLECT_MODE_VALID   = %w[inactive inactive-or-failed].freeze
 COLLECT_MODE_INVALID = ['active', ''].freeze
 
-ACTION_KEYS  = %w[FailureAction SuccessAction].freeze
+ACTION_KEYS  = %w[FailureAction SuccessAction StartLimitAction JobTimeoutAction].freeze
 ACTION_VALID = %w[
   none
   reboot reboot-force reboot-immediate
@@ -131,6 +136,10 @@ ACTION_INVALID = ['', 'unknown-action'].freeze
 EXIT_STATUS_KEYS    = %w[FailureActionExitStatus SuccessActionExitStatus].freeze
 EXIT_STATUS_VALID   = ['', 0, 128, 255].freeze
 EXIT_STATUS_INVALID = [-1, 256, '1'].freeze
+
+TIMEOUT_KEYS = %w[JobTimeoutSec JobRunningTimeoutSec].freeze
+
+PLAIN_STRING_KEYS = %w[RebootArgument JobTimeoutRebootArgument].freeze
 
 # Assert* ------------------------------------------------------------------ #
 
@@ -148,6 +157,16 @@ ASSERT_FREE_STRING_KEYS = %w[
   AssertCapability
   AssertNeedsUpdate
   AssertKernelModuleLoaded
+  AssertUser
+  AssertGroup
+  AssertControlGroupController
+  AssertMemory
+  AssertCPUs
+  AssertCPUFeature
+  AssertOSRelease
+  AssertMemoryPressure
+  AssertCPUPressure
+  AssertIOPressure
 ].freeze
 
 ASSERT_BOOL_KEYS = %w[AssertACPower AssertFirstBoot].freeze
@@ -182,6 +201,16 @@ CONDITION_FREE_STRING_KEYS = %w[
   ConditionCapability
   ConditionNeedsUpdate
   ConditionKernelModuleLoaded
+  ConditionUser
+  ConditionGroup
+  ConditionControlGroupController
+  ConditionMemory
+  ConditionCPUs
+  ConditionCPUFeature
+  ConditionOSRelease
+  ConditionMemoryPressure
+  ConditionCPUPressure
+  ConditionIOPressure
 ].freeze
 
 CONDITION_BOOL_KEYS = %w[ConditionACPower ConditionFirstBoot].freeze
@@ -214,7 +243,6 @@ describe 'Systemd::Unit::Unit' do
     context key do
       FREE_STRING_VALID.each   { |v| it { is_expected.to     allow_value({ key => v }) } }
       FREE_STRING_INVALID.each { |v| it { is_expected.not_to allow_value({ key => v }) } }
-      # Reject non-string scalars (Integer, etc.)
       it { is_expected.not_to allow_value({ key => 10 }) }
     end
   end
@@ -232,14 +260,16 @@ describe 'Systemd::Unit::Unit' do
   end
 
   # ---------------------------------------------------------------------------
-  # RequiresMountsFor
+  # Mount path dependencies
   # Variant[Enum[''], Stdlib::Unixpath, Array[Variant[Enum[''], Stdlib::Unixpath], 1]]
   # Absolute paths only - no negation prefix.
   # ---------------------------------------------------------------------------
 
-  context 'RequiresMountsFor' do
-    ABSPATH_VALID.each   { |v| it { is_expected.to     allow_value({ 'RequiresMountsFor' => v }) } }
-    ABSPATH_INVALID.each { |v| it { is_expected.not_to allow_value({ 'RequiresMountsFor' => v }) } }
+  %w[RequiresMountsFor WantsMountsFor].each do |key|
+    context key do
+      ABSPATH_VALID.each   { |v| it { is_expected.to     allow_value({ key => v }) } }
+      ABSPATH_INVALID.each { |v| it { is_expected.not_to allow_value({ key => v }) } }
+    end
   end
 
   # ---------------------------------------------------------------------------
@@ -277,7 +307,8 @@ describe 'Systemd::Unit::Unit' do
   end
 
   # ---------------------------------------------------------------------------
-  # Action
+  # Action enums
+  # FailureAction, SuccessAction, StartLimitAction, JobTimeoutAction
   # Enum[...] - no empty string, no unknown values
   # ---------------------------------------------------------------------------
 
@@ -317,6 +348,44 @@ describe 'Systemd::Unit::Unit' do
     it { is_expected.to     allow_value({ 'StartLimitBurst' => 5 }) }
     it { is_expected.not_to allow_value({ 'StartLimitBurst' => 0 }) }
     it { is_expected.not_to allow_value({ 'StartLimitBurst' => '5' }) }
+  end
+
+  # ---------------------------------------------------------------------------
+  # Job / timeout scalars
+  # Variant[Integer[0], String]
+  # ---------------------------------------------------------------------------
+
+  TIMEOUT_KEYS.each do |key|
+    context key do
+      TIMEOUT_VALID.each   { |v| it { is_expected.to     allow_value({ key => v }) } }
+      TIMEOUT_INVALID.each { |v| it { is_expected.not_to allow_value({ key => v }) } }
+    end
+  end
+
+  # ---------------------------------------------------------------------------
+  # Plain string scalars (reboot argument strings)
+  # String - any string including empty
+  # ---------------------------------------------------------------------------
+
+  PLAIN_STRING_KEYS.each do |key|
+    context key do
+      it { is_expected.to     allow_value({ key => 'my-reboot-arg' }) }
+      it { is_expected.to     allow_value({ key => '' }) }
+      it { is_expected.not_to allow_value({ key => 42 }) }
+      it { is_expected.not_to allow_value({ key => [] }) }
+    end
+  end
+
+  # ---------------------------------------------------------------------------
+  # SourcePath
+  # Stdlib::Unixpath - absolute path only, no empty string
+  # ---------------------------------------------------------------------------
+
+  context 'SourcePath' do
+    it { is_expected.to     allow_value({ 'SourcePath' => '/etc/myapp/myapp.conf' }) }
+    it { is_expected.to     allow_value({ 'SourcePath' => '/run/generated.conf' }) }
+    it { is_expected.not_to allow_value({ 'SourcePath' => 'relative/path' }) }
+    it { is_expected.not_to allow_value({ 'SourcePath' => '' }) }
   end
 
   # ===========================================================================
