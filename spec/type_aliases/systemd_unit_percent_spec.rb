@@ -3,6 +3,7 @@
 require 'spec_helper'
 
 describe 'Systemd::Unit::Percent' do
+  it { is_expected.to allow_value('0%') }
   it { is_expected.to allow_value('1%') }
   it { is_expected.to allow_value('100%') }
 

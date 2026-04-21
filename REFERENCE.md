@@ -176,6 +176,8 @@
 * [`Systemd::Unit::Mount`](#Systemd--Unit--Mount): Possible keys for the [Mount] section of a unit file
 * [`Systemd::Unit::Path`](#Systemd--Unit--Path): Possible keys for the [Path] section of a unit file
 * [`Systemd::Unit::Percent`](#Systemd--Unit--Percent): Systemd definition of a percentage
+* [`Systemd::Unit::Permille`](#Systemd--Unit--Permille): Systemd definition of a permille value (‰, 1/1000)
+* [`Systemd::Unit::Permyriad`](#Systemd--Unit--Permyriad): Systemd definition of a permyriad value (‱, 1/10000)
 * [`Systemd::Unit::Service`](#Systemd--Unit--Service): Possible keys for the [Service] section of a unit file
 * [`Systemd::Unit::Service::Exec`](#Systemd--Unit--Service--Exec): Possible strings for ExecStart, ExecStartPrep, ...
 * [`Systemd::Unit::Slice`](#Systemd--Unit--Slice): Possible keys for the [Slice] section of a unit file
@@ -5775,8 +5777,8 @@ Alias of
 
 ```puppet
 Struct[{
-    Optional['SwapUsedLimit']                    => Pattern[/^[0-9]+[%|‰|‱]$/],
-    Optional['DefaultMemoryPressureLimit']       => Pattern[/^[0-9]+%$/],
+    Optional['SwapUsedLimit']                    => Variant[Systemd::Unit::Percent,Systemd::Unit::Permille,Systemd::Unit::Permyriad],
+    Optional['DefaultMemoryPressureLimit']       => Variant[Systemd::Unit::Percent,Systemd::Unit::Permille,Systemd::Unit::Permyriad],
     Optional['DefaultMemoryPressureDurationSec'] => Integer[0],
   }]
 ```
@@ -6053,6 +6055,24 @@ Systemd definition of a percentage
   * https://www.freedesktop.org/software/systemd/man/systemd.slice.html
 
 Alias of `Pattern['\A([0-9][0-9]?|100)%\z']`
+
+### <a name="Systemd--Unit--Permille"></a>`Systemd::Unit::Permille`
+
+Systemd definition of a permille value (‰, 1/1000)
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
+
+Alias of `Pattern['\A(0|[1-9][0-9]?[0-9]?|1000)‰\z']`
+
+### <a name="Systemd--Unit--Permyriad"></a>`Systemd::Unit::Permyriad`
+
+Systemd definition of a permyriad value (‱, 1/10000)
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/oomd.conf.html
+
+Alias of `Pattern['\A(0|[1-9][0-9]?[0-9]?[0-9]?|10000)‱\z']`
 
 ### <a name="Systemd--Unit--Service"></a>`Systemd::Unit::Service`
 
