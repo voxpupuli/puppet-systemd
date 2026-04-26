@@ -59,6 +59,19 @@ describe 'systemd::user_service' do
           }
         end
 
+        context 'with global mask' do
+          let(:params) do
+            { global: true, enable: 'mask' }
+          end
+
+          it {
+            is_expected.to contain_exec('Mask user service mine.timer globally')
+              .with_command(['systemctl', '--global', 'mask', 'mine.timer'])
+              .with_unless('test "$(systemctl --global is-enabled mine.timer)" = masked')
+              .without_onlyif
+          }
+        end
+
         context 'with a user specified' do
           let(:params) do
             { user: 'steve' }
@@ -138,6 +151,23 @@ describe 'systemd::user_service' do
 
             it { is_expected.to contain_exec('Start user service mine.timer for user steve') }
             it { is_expected.to contain_exec('Disable user service mine.timer for user steve') }
+          end
+
+          context 'with enable mask' do
+            let(:params) do
+              super().merge(enable: 'mask')
+            end
+
+            it {
+              is_expected.to contain_exec('Mask user service mine.timer for user steve')
+                .with_command(
+                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'mask', 'mine.timer'],
+                )
+                .with_unless(
+                  [['/bin/sh', '-c', 'test "$(run0 --user steve /usr/bin/systemctl --user is-enabled mine.timer)" = masked']],
+                )
+                .without_onlyif
+            }
           end
         end
       end

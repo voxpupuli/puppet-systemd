@@ -30,16 +30,22 @@
 #    user   => 'steve',
 #  }
 #
+# @example Mask a user service for all users
+#  systemd::user_service { 'systemd-tmpfiles-clean.timer':
+#    enable => 'mask',
+#    global => true,
+#  }
+#
 #  @param unit Unit name to work on
 #  @param ensure Should the unit be started or stopped. Can only be true if user is specified.
-#  @param enable Should the unit be enabled or disabled
+#  @param enable Should the unit be enabled, disabled or 'mask'.
 #  @param user User name of user whose unit should be acted upon. Mutually exclusive with
 #  @param global Act globally for all users. Mutually exclusibe with `user`.
 #
 define systemd::user_service (
   Systemd::Unit $unit = $title,
   Variant[Boolean,Enum['stopped','running']] $ensure = false,
-  Boolean $enable = false,
+  Variant[Boolean,Enum['mask']] $enable = false,
   Boolean $global = false,
   Optional[String[1]] $user = undef,
 ) {
@@ -58,7 +64,12 @@ define systemd::user_service (
   }
 
   if $global {
-    if $enable {
+    if $enable == 'mask' {
+      $_title   = "Mask user service ${unit} globally"
+      $_command = ['systemctl', '--global', 'mask', $unit]
+      $_unless  = "test \"$(systemctl --global is-enabled ${unit})\" = masked"
+      $_onlyif  = undef
+    } elsif $enable {
       $_title   = "Enable user service ${unit} globally"
       $_command = ['systemctl', '--global', 'enable', $unit]
       $_unless  = [['systemctl', '--global', 'is-enabled', $unit]]
@@ -106,7 +117,13 @@ define systemd::user_service (
       path    => $facts['path'],
     }
 
-    if $enable {
+    if $enable == 'mask' {
+      $_enable_title   = "Mask user service ${unit} for user ${user}"
+      $_enable_command = systemd::systemctl_user($user, ['mask', $unit])
+      $_check_cmd      = systemd::systemctl_user($user, ['is-enabled', $unit]).join(' ')
+      $_enable_unless  = [['/bin/sh', '-c', "test \"$(${_check_cmd})\" = masked"]]
+      $_enable_onlyif  = undef
+    } elsif $enable {
       $_enable_title   = "Enable user service ${unit} for user ${user}"
       $_enable_command = systemd::systemctl_user($user, ['enable', $unit])
       $_enable_unless  = [systemd::systemctl_user($user, ['is-enabled', $unit])]
