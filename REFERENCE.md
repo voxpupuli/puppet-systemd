@@ -3125,10 +3125,19 @@ systemd::user_service { 'steve-podman-auto-update.timer':
   unit   => 'podman-auto-update.timer',
   user   => 'steve',
 }
+```
+
+##### Mask a user service for all users
+
+```puppet
+systemd::user_service { 'systemd-tmpfiles-clean.timer':
+  enable => 'mask',
+  global => true,
+}
 
 @param unit Unit name to work on
 @param ensure Should the unit be started or stopped. Can only be true if user is specified.
-@param enable Should the unit be enabled or disabled
+@param enable Should the unit be enabled, disabled or 'mask'.
 @param user User name of user whose unit should be acted upon. Mutually exclusive with
 @param global Act globally for all users. Mutually exclusibe with `user`.
 ```
@@ -3161,7 +3170,7 @@ Default value: `false`
 
 ##### <a name="-systemd--user_service--enable"></a>`enable`
 
-Data type: `Boolean`
+Data type: `Variant[Boolean,Enum['mask']]`
 
 
 
