@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v9.5.0](https://github.com/voxpupuli/puppet-systemd/tree/v9.5.0) (2026-05-21)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.4.0...v9.5.0)
+
+**Implemented enhancements:**
+
+- Support Ubuntu 26.04 [\#619](https://github.com/voxpupuli/puppet-systemd/pull/619) ([traylenator](https://github.com/traylenator))
+- Support `mask` in `systemd::user_service` [\#618](https://github.com/voxpupuli/puppet-systemd/pull/618) ([bwitt](https://github.com/bwitt))
+- Sync up service options list with upstream [\#616](https://github.com/voxpupuli/puppet-systemd/pull/616) ([jcpunk](https://github.com/jcpunk))
+- Fixup "Per{xyz}" as these unicode characters are valid sometimes [\#615](https://github.com/voxpupuli/puppet-systemd/pull/615) ([jcpunk](https://github.com/jcpunk))
+- Add in missing systemd service options [\#611](https://github.com/voxpupuli/puppet-systemd/pull/611) ([jcpunk](https://github.com/jcpunk))
+
+**Fixed bugs:**
+
+- `systemd::manage_unit` creates conflicting parameter set when `enable` is set to `mask` [\#576](https://github.com/voxpupuli/puppet-systemd/issues/576)
+- Fix `systemd::manage_unit` when `enable => 'mask'` [\#606](https://github.com/voxpupuli/puppet-systemd/pull/606) ([bwitt](https://github.com/bwitt))
+
+**Closed issues:**
+
+- networkd\_ensure =\> stopped is not idempotent on Archlinux \(systemd 260+\) [\#612](https://github.com/voxpupuli/puppet-systemd/issues/612)
+- dns\_stub\_listener cannot be set to "no" [\#537](https://github.com/voxpupuli/puppet-systemd/issues/537)
+
+**Merged pull requests:**
+
+- Reduce number of compiles in rspec tests [\#621](https://github.com/voxpupuli/puppet-systemd/pull/621) ([traylenator](https://github.com/traylenator))
+- Stop network sockets for tests on v250 [\#620](https://github.com/voxpupuli/puppet-systemd/pull/620) ([traylenator](https://github.com/traylenator))
+- README: document ability to configure `/etc/systemd/networkd.conf` [\#603](https://github.com/voxpupuli/puppet-systemd/pull/603) ([kenyon](https://github.com/kenyon))
+
 ## [v9.4.0](https://github.com/voxpupuli/puppet-systemd/tree/v9.4.0) (2025-12-12)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.3.0...v9.4.0)
