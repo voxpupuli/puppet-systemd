@@ -5772,6 +5772,7 @@ Struct[{
     Optional['LOCATION']        => String[1],
     Optional['HARDWARE_VENDOR'] => String[1],
     Optional['HARDWARE_MODEL']  => String[1],
+    Optional['TAGS']            => String[1],
   }]
 ```
 
