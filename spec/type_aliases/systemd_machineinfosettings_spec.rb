@@ -8,8 +8,12 @@ describe 'Systemd::MachineInfoSettings' do
   it { is_expected.to allow_value({ 'CHASSIS' => 'server' }) }
   it { is_expected.to allow_value({ 'DEPLOYMENT' => 'production' }) }
   it { is_expected.to allow_value({ 'LOCATION' => 'Home' }) }
-  it { is_expected.to allow_value({ 'HARDWARE_VENDOR' => 'fake vendor' }) }
   it { is_expected.to allow_value({ 'HARDWARE_MODEL' => 'fake model' }) }
+  it { is_expected.to allow_value({ 'HARDWARE_SKU' => 'fake sku' }) }
+  it { is_expected.to allow_value({ 'HARDWARE_VENDOR' => 'fake vendor' }) }
+  it { is_expected.to allow_value({ 'HARDWARE_VERSION' => 'fake version' }) }
+  it { is_expected.to allow_value({ 'TAGS' => 'sometag' }) }
+  it { is_expected.to allow_value({ 'TAGS' => 'some:tag' }) }
 
   it { is_expected.not_to allow_value({ 'PRETTY_HOSTNAME' => '' }) }
 end

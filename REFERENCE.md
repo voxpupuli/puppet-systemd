@@ -5765,13 +5765,16 @@ Alias of
 
 ```puppet
 Struct[{
-    Optional['PRETTY_HOSTNAME'] => String[1],
-    Optional['ICON_NAME']       => String[1],
-    Optional['CHASSIS']         => String[1],
-    Optional['DEPLOYMENT']      => String[1],
-    Optional['LOCATION']        => String[1],
-    Optional['HARDWARE_VENDOR'] => String[1],
-    Optional['HARDWARE_MODEL']  => String[1],
+    Optional['PRETTY_HOSTNAME']  => String[1],
+    Optional['ICON_NAME']        => String[1],
+    Optional['CHASSIS']          => String[1],
+    Optional['DEPLOYMENT']       => String[1],
+    Optional['LOCATION']         => String[1],
+    Optional['HARDWARE_MODEL']   => String[1],
+    Optional['HARDWARE_SKU']     => String[1],
+    Optional['HARDWARE_VENDOR']  => String[1],
+    Optional['HARDWARE_VERSION'] => String[1],
+    Optional['TAGS']             => String[1],
   }]
 ```
 
