@@ -12,7 +12,11 @@ Puppet::Type.type(:loginctl_user).provide(:ruby) do
     # loginctl is only successful if the user has an active session (so either logged in or lingering
     # so if loginctl fails, linger is definitly disabled, for users with an active session
     # (eg. logged in or running a timer or ...), the Linger property displays if lingering is activated.
-    :enabled if loginctl('show-user', resource[:name], '--property=Linger', '--value').chomp == 'yes'
+    if loginctl('show-user', resource[:name], '--property=Linger', '--value').chomp == 'yes'
+      :enabled
+    else
+      :disabled
+    end
   rescue Puppet::ExecutionFailure
     :disabled
   end
