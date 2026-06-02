@@ -669,11 +669,11 @@ describe 'systemd' do
 
           case facts[:os]['family']
           when 'Archlinux', 'Gentoo'
-            accounting = %w[DefaultCPUAccounting DefaultIOAccounting DefaultIPAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
+            accounting = %w[DefaultCPUAccounting DefaultIOAccounting DefaultIPAccounting DefaultMemoryAccounting DefaultTasksAccounting]
           when 'Debian'
-            accounting = %w[DefaultCPUAccounting DefaultBlockIOAccounting DefaultMemoryAccounting]
+            accounting = %w[DefaultCPUAccounting DefaultMemoryAccounting]
           when 'RedHat', 'Suse'
-            accounting = %w[DefaultCPUAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
+            accounting = %w[DefaultCPUAccounting DefaultMemoryAccounting DefaultTasksAccounting]
           end
           accounting.each do |account|
             it { is_expected.to contain_ini_setting("system/#{account}") }
@@ -699,8 +699,8 @@ describe 'systemd' do
               is_expected.to contain_ini_setting('system/DefaultCPUAccounting').with_ensure('present').with_value('yes')
               # Ensure and value are overridden by accounting settings
               is_expected.to contain_ini_setting('system/DefaultMemoryAccounting').with_ensure('present').with_value('yes')
-              # Included by accounting (switch to DefaultIOAccounting after RHEL7 EOL)
-              is_expected.to contain_ini_setting('system/DefaultBlockIOAccounting').with_ensure('present').with_value('yes')
+              # Included by accounting
+              is_expected.to contain_ini_setting('system/DefaultIOAccounting').with_ensure('present').with_value('yes')
             }
           end
         end

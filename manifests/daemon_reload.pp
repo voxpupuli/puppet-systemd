@@ -35,8 +35,7 @@ define systemd::daemon_reload (
 
   if $enable {
     if $user {
-      if ($facts['os']['family'] == 'RedHat' and versioncmp($facts['os']['release']['major'],'9') < 0 ) or
-      ($facts['os']['name'] == 'Debian' and versioncmp($facts['os']['release']['major'],'12') < 0 ) {
+      if ($facts['os']['family'] == 'RedHat' and versioncmp($facts['os']['release']['major'],'9') < 0 ) {
         fail('systemd::daemon_reload_for a user is not supported below RedHat 9, Debian 12 or Ubuntu 22.04')
       }
 

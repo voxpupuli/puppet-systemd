@@ -23,12 +23,8 @@ describe 'systemd::daemon_reload' do
               { user: 'steve' }
             end
 
-            case [facts[:os]['name'], facts[:os]['family'], facts[:os]['release']['major']]
-            when %w[Debian Debian 11],
-              %w[AlmaLinux RedHat 8],
-              %w[RedHat RedHat 8],
-              %w[Rocky RedHat 8],
-              %w[OracleLinux RedHat 8]
+            case [facts[:os]['family'], facts[:os]['release']['major']]
+            when %w[RedHat 8]
               it { is_expected.to compile.and_raise_error(%r{user is not supported below}) }
             else
               it { is_expected.to compile }
