@@ -695,9 +695,9 @@ describe 'systemd' do
             it {
               is_expected.to compile.with_all_deps
               is_expected.to contain_ini_setting('system/DefaultTimeoutStartSec').with_ensure('present').with_value('120s')
-              # Value is overriden by accounting settings
+              # Value is overridden by accounting settings
               is_expected.to contain_ini_setting('system/DefaultCPUAccounting').with_ensure('present').with_value('yes')
-              # Ensure and value are overriden by accounting settings
+              # Ensure and value are overridden by accounting settings
               is_expected.to contain_ini_setting('system/DefaultMemoryAccounting').with_ensure('present').with_value('yes')
               # Included by accounting (switch to DefaultIOAccounting after RHEL7 EOL)
               is_expected.to contain_ini_setting('system/DefaultBlockIOAccounting').with_ensure('present').with_value('yes')
