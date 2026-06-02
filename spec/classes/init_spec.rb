@@ -487,7 +487,7 @@ describe 'systemd' do
             is_expected.not_to contain_service('systemd-networkd').with_enable(true)
           }
 
-          if (facts[:os]['name'] == 'Ubuntu' && Puppet::Util::Package.versioncmp(facts[:os]['release']['full'], '20.04') >= 0) || (facts[:os]['name'] == 'Debian')
+          if facts[:os]['family'] == 'Debian'
             it { is_expected.to contain_package('systemd-timesyncd') }
           else
             it { is_expected.not_to contain_package('systemd-timesyncd') }
