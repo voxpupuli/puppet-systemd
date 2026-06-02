@@ -18,7 +18,7 @@ describe 'systemd::daemon_reload' do
               .with_refreshonly(true)
           end
 
-          context 'with a username specfied' do
+          context 'with a username specified' do
             let(:params) do
               { user: 'steve' }
             end
@@ -53,7 +53,7 @@ describe 'systemd::daemon_reload' do
             expect(subject).not_to contain_exec("systemd-#{title}-systemctl-daemon-reload")
           end
 
-          context 'with a username specfied' do
+          context 'with a username specified' do
             let(:params) do
               super().merge(user: 'steve')
             end
