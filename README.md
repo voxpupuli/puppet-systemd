@@ -583,7 +583,7 @@ class { 'systemd':
 The `systemd-coredump` system can be configured.
 
 ```puppet
-class{'systemd':
+class { 'systemd':
   manage_coredump    => true,
   coredump_backtrace => true,
   coredump_settings  => {

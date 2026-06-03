@@ -1129,19 +1129,19 @@ Run systemctl daemon-reload
 ##### Force reload the system systemd
 
 ```puppet
-notify{ 'fake event to notify from':
+notify { 'fake event to notify from':
   notify => Systemd::Daemon_reload['special']
 }
-systemd::daemon_reload{ 'special': }
+systemd::daemon_reload { 'special': }
 ```
 
 ##### Force reload a systemd --user
 
 ```puppet
-notify{ 'fake event to notify from':
+notify { 'fake event to notify from':
   notify => Systemd::Daemon_reload['steve_user']
 }
-systemd::daemon_reload{ 'steve_user':
+systemd::daemon_reload { 'steve_user':
   user => 'steve',
 }
 ```
@@ -3035,7 +3035,7 @@ systemd::user_service { 'podman-auto-update.timer':
 ##### Notify a user's service to restart it
 
 ```puppet
-file{ '/home/steve/.config/systemd/user/podman-auto-update.timer':
+file { '/home/steve/.config/systemd/user/podman-auto-update.timer':
   ensure  => file,
   content => ...,
   notify  => Systemd::User_service['steve-podman-auto-update.timer']
@@ -3061,7 +3061,7 @@ systemd::user_service { 'systemd-tmpfiles-clean.timer':
 @param ensure Should the unit be started or stopped. Can only be true if user is specified.
 @param enable Should the unit be enabled, disabled or 'mask'.
 @param user User name of user whose unit should be acted upon. Mutually exclusive with
-@param global Act globally for all users. Mutually exclusibe with `user`.
+@param global Act globally for all users. Mutually exclusive with `user`.
 ```
 
 #### Parameters
