@@ -53,7 +53,6 @@ type Systemd::ServiceManagerSettings = Struct[
     Optional['DefaultEnvironment'] => Variant[String, Systemd::SettingEnsure],
     Optional['ManagerEnvironment'] => Variant[String, Systemd::SettingEnsure],
     Optional['DefaultCPUAccounting'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
-    Optional['DefaultBlockIOAccounting'] => Variant[Systemd::Boolean, Systemd::SettingEnsure], # Deprecated in v252. Delete after Debian 11 EOL
     Optional['DefaultIOAccounting'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
     Optional['DefaultIPAccounting'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],
     Optional['DefaultMemoryAccounting'] => Variant[Systemd::Boolean, Systemd::SettingEnsure],

@@ -487,7 +487,7 @@ describe 'systemd' do
             is_expected.not_to contain_service('systemd-networkd').with_enable(true)
           }
 
-          if (facts[:os]['name'] == 'Ubuntu' && Puppet::Util::Package.versioncmp(facts[:os]['release']['full'], '20.04') >= 0) || (facts[:os]['name'] == 'Debian')
+          if facts[:os]['family'] == 'Debian'
             it { is_expected.to contain_package('systemd-timesyncd') }
           else
             it { is_expected.not_to contain_package('systemd-timesyncd') }
@@ -669,11 +669,11 @@ describe 'systemd' do
 
           case facts[:os]['family']
           when 'Archlinux', 'Gentoo'
-            accounting = %w[DefaultCPUAccounting DefaultIOAccounting DefaultIPAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
+            accounting = %w[DefaultCPUAccounting DefaultIOAccounting DefaultIPAccounting DefaultMemoryAccounting DefaultTasksAccounting]
           when 'Debian'
-            accounting = %w[DefaultCPUAccounting DefaultBlockIOAccounting DefaultMemoryAccounting]
+            accounting = %w[DefaultCPUAccounting DefaultMemoryAccounting]
           when 'RedHat', 'Suse'
-            accounting = %w[DefaultCPUAccounting DefaultBlockIOAccounting DefaultMemoryAccounting DefaultTasksAccounting]
+            accounting = %w[DefaultCPUAccounting DefaultMemoryAccounting DefaultTasksAccounting]
           end
           accounting.each do |account|
             it { is_expected.to contain_ini_setting("system/#{account}") }
@@ -695,12 +695,12 @@ describe 'systemd' do
             it {
               is_expected.to compile.with_all_deps
               is_expected.to contain_ini_setting('system/DefaultTimeoutStartSec').with_ensure('present').with_value('120s')
-              # Value is overriden by accounting settings
+              # Value is overridden by accounting settings
               is_expected.to contain_ini_setting('system/DefaultCPUAccounting').with_ensure('present').with_value('yes')
-              # Ensure and value are overriden by accounting settings
+              # Ensure and value are overridden by accounting settings
               is_expected.to contain_ini_setting('system/DefaultMemoryAccounting').with_ensure('present').with_value('yes')
-              # Included by accounting (switch to DefaultIOAccounting after RHEL7 EOL)
-              is_expected.to contain_ini_setting('system/DefaultBlockIOAccounting').with_ensure('present').with_value('yes')
+              # Included by accounting
+              is_expected.to contain_ini_setting('system/DefaultIOAccounting').with_ensure('present').with_value('yes')
             }
           end
         end

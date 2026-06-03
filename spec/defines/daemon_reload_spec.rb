@@ -18,18 +18,13 @@ describe 'systemd::daemon_reload' do
               .with_refreshonly(true)
           end
 
-          context 'with a username specfied' do
+          context 'with a username specified' do
             let(:params) do
               { user: 'steve' }
             end
 
-            case [facts[:os]['name'], facts[:os]['family'], facts[:os]['release']['major']]
-            when %w[Debian Debian 11],
-              ['Ubuntu', 'Debian', '20.04'],
-              %w[AlmaLinux RedHat 8],
-              %w[RedHat RedHat 8],
-              %w[Rocky RedHat 8],
-              %w[OracleLinux RedHat 8]
+            case [facts[:os]['family'], facts[:os]['release']['major']]
+            when %w[RedHat 8]
               it { is_expected.to compile.and_raise_error(%r{user is not supported below}) }
             else
               it { is_expected.to compile }
@@ -53,7 +48,7 @@ describe 'systemd::daemon_reload' do
             expect(subject).not_to contain_exec("systemd-#{title}-systemctl-daemon-reload")
           end
 
-          context 'with a username specfied' do
+          context 'with a username specified' do
             let(:params) do
               super().merge(user: 'steve')
             end
