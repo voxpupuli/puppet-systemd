@@ -26,7 +26,7 @@
    'Install',
 ]
 
-# Directives which are pair of items to be expressed as a space seperated pair.
+# Directives which are pair of items to be expressed as a space separated pair.
 $_tupled_values = [
   'IODeviceWeight',
   'IOReadBandwidthMax',
