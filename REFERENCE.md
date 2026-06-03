@@ -1617,7 +1617,7 @@ systemd::manage_unit { 'myrunner.service':
 }
 ```
 
-##### Genenerate a path unit
+##### Generate a path unit
 
 ```puppet
 systemd::manage_unit { 'passwd-mon.path':
@@ -1638,7 +1638,7 @@ systemd::manage_unit { 'passwd-mon.path':
 ##### Generate a socket and service (xinetd style)
 
 ```puppet
-systemd::manage_unit {'arcd.socket':
+systemd::manage_unit { 'arcd.socket':
   ensure        => 'present',
   unit_entry    => {
     'Description' => 'arcd.service',
@@ -1653,7 +1653,7 @@ systemd::manage_unit {'arcd.socket':
   },
 }
 
-systemd::manage_unit{'arcd@.service':
+systemd::manage_unit { 'arcd@.service':
   ensure        => 'present',
   enable        => true,
   active        => true,
@@ -1696,7 +1696,7 @@ systemd::manage_dropin { 'tmpfs-db.conf':
 
 ```puppet
 
-systemd::manage_unit{'swapfile.swap':
+systemd::manage_unit { 'swapfile.swap':
   ensure        => present,
   enable        => true,
   active        => true,
@@ -1713,7 +1713,7 @@ systemd::manage_unit{'swapfile.swap':
   },
   require       => Systemd::Manage_unit['mkswap.service'],
 }
-systemd::manage_unit{'mkswap.service':
+systemd::manage_unit { 'mkswap.service':
   ensure        => present,
   unit_entry    => {
     'Description'         => 'Format a swapfile at /swapfile',
@@ -1929,7 +1929,7 @@ Default value: `undef`
 
 Data type: `Optional[Systemd::Unit::Socket]`
 
-kev value paors for [Socket] section of the unit file.
+kev value pairs for [Socket] section of the unit file.
 
 Default value: `undef`
 

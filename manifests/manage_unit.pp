@@ -18,7 +18,7 @@
 #     },
 #   }
 #
-# @example Genenerate a path unit
+# @example Generate a path unit
 #   systemd::manage_unit { 'passwd-mon.path':
 #     ensure        => present,
 #     unit_entry    => {
@@ -34,7 +34,7 @@
 #   }
 #
 # @example Generate a socket and service (xinetd style)
-#  systemd::manage_unit {'arcd.socket':
+#  systemd::manage_unit { 'arcd.socket':
 #    ensure        => 'present',
 #    unit_entry    => {
 #      'Description' => 'arcd.service',
@@ -49,7 +49,7 @@
 #    },
 #  }
 #
-#  systemd::manage_unit{'arcd@.service':
+#  systemd::manage_unit { 'arcd@.service':
 #    ensure        => 'present',
 #    enable        => true,
 #    active        => true,
@@ -86,7 +86,7 @@
 #
 # @example Create and Mount a Swap File
 #
-#  systemd::manage_unit{'swapfile.swap':
+#  systemd::manage_unit { 'swapfile.swap':
 #    ensure        => present,
 #    enable        => true,
 #    active        => true,
@@ -103,7 +103,7 @@
 #    },
 #    require       => Systemd::Manage_unit['mkswap.service'],
 #  }
-#  systemd::manage_unit{'mkswap.service':
+#  systemd::manage_unit { 'mkswap.service':
 #    ensure        => present,
 #    unit_entry    => {
 #      'Description'         => 'Format a swapfile at /swapfile',
@@ -151,7 +151,7 @@
 # @param install_entry key value pairs for [Install] section of the unit file.
 # @param timer_entry key value pairs for [Timer] section of the unit file
 # @param path_entry key value pairs for [Path] section of the unit file.
-# @param socket_entry kev value paors for [Socket] section of the unit file.
+# @param socket_entry kev value pairs for [Socket] section of the unit file.
 # @param automount_entry key value pairs for [Automount] section of the unit file.
 # @param mount_entry kev value pairs for [Mount] section of the unit file.
 # @param swap_entry kev value pairs for [Swap] section of the unit file.
