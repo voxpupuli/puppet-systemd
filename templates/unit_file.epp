@@ -6,6 +6,7 @@
  Optional[Hash] $timer_entry,
  Optional[Hash] $path_entry,
  Optional[Hash] $socket_entry,
+ Optional[Hash] $automount_entry,
  Optional[Hash] $mount_entry,
  Optional[Hash] $swap_entry,
 | -%>
@@ -21,6 +22,7 @@
    'Timer',
    'Path',
    'Socket',
+   'Automount',
    'Mount',
    'Swap',
    'Install',

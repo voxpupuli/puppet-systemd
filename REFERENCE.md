@@ -170,6 +170,7 @@
 * [`Systemd::Unit`](#Systemd--Unit): custom datatype that validates different filenames for systemd units and unit templates
 * [`Systemd::Unit::Amount`](#Systemd--Unit--Amount): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::AmountOrPercent`](#Systemd--Unit--AmountOrPercent): Systemd definition of amount, often bytes or united bytes
+* [`Systemd::Unit::Automount`](#Systemd--Unit--Automount): Possible keys for the [Automount] section of a unit file
 * [`Systemd::Unit::Install`](#Systemd--Unit--Install): Possible keys for the [Install] section of a unit file
 * [`Systemd::Unit::Mount`](#Systemd--Unit--Mount): Possible keys for the [Mount] section of a unit file
 * [`Systemd::Unit::Path`](#Systemd--Unit--Path): Possible keys for the [Path] section of a unit file
@@ -1762,6 +1763,7 @@ The following parameters are available in the `systemd::manage_unit` defined typ
 * [`timer_entry`](#-systemd--manage_unit--timer_entry)
 * [`path_entry`](#-systemd--manage_unit--path_entry)
 * [`socket_entry`](#-systemd--manage_unit--socket_entry)
+* [`automount_entry`](#-systemd--manage_unit--automount_entry)
 * [`mount_entry`](#-systemd--manage_unit--mount_entry)
 * [`swap_entry`](#-systemd--manage_unit--swap_entry)
 
@@ -1928,6 +1930,14 @@ Default value: `undef`
 Data type: `Optional[Systemd::Unit::Socket]`
 
 kev value paors for [Socket] section of the unit file.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_unit--automount_entry"></a>`automount_entry`
+
+Data type: `Optional[Systemd::Unit::Automount]`
+
+key value pairs for [Automount] section of the unit file.
 
 Default value: `undef`
 
@@ -5848,6 +5858,24 @@ Systemd definition of amount, often bytes or united bytes
   * https://www.freedesktop.org/software/systemd/man/systemd.slice.html
 
 Alias of `Variant[Systemd::Unit::Amount, Systemd::Unit::Percent]`
+
+### <a name="Systemd--Unit--Automount"></a>`Systemd::Unit::Automount`
+
+Possible keys for the [Automount] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.automount.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['Where'] => Stdlib::Absolutepath,
+    Optional['ExtraOptions'] => String[1],
+    Optional['DirectoryMode'] => Stdlib::Filemode,
+    Optional['TimeoutIdleSec'] => Systemd::Timespan,
+  }]
+```
 
 ### <a name="Systemd--Unit--Install"></a>`Systemd::Unit::Install`
 

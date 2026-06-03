@@ -99,6 +99,45 @@ describe 'systemd::manage_unit' do
           end
         end
 
+        context 'on an automount' do
+          let(:title) { 'some-dir.automount' }
+
+          let(:params) do
+            {
+              unit_entry: {
+                Description: 'Automount /some/dir',
+              },
+              automount_entry: {
+                'Where' => '/some/dir',
+                'TimeoutIdleSec' => '5min 20s',
+              },
+              install_entry: {
+                WantedBy: 'multi-user.target',
+              },
+            }
+          end
+
+          it do
+            is_expected.to compile.with_all_deps
+
+            is_expected.to contain_systemd__unit_file('some-dir.automount')
+              .with_content(<<~CONTENT)
+                # Deployed with puppet
+                #
+
+                [Unit]
+                Description=Automount /some/dir
+
+                [Automount]
+                Where=/some/dir
+                TimeoutIdleSec=5min 20s
+
+                [Install]
+                WantedBy=multi-user.target
+              CONTENT
+          end
+        end
+
         context 'on a mount' do
           let(:title) { 'var-lib-sss-db.mount' }
 
