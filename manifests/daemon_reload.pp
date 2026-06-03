@@ -14,16 +14,16 @@
 #   Ubuntu 22.04 or Debian 12.
 #
 # @example Force reload the system systemd
-#   notify{ 'fake event to notify from':
+#   notify { 'fake event to notify from':
 #     notify => Systemd::Daemon_reload['special']
 #   }
-#   systemd::daemon_reload{ 'special': }
+#   systemd::daemon_reload { 'special': }
 #
 # @example Force reload a systemd --user
-#   notify{ 'fake event to notify from':
+#   notify { 'fake event to notify from':
 #     notify => Systemd::Daemon_reload['steve_user']
 #   }
-#   systemd::daemon_reload{ 'steve_user':
+#   systemd::daemon_reload { 'steve_user':
 #     user => 'steve',
 #   }
 #

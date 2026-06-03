@@ -17,7 +17,7 @@
 #  }
 #
 # @example Notify a user's service to restart it
-#  file{ '/home/steve/.config/systemd/user/podman-auto-update.timer':
+#  file { '/home/steve/.config/systemd/user/podman-auto-update.timer':
 #    ensure  => file,
 #    content => ...,
 #    notify  => Systemd::User_service['steve-podman-auto-update.timer']
@@ -40,7 +40,7 @@
 #  @param ensure Should the unit be started or stopped. Can only be true if user is specified.
 #  @param enable Should the unit be enabled, disabled or 'mask'.
 #  @param user User name of user whose unit should be acted upon. Mutually exclusive with
-#  @param global Act globally for all users. Mutually exclusibe with `user`.
+#  @param global Act globally for all users. Mutually exclusive with `user`.
 #
 define systemd::user_service (
   Systemd::Unit $unit = $title,

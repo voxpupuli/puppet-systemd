@@ -18,7 +18,7 @@
 #     },
 #   }
 #
-# @example Genenerate a path unit
+# @example Generate a path unit
 #   systemd::manage_unit { 'passwd-mon.path':
 #     ensure        => present,
 #     unit_entry    => {
@@ -34,7 +34,7 @@
 #   }
 #
 # @example Generate a socket and service (xinetd style)
-#  systemd::manage_unit {'arcd.socket':
+#  systemd::manage_unit { 'arcd.socket':
 #    ensure        => 'present',
 #    unit_entry    => {
 #      'Description' => 'arcd.service',
@@ -49,7 +49,7 @@
 #    },
 #  }
 #
-#  systemd::manage_unit{'arcd@.service':
+#  systemd::manage_unit { 'arcd@.service':
 #    ensure        => 'present',
 #    enable        => true,
 #    active        => true,
@@ -86,7 +86,7 @@
 #
 # @example Create and Mount a Swap File
 #
-#  systemd::manage_unit{'swapfile.swap':
+#  systemd::manage_unit { 'swapfile.swap':
 #    ensure        => present,
 #    enable        => true,
 #    active        => true,
@@ -103,7 +103,7 @@
 #    },
 #    require       => Systemd::Manage_unit['mkswap.service'],
 #  }
-#  systemd::manage_unit{'mkswap.service':
+#  systemd::manage_unit { 'mkswap.service':
 #    ensure        => present,
 #    unit_entry    => {
 #      'Description'         => 'Format a swapfile at /swapfile',
@@ -151,7 +151,8 @@
 # @param install_entry key value pairs for [Install] section of the unit file.
 # @param timer_entry key value pairs for [Timer] section of the unit file
 # @param path_entry key value pairs for [Path] section of the unit file.
-# @param socket_entry kev value paors for [Socket] section of the unit file.
+# @param socket_entry kev value pairs for [Socket] section of the unit file.
+# @param automount_entry key value pairs for [Automount] section of the unit file.
 # @param mount_entry kev value pairs for [Mount] section of the unit file.
 # @param swap_entry kev value pairs for [Swap] section of the unit file.
 #
@@ -176,6 +177,7 @@ define systemd::manage_unit (
   Optional[Systemd::Unit::Timer]           $timer_entry             = undef,
   Optional[Systemd::Unit::Path]            $path_entry              = undef,
   Optional[Systemd::Unit::Socket]          $socket_entry            = undef,
+  Optional[Systemd::Unit::Automount]       $automount_entry         = undef,
   Optional[Systemd::Unit::Mount]           $mount_entry             = undef,
   Optional[Systemd::Unit::Swap]            $swap_entry              = undef,
 ) {
@@ -195,6 +197,10 @@ define systemd::manage_unit (
 
   if $slice_entry and $name !~ Pattern['^[^/]+\.slice'] {
     fail("Systemd::Manage_unit[${name}]: slice_entry is only valid for slice units")
+  }
+
+  if $automount_entry and $name !~ Pattern['^[^/]+\.automount'] {
+    fail("Systemd::Manage_unit[${name}]: automount_entry is only valid for automount units")
   }
 
   if $mount_entry and $name !~ Pattern['^[^/]+\.mount'] {
@@ -224,15 +230,16 @@ define systemd::manage_unit (
     service_restart         => $service_restart,
     content                 => epp('systemd/unit_file.epp',
       {
-        'unit_entry'    => $unit_entry,
-        'slice_entry'   => $slice_entry,
-        'service_entry' => $service_entry,
-        'install_entry' => $install_entry,
-        'timer_entry'   => $timer_entry,
-        'path_entry'    => $path_entry,
-        'socket_entry'  => $socket_entry,
-        'mount_entry'   => $mount_entry,
-        'swap_entry'    => $swap_entry,
+        'unit_entry'      => $unit_entry,
+        'slice_entry'     => $slice_entry,
+        'service_entry'   => $service_entry,
+        'install_entry'   => $install_entry,
+        'timer_entry'     => $timer_entry,
+        'path_entry'      => $path_entry,
+        'socket_entry'    => $socket_entry,
+        'automount_entry' => $automount_entry,
+        'mount_entry'     => $mount_entry,
+        'swap_entry'      => $swap_entry,
       },
     ),
   }

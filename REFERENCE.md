@@ -170,6 +170,7 @@
 * [`Systemd::Unit`](#Systemd--Unit): custom datatype that validates different filenames for systemd units and unit templates
 * [`Systemd::Unit::Amount`](#Systemd--Unit--Amount): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::AmountOrPercent`](#Systemd--Unit--AmountOrPercent): Systemd definition of amount, often bytes or united bytes
+* [`Systemd::Unit::Automount`](#Systemd--Unit--Automount): Possible keys for the [Automount] section of a unit file
 * [`Systemd::Unit::Install`](#Systemd--Unit--Install): Possible keys for the [Install] section of a unit file
 * [`Systemd::Unit::Mount`](#Systemd--Unit--Mount): Possible keys for the [Mount] section of a unit file
 * [`Systemd::Unit::Path`](#Systemd--Unit--Path): Possible keys for the [Path] section of a unit file
@@ -1128,19 +1129,19 @@ Run systemctl daemon-reload
 ##### Force reload the system systemd
 
 ```puppet
-notify{ 'fake event to notify from':
+notify { 'fake event to notify from':
   notify => Systemd::Daemon_reload['special']
 }
-systemd::daemon_reload{ 'special': }
+systemd::daemon_reload { 'special': }
 ```
 
 ##### Force reload a systemd --user
 
 ```puppet
-notify{ 'fake event to notify from':
+notify { 'fake event to notify from':
   notify => Systemd::Daemon_reload['steve_user']
 }
-systemd::daemon_reload{ 'steve_user':
+systemd::daemon_reload { 'steve_user':
   user => 'steve',
 }
 ```
@@ -1429,6 +1430,7 @@ The following parameters are available in the `systemd::manage_dropin` defined t
 * [`timer_entry`](#-systemd--manage_dropin--timer_entry)
 * [`path_entry`](#-systemd--manage_dropin--path_entry)
 * [`socket_entry`](#-systemd--manage_dropin--socket_entry)
+* [`automount_entry`](#-systemd--manage_dropin--automount_entry)
 * [`mount_entry`](#-systemd--manage_dropin--mount_entry)
 * [`swap_entry`](#-systemd--manage_dropin--swap_entry)
 
@@ -1574,6 +1576,14 @@ key value pairs for the [Socket] section of the unit file
 
 Default value: `undef`
 
+##### <a name="-systemd--manage_dropin--automount_entry"></a>`automount_entry`
+
+Data type: `Optional[Systemd::Unit::Automount]`
+
+key value pairs for the [Automount] section of the unit file
+
+Default value: `undef`
+
 ##### <a name="-systemd--manage_dropin--mount_entry"></a>`mount_entry`
 
 Data type: `Optional[Systemd::Unit::Mount]`
@@ -1616,7 +1626,7 @@ systemd::manage_unit { 'myrunner.service':
 }
 ```
 
-##### Genenerate a path unit
+##### Generate a path unit
 
 ```puppet
 systemd::manage_unit { 'passwd-mon.path':
@@ -1637,7 +1647,7 @@ systemd::manage_unit { 'passwd-mon.path':
 ##### Generate a socket and service (xinetd style)
 
 ```puppet
-systemd::manage_unit {'arcd.socket':
+systemd::manage_unit { 'arcd.socket':
   ensure        => 'present',
   unit_entry    => {
     'Description' => 'arcd.service',
@@ -1652,7 +1662,7 @@ systemd::manage_unit {'arcd.socket':
   },
 }
 
-systemd::manage_unit{'arcd@.service':
+systemd::manage_unit { 'arcd@.service':
   ensure        => 'present',
   enable        => true,
   active        => true,
@@ -1695,7 +1705,7 @@ systemd::manage_dropin { 'tmpfs-db.conf':
 
 ```puppet
 
-systemd::manage_unit{'swapfile.swap':
+systemd::manage_unit { 'swapfile.swap':
   ensure        => present,
   enable        => true,
   active        => true,
@@ -1712,7 +1722,7 @@ systemd::manage_unit{'swapfile.swap':
   },
   require       => Systemd::Manage_unit['mkswap.service'],
 }
-systemd::manage_unit{'mkswap.service':
+systemd::manage_unit { 'mkswap.service':
   ensure        => present,
   unit_entry    => {
     'Description'         => 'Format a swapfile at /swapfile',
@@ -1762,6 +1772,7 @@ The following parameters are available in the `systemd::manage_unit` defined typ
 * [`timer_entry`](#-systemd--manage_unit--timer_entry)
 * [`path_entry`](#-systemd--manage_unit--path_entry)
 * [`socket_entry`](#-systemd--manage_unit--socket_entry)
+* [`automount_entry`](#-systemd--manage_unit--automount_entry)
 * [`mount_entry`](#-systemd--manage_unit--mount_entry)
 * [`swap_entry`](#-systemd--manage_unit--swap_entry)
 
@@ -1927,7 +1938,15 @@ Default value: `undef`
 
 Data type: `Optional[Systemd::Unit::Socket]`
 
-kev value paors for [Socket] section of the unit file.
+kev value pairs for [Socket] section of the unit file.
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_unit--automount_entry"></a>`automount_entry`
+
+Data type: `Optional[Systemd::Unit::Automount]`
+
+key value pairs for [Automount] section of the unit file.
 
 Default value: `undef`
 
@@ -3025,7 +3044,7 @@ systemd::user_service { 'podman-auto-update.timer':
 ##### Notify a user's service to restart it
 
 ```puppet
-file{ '/home/steve/.config/systemd/user/podman-auto-update.timer':
+file { '/home/steve/.config/systemd/user/podman-auto-update.timer':
   ensure  => file,
   content => ...,
   notify  => Systemd::User_service['steve-podman-auto-update.timer']
@@ -3051,7 +3070,7 @@ systemd::user_service { 'systemd-tmpfiles-clean.timer':
 @param ensure Should the unit be started or stopped. Can only be true if user is specified.
 @param enable Should the unit be enabled, disabled or 'mask'.
 @param user User name of user whose unit should be acted upon. Mutually exclusive with
-@param global Act globally for all users. Mutually exclusibe with `user`.
+@param global Act globally for all users. Mutually exclusive with `user`.
 ```
 
 #### Parameters
@@ -5848,6 +5867,24 @@ Systemd definition of amount, often bytes or united bytes
   * https://www.freedesktop.org/software/systemd/man/systemd.slice.html
 
 Alias of `Variant[Systemd::Unit::Amount, Systemd::Unit::Percent]`
+
+### <a name="Systemd--Unit--Automount"></a>`Systemd::Unit::Automount`
+
+Possible keys for the [Automount] section of a unit file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.automount.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['Where'] => Stdlib::Absolutepath,
+    Optional['ExtraOptions'] => String[1],
+    Optional['DirectoryMode'] => Stdlib::Filemode,
+    Optional['TimeoutIdleSec'] => Systemd::Timespan,
+  }]
+```
 
 ### <a name="Systemd--Unit--Install"></a>`Systemd::Unit::Install`
 
