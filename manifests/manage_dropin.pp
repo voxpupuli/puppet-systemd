@@ -88,6 +88,7 @@
 # @param timer_entry key value pairs for [Timer] section of the unit file
 # @param path_entry key value pairs for [Path] section of the unit file
 # @param socket_entry key value pairs for the [Socket] section of the unit file
+# @param automount_entry key value pairs for the [Automount] section of the unit file
 # @param mount_entry key value pairs for the [Mount] section of the unit file
 # @param swap_entry key value pairs for the [Swap] section of the unit file
 #
@@ -110,6 +111,7 @@ define systemd::manage_dropin (
   Optional[Systemd::Unit::Timer]   $timer_entry             = undef,
   Optional[Systemd::Unit::Path]    $path_entry              = undef,
   Optional[Systemd::Unit::Socket]  $socket_entry            = undef,
+  Optional[Systemd::Unit::Automount] $automount_entry       = undef,
   Optional[Systemd::Unit::Mount]   $mount_entry             = undef,
   Optional[Systemd::Unit::Swap]    $swap_entry              = undef,
 ) {
@@ -127,6 +129,10 @@ define systemd::manage_dropin (
 
   if $slice_entry and $unit !~ Pattern['^[^/]+\.slice'] {
     fail("Systemd::Manage_dropin[${name}]: for unit ${unit} slice_entry is only valid for slice units")
+  }
+
+  if $automount_entry and $unit !~ Pattern['^[^/]+\.automount'] {
+    fail("Systemd::Manage_dropin[${name}]: for unit ${unit} automount_entry is only valid for automount units")
   }
 
   if $mount_entry and $unit !~ Pattern['^[^/]+\.mount'] {
@@ -151,15 +157,16 @@ define systemd::manage_dropin (
     daemon_reload           => $daemon_reload,
     content                 => epp('systemd/unit_file.epp',
       {
-        'unit_entry'    => $unit_entry,
-        'slice_entry'   => $slice_entry,
-        'service_entry' => $service_entry,
-        'install_entry' => $install_entry,
-        'timer_entry'   => $timer_entry,
-        'path_entry'    => $path_entry,
-        'socket_entry'  => $socket_entry,
-        'mount_entry'   => $mount_entry,
-        'swap_entry'    => $swap_entry,
+        'unit_entry'      => $unit_entry,
+        'slice_entry'     => $slice_entry,
+        'service_entry'   => $service_entry,
+        'install_entry'   => $install_entry,
+        'timer_entry'     => $timer_entry,
+        'path_entry'      => $path_entry,
+        'socket_entry'    => $socket_entry,
+        'automount_entry' => $automount_entry,
+        'mount_entry'     => $mount_entry,
+        'swap_entry'      => $swap_entry,
       },
     ),
   }

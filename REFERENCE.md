@@ -1430,6 +1430,7 @@ The following parameters are available in the `systemd::manage_dropin` defined t
 * [`timer_entry`](#-systemd--manage_dropin--timer_entry)
 * [`path_entry`](#-systemd--manage_dropin--path_entry)
 * [`socket_entry`](#-systemd--manage_dropin--socket_entry)
+* [`automount_entry`](#-systemd--manage_dropin--automount_entry)
 * [`mount_entry`](#-systemd--manage_dropin--mount_entry)
 * [`swap_entry`](#-systemd--manage_dropin--swap_entry)
 
@@ -1572,6 +1573,14 @@ Default value: `undef`
 Data type: `Optional[Systemd::Unit::Socket]`
 
 key value pairs for the [Socket] section of the unit file
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_dropin--automount_entry"></a>`automount_entry`
+
+Data type: `Optional[Systemd::Unit::Automount]`
+
+key value pairs for the [Automount] section of the unit file
 
 Default value: `undef`
 
