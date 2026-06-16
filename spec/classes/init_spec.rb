@@ -771,23 +771,29 @@ describe 'systemd' do
             )
 
             is_expected.to have_ini_setting_resource_count(3)
+            is_expected.to contain_file('/etc/systemd/journald.conf.d').with(
+              ensure: 'directory',
+              owner: 'root',
+              group: 'root',
+              mode: '0755',
+            )
 
             expect(subject).to contain_ini_setting('Storage').with(
-              path: '/etc/systemd/journald.conf',
+              path: '/etc/systemd/journald.conf.d/puppet.conf',
               section: 'Journal',
               notify: 'Service[systemd-journald]',
               value: 'auto',
             )
 
             expect(subject).to contain_ini_setting('MaxRetentionSec').with(
-              path: '/etc/systemd/journald.conf',
+              path: '/etc/systemd/journald.conf.d/puppet.conf',
               section: 'Journal',
               notify: 'Service[systemd-journald]',
               value: '5day',
             )
 
             expect(subject).to contain_ini_setting('MaxLevelStore').with(
-              path: '/etc/systemd/journald.conf',
+              path: '/etc/systemd/journald.conf.d/puppet.conf',
               section: 'Journal',
               notify: 'Service[systemd-journald]',
               ensure: 'absent',
