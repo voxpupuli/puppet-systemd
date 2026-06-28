@@ -92,7 +92,7 @@
 #   Manage the systemd network daemon
 #
 # @param networkd_ensure
-#   The state that the ``networkd`` service should be in. **Warning** Since since v260 of systemd ensuring the service is stopped may only be transient, it is very likely some socket will activate the service nearly immediatly. 
+#   The state that the ``networkd`` service should be in. **Warning** Since since v260 of systemd ensuring the service is stopped may only be transient, it is very likely some socket will activate the service nearly immediatly.
 #
 # @param networkd_package
 #   Name of the package required for systemd-networkd, if any
@@ -516,4 +516,9 @@ class systemd (
       * => $resource,
     }
   }
+
+  # Ordering barrier so daemon-reexec runs before daemon-reload.
+  # lint:ignore:anchor_resource
+  anchor { 'systemd::reexec_before_reload': }
+  # lint:endignore
 }

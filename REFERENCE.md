@@ -32,6 +32,7 @@
 
 ### Defined types
 
+* [`systemd::daemon_reexec`](#systemd--daemon_reexec): Run systemctl daemon-reexec
 * [`systemd::daemon_reload`](#systemd--daemon_reload): Run systemctl daemon-reload
 * [`systemd::dropin_file`](#systemd--dropin_file): Creates a drop-in file for a systemd unit
 * [`systemd::manage_dropin`](#systemd--manage_dropin): Creates a drop-in file for a systemd unit from a template
@@ -172,6 +173,7 @@
 * [`Systemd::Unit::AmountOrPercent`](#Systemd--Unit--AmountOrPercent): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::Automount`](#Systemd--Unit--Automount): Possible keys for the [Automount] section of a unit file
 * [`Systemd::Unit::Install`](#Systemd--Unit--Install): Possible keys for the [Install] section of a unit file
+* [`Systemd::Unit::Manager`](#Systemd--Unit--Manager): Possible keys for the [Manager] section of a system.conf/user.conf drop-in file
 * [`Systemd::Unit::Mount`](#Systemd--Unit--Mount): Possible keys for the [Mount] section of a unit file
 * [`Systemd::Unit::Path`](#Systemd--Unit--Path): Possible keys for the [Path] section of a unit file
 * [`Systemd::Unit::Percent`](#Systemd--Unit--Percent): Systemd definition of a percentage
@@ -1120,6 +1122,63 @@ Default value: `['create']`
 
 ## Defined types
 
+### <a name="systemd--daemon_reexec"></a>`systemd::daemon_reexec`
+
+Re-executes the systemd manager so that changes to its own configuration
+(system.conf/user.conf and their drop-ins) take effect.
+
+#### Examples
+
+##### Force reexec the system systemd
+
+```puppet
+notify { 'fake event to notify from':
+  notify => Systemd::Daemon_reexec['special']
+}
+systemd::daemon_reexec { 'special': }
+```
+
+##### Force reexec a systemd --user
+
+```puppet
+notify { 'fake event to notify from':
+  notify => Systemd::Daemon_reexec['steve_user']
+}
+systemd::daemon_reexec { 'steve_user':
+  user => 'steve',
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `systemd::daemon_reexec` defined type:
+
+* [`name`](#-systemd--daemon_reexec--name)
+* [`enable`](#-systemd--daemon_reexec--enable)
+* [`user`](#-systemd--daemon_reexec--user)
+
+##### <a name="-systemd--daemon_reexec--name"></a>`name`
+
+A globally unique name for the resource
+
+##### <a name="-systemd--daemon_reexec--enable"></a>`enable`
+
+Data type: `Boolean`
+
+Enable the reexec exec
+* Added in case users want to disable the reexec globally using a resource collector
+
+Default value: `true`
+
+##### <a name="-systemd--daemon_reexec--user"></a>`user`
+
+Data type: `Optional[String[1]]`
+
+Specify user name of `systemd --user` to reexec. This is not supported **below** Redhat 9,
+Ubuntu 22.04 or Debian 12.
+
+Default value: `undef`
+
 ### <a name="systemd--daemon_reload"></a>`systemd::daemon_reload`
 
 Run systemctl daemon-reload
@@ -1408,6 +1467,18 @@ systemd::manage_dropin { 'devicelimits.conf':
 }
 ```
 
+##### drop in file to set the watchdog timers in system.conf
+
+```puppet
+systemd::manage_dropin { 'watchdog.conf':
+  unit          => 'system.conf',
+  manager_entry => {
+    'RuntimeWatchdogSec' => '60s',
+    'RebootWatchdogSec'  => '10min',
+  },
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `systemd::manage_dropin` defined type:
@@ -1424,6 +1495,7 @@ The following parameters are available in the `systemd::manage_dropin` defined t
 * [`notify_service`](#-systemd--manage_dropin--notify_service)
 * [`daemon_reload`](#-systemd--manage_dropin--daemon_reload)
 * [`unit_entry`](#-systemd--manage_dropin--unit_entry)
+* [`manager_entry`](#-systemd--manage_dropin--manager_entry)
 * [`slice_entry`](#-systemd--manage_dropin--slice_entry)
 * [`service_entry`](#-systemd--manage_dropin--service_entry)
 * [`install_entry`](#-systemd--manage_dropin--install_entry)
@@ -1436,7 +1508,7 @@ The following parameters are available in the `systemd::manage_dropin` defined t
 
 ##### <a name="-systemd--manage_dropin--unit"></a>`unit`
 
-Data type: `Systemd::Unit`
+Data type: `Systemd::Dropin_unit`
 
 The unit to create a dropfile for
 
@@ -1458,11 +1530,11 @@ Default value: `'present'`
 
 ##### <a name="-systemd--manage_dropin--path"></a>`path`
 
-Data type: `Stdlib::Absolutepath`
+Data type: `Optional[Stdlib::Absolutepath]`
 
 The main systemd configuration path
 
-Default value: `'/etc/systemd/system'`
+Default value: `undef`
 
 ##### <a name="-systemd--manage_dropin--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
 
@@ -1525,6 +1597,14 @@ Default value: `true`
 Data type: `Optional[Systemd::Unit::Unit]`
 
 key value pairs for [Unit] section of the unit file
+
+Default value: `undef`
+
+##### <a name="-systemd--manage_dropin--manager_entry"></a>`manager_entry`
+
+Data type: `Optional[Systemd::Unit::Manager]`
+
+key value pairs for [Manager] section of the system.conf/user.conf file
 
 Default value: `undef`
 
@@ -3342,7 +3422,7 @@ Validates a drop-in unit name
 * **See also**
   * https://www.freedesktop.org/software/systemd/man/systemd.unit.html
 
-Alias of `Variant[Systemd::Unit, Systemd::Unit_type]`
+Alias of `Variant[Systemd::Unit, Systemd::Unit_type, Enum['system.conf', 'user.conf']]`
 
 ### <a name="Systemd--Interface"></a>`Systemd::Interface`
 
@@ -5903,6 +5983,86 @@ Struct[{
     Optional['UpheldBy']        => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['Also']            => Variant[Enum[''],Systemd::Unit,Array[Variant[Enum[''],Systemd::Unit],1]],
     Optional['DefaultInstance'] => String[1],
+  }]
+```
+
+### <a name="Systemd--Unit--Manager"></a>`Systemd::Unit::Manager`
+
+Possible keys for the [Manager] section of a system.conf/user.conf drop-in file
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd-system.conf.html
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['LogLevel'] => Systemd::LogLevel,
+    Optional['LogTarget'] => Enum['console','console-prefixed','kmsg','journal','journal-or-kmsg','auto','null'],
+    Optional['LogColor'] => Systemd::Boolean,
+    Optional['LogLocation'] => Systemd::Boolean,
+    Optional['LogTime'] => Systemd::Boolean,
+    Optional['DumpCore'] => Systemd::Boolean,
+    Optional['ShowStatus'] => Variant[Systemd::Boolean, Enum['auto','error']],
+    Optional['CrashChangeVT'] => Variant[Systemd::Boolean, Integer[1,63]],
+    Optional['CrashShell'] => Systemd::Boolean,
+    Optional['CrashReboot'] => Systemd::Boolean, # Obsoleted by CrashAction in v256, delete after Debian 12 EOL
+    Optional['CrashAction'] => Enum['freeze', 'reboot', 'poweroff'],
+    Optional['CtrlAltDelBurstAction'] => Enum['reboot-force','poweroff-force','reboot-immediate','poweroff-immediate','none'],
+    Optional['CPUAffinity'] => Variant[Enum['numa'], Pattern['^[0-9, -]+$']],
+    Optional['NUMAPolicy'] => Enum['default','preferred','bind','interleave','local'],
+    Optional['NUMAMask'] => Variant[Enum['all'], Pattern['^[0-9, -]+$']],
+    Optional['RuntimeWatchdogSec'] => Variant[Enum['off','default'], Systemd::Timespan],
+    Optional['RuntimeWatchdogPreSec'] => Variant[Enum['off'], Systemd::Timespan],
+    Optional['RuntimeWatchdogPreGovernor'] => Variant[Enum['noop', 'panic'], String[1]],
+    Optional['RebootWatchdogSec'] => Variant[Enum['off','default'], Systemd::Timespan],
+    Optional['KExecWatchdogSec'] => Variant[Enum['off','default'], Systemd::Timespan],
+    Optional['WatchdogDevice'] => Stdlib::Absolutepath,
+    Optional['CapabilityBoundingSet'] => Systemd::Capabilities,
+    Optional['NoNewPrivileges'] => Systemd::Boolean,
+    Optional['ProtectSystem'] => Variant[Enum['auto'], Systemd::Boolean],
+    Optional['SystemCallArchitectures'] => String[1],
+    Optional['TimerSlackNSec'] => Systemd::Timespan,
+    Optional['StatusUnitFormat'] => Enum['combined','description','name'],
+    Optional['DefaultTimerAccuracySec'] => Systemd::Timespan,
+    Optional['DefaultStandardOutput'] => Systemd::Output,
+    Optional['DefaultStandardError'] => Systemd::Output,
+    Optional['DefaultTimeoutStartSec'] => Systemd::Timespan,
+    Optional['DefaultTimeoutStopSec'] => Systemd::Timespan,
+    Optional['DefaultTimeoutAbortSec'] => Systemd::Timespan,
+    Optional['DefaultDeviceTimeoutSec'] => Systemd::Timespan,
+    Optional['DefaultRestartSec'] => Systemd::Timespan,
+    Optional['DefaultStartLimitIntervalSec'] => Variant[Enum['infinity'], Systemd::Timespan],
+    Optional['DefaultStartLimitBurst'] => Integer[0],
+    Optional['DefaultEnvironment'] => String,
+    Optional['ManagerEnvironment'] => String,
+    Optional['DefaultCPUAccounting'] => Systemd::Boolean,
+    Optional['DefaultIOAccounting'] => Systemd::Boolean,
+    Optional['DefaultIPAccounting'] => Systemd::Boolean,
+    Optional['DefaultMemoryAccounting'] => Systemd::Boolean,
+    Optional['DefaultTasksAccounting'] => Systemd::Boolean,
+    Optional['DefaultTasksMax'] => Variant[Enum['infinity'], Integer[0], Systemd::Unit::Percent],
+    Optional['DefaultLimitCPU'] => Variant[Enum['infinity'], Pattern['^\d+(s|m|h|d|w|M|y)?(:\d+(s|m|h|d|w|M|y)?)?$']],
+    Optional['DefaultLimitFSIZE'] => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['DefaultLimitDATA'] => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['DefaultLimitSTACK'] => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['DefaultLimitCORE'] => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['DefaultLimitRSS'] => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['DefaultLimitNOFILE'] => Variant[Integer[-1], Pattern['^(infinity|\d+(:(infinity|\d+))?)$']],
+    Optional['DefaultLimitAS'] => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['DefaultLimitNPROC'] => Variant[Integer[-1],Pattern['^(infinity|\d+(:(infinity|\d+))?)$']],
+    Optional['DefaultLimitMEMLOCK'] => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['DefaultLimitLOCKS'] => Integer[1],
+    Optional['DefaultLimitSIGPENDING'] => Integer[1],
+    Optional['DefaultLimitMSGQUEUE'] => Pattern['^(infinity|((\d+(K|M|G|T|P|E)?(:\d+(K|M|G|T|P|E)?)?)))$'],
+    Optional['DefaultLimitNICE'] => Variant[Integer[0,40], Pattern['^(-\+([0-1]?[0-9]|20))|([0-3]?[0-9]|40)$']],
+    Optional['DefaultLimitRTPRIO'] => Integer[0],
+    Optional['DefaultLimitRTTIME'] => Pattern['^\d+(ms|s|m|h|d|w|M|y)?(:\d+(ms|s|m|h|d|w|M|y)?)?$'],
+    Optional['DefaultOOMPolicy'] => Enum['continue', 'stop','kill'],
+    Optional['DefaultOOMScoreAdjust'] => Integer[-1000,1000],
+    Optional['DefaultSmackProcessLabel'] => String,
+    Optional['ReloadLimitIntervalSec'] => Variant[Enum['infinity'], Systemd::Timespan],
+    Optional['ReloadLimitBurst'] => Integer[0],
   }]
 ```
 

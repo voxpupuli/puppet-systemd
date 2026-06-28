@@ -45,6 +45,11 @@ class systemd::service_manager (
     default: { ({}) } # Empty Hash otherwise
   }
 
+  # Manager config takes effect on daemon-reexec.
+  unless empty($real_system_settings) {
+    ensure_resource('systemd::daemon_reexec', 'system.conf')
+  }
+
   $real_system_settings.each |$option, $value| {
     $vh = $value ? {
       Systemd::SettingEnsure => $value,
@@ -57,10 +62,15 @@ class systemd::service_manager (
       section => 'Manager',
       setting => $option,
       value   => $vh['value'],
+      notify  => Systemd::Daemon_reexec['system.conf'],
     }
   }
 
   if $manage_user_conf {
+    unless empty($user_settings) {
+      ensure_resource('systemd::daemon_reexec', 'user.conf')
+    }
+
     $user_settings.each |$option, $value| {
       $vh = $value ? {
         Systemd::SettingEnsure => $value,
@@ -73,6 +83,7 @@ class systemd::service_manager (
         section => 'Manager',
         setting => $option,
         value   => $vh['value'],
+        notify  => Systemd::Daemon_reexec['user.conf'],
       }
     }
   }
