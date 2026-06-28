@@ -26,7 +26,15 @@ define systemd::network (
 ) {
   include systemd
 
-  if $restart_service and $systemd::manage_networkd and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-networkd.service'] {
+  if $name =~ /\.link$/ {
+    # `.link` files are read by systemd-udevd, not systemd-networkd, so they are
+    # applied by reloading udev rather than restarting the networkd service.
+    include systemd::network_reload
+    $notify = $restart_service ? {
+      true    => Exec['systemd-network-link_reload'],
+      default => undef,
+    }
+  } elsif $restart_service and $systemd::manage_networkd {
     $notify = Service['systemd-networkd']
   } else {
     $notify = undef

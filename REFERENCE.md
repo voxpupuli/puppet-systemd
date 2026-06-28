@@ -22,6 +22,7 @@
 * `systemd::logind`: This class manages systemd's login manager configuration.
 * `systemd::machine_info`: This class manages systemd's machine-info file (hostnamectl)
 * `systemd::modules_loads`: Activate the modules contained in modules-loads.d
+* `systemd::network_reload`: Reloads udev so that changed `.link` files are applied
 * `systemd::networkd`: This class provides an abstract way to trigger systemd-networkd
 * `systemd::oomd`: This class manages and configures oomd.
 * `systemd::resolved`: This class provides an abstract way to trigger resolved.

@@ -64,6 +64,26 @@ describe 'systemd::network' do
           it { is_expected.to create_file("/etc/systemd/network/#{title}").that_notifies('Service[systemd-networkd]') }
         end
 
+        context 'with a .link file' do
+          let(:title) { 'eth0.link' }
+
+          it { is_expected.to compile.with_all_deps }
+
+          it { is_expected.not_to create_file("/etc/systemd/network/#{title}").that_notifies('Service[systemd-networkd]') }
+
+          it { is_expected.to create_file("/etc/systemd/network/#{title}").that_notifies('Exec[systemd-network-link_reload]') }
+
+          it {
+            expect(subject).to create_exec('systemd-network-link_reload').with(
+              command: 'udevadm control --reload && udevadm trigger --subsystem-match=net',
+              refreshonly: true,
+            )
+          }
+
+          # link-layer changes must settle before networkd reconfigures
+          it { is_expected.to create_exec('systemd-network-link_reload').that_comes_before('Service[systemd-networkd]') }
+        end
+
         context 'without content and without source' do
           let :params do
             {}
