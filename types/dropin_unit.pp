@@ -3,4 +3,5 @@
 type Systemd::Dropin_unit = Variant[
   Systemd::Unit,
   Systemd::Unit_type,
+  Enum['system.conf', 'user.conf'],
 ]

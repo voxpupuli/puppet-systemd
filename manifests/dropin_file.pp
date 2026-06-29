@@ -73,13 +73,22 @@ define systemd::dropin_file (
     show_diff               => $show_diff,
   }
 
-  if $daemon_reload {
-    ensure_resource('systemd::daemon_reload', $unit)
+  # system.conf/user.conf need daemon-reexec to take effect.
+  $_manager_conf = $unit =~ /^(system|user)\.conf$/
 
-    File[$full_filename] ~> Systemd::Daemon_reload[$unit]
+  if $daemon_reload {
+    if $_manager_conf {
+      ensure_resource('systemd::daemon_reexec', $unit)
+
+      File[$full_filename] ~> Systemd::Daemon_reexec[$unit]
+    } else {
+      ensure_resource('systemd::daemon_reload', $unit)
+
+      File[$full_filename] ~> Systemd::Daemon_reload[$unit]
+    }
   }
 
-  if $notify_service {
+  if $notify_service and !$_manager_conf {
     File[$full_filename] ~> Service <| title == $unit or name == $unit |>
 
     if $daemon_reload {

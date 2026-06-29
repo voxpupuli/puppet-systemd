@@ -718,6 +718,13 @@ describe 'systemd' do
               value: true,
             )
           end
+
+          it { is_expected.to contain_systemd__daemon_reexec('system.conf') }
+
+          it {
+            is_expected.to contain_ini_setting('system/DefaultTimeoutStartSec')
+              .that_notifies('Systemd::Daemon_reexec[system.conf]')
+          }
         end
 
         context 'when managing user service manager config' do
@@ -747,6 +754,13 @@ describe 'systemd' do
               path: '/etc/systemd/user.conf',
               value: 'infinity',
             )
+          }
+
+          it { is_expected.to contain_systemd__daemon_reexec('user.conf') }
+
+          it {
+            is_expected.to contain_ini_setting('user/DefaultTimeoutStartSec')
+              .that_notifies('Systemd::Daemon_reexec[user.conf]')
           }
         end
 

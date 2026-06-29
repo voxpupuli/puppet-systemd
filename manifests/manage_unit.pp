@@ -231,6 +231,7 @@ define systemd::manage_unit (
     content                 => epp('systemd/unit_file.epp',
       {
         'unit_entry'      => $unit_entry,
+        'manager_entry'   => undef,
         'slice_entry'     => $slice_entry,
         'service_entry'   => $service_entry,
         'install_entry'   => $install_entry,

@@ -70,6 +70,15 @@
 #     },
 #   }
 #
+# @example drop in file to set the watchdog timers in system.conf
+#   systemd::manage_dropin { 'watchdog.conf':
+#     unit          => 'system.conf',
+#     manager_entry => {
+#       'RuntimeWatchdogSec' => '60s',
+#       'RebootWatchdogSec'  => '10min',
+#     },
+#   }
+#
 # @param unit The unit to create a dropfile for
 # @param filename The target unit file to create. The filename of the drop in. The full path is determined using the path, unit and this filename.
 # @param ensure The state of this dropin file
@@ -82,6 +91,7 @@
 # @param notify_service Notify a service for the unit, if it exists
 # @param daemon_reload Call systemd::daemon_reload
 # @param unit_entry key value pairs for [Unit] section of the unit file
+# @param manager_entry key value pairs for [Manager] section of the system.conf/user.conf file
 # @param slice_entry key value pairs for [Slice] section of the unit file
 # @param service_entry key value pairs for [Service] section of the unit file
 # @param install_entry key value pairs for [Install] section of the unit file
@@ -93,10 +103,10 @@
 # @param swap_entry key value pairs for the [Swap] section of the unit file
 #
 define systemd::manage_dropin (
-  Systemd::Unit                    $unit,
+  Systemd::Dropin_unit             $unit,
   Systemd::Dropin                  $filename                = $name,
   Enum['present', 'absent']        $ensure                  = 'present',
-  Stdlib::Absolutepath             $path                    = '/etc/systemd/system',
+  Optional[Stdlib::Absolutepath]   $path                    = undef,
   Boolean                          $selinux_ignore_defaults = false,
   String                           $owner                   = 'root',
   String                           $group                   = 'root',
@@ -106,6 +116,7 @@ define systemd::manage_dropin (
   Boolean                          $daemon_reload           = true,
   Optional[Systemd::Unit::Install] $install_entry           = undef,
   Optional[Systemd::Unit::Unit]    $unit_entry              = undef,
+  Optional[Systemd::Unit::Manager] $manager_entry           = undef,
   Optional[Systemd::Unit::Slice]   $slice_entry             = undef,
   Optional[Systemd::Unit::Service] $service_entry           = undef,
   Optional[Systemd::Unit::Timer]   $timer_entry             = undef,
@@ -143,11 +154,23 @@ define systemd::manage_dropin (
     fail("Systemd::Manage_dropin[${name}]: for unit ${unit} swap_entry is only valid for swap units")
   }
 
+  if $manager_entry and $unit !~ Pattern['^(system|user)\.conf$'] {
+    fail("Systemd::Manage_dropin[${name}]: for unit ${unit} manager_entry is only valid for system.conf and user.conf")
+  }
+
+  # system.conf/user.conf drop-ins live in /etc/systemd/<unit>.d/, every other
+  # unit drops into /etc/systemd/system/<unit>.d/. An explicit path always wins.
+  $_default_path = $unit ? {
+    /^(system|user)\.conf$/ => '/etc/systemd',
+    default                 => '/etc/systemd/system',
+  }
+  $_path = pick($path, $_default_path)
+
   systemd::dropin_file { $name:
     ensure                  => $ensure,
     filename                => $filename,
     unit                    => $unit,
-    path                    => $path,
+    path                    => $_path,
     selinux_ignore_defaults => $selinux_ignore_defaults,
     owner                   => $owner,
     group                   => $group,
@@ -158,6 +181,7 @@ define systemd::manage_dropin (
     content                 => epp('systemd/unit_file.epp',
       {
         'unit_entry'      => $unit_entry,
+        'manager_entry'   => $manager_entry,
         'slice_entry'     => $slice_entry,
         'service_entry'   => $service_entry,
         'install_entry'   => $install_entry,

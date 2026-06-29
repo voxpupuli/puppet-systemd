@@ -132,6 +132,18 @@ describe 'systemd::manage_dropin' do
 
             it { is_expected.to compile.and_raise_error(%r{slice_entry is only valid for slice units}) }
           end
+
+          context 'with a manager entry' do
+            let(:params) do
+              super().merge(
+                manager_entry: {
+                  'RuntimeWatchdogSec' => '20s',
+                },
+              )
+            end
+
+            it { is_expected.to compile.and_raise_error(%r{manager_entry is only valid for system.conf and user.conf}) }
+          end
         end
 
         context 'on a swap unit' do
@@ -258,6 +270,72 @@ describe 'systemd::manage_dropin' do
               .with_content(%r{^\[Socket\]$})
               .with_content(%r{^ListenMessageQueue=/panic$})
           }
+        end
+
+        context 'on system.conf' do
+          let(:params) do
+            {
+              unit: 'system.conf',
+              manager_entry: {
+                'RuntimeWatchdogSec' => '60s',
+                'RebootWatchdogSec' => '10min',
+              },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__dropin_file('foobar.conf')
+              .with_unit('system.conf')
+              .with_path('/etc/systemd')
+              .with_content(%r{^\[Manager\]$})
+              .with_content(%r{^RuntimeWatchdogSec=60s$})
+              .with_content(%r{^RebootWatchdogSec=10min$})
+          }
+
+          it { is_expected.to contain_file('/etc/systemd/system.conf.d') }
+          it { is_expected.to contain_file('/etc/systemd/system.conf.d/foobar.conf') }
+
+          it { is_expected.to contain_systemd__daemon_reexec('system.conf') }
+          it { is_expected.not_to contain_systemd__daemon_reload('system.conf') }
+
+          it {
+            is_expected.to contain_exec('systemd-system.conf-systemctl-daemon-reexec')
+              .that_comes_before('Anchor[systemd::reexec_before_reload]')
+          }
+        end
+
+        context 'on user.conf' do
+          let(:params) do
+            {
+              unit: 'user.conf',
+              manager_entry: {
+                'DefaultMemoryAccounting' => true,
+              },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__dropin_file('foobar.conf')
+              .with_unit('user.conf')
+              .with_path('/etc/systemd')
+              .with_content(%r{^\[Manager\]$})
+              .with_content(%r{^DefaultMemoryAccounting=true$})
+          }
+
+          it { is_expected.to contain_file('/etc/systemd/user.conf.d/foobar.conf') }
+
+          context 'with an explicit path override' do
+            let(:params) do
+              super().merge(path: '/etc/systemd/custom')
+            end
+
+            it { is_expected.to compile.with_all_deps }
+            it { is_expected.to contain_systemd__dropin_file('foobar.conf').with_path('/etc/systemd/custom') }
+          end
         end
       end
     end

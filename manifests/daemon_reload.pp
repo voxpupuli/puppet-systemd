@@ -50,6 +50,7 @@ define systemd::daemon_reload (
       command     => $_command,
       refreshonly => true,
       path        => $facts['path'],
+      require     => Anchor['systemd::reexec_before_reload'],
     }
   }
 }
