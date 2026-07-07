@@ -420,11 +420,6 @@ class systemd (
 
   if $default_target {
     $target = stdlib::shell_escape($default_target)
-    service { $target:
-      ensure => 'running',
-      enable => true,
-    }
-
     exec { "systemctl set-default ${target}":
       command => "systemctl set-default ${target}",
       unless  => "test $(systemctl get-default) = ${target}",
