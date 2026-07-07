@@ -9,6 +9,7 @@
 #### Public Classes
 
 * [`systemd`](#systemd): This module allows triggering systemd commands once for all modules
+* [`systemd::purge_units`](#systemd--purge_units): Purges previously managed `systemd::manage_unit` units
 * [`systemd::sysusers`](#systemd--sysusers): Prepare systemd sysusers files
 * [`systemd::tmpfiles`](#systemd--tmpfiles): Update the systemd temp files
 
@@ -52,6 +53,7 @@
 ### Resource types
 
 * [`loginctl_user`](#loginctl_user): An arbitrary name used as the identity of the resource.
+* [`systemd_purge_units`](#systemd_purge_units): This is a metatype to purge unmanaged systemd units that were previously created with the `systemd::manage_unit` defined type.  Set the name 
 
 ### Functions
 
@@ -278,6 +280,7 @@ The following parameters are available in the `systemd` class:
 * [`loginctl_users`](#-systemd--loginctl_users)
 * [`dropin_files`](#-systemd--dropin_files)
 * [`manage_units`](#-systemd--manage_units)
+* [`purge_units`](#-systemd--purge_units)
 * [`manage_dropins`](#-systemd--manage_dropins)
 * [`manage_all_network_files`](#-systemd--manage_all_network_files)
 * [`network_path`](#-systemd--network_path)
@@ -917,6 +920,17 @@ Configure units via hiera and `systemd::manage_unit` with factory pattern
 
 Default value: `{}`
 
+##### <a name="-systemd--purge_units"></a>`purge_units`
+
+Data type: `Variant[Boolean, Array[Stdlib::Absolutepath, 1]]`
+
+When set to `true` will include `systemd::purge_units` with default options including the default systemd::manage_units path.
+This will purge any previously managed systemd units created with `systemd::manage_unit`, (or the `manage_units` parameter from this base class.)
+Can also be set to an array of paths if you have `systemd::manage_unit` resources using either the non-default path, or more than one path.
+For finer control (such as restricting which unit types are purged) declare `systemd::purge_units` or `systemd_purge_units` directly.
+
+Default value: `false`
+
 ##### <a name="-systemd--manage_dropins"></a>`manage_dropins`
 
 Data type: `Stdlib::CreateResources`
@@ -1075,6 +1089,57 @@ Data type: `Boolean`
 If true, the util-linux package is installed, for runuser command.
 
 Default value: `false`
+
+### <a name="systemd--purge_units"></a>`systemd::purge_units`
+
+Unit files inside `$paths` whose first line is the `# Deployed with puppet` header
+will be removed if they aren't currently being managed by puppet.
+
+#### Parameters
+
+The following parameters are available in the `systemd::purge_units` class:
+
+* [`daemon_reload`](#-systemd--purge_units--daemon_reload)
+* [`paths`](#-systemd--purge_units--paths)
+* [`unit_types`](#-systemd--purge_units--unit_types)
+
+##### <a name="-systemd--purge_units--daemon_reload"></a>`daemon_reload`
+
+Data type: `Boolean`
+
+Whether to reload the systemd daemon after purging units
+
+Default value: `true`
+
+##### <a name="-systemd--purge_units--paths"></a>`paths`
+
+Data type: `Array[Stdlib::Absolutepath, 1]`
+
+The path(s) to your systemd units.
+
+Default value: `['/etc/systemd/system']`
+
+##### <a name="-systemd--purge_units--unit_types"></a>`unit_types`
+
+Data type: `Array[Enum['automount', 'mount', 'path', 'service', 'slice', 'socket', 'swap', 'timer'], 1]`
+
+The unit file types to purge. Defaults to every type that `systemd::manage_unit` can create.
+Restrict this if you only want certain unit types purged.
+
+Default value:
+
+```puppet
+[
+    'automount',
+    'mount',
+    'path',
+    'service',
+    'slice',
+    'socket',
+    'swap',
+    'timer',
+  ]
+```
 
 ### <a name="systemd--sysusers"></a>`systemd::sysusers`
 
@@ -3239,6 +3304,44 @@ An arbitrary name used as the identity of the resource.
 
 The specific backend to use for this `loginctl_user` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
+
+### <a name="systemd_purge_units"></a>`systemd_purge_units`
+
+This is a metatype to purge unmanaged systemd units that were previously created with the `systemd::manage_unit` defined type.
+
+Set the name of the resource to your systemd unit file path. (eg. `/etc/systemd/system`).
+Any unmanaged unit files in that directory whose first line is `# Deployed with puppet` will be removed.
+By default all unit types that `systemd::manage_unit` can create are considered, but this can be narrowed with the `unit_types` parameter.
+
+#### Properties
+
+The following properties are available in the `systemd_purge_units` type.
+
+##### `ensure`
+
+Valid values: `purgable`, `purged`
+
+The basic property that the resource should be in.
+
+Default value: `purged`
+
+#### Parameters
+
+The following parameters are available in the `systemd_purge_units` type.
+
+* [`path`](#-systemd_purge_units--path)
+* [`unit_types`](#-systemd_purge_units--unit_types)
+
+##### <a name="-systemd_purge_units--path"></a>`path`
+
+The fully qualified directory to purge unit files from.
+
+##### <a name="-systemd_purge_units--unit_types"></a>`unit_types`
+
+The unit file types to purge. Defaults to every type that `systemd::manage_unit` can create.
+Give an array to restrict purging to specific types, eg. `['service', 'timer']`.
+
+Default value: `valid_unit_types`
 
 ## Functions
 

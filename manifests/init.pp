@@ -251,6 +251,12 @@
 # @param manage_units
 #   Configure units via hiera and `systemd::manage_unit` with factory pattern
 #
+# @param purge_units
+#   When set to `true` will include `systemd::purge_units` with default options including the default systemd::manage_units path.
+#   This will purge any previously managed systemd units created with `systemd::manage_unit`, (or the `manage_units` parameter from this base class.)
+#   Can also be set to an array of paths if you have `systemd::manage_unit` resources using either the non-default path, or more than one path.
+#   For finer control (such as restricting which unit types are purged) declare `systemd::purge_units` or `systemd_purge_units` directly.
+#
 # @param manage_dropins
 #   Configure dropin files via hiera and `systemd::manage_dropin` with factory pattern
 #
@@ -391,6 +397,7 @@ class systemd (
   Stdlib::CreateResources                             $loginctl_users = {},
   Stdlib::CreateResources                             $dropin_files = {},
   Stdlib::CreateResources                             $manage_units = {},
+  Variant[Boolean, Array[Stdlib::Absolutepath, 1]]    $purge_units = false,
   Stdlib::CreateResources                             $manage_dropins = {},
   Stdlib::CreateResources                             $udev_rules = {},
   Boolean                                             $manage_coredump = false,
@@ -508,6 +515,14 @@ class systemd (
   $manage_units.each |$name, $resource| {
     systemd::manage_unit { $name:
       * => $resource,
+    }
+  }
+
+  if $purge_units {
+    if $purge_units =~ Array {
+      class { 'systemd::purge_units': paths => $purge_units }
+    } else {
+      include systemd::purge_units
     }
   }
 

@@ -109,6 +109,54 @@ systemd::manage_units:
       CPUWeight: 2000
 ```
 
+#### purging previously managed unit files
+
+After removing any `systemd::manage_unit` definitions from your manifests, by default, the unit files installed will remain on your system.
+If you wish to remove them automatically, this module can help with that.
+
+Only unit files written by `systemd::manage_unit` are eligible for purging: they are identified by the `# Deployed with puppet` header that the module writes as the first line of every unit file. Hand-written unit files and symlinks (such as systemd enablement links) are never touched.
+
+You can either...
+
+Purge all previously managed units in `/etc/systemd/system`, and reload the systemd daemon...
+
+```puppet
+include systemd::purge_units
+```
+
+Declare the class with custom options such as custom paths, the unit types to consider, and the `daemon_reload` setting.
+
+```puppet
+class { 'systemd::purge_units':
+  paths         => [
+    '/path/to/custom/unit/dir1',
+    '/path/to/custom/unit/dir2',
+  ],
+  unit_types    => ['service', 'timer'],
+  daemon_reload => false,
+}
+```
+
+You can also include the functionality through the `systemd` base class `purge_units` parameter. For example, you could do this via hiera.
+
+```yaml
+systemd::purge_units: true
+```
+
+or...
+
+```yaml
+systemd::purge_units: ['/custom/path']
+```
+
+If you need full flexibility, you can declare the `systemd_purge_units` type in your manifests directly.
+
+```puppet
+systemd_purge_units { '/etc/systemd/system':
+  unit_types => ['service', 'timer'],
+}
+```
+
 ### drop-in files
 
 Drop-in files are used to add or alter settings of a unit without modifying the

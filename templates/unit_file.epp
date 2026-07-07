@@ -40,7 +40,7 @@ $_tupled_values = [
 ]
 
 -%>
-# Deployed with puppet
+# Deployed with puppet<%# DO NOT EDIT THIS HEADER! The `systemd_purge_units` type depends on it. %>
 #
 <%-
 $_unit_sections.each | $_section | {

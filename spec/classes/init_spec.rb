@@ -1146,6 +1146,32 @@ describe 'systemd' do
           }
         end
 
+        describe '`purge_units` parameter' do
+          context 'by default' do
+            it { is_expected.not_to contain_class('systemd::purge_units') }
+          end
+
+          context 'when `purge_units` is `true`' do
+            let(:params) do
+              {
+                purge_units: true,
+              }
+            end
+
+            it { is_expected.to contain_class('systemd::purge_units').with_paths(['/etc/systemd/system']) }
+          end
+
+          context 'when `purge_units` is an array of paths' do
+            let(:params) do
+              {
+                purge_units: ['/path1', '/path2'],
+              }
+            end
+
+            it { is_expected.to contain_class('systemd::purge_units').with_paths(['/path1', '/path2']) }
+          end
+        end
+
         context 'when passing manage_dropins' do
           let(:params) do
             {
