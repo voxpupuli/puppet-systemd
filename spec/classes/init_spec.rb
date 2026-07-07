@@ -393,7 +393,7 @@ describe 'systemd' do
 
           it {
             is_expected.to contain_exec('systemctl set-default example.target')
-            is_expected.to contain_service('example.target').with_enable(true).with_ensure('running')
+            is_expected.not_to contain_service('example.target')
           }
         end
 
