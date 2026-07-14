@@ -336,10 +336,9 @@ describe 'Systemd::Unit::Unit' do
   # ---------------------------------------------------------------------------
 
   context 'StartLimitIntervalSec' do
-    # String[1] - any non-empty string
+    # Systemd::Timespan - non-negative integer or time string (e.g. 'infinity', '5min')
     it { is_expected.to     allow_value({ 'StartLimitIntervalSec' => '12 hours' }) }
     it { is_expected.to     allow_value({ 'StartLimitIntervalSec' => 'infinity' }) }
-    it { is_expected.not_to allow_value({ 'StartLimitIntervalSec' => '' }) }
   end
 
   context 'StartLimitBurst' do

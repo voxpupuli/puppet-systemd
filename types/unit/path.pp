@@ -11,7 +11,7 @@ type Systemd::Unit::Path = Struct[
     Optional['Unit']                    => Systemd::Unit,
     Optional['MakeDirectory']           => Boolean,
     Optional['DirectoryMode']           => Pattern[/\A[0-7]{1,4}\z/],
-    Optional['TriggerLimitIntervalSec'] => String,
+    Optional['TriggerLimitIntervalSec'] => Systemd::Timespan,
     Optional['TriggerLimitBurst']       => Integer[0],
   }
 ]

@@ -4,7 +4,7 @@ type Systemd::Interface::Network::Tokenbucketfilter = Struct[
   {
     'Parent'     => Optional[Variant[Enum['root', 'clsact', 'ingress'], String[1]]],
     'Handle'     => Optional[String[1]],
-    'LatencySec' => Optional[String[1]],
+    'LatencySec' => Optional[Systemd::Timespan],
     'LimitBytes' => Optional[String[1]],
     'BurstBytes' => Optional[String[1]],
     'Rate'       => Optional[String[1]],

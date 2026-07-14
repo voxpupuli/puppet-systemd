@@ -12,7 +12,7 @@ type Systemd::Unit::Mount = Struct[
     Optional['ReadWriteOnly']  => Boolean,
     Optional['ForceUnmount']   => Boolean,
     Optional['DirectoryMode']  => Stdlib::Filemode,
-    Optional['TimeoutSec']     => String[0],
+    Optional['TimeoutSec']     => Systemd::Timespan,
     Optional['OOMScoreAdjust'] => Integer[-1000,1000],
   }
 ]
