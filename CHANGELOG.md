@@ -4,6 +4,53 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v10.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v10.0.0) (2026-07-22)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.4.0...v10.0.0)
+
+**Breaking changes:**
+
+- Drop support for EOL Debian 11 [\#627](https://github.com/voxpupuli/puppet-systemd/pull/627) ([kenyon](https://github.com/kenyon))
+- Drop support for EOL Ubuntu 20.04 [\#626](https://github.com/voxpupuli/puppet-systemd/pull/626) ([kenyon](https://github.com/kenyon))
+- Remove deprecated `systemd::service_limits` type [\#572](https://github.com/voxpupuli/puppet-systemd/pull/572) ([traylenator](https://github.com/traylenator))
+
+**Implemented enhancements:**
+
+- Add mechanism for purging unmanaged systemd timers [\#633](https://github.com/voxpupuli/puppet-systemd/issues/633)
+- Add support for `systemd-system.conf` [\#624](https://github.com/voxpupuli/puppet-systemd/issues/624)
+- feat: add system.conf/user.conf drop-in support [\#636](https://github.com/voxpupuli/puppet-systemd/pull/636) ([vchepkov](https://github.com/vchepkov))
+- Add type and wrapper for purging unit files [\#635](https://github.com/voxpupuli/puppet-systemd/pull/635) ([alexjfisher](https://github.com/alexjfisher))
+- Add support for automount units in `manage_unit` and `manage_dropin` [\#631](https://github.com/voxpupuli/puppet-systemd/pull/631) ([kenyon](https://github.com/kenyon))
+- Add support for new machine-info metadata [\#623](https://github.com/voxpupuli/puppet-systemd/pull/623) ([jcpunk](https://github.com/jcpunk))
+- Support Ubuntu 26.04 [\#619](https://github.com/voxpupuli/puppet-systemd/pull/619) ([traylenator](https://github.com/traylenator))
+- Support `mask` in `systemd::user_service` [\#618](https://github.com/voxpupuli/puppet-systemd/pull/618) ([bwitt](https://github.com/bwitt))
+- Sync up service options list with upstream [\#616](https://github.com/voxpupuli/puppet-systemd/pull/616) ([jcpunk](https://github.com/jcpunk))
+- Fixup "Per{xyz}" as these unicode characters are valid sometimes [\#615](https://github.com/voxpupuli/puppet-systemd/pull/615) ([jcpunk](https://github.com/jcpunk))
+- Add in missing systemd service options [\#611](https://github.com/voxpupuli/puppet-systemd/pull/611) ([jcpunk](https://github.com/jcpunk))
+
+**Fixed bugs:**
+
+- `systemd::manage_unit` creates conflicting parameter set when `enable` is set to `mask` [\#576](https://github.com/voxpupuli/puppet-systemd/issues/576)
+- fix: don't force default\_target to running state [\#638](https://github.com/voxpupuli/puppet-systemd/pull/638) ([vchepkov](https://github.com/vchepkov))
+- fix: refresh .link files via udev and manage networkd reliably [\#637](https://github.com/voxpupuli/puppet-systemd/pull/637) ([vchepkov](https://github.com/vchepkov))
+- Fix `systemd::manage_unit` when `enable => 'mask'` [\#606](https://github.com/voxpupuli/puppet-systemd/pull/606) ([bwitt](https://github.com/bwitt))
+- Rewrite `loginctl_user` provider [\#597](https://github.com/voxpupuli/puppet-systemd/pull/597) ([trefzer](https://github.com/trefzer))
+
+**Closed issues:**
+
+- networkd\_ensure =\> stopped is not idempotent on Archlinux \(systemd 260+\) [\#612](https://github.com/voxpupuli/puppet-systemd/issues/612)
+- dns\_stub\_listener cannot be set to "no" [\#537](https://github.com/voxpupuli/puppet-systemd/issues/537)
+- Puppet fails to complete run, tries to complete multi-user target by itself [\#514](https://github.com/voxpupuli/puppet-systemd/issues/514)
+- Inconsistent values for `notify_service` in replacement for `systemd::service_limits` [\#481](https://github.com/voxpupuli/puppet-systemd/issues/481)
+- Race condition within loginctl\_user type [\#302](https://github.com/voxpupuli/puppet-systemd/issues/302)
+- loginctl disable-linger runs even when disabled [\#301](https://github.com/voxpupuli/puppet-systemd/issues/301)
+
+**Merged pull requests:**
+
+- Reduce number of compiles in rspec tests [\#621](https://github.com/voxpupuli/puppet-systemd/pull/621) ([traylenator](https://github.com/traylenator))
+- Stop network sockets for tests on v250 [\#620](https://github.com/voxpupuli/puppet-systemd/pull/620) ([traylenator](https://github.com/traylenator))
+- README: document ability to configure `/etc/systemd/networkd.conf` [\#603](https://github.com/voxpupuli/puppet-systemd/pull/603) ([kenyon](https://github.com/kenyon))
+
 ## [v9.4.0](https://github.com/voxpupuli/puppet-systemd/tree/v9.4.0) (2025-12-12)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.3.0...v9.4.0)
@@ -642,6 +689,10 @@ These should not affect the functionality of the module.
 ## [v3.3.0](https://github.com/voxpupuli/puppet-systemd/tree/v3.3.0) (2021-08-25)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v3.2.0...v3.3.0)
+
+**Implemented enhancements:**
+
+- Add support for strict mode for DNS over TLS [\#200](https://github.com/voxpupuli/puppet-systemd/pull/200) ([ghost](https://github.com/ghost))
 
 **Merged pull requests:**
 
