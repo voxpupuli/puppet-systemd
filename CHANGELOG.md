@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v10.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v10.1.0) (2026-08-17)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v10.0.0...v10.1.0)
+
+**Implemented enhancements:**
+
+- Add management of `sleep.conf` [\#642](https://github.com/voxpupuli/puppet-systemd/pull/642) ([jcpunk](https://github.com/jcpunk))
+
+**Fixed bugs:**
+
+- Allow masking a service unit without any `service_entry` [\#643](https://github.com/voxpupuli/puppet-systemd/pull/643) ([jcpunk](https://github.com/jcpunk))
+
+**Merged pull requests:**
+
+- feat\(machine-info\): Permit unset machine-info vars [\#641](https://github.com/voxpupuli/puppet-systemd/pull/641) ([jcpunk](https://github.com/jcpunk))
+- types: Use `Systemd::Timespan` where appropriate [\#639](https://github.com/voxpupuli/puppet-systemd/pull/639) ([b4ldr](https://github.com/b4ldr))
+
 ## [v10.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v10.0.0) (2026-07-22)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.4.0...v10.0.0)
