@@ -902,6 +902,38 @@ describe 'systemd' do
           }
         end
 
+        context 'when journald_use_etc_conf is false' do
+          let(:params) do
+            {
+              journald_settings: {
+                'Storage' => 'auto',
+              },
+              journald_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('Storage')
+          }
+        end
+
+        context 'when journald_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::journald::dropin_file { "test.conf": content => "[Journal]\nStorage=persistent\n" }'
+          end
+          let(:params) do
+            {
+              journald_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/journald.conf.d').with_purge(true).with_recurse(true)
+          }
+        end
+
         context 'when journal-upload and journal-remote is enabled' do
           let(:params) do
             {
