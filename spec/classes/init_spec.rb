@@ -297,10 +297,9 @@ describe 'systemd' do
                 group: 'root',
                 mode: '0755',
               )
-              is_expected.to contain_file('/etc/systemd/resolved.conf.d/00-disable-mdns.conf').with(
-                ensure: 'link',
-                target: '/dev/null',
-              ).that_notifies('Service[systemd-resolved]')
+              is_expected.to contain_systemd__resolved__dropin_file('00-disable-mdns.conf')
+              is_expected.to contain_file('/etc/systemd/resolved.conf.d/00-disable-mdns.conf')
+                .that_notifies('Service[systemd-resolved]')
             end
           else
             it do
@@ -381,6 +380,38 @@ describe 'systemd' do
                 service_entry: { 'Environment' => 'SYSTEMD_RESOLVED_SYNTHESIZE_HOSTNAME=0' },
               },
             )
+          }
+        end
+
+        context 'when resolved_use_etc_conf is false' do
+          let(:params) do
+            {
+              manage_resolved: true,
+              dns: ['8.8.8.8', '8.8.4.4'],
+              resolved_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('dns')
+          }
+        end
+
+        context 'when resolved_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::resolved::dropin_file { "test.conf": content => "[Resolve]\nDNS=8.8.8.8\n" }'
+          end
+          let(:params) do
+            {
+              manage_resolved: true,
+              resolved_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/resolved.conf.d').with_purge(true).with_recurse(true)
           }
         end
 

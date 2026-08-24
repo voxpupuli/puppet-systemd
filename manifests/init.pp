@@ -34,6 +34,12 @@
 # @param resolved_synthesize_hostname
 #   Control if the hostname lookup via systemd should be synthesized.
 #
+# @param resolved_use_etc_conf
+#   Whether to use the /etc/systemd/resolved.conf file.
+#
+# @param resolved_purge_dropin_dirs
+#   Whether to purge the resolved dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param manage_nspawn
 #   Manage the systemd-nspawn@service and machinectl subsystem.
 #
@@ -374,6 +380,8 @@ class systemd (
   Array[String[1]]                                    $resolved_libraries = [],
   Enum['stopped','running']                           $resolved_ensure = 'running',
   Optional[Boolean]                                   $resolved_synthesize_hostname = undef,
+  Boolean                                             $resolved_use_etc_conf = true,
+  Boolean                                             $resolved_purge_dropin_dirs = false,
   Optional[Variant[Array[String],String]]             $dns = undef,
   Optional[Variant[Array[String],String]]             $fallback_dns = undef,
   Optional[Variant[Array[String],String]]             $domains = undef,
