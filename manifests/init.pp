@@ -368,6 +368,9 @@
 #   NOTE: It's currently impossible to have multiple entries of the same key in
 #   the settings.
 #
+# @param user_purge_dropin_dirs
+#   Whether to purge the user.conf dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param install_runuser
 #   If true, the util-linux package is installed, for runuser command.
 #
@@ -482,6 +485,7 @@ class systemd (
   Boolean                                             $system_purge_dropin_dirs = false,
   Boolean                                             $manage_user_conf = false,
   Systemd::ServiceManagerSettings                     $user_settings = {},
+  Boolean                                             $user_purge_dropin_dirs = false,
   Boolean                                             $install_runuser = false,
 ) {
   contain systemd::install

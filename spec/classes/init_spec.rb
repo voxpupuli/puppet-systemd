@@ -990,6 +990,23 @@ describe 'systemd' do
           }
         end
 
+        context 'when user_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::user::dropin_file { "test.conf": content => "[Manager]\nDefaultTimeoutStartSec=60s\n" }'
+          end
+          let(:params) do
+            {
+              manage_user_conf: true,
+              user_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/user.conf.d').with_purge(true).with_recurse(true)
+          }
+        end
+
         context 'when enabling journald with options' do
           let(:params) do
             {
