@@ -322,6 +322,12 @@
 # @param sleep_settings
 #   Config Hash that is used to configure settings in sleep.conf
 #
+# @param sleep_use_etc_conf
+#   Whether to use the /etc/systemd/sleep.conf file.
+#
+# @param sleep_purge_dropin_dirs
+#   Whether to purge the sleep dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param udev_purge_rules
 #   Toggle if unmanaged files in /etc/udev/rules.d should be purged if manage_udevd is enabled
 #
@@ -441,6 +447,8 @@ class systemd (
   Boolean                                             $oomd_purge_dropin_dirs = false,
   Boolean                                             $manage_sleep = false,
   Systemd::SleepSettings                              $sleep_settings = {},
+  Boolean                                             $sleep_use_etc_conf = true,
+  Boolean                                             $sleep_purge_dropin_dirs = false,
   Boolean                                             $udev_purge_rules = false,
   Boolean                                             $manage_system_conf = false,
   Systemd::ServiceManagerSettings                     $system_settings = {},

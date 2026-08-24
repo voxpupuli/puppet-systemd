@@ -562,6 +562,40 @@ describe 'systemd' do
           }
         end
 
+        context 'when sleep_use_etc_conf is false' do
+          let(:params) do
+            {
+              manage_sleep: true,
+              sleep_settings: {
+                'AllowSuspend' => 'yes',
+              },
+              sleep_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('AllowSuspend')
+          }
+        end
+
+        context 'when sleep_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::sleep::dropin_file { "test.conf": content => "[Sleep]\nAllowSuspend=yes\n" }'
+          end
+          let(:params) do
+            {
+              manage_sleep: true,
+              sleep_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/sleep.conf.d').with_purge(true).with_recurse(true)
+          }
+        end
+
         context 'when enabling nspawn' do
           let(:params) do
             {
