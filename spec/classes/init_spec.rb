@@ -1537,6 +1537,40 @@ describe 'systemd' do
           end
         end
 
+        context 'when coredump_use_etc_conf is false' do
+          let(:params) do
+            {
+              manage_coredump: true,
+              coredump_settings: {
+                'Storage' => 'none',
+              },
+              coredump_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('coredump_Storage')
+          }
+        end
+
+        context 'when coredump_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::coredump::dropin_file { "test.conf": content => "[Coredump]\nStorage=none\n" }'
+          end
+          let(:params) do
+            {
+              manage_coredump: true,
+              coredump_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/coredump.conf.d').with_purge(true).with_recurse(true)
+          }
+        end
+
         context 'with install_runuser true' do
           let :params do
             { install_runuser: true }

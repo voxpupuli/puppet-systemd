@@ -304,6 +304,12 @@
 # @param coredump_backtrace
 #   Add --backtrace to systemd-coredump call systemd-coredump@.service unit
 #
+# @param coredump_use_etc_conf
+#   Whether to use the /etc/systemd/coredump.conf file.
+#
+# @param coredump_purge_dropin_dirs
+#   Whether to purge the coredump dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param manage_oomd
 #   Should systemd-oomd configuration be managed
 #
@@ -447,6 +453,8 @@ class systemd (
   Optional[Enum['systemd-container']]                 $nspawn_package = undef,
   Systemd::CoredumpSettings                           $coredump_settings = {},
   Boolean                                             $coredump_backtrace = false,
+  Boolean                                             $coredump_use_etc_conf = true,
+  Boolean                                             $coredump_purge_dropin_dirs = false,
   Boolean                                             $manage_oomd = false,
   Optional[String[1]]                                 $oomd_package = undef,
   Enum['stopped','running']                           $oomd_ensure = 'running',
