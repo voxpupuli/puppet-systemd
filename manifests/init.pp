@@ -357,6 +357,9 @@
 #   NOTE: It's currently impossible to have multiple entries of the same key in
 #   the settings.
 #
+# @param system_purge_dropin_dirs
+#   Whether to purge the system.conf dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param manage_user_conf
 #   Should user service manager configurations be managed
 #
@@ -476,6 +479,7 @@ class systemd (
   Boolean                                             $udev_purge_rules = false,
   Boolean                                             $manage_system_conf = false,
   Systemd::ServiceManagerSettings                     $system_settings = {},
+  Boolean                                             $system_purge_dropin_dirs = false,
   Boolean                                             $manage_user_conf = false,
   Systemd::ServiceManagerSettings                     $user_settings = {},
   Boolean                                             $install_runuser = false,

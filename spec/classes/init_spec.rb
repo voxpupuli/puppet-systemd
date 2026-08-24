@@ -936,6 +936,23 @@ describe 'systemd' do
           }
         end
 
+        context 'when system_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::system::dropin_file { "test.conf": content => "[Manager]\nDefaultTimeoutStartSec=60s\n" }'
+          end
+          let(:params) do
+            {
+              manage_system_conf: true,
+              system_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/system.conf.d').with_purge(true).with_recurse(true)
+          }
+        end
+
         context 'when managing user service manager config' do
           let :params do
             {
