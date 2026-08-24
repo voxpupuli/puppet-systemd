@@ -1222,6 +1222,40 @@ describe 'systemd' do
           }
         end
 
+        context 'when logind_use_etc_conf is false' do
+          let(:params) do
+            {
+              manage_logind: true,
+              logind_settings: {
+                'HandleSuspendKey' => 'ignore',
+              },
+              logind_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('HandleSuspendKey')
+          }
+        end
+
+        context 'when logind_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::logind::dropin_file { "test.conf": content => "[Login]\nHandleSuspendKey=ignore\n" }'
+          end
+          let(:params) do
+            {
+              manage_logind: true,
+              logind_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/logind.conf.d').with_purge(true).with_recurse(true)
+          }
+        end
+
         context 'when passing dropin_files' do
           let(:params) do
             {

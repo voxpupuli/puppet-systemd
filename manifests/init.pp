@@ -247,6 +247,12 @@
 # @param logind_settings
 #   Config Hash that is used to configure settings in logind.conf
 #
+# @param logind_use_etc_conf
+#   Whether to use the /etc/systemd/logind.conf file.
+#
+# @param logind_purge_dropin_dirs
+#   Whether to purge the logind dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param loginctl_users
 #   Config Hash that is used to generate instances of our type
 #   `loginctl_user`.
@@ -406,6 +412,8 @@ class systemd (
   Boolean                                             $udev_reload = false,
   Boolean                                             $manage_logind = false,
   Systemd::LogindSettings                             $logind_settings = {},
+  Boolean                                             $logind_use_etc_conf = true,
+  Boolean                                             $logind_purge_dropin_dirs = false,
   Boolean                                             $manage_all_network_files = false,
   Stdlib::Absolutepath                                $network_path = '/etc/systemd/network',
   Stdlib::CreateResources                             $loginctl_users = {},
