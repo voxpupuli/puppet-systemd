@@ -3,6 +3,7 @@
 # @api public
 # @param filename The filename of the drop in. The full path is determined using the path and this filename.
 # @param ensure the state of this dropin file
+# @param comments An array of comments to put in the dropin
 # @param path The journald dropin configuration path
 # @param selinux_ignore_defaults If Puppet should ignore the default SELinux labels.
 # @param owner The owner to set on the dropin file
@@ -15,6 +16,7 @@ define systemd::journald::manage_dropin (
   Systemd::JournaldSettings      $journal_entry,
   Systemd::Dropin                $filename                = $name,
   Enum['present', 'absent']      $ensure                  = 'present',
+  Optional[Array[String]]        $comments                = undef,
   Optional[Stdlib::Absolutepath] $path                    = undef,
   Optional[Boolean]              $selinux_ignore_defaults = undef,
   Optional[String[1]]            $owner                   = undef,
@@ -33,6 +35,10 @@ define systemd::journald::manage_dropin (
     mode                    => $mode,
     show_diff               => $show_diff,
     notify_journald         => $notify_journald,
-    content                 => epp('systemd/journald_dropin.epp', { 'journal_entry' => $journal_entry }),
+    content                 => epp('systemd/config_dropin.epp', {
+      'section'  => 'Journal',
+      'settings' => $journal_entry,
+      'comments' => $comments,
+    }),
   }
 }
