@@ -673,6 +673,37 @@ describe 'systemd' do
           }
         end
 
+        context 'when timesyncd_use_etc_conf is false' do
+          let(:params) do
+            {
+              manage_timesyncd: true,
+              timesyncd_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('NTP')
+          }
+        end
+
+        context 'when timesyncd_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::timesyncd::dropin_file { "test.conf": content => "[Time]\nNTP=0.pool.ntp.org\n" }'
+          end
+          let(:params) do
+            {
+              manage_timesyncd: true,
+              timesyncd_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/timesyncd.conf.d').with_purge(true).with_recurse(true)
+          }
+        end
+
         context 'when setting timezone' do
           let(:params) do
             {

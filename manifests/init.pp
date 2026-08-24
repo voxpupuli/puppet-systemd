@@ -186,6 +186,12 @@
 #   and will create various problems with time zone changes and daylight saving
 #   adjustments. If at all possible, keep the RTC in UTC mode.
 #
+# @param timesyncd_use_etc_conf
+#   Whether to use the /etc/systemd/timesyncd.conf file.
+#
+# @param timesyncd_purge_dropin_dirs
+#   Whether to purge the timesyncd dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param manage_journald
 #   Manage the systemd journald
 #
@@ -403,6 +409,8 @@ class systemd (
   Optional[Variant[Array,String]]                     $fallback_ntp_server = undef,
   Optional[Boolean]                                   $set_local_rtc = undef,
   Optional[String[1]]                                 $timezone = undef,
+  Boolean                                             $timesyncd_use_etc_conf = true,
+  Boolean                                             $timesyncd_purge_dropin_dirs = false,
   Boolean                                             $manage_accounting = false,
   Boolean                                             $purge_dropin_dirs = true,
   Boolean                                             $manage_journald = true,
