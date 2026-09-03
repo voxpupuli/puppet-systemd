@@ -6734,6 +6734,8 @@ Struct[{
     Optional['LoadCredentialEncrypted']   => Variant[String[0],Array[String[0],1]],
     Optional['SetCredential']             => Variant[String[0],Array[String[0],1]],
     Optional['SetCredentialEncrypted']    => Variant[String[0],Array[String[0],1]],
+    # Deprecated Options. Still valid systemd configuration but often hidden from man pages
+    Optional['PermissionsStartOnly']      => Boolean,
   }]
 ```
 
