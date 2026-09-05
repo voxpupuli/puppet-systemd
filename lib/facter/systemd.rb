@@ -45,14 +45,14 @@ end
 Facter.add(:systemd_version) do
   confine systemd: true
   setcode do
-    Facter::Util::Resolution.exec("systemctl --version | awk '/systemd/{ print $2 }'")
+    Facter::Core::Execution.execute("systemctl --version | awk '/systemd/{ print $2 }'")
   end
 end
 
 Facter.add(:systemd_internal_services) do
   confine systemd: true
   setcode do
-    command_output = Facter::Util::Resolution.exec(
+    command_output = Facter::Core::Execution.execute(
       'systemctl list-unit-files --no-legend --no-pager "systemd-*" -t service --state=enabled,disabled,enabled-runtime,indirect,masked',
     )
     lines = command_output.lines.lazy.map { |line| line.split(%r{\s+}) }

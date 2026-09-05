@@ -16,7 +16,7 @@ describe Facter.fact(:systemd_version) do
       let(:facts) { { systemd: true } }
 
       it do
-        allow(Facter::Util::Resolution).to receive(:exec).with("systemctl --version | awk '/systemd/{ print $2 }'").and_return('229')
+        allow(Facter::Core::Execution).to receive(:execute).with("systemctl --version | awk '/systemd/{ print $2 }'").and_return('229')
         expect(Facter.value(:systemd_version)).to eq('229')
       end
     end
@@ -29,7 +29,7 @@ describe Facter.fact(:systemd_version) do
       let(:facts) { { systemd: false } }
 
       it do
-        expect(Facter::Util::Resolution).not_to receive(:exec).with("systemctl --version | awk '/systemd/{ print $2 }'")
+        expect(Facter::Core::Execution).not_to receive(:execute).with("systemctl --version | awk '/systemd/{ print $2 }'")
         expect(Facter.value(:systemd_version)).to be_nil
       end
     end
