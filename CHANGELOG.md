@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v10.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v10.1.0) (2026-09-05)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v10.0.0...v10.1.0)
+
+**Implemented enhancements:**
+
+- Permit unit file comments \(and dropin comments\) [\#647](https://github.com/voxpupuli/puppet-systemd/pull/647) ([jcpunk](https://github.com/jcpunk))
+- add dropin\_file and manage\_dropin defined resources for journald [\#644](https://github.com/voxpupuli/puppet-systemd/pull/644) ([TheMeier](https://github.com/TheMeier))
+- Add management of `sleep.conf` [\#642](https://github.com/voxpupuli/puppet-systemd/pull/642) ([jcpunk](https://github.com/jcpunk))
+- types: Use `Systemd::Timespan` where appropriate [\#639](https://github.com/voxpupuli/puppet-systemd/pull/639) ([b4ldr](https://github.com/b4ldr))
+- lib/facter/systemd: Also include masked services [\#632](https://github.com/voxpupuli/puppet-systemd/pull/632) ([b4ldr](https://github.com/b4ldr))
+
+**Fixed bugs:**
+
+- Replace deprecated `Facter::Util::Resolution.exec` [\#649](https://github.com/voxpupuli/puppet-systemd/pull/649) ([jorhett](https://github.com/jorhett))
+- Add missing \[Service\] directive to type alias [\#648](https://github.com/voxpupuli/puppet-systemd/pull/648) ([alexjfisher](https://github.com/alexjfisher))
+- Allow masking a service unit without any `service_entry` [\#643](https://github.com/voxpupuli/puppet-systemd/pull/643) ([jcpunk](https://github.com/jcpunk))
+- feat\(machine-info\): Permit unset machine-info vars [\#641](https://github.com/voxpupuli/puppet-systemd/pull/641) ([jcpunk](https://github.com/jcpunk))
+
 ## [v10.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v10.0.0) (2026-07-22)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v9.4.0...v10.0.0)
