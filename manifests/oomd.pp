@@ -5,7 +5,7 @@ class systemd::oomd {
   assert_private()
 
   service { 'systemd-oomd':
-    ensure => running,
+    ensure => $systemd::oomd_ensure,
     enable => true,
   }
   $systemd::oomd_settings.each |$option, $value| {
