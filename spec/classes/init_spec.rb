@@ -410,6 +410,20 @@ describe 'systemd' do
           }
         end
 
+        context 'when enabling oomd with oomd_ensure set to stopped' do
+          let(:params) do
+            {
+              manage_oomd: true,
+              oomd_ensure: 'stopped',
+            }
+          end
+
+          it {
+            is_expected.to contain_service('systemd-oomd').with_ensure('stopped')
+            is_expected.to contain_service('systemd-oomd').with_enable(true)
+          }
+        end
+
         context 'when enabling oomd with settings' do
           let(:params) do
             {
