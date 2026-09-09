@@ -297,10 +297,9 @@ describe 'systemd' do
                 group: 'root',
                 mode: '0755',
               )
-              is_expected.to contain_file('/etc/systemd/resolved.conf.d/00-disable-mdns.conf').with(
-                ensure: 'link',
-                target: '/dev/null',
-              ).that_notifies('Service[systemd-resolved]')
+              is_expected.to contain_systemd__resolved__dropin_file('00-disable-mdns.conf')
+              is_expected.to contain_file('/etc/systemd/resolved.conf.d/00-disable-mdns.conf')
+                .that_notifies('Service[systemd-resolved]')
             end
           else
             it do
@@ -384,6 +383,38 @@ describe 'systemd' do
           }
         end
 
+        context 'when resolved_use_etc_conf is false' do
+          let(:params) do
+            {
+              manage_resolved: true,
+              dns: ['8.8.8.8', '8.8.4.4'],
+              resolved_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('dns')
+          }
+        end
+
+        context 'when resolved_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::resolved::dropin_file { "test.conf": content => "[Resolve]\nDNS=8.8.8.8\n" }'
+          end
+          let(:params) do
+            {
+              manage_resolved: true,
+              resolved_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/resolved.conf.d').with_purge(true).with_recurse(true)
+          }
+        end
+
         context 'with alternate target' do
           let(:params) do
             {
@@ -463,6 +494,40 @@ describe 'systemd' do
           }
         end
 
+        context 'when oomd_use_etc_conf is false' do
+          let(:params) do
+            {
+              manage_oomd: true,
+              oomd_settings: {
+                'SwapUsedLimit' => '10‰',
+              },
+              oomd_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('SwapUsedLimit')
+          }
+        end
+
+        context 'when oomd_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::oomd::dropin_file { "test.conf": content => "[OOM]\nSwapUsedLimit=10‰\n" }'
+          end
+          let(:params) do
+            {
+              manage_oomd: true,
+              oomd_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/oomd.conf.d').with_purge(true).with_recurse(true)
+          }
+        end
+
         context 'when enabling sleep with options' do
           let(:params) do
             {
@@ -525,6 +590,40 @@ describe 'systemd' do
               notify: 'Systemd::Daemon_reexec[sleep.conf]',
               ensure: 'absent',
             )
+          }
+        end
+
+        context 'when sleep_use_etc_conf is false' do
+          let(:params) do
+            {
+              manage_sleep: true,
+              sleep_settings: {
+                'AllowSuspend' => 'yes',
+              },
+              sleep_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('AllowSuspend')
+          }
+        end
+
+        context 'when sleep_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::sleep::dropin_file { "test.conf": content => "[Sleep]\nAllowSuspend=yes\n" }'
+          end
+          let(:params) do
+            {
+              manage_sleep: true,
+              sleep_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/sleep.conf.d').with_purge(true).with_recurse(true)
           }
         end
 
@@ -602,6 +701,37 @@ describe 'systemd' do
             is_expected.to compile.with_all_deps
             is_expected.to contain_ini_setting('ntp_server')
             is_expected.to contain_ini_setting('fallback_ntp_server')
+          }
+        end
+
+        context 'when timesyncd_use_etc_conf is false' do
+          let(:params) do
+            {
+              manage_timesyncd: true,
+              timesyncd_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('NTP')
+          }
+        end
+
+        context 'when timesyncd_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::timesyncd::dropin_file { "test.conf": content => "[Time]\nNTP=0.pool.ntp.org\n" }'
+          end
+          let(:params) do
+            {
+              manage_timesyncd: true,
+              timesyncd_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/timesyncd.conf.d').with_purge(true).with_recurse(true)
           }
         end
 
@@ -806,6 +936,23 @@ describe 'systemd' do
           }
         end
 
+        context 'when system_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::system::dropin_file { "test.conf": content => "[Manager]\nDefaultTimeoutStartSec=60s\n" }'
+          end
+          let(:params) do
+            {
+              manage_system_conf: true,
+              system_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/system.conf.d').with_purge(true).with_recurse(true)
+          }
+        end
+
         context 'when managing user service manager config' do
           let :params do
             {
@@ -840,6 +987,23 @@ describe 'systemd' do
           it {
             is_expected.to contain_ini_setting('user/DefaultTimeoutStartSec')
               .that_notifies('Systemd::Daemon_reexec[user.conf]')
+          }
+        end
+
+        context 'when user_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::user::dropin_file { "test.conf": content => "[Manager]\nDefaultTimeoutStartSec=60s\n" }'
+          end
+          let(:params) do
+            {
+              manage_user_conf: true,
+              user_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/user.conf.d').with_purge(true).with_recurse(true)
           }
         end
 
@@ -899,6 +1063,38 @@ describe 'systemd' do
             is_expected.to compile.with_all_deps
             is_expected.not_to contain_service('systemd-journald')
             is_expected.not_to contain_file('/etc/systemd/journald.conf')
+          }
+        end
+
+        context 'when journald_use_etc_conf is false' do
+          let(:params) do
+            {
+              journald_settings: {
+                'Storage' => 'auto',
+              },
+              journald_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('Storage')
+          }
+        end
+
+        context 'when journald_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::journald::dropin_file { "test.conf": content => "[Journal]\nStorage=persistent\n" }'
+          end
+          let(:params) do
+            {
+              journald_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/journald.conf.d').with_purge(true).with_recurse(true)
           }
         end
 
@@ -1190,6 +1386,40 @@ describe 'systemd' do
           }
         end
 
+        context 'when logind_use_etc_conf is false' do
+          let(:params) do
+            {
+              manage_logind: true,
+              logind_settings: {
+                'HandleSuspendKey' => 'ignore',
+              },
+              logind_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('HandleSuspendKey')
+          }
+        end
+
+        context 'when logind_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::logind::dropin_file { "test.conf": content => "[Login]\nHandleSuspendKey=ignore\n" }'
+          end
+          let(:params) do
+            {
+              manage_logind: true,
+              logind_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/logind.conf.d').with_purge(true).with_recurse(true)
+          }
+        end
+
         context 'when passing dropin_files' do
           let(:params) do
             {
@@ -1370,6 +1600,40 @@ describe 'systemd' do
               is_expected.to contain_systemd__dropin_file('coredump_backtrace.conf').with_content(%r{^ExecStart=.*--backtrace$})
             }
           end
+        end
+
+        context 'when coredump_use_etc_conf is false' do
+          let(:params) do
+            {
+              manage_coredump: true,
+              coredump_settings: {
+                'Storage' => 'none',
+              },
+              coredump_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('coredump_Storage')
+          }
+        end
+
+        context 'when coredump_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::coredump::dropin_file { "test.conf": content => "[Coredump]\nStorage=none\n" }'
+          end
+          let(:params) do
+            {
+              manage_coredump: true,
+              coredump_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/coredump.conf.d').with_purge(true).with_recurse(true)
+          }
         end
 
         context 'with install_runuser true' do

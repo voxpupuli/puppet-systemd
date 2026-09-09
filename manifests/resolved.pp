@@ -118,183 +118,180 @@ class systemd::resolved (
     notify_service => true,
   }
 
-  if $dns {
-    if $dns =~ String {
-      $_dns = $dns
-    } else {
-      $_dns = join($dns, ' ')
-    }
-    ini_setting { 'dns':
-      ensure  => 'present',
-      value   => $_dns,
-      setting => 'DNS',
-      section => 'Resolve',
-      path    => '/etc/systemd/resolved.conf',
-      notify  => Service['systemd-resolved'],
-    }
-  }
-
-  if $fallback_dns {
-    if $fallback_dns =~ String {
-      $_fallback_dns = $fallback_dns
-    } else {
-      $_fallback_dns = join($fallback_dns, ' ')
-    }
-    ini_setting { 'fallback_dns':
-      ensure  => 'present',
-      value   => $_fallback_dns,
-      setting => 'FallbackDNS',
-      section => 'Resolve',
-      path    => '/etc/systemd/resolved.conf',
-      notify  => Service['systemd-resolved'],
-    }
-  }
-
-  if $domains {
-    if $domains =~ String {
-      $_domains = $domains
-    } else {
-      $_domains = join($domains, ' ')
-    }
-    ini_setting { 'domains':
-      ensure  => 'present',
-      value   => $_domains,
-      setting => 'Domains',
-      section => 'Resolve',
-      path    => '/etc/systemd/resolved.conf',
-      notify  => Service['systemd-resolved'],
-    }
-  }
-
-  $_llmnr = $llmnr ? {
-    true    => 'yes',
-    false   => 'no',
-    default => $llmnr,
-  }
-
-  if $_llmnr {
-    ini_setting { 'llmnr':
-      ensure  => 'present',
-      value   => $_llmnr,
-      setting => 'LLMNR',
-      section => 'Resolve',
-      path    => '/etc/systemd/resolved.conf',
-      notify  => Service['systemd-resolved'],
-    }
-  }
-
-  $_multicast_dns = $multicast_dns ? {
-    true    => 'yes',
-    false   => 'no',
-    default => $multicast_dns,
-  }
-
-  if $_multicast_dns {
-    ini_setting { 'multicast_dns':
-      ensure  => 'present',
-      value   => $_multicast_dns,
-      setting => 'MulticastDNS',
-      section => 'Resolve',
-      path    => '/etc/systemd/resolved.conf',
-      notify  => Service['systemd-resolved'],
-    }
-
-    # Debian 13 started disabling mDNS by default, so we need to override that
-    # if we want to manage mDNS. See https://bugs.debian.org/1098914 and
-    # https://salsa.debian.org/systemd-team/systemd/-/commit/46432631232015b78071f84e5a3fb944621c83f7
-    if stdlib::os_version_gte('Debian', '13') or stdlib::os_version_gte('Ubuntu', '26') {
-      file { '/etc/systemd/resolved.conf.d':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+  if $systemd::resolved_use_etc_conf {
+    if $dns {
+      if $dns =~ String {
+        $_dns = $dns
+      } else {
+        $_dns = join($dns, ' ')
       }
-
-      file { '/etc/systemd/resolved.conf.d/00-disable-mdns.conf':
-        ensure => link,
-        target => '/dev/null',
-        notify => Service['systemd-resolved'],
+      ini_setting { 'dns':
+        ensure  => 'present',
+        value   => $_dns,
+        setting => 'DNS',
+        section => 'Resolve',
+        path    => '/etc/systemd/resolved.conf',
+        notify  => Service['systemd-resolved'],
       }
     }
-  }
 
-  $_dnssec = $dnssec ? {
-    true    => 'yes',
-    false   => 'no',
-    default => $dnssec,
-  }
-
-  if $_dnssec {
-    ini_setting { 'dnssec':
-      ensure  => 'present',
-      value   => $_dnssec,
-      setting => 'DNSSEC',
-      section => 'Resolve',
-      path    => '/etc/systemd/resolved.conf',
-      notify  => Service['systemd-resolved'],
+    if $fallback_dns {
+      if $fallback_dns =~ String {
+        $_fallback_dns = $fallback_dns
+      } else {
+        $_fallback_dns = join($fallback_dns, ' ')
+      }
+      ini_setting { 'fallback_dns':
+        ensure  => 'present',
+        value   => $_fallback_dns,
+        setting => 'FallbackDNS',
+        section => 'Resolve',
+        path    => '/etc/systemd/resolved.conf',
+        notify  => Service['systemd-resolved'],
+      }
     }
-  }
 
-  $_dnsovertls = $dnsovertls ? {
-    'yes'   => true,
-    true    => 'opportunistic',
-    false   => false,
-    default => $dnsovertls,
-  }
-
-  if $_dnsovertls {
-    ini_setting { 'dnsovertls':
-      ensure  => 'present',
-      value   => $_dnsovertls,
-      setting => 'DNSOverTLS',
-      section => 'Resolve',
-      path    => '/etc/systemd/resolved.conf',
-      notify  => Service['systemd-resolved'],
+    if $domains {
+      if $domains =~ String {
+        $_domains = $domains
+      } else {
+        $_domains = join($domains, ' ')
+      }
+      ini_setting { 'domains':
+        ensure  => 'present',
+        value   => $_domains,
+        setting => 'Domains',
+        section => 'Resolve',
+        path    => '/etc/systemd/resolved.conf',
+        notify  => Service['systemd-resolved'],
+      }
     }
-  }
 
-  $_cache = $cache ? {
-    true    => 'yes',
-    false   => 'no',
-    default => $cache,
-  }
-
-  if $_cache {
-    ini_setting { 'cache':
-      ensure  => 'present',
-      value   => $_cache,
-      setting => 'Cache',
-      section => 'Resolve',
-      path    => '/etc/systemd/resolved.conf',
-      notify  => Service['systemd-resolved'],
+    $_llmnr = $llmnr ? {
+      true    => 'yes',
+      false   => 'no',
+      default => $llmnr,
     }
-  }
 
-  $_dns_stub_listener = $dns_stub_listener ? {
-    true    => 'yes',
-    false   => 'no',
-    default => $dns_stub_listener,
-  }
-
-  if $dns_stub_listener =~ NotUndef {
-    ini_setting { 'dns_stub_listener':
-      ensure  => stdlib::ensure($dns_stub_listener != 'absent'),
-      value   => $_dns_stub_listener,
-      setting => 'DNSStubListener',
-      section => 'Resolve',
-      path    => '/etc/systemd/resolved.conf',
-      notify  => Service['systemd-resolved'],
+    if $_llmnr {
+      ini_setting { 'llmnr':
+        ensure  => 'present',
+        value   => $_llmnr,
+        setting => 'LLMNR',
+        section => 'Resolve',
+        path    => '/etc/systemd/resolved.conf',
+        notify  => Service['systemd-resolved'],
+      }
     }
-  }
 
-  if $dns_stub_listener_extra =~ NotUndef {
-    ini_setting { 'dns_stub_listener_extra':
-      ensure  => stdlib::ensure($dns_stub_listener_extra != 'absent'),
-      value   => $dns_stub_listener_extra,
-      setting => 'DNSStubListenerExtra',
-      section => 'Resolve',
-      path    => '/etc/systemd/resolved.conf',
-      notify  => Service['systemd-resolved'],
+    $_multicast_dns = $multicast_dns ? {
+      true    => 'yes',
+      false   => 'no',
+      default => $multicast_dns,
+    }
+
+    if $_multicast_dns {
+      ini_setting { 'multicast_dns':
+        ensure  => 'present',
+        value   => $_multicast_dns,
+        setting => 'MulticastDNS',
+        section => 'Resolve',
+        path    => '/etc/systemd/resolved.conf',
+        notify  => Service['systemd-resolved'],
+      }
+
+      # Debian 13 started disabling mDNS by default, so we need to override that
+      # if we want to manage mDNS. See https://bugs.debian.org/1098914 and
+      # https://salsa.debian.org/systemd-team/systemd/-/commit/46432631232015b78071f84e5a3fb944621c83f7
+      if stdlib::os_version_gte('Debian', '13') or stdlib::os_version_gte('Ubuntu', '26') {
+        systemd::resolved::dropin_file { '00-disable-mdns.conf':
+          content => @(COMMENT),
+            # This creates an empty file in /etc/systemd/resolved.conf.d/00-disable-mdns.conf
+            # This overrides the systemd-resolvd provided file in /usr/lib/systemd/resolved.conf.d/
+            # As both files have the same name systemd preferes the one with the higher priority in /etc
+            | COMMENT
+        }
+      }
+    }
+
+    $_dnssec = $dnssec ? {
+      true    => 'yes',
+      false   => 'no',
+      default => $dnssec,
+    }
+
+    if $_dnssec {
+      ini_setting { 'dnssec':
+        ensure  => 'present',
+        value   => $_dnssec,
+        setting => 'DNSSEC',
+        section => 'Resolve',
+        path    => '/etc/systemd/resolved.conf',
+        notify  => Service['systemd-resolved'],
+      }
+    }
+
+    $_dnsovertls = $dnsovertls ? {
+      'yes'   => true,
+      true    => 'opportunistic',
+      false   => false,
+      default => $dnsovertls,
+    }
+
+    if $_dnsovertls {
+      ini_setting { 'dnsovertls':
+        ensure  => 'present',
+        value   => $_dnsovertls,
+        setting => 'DNSOverTLS',
+        section => 'Resolve',
+        path    => '/etc/systemd/resolved.conf',
+        notify  => Service['systemd-resolved'],
+      }
+    }
+
+    $_cache = $cache ? {
+      true    => 'yes',
+      false   => 'no',
+      default => $cache,
+    }
+
+    if $_cache {
+      ini_setting { 'cache':
+        ensure  => 'present',
+        value   => $_cache,
+        setting => 'Cache',
+        section => 'Resolve',
+        path    => '/etc/systemd/resolved.conf',
+        notify  => Service['systemd-resolved'],
+      }
+    }
+
+    $_dns_stub_listener = $dns_stub_listener ? {
+      true    => 'yes',
+      false   => 'no',
+      default => $dns_stub_listener,
+    }
+
+    if $dns_stub_listener =~ NotUndef {
+      ini_setting { 'dns_stub_listener':
+        ensure  => stdlib::ensure($dns_stub_listener != 'absent'),
+        value   => $_dns_stub_listener,
+        setting => 'DNSStubListener',
+        section => 'Resolve',
+        path    => '/etc/systemd/resolved.conf',
+        notify  => Service['systemd-resolved'],
+      }
+    }
+
+    if $dns_stub_listener_extra =~ NotUndef {
+      ini_setting { 'dns_stub_listener_extra':
+        ensure  => stdlib::ensure($dns_stub_listener_extra != 'absent'),
+        value   => $dns_stub_listener_extra,
+        setting => 'DNSStubListenerExtra',
+        section => 'Resolve',
+        path    => '/etc/systemd/resolved.conf',
+        notify  => Service['systemd-resolved'],
+      }
     }
   }
 }

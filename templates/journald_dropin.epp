@@ -1,9 +1,0 @@
-<%- | Systemd::JournaldSettings $journal_entry | -%>
-# This file is managed with puppet
-[Journal]
-<% $journal_entry.each |$key, $value| { -%>
-<%- if $value !~ Hash { -%>
-<%= $key %>=<%= $value %>
-<% } -%>
-<% } -%>
-
