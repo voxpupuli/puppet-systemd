@@ -4,9 +4,9 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v10.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v10.1.0) (2026-09-05)
+## [v10.0.1](https://github.com/voxpupuli/puppet-systemd/tree/v10.0.1) (2026-09-13)
 
-[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v10.0.0...v10.1.0)
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v10.0.0...v10.0.1)
 
 **Implemented enhancements:**
 
@@ -18,6 +18,8 @@ These should not affect the functionality of the module.
 
 **Fixed bugs:**
 
+- add missing scheduling params to Systemd::Unit::Service [\#652](https://github.com/voxpupuli/puppet-systemd/pull/652) ([foxxx0](https://github.com/foxxx0))
+- Honor `oomd_ensure` [\#651](https://github.com/voxpupuli/puppet-systemd/pull/651) ([johnwarburton](https://github.com/johnwarburton))
 - Replace deprecated `Facter::Util::Resolution.exec` [\#649](https://github.com/voxpupuli/puppet-systemd/pull/649) ([jorhett](https://github.com/jorhett))
 - Add missing \[Service\] directive to type alias [\#648](https://github.com/voxpupuli/puppet-systemd/pull/648) ([alexjfisher](https://github.com/alexjfisher))
 - Allow masking a service unit without any `service_entry` [\#643](https://github.com/voxpupuli/puppet-systemd/pull/643) ([jcpunk](https://github.com/jcpunk))
