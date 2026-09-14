@@ -22,12 +22,30 @@ describe 'systemd::journald::manage_dropin' do
           is_expected.to contain_file('/etc/systemd/journald.conf.d/test.conf')
             .with_content(<<~EOF,
               # This file is managed with puppet
+              #
               [Journal]
               Storage=persistent
-
             EOF
                          )
         }
+
+        context 'with comments defined' do
+          let(:params) { super().merge(comments: %w[test comment]) }
+
+          it {
+            is_expected.to contain_file('/etc/systemd/journald.conf.d/test.conf')
+              .with_content(<<~EOF,
+                # This file is managed with puppet
+                #
+                # test
+                # comment
+                #
+                [Journal]
+                Storage=persistent
+              EOF
+                           )
+          }
+        end
 
         context 'with owner defined' do
           let(:params) { super().merge(owner: 'testuser') }
@@ -53,25 +71,32 @@ describe 'systemd::journald::manage_dropin' do
           it { is_expected.to compile.and_raise_error(%r{parameter 'journal_entry' unrecognized key}) }
         end
 
-        context 'with ensure set to absent' do
-          let(:params) { super().merge(ensure: 'absent') }
-
-          it { is_expected.to contain_file('/etc/systemd/journald.conf.d/test.conf').with_ensure('absent') }
-        end
-
-        context 'with parameter ensure set to absent' do
+        context 'with an absent setting' do
           let(:params) do
             {
               journal_entry: {
                 'Storage' => { 'ensure' => 'absent' },
+                'Compress' => 'yes',
               },
             }
           end
 
           it {
             is_expected.to contain_file('/etc/systemd/journald.conf.d/test.conf')
-              .without_content(%r{Storage=})
+              .with_content(<<~EOF,
+                # This file is managed with puppet
+                #
+                [Journal]
+                Compress=yes
+              EOF
+                           )
           }
+        end
+
+        context 'with ensure set to absent' do
+          let(:params) { super().merge(ensure: 'absent') }
+
+          it { is_expected.to contain_file('/etc/systemd/journald.conf.d/test.conf').with_ensure('absent') }
         end
       end
     end

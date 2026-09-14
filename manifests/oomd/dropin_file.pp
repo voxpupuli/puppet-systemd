@@ -1,11 +1,11 @@
-# Creates a drop-in file for journald configuration
+# Creates a drop-in file for oomd configuration
 #
 # @api public
 #
-# @see journald.conf(5)
+# @see oomd.conf(5)
 # @param filename The filename of the drop in. The full path is determined using the path and this filename.
 # @param ensure the state of this dropin file
-# @param path The journald dropin configuration path
+# @param path The oomd dropin configuration path
 # @param selinux_ignore_defaults If Puppet should ignore the default SELinux labels.
 # @param content The full content of the unit file (Mutually exclusive with `$source`)
 # @param source The `File` resource compatible `source` (Mutually exclusive with `$content`)
@@ -13,11 +13,11 @@
 # @param group The group to set on the dropin file
 # @param mode The mode to set on the dropin file
 # @param show_diff Whether to show the diff when updating dropin file
-# @param notify_journald Restart the journald service if the dropin file changes
-define systemd::journald::dropin_file (
+# @param notify_oomd Restart the oomd service if the dropin file changes
+define systemd::oomd::dropin_file (
   Systemd::Dropin                             $filename                = $name,
   Enum['present', 'absent', 'file']           $ensure                  = 'present',
-  Stdlib::Absolutepath                        $path                    = '/etc/systemd/journald.conf.d',
+  Stdlib::Absolutepath                        $path                    = '/etc/systemd/oomd.conf.d',
   Boolean                                     $selinux_ignore_defaults = false,
   Optional[Variant[String,Sensitive[String]]] $content                 = undef,
   Optional[String]                            $source                  = undef,
@@ -25,13 +25,14 @@ define systemd::journald::dropin_file (
   String[1]                                   $group                   = 'root',
   Stdlib::Filemode                            $mode                    = '0644',
   Boolean                                     $show_diff               = true,
-  Boolean                                     $notify_journald         = true,
+  Boolean                                     $notify_oomd             = true,
 ) {
   include systemd
 
-  if $systemd::manage_journald == false {
-    fail('systemd::journald::dropin_file is disabled because systemd::manage_journald is set to false')
+  if $systemd::manage_oomd == false {
+    fail('systemd::oomd::dropin_file is disabled because systemd::manage_oomd is set to false')
   }
+
   $full_filename = "${path}/${filename}"
 
   if $ensure != 'absent' {
@@ -41,8 +42,8 @@ define systemd::journald::dropin_file (
         owner                   => 'root',
         group                   => 'root',
         mode                    => '0755',
-        recurse                 => $systemd::journald_purge_dropin_dirs,
-        purge                   => $systemd::journald_purge_dropin_dirs,
+        recurse                 => $systemd::oomd_purge_dropin_dirs,
+        purge                   => $systemd::oomd_purge_dropin_dirs,
         selinux_ignore_defaults => $selinux_ignore_defaults,
       },
     )
@@ -59,7 +60,7 @@ define systemd::journald::dropin_file (
     show_diff               => $show_diff,
   }
 
-  if $notify_journald {
-    File[$full_filename] ~> Service['systemd-journald']
+  if $notify_oomd {
+    File[$full_filename] ~> Service['systemd-oomd']
   }
 }

@@ -1,0 +1,44 @@
+<%- |
+  String $section,
+  Hash[
+    String[1],
+    Variant[
+      String[1],
+      Numeric,
+      Array[String[1]],
+      Systemd::SettingEnsure,
+    ]
+  ] $settings,
+  Optional[Array[String]] $comments = undef,
+| -%>
+# This file is managed with puppet
+<% if $comments { -%>
+#
+<%   $comments.each |$msg| { -%>
+# <%= $msg %>
+<%   } -%>
+<% } -%>
+#
+[<%= $section %>]
+<%- $render_settings = $settings.filter |$key, $value| {
+  if $value =~ Hash {
+    $value['ensure'] != 'absent' and $value['value'] !~ Undef
+  } else {
+    true
+  }
+}.map |$key, $value| {
+  if $value =~ Hash {
+    { $key => $value['value'] }
+  } else {
+    { $key => $value }
+  }
+}.reduce({}) |$memo, $item| { $memo + $item } -%>
+<% $render_settings.each |$key, $value| { -%>
+<%- if $value =~ Array { -%>
+<%    $value.each |$multivalue| { -%>
+<%= $key %>=<%= $multivalue %>
+<%    } -%>
+<%- } else { -%>
+<%= $key %>=<%= $value %>
+<%  } -%>
+<% } -%>
