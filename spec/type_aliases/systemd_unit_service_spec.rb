@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'type_aliases/shared_systemd_resource_control'
 
 describe 'Systemd::Unit::Service' do
   # === Exec commands ===
@@ -239,117 +240,11 @@ describe 'Systemd::Unit::Service' do
     it { is_expected.not_to allow_value({ 'StartupCPUShares' => 1 }) }
   end
 
-  context 'CPUQuota=' do
-    it { is_expected.to allow_value({ 'CPUQuota' => '1%' }) }
-    it { is_expected.to allow_value({ 'CPUQuota' => '110%' }) }
-    it { is_expected.to allow_value({ 'CPUQuota' => :undef }) }
-    it { is_expected.not_to allow_value({ 'CPUQuota' => 50 }) }
-    it { is_expected.not_to allow_value({ 'CPUQuota' => '0%' }) }
-  end
-
   context 'CPUSchedulingPolicy=' do
     it { is_expected.to allow_value({ 'CPUSchedulingPolicy' => 'idle' }) }
     it { is_expected.to allow_value({ 'CPUSchedulingPolicy' => 'fifo' }) }
     it { is_expected.to allow_value({ 'CPUSchedulingPolicy' => '' }) }
     it { is_expected.not_to allow_value({ 'CPUSchedulingPolicy' => 'best-effort' }) }
-  end
-
-  # === Memory resource accounting and limits ===
-  context 'MemoryAccounting=' do
-    it { is_expected.to allow_value({ 'MemoryAccounting' => true }) }
-    it { is_expected.to allow_value({ 'MemoryAccounting' => false }) }
-  end
-
-  context 'Memory limits (AmountOrPercent)' do
-    it {
-      is_expected.to allow_value(
-        {
-          'MemoryLow'     => '100',
-          'MemoryMin'     => '10%',
-          'MemoryHigh'    => '8G',
-          'MemoryMax'     => 'infinity',
-          'MemorySwapMax' => '1T',
-        },
-      )
-    }
-
-    it { is_expected.to allow_value({ 'MemorySwapMax' => '80%' }) }
-    it { is_expected.not_to allow_value({ 'MemoryHigh' => '1Y' }) }
-  end
-
-  context 'MemoryLimit=' do
-    it { is_expected.to allow_value({ 'MemoryLimit' => '512M' }) }
-    it { is_expected.to allow_value({ 'MemoryLimit' => 'infinity' }) }
-    it { is_expected.not_to allow_value({ 'MemoryLimit' => '50%' }) }
-  end
-
-  # === Task limits ===
-  context 'TasksAccounting=' do
-    it { is_expected.to allow_value({ 'TasksAccounting' => true }) }
-    it { is_expected.to allow_value({ 'TasksAccounting' => false }) }
-  end
-
-  context 'TasksMax=' do
-    it { is_expected.to allow_value({ 'TasksMax' => '100' }) }
-    it { is_expected.to allow_value({ 'TasksMax' => 'infinity' }) }
-    it { is_expected.to allow_value({ 'TasksMax' => '50%' }) }
-  end
-
-  # === I/O resource accounting and limits ===
-  context 'IOAccounting=' do
-    it { is_expected.to allow_value({ 'IOAccounting' => true }) }
-    it { is_expected.to allow_value({ 'IOAccounting' => false }) }
-  end
-
-  context 'IOWeight= and StartupIOWeight=' do
-    it { is_expected.to allow_value({ 'IOWeight' => 100 }) }
-    it { is_expected.to allow_value({ 'IOWeight' => 1 }) }
-    it { is_expected.to allow_value({ 'IOWeight' => 10_000 }) }
-    it { is_expected.not_to allow_value({ 'IOWeight' => 0 }) }
-    it { is_expected.not_to allow_value({ 'IOWeight' => 10_001 }) }
-    it { is_expected.to allow_value({ 'StartupIOWeight' => 500 }) }
-  end
-
-  context 'IODeviceWeight=' do
-    it { is_expected.to allow_value({ 'IODeviceWeight' => ['/dev/sda', 1000] }) }
-    it { is_expected.to allow_value({ 'IODeviceWeight' => [['/dev/sda', 1000], ['/dev/sdb', 500]] }) }
-    it { is_expected.not_to allow_value({ 'IODeviceWeight' => ['/dev/sda', 10_001] }) }
-    it { is_expected.not_to allow_value({ 'IODeviceWeight' => ['relative/path', 1000] }) }
-    it { is_expected.not_to allow_value({ 'IODeviceWeight' => '/dev/sda 1000' }) }
-  end
-
-  %w[IOReadBandwidthMax IOWriteBandwidthMax IOReadIOPSMax IOWriteIOPSMax].each do |key|
-    context "#{key}=" do
-      it { is_expected.to allow_value({ key => ['/dev/sda', 1000] }) }
-      it { is_expected.to allow_value({ key => [['/dev/sda', 1000], ['/dev/sdb', '12G']] }) }
-      it { is_expected.not_to allow_value({ key => '/dev/sda 1000' }) }
-      it { is_expected.not_to allow_value({ key => [['relative/path', 1000], ['/dev/sdb', '12G']] }) }
-    end
-  end
-
-  # === Device policy ===
-  context 'DeviceAllow=' do
-    it { is_expected.to allow_value({ 'DeviceAllow' => '/dev/null rw' }) }
-    it { is_expected.not_to allow_value({ 'DeviceAllow' => '' }) }
-  end
-
-  context 'DevicePolicy=' do
-    %w[auto closed strict].each do |val|
-      it { is_expected.to allow_value({ 'DevicePolicy' => val }) }
-    end
-    it { is_expected.not_to allow_value({ 'DevicePolicy' => 'open' }) }
-  end
-
-  # === Slice= and Delegate= ===
-  context 'Slice=' do
-    it { is_expected.to allow_value({ 'Slice' => 'system.slice' }) }
-    it { is_expected.not_to allow_value({ 'Slice' => '' }) }
-  end
-
-  context 'Delegate=' do
-    it { is_expected.to allow_value({ 'Delegate' => true }) }
-    it { is_expected.to allow_value({ 'Delegate' => false }) }
-    it { is_expected.not_to allow_value({ 'Delegate' => 'yes' }) }
   end
 
   # === Resource limits (ulimit) ===
@@ -715,4 +610,14 @@ describe 'Systemd::Unit::Service' do
       it { is_expected.to allow_value({ key => '' }) }
     end
   end
+
+  # Deprecated options
+  context 'MemoryLimit=' do
+    it { is_expected.not_to allow_value({ 'MemoryLimit' => '50%' }) }
+    it { is_expected.to allow_value({ 'MemoryLimit' => '512M' }) }
+    it { is_expected.to allow_value({ 'MemoryLimit' => 'infinity' }) }
+  end
+
+  # systemd.resource-control
+  it_behaves_like 'systemd_resource_control'
 end

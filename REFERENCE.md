@@ -6482,6 +6482,7 @@ Possible keys for the [Mount] section of a unit file
 
 * **See also**
   * https://www.freedesktop.org/software/systemd/man/latest/systemd.mount.html
+  * https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
 
 Alias of
 
@@ -6498,6 +6499,34 @@ Struct[{
     Optional['DirectoryMode']  => Stdlib::Filemode,
     Optional['TimeoutSec']     => Systemd::Timespan,
     Optional['OOMScoreAdjust'] => Integer[-1000,1000],
+    # Options from systemd.resource-control
+    # https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html
+    Optional['AllowedCPUs']         => Pattern[/^\d+(-\d+)?(,\d+(-\d+)?)*$/],
+    Optional['CPUQuota']            => Optional[Pattern['^([1-9][0-9]*)%$']], # bigger than 100% is okay.
+    Optional['CPUWeight']           => Variant[Enum['idle'],Integer[1,10000]],
+    Optional['Delegate']            => Boolean,
+    Optional['DeviceAllow']         => Pattern['^(/dev/)|(char-)|(block-).*$'],
+    Optional['DevicePolicy']        => Enum['auto','closed','strict'],
+    Optional['IOAccounting']        => Boolean,
+    Optional['IODeviceWeight']      => Variant[Tuple[Stdlib::Absolutepath, Integer[1,10000]],Array[Tuple[Stdlib::Absolutepath, Integer[1,10000]]]],
+    Optional['IOReadBandwidthMax']  => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOReadIOPSMax']       => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOWeight']            => Integer[1,10000],
+    Optional['IOWriteBandwidthMax'] => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOWriteIOPSMax']      => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IPAccounting']        => Boolean,
+    Optional['IPAddressAllow']      => Variant[Enum['any','localhost','link-local','multicast'],Array[Variant[Stdlib::IP::Address, Stdlib::IP::Address::CIDR]]],
+    Optional['IPAddressDeny']       => Variant[Enum['any','localhost','link-local','multicast'],Array[Variant[Stdlib::IP::Address, Stdlib::IP::Address::CIDR]]],
+    Optional['MemoryAccounting']    => Boolean,
+    Optional['MemoryHigh']          => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryLow']           => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryMax']           => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryMin']           => Systemd::Unit::AmountOrPercent,
+    Optional['MemorySwapMax']       => Systemd::Unit::AmountOrPercent,
+    Optional['Slice']               => String[1],
+    Optional['StartupIOWeight']     => Integer[1,10000],
+    Optional['TasksAccounting']     => Boolean,
+    Optional['TasksMax']            => Systemd::Unit::AmountOrPercent,
   }]
 ```
 
@@ -6560,12 +6589,14 @@ Possible keys for the [Service] section of a unit file
 * **See also**
   * https://www.freedesktop.org/software/systemd/man/systemd.service.html
   * https://www.freedesktop.org/software/systemd/man/systemd.exec.html
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html
 
 Alias of
 
 ```puppet
 Struct[{
     # Options from systemd.service
+    # https://www.freedesktop.org/software/systemd/man/latest/systemd.service
     Optional['Type']                      => Enum['simple', 'exec', 'forking', 'oneshot', 'dbus', 'notify', 'notify-reload', 'idle'],
     Optional['ExitType']                  => Enum['main', 'cgroup'],
     Optional['RemainAfterExit']           => Boolean,
@@ -6585,28 +6616,6 @@ Struct[{
     Optional['CPUAccounting']             => Boolean,
     Optional['CPUShares']                 => Integer[2,262144],
     Optional['StartupCPUShares']          => Integer[2,262144],
-    Optional['CPUQuota']                  => Optional[Pattern['^([1-9][0-9]*)%$']], # bigger than 100% is okay.
-    Optional['MemoryAccounting']          => Boolean,
-    Optional['MemoryLow']                 => Systemd::Unit::AmountOrPercent,
-    Optional['MemoryMin']                 => Systemd::Unit::AmountOrPercent,
-    Optional['MemoryHigh']                => Systemd::Unit::AmountOrPercent,
-    Optional['MemoryMax']                 => Systemd::Unit::AmountOrPercent,
-    Optional['MemoryLimit']               => Systemd::Unit::Amount,
-    Optional['MemorySwapMax']             => Systemd::Unit::AmountOrPercent,
-    Optional['TasksAccounting']           => Boolean,
-    Optional['TasksMax']                  => Systemd::Unit::AmountOrPercent,
-    Optional['IOAccounting']              => Boolean,
-    Optional['IOWeight']                  => Integer[1,10000],
-    Optional['StartupIOWeight']           => Integer[1,10000],
-    Optional['IODeviceWeight']            => Variant[Tuple[Stdlib::Absolutepath, Integer[1,10000]],Array[Tuple[Stdlib::Absolutepath, Integer[1,10000]]]],
-    Optional['IOReadBandwidthMax']        => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
-    Optional['IOWriteBandwidthMax']       => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
-    Optional['IOReadIOPSMax']             => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
-    Optional['IOWriteIOPSMax']            => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
-    Optional['DeviceAllow']               => String[1],
-    Optional['DevicePolicy']              => Enum['auto','closed','strict'],
-    Optional['Slice']                     => String[1],
-    Optional['Delegate']                  => Boolean,
     Optional['RestartSec']                => Systemd::Timespan,
     Optional['TimeoutStartSec']           => Systemd::Timespan,
     Optional['TimeoutStopSec']            => Systemd::Timespan,
@@ -6637,6 +6646,7 @@ Struct[{
     Optional['USBFunctionDescriptors']    => Stdlib::Unixpath,
     Optional['USBFunctionStrings']        => Stdlib::Unixpath,
     # Options from systemd.exec
+    # https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html
     Optional['WorkingDirectory']          => String[0],
     Optional['RootDirectory']             => Stdlib::Unixpath,
     Optional['RootImage']                 => Stdlib::Unixpath,
@@ -6738,7 +6748,36 @@ Struct[{
     Optional['LoadCredentialEncrypted']   => Variant[String[0],Array[String[0],1]],
     Optional['SetCredential']             => Variant[String[0],Array[String[0],1]],
     Optional['SetCredentialEncrypted']    => Variant[String[0],Array[String[0],1]],
+    # Options from systemd.resource-control
+    # https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html
+    Optional['AllowedCPUs']               => Pattern[/^\d+(-\d+)?(,\d+(-\d+)?)*$/],
+    Optional['CPUQuota']                  => Optional[Pattern['^([1-9][0-9]*)%$']], # bigger than 100% is okay.
+    Optional['CPUWeight']                 => Variant[Enum['idle'],Integer[1,10000]],
+    Optional['Delegate']                  => Boolean,
+    Optional['DeviceAllow']               => Pattern['^(/dev/)|(char-)|(block-).*$'],
+    Optional['DevicePolicy']              => Enum['auto','closed','strict'],
+    Optional['IOAccounting']              => Boolean,
+    Optional['IODeviceWeight']            => Variant[Tuple[Stdlib::Absolutepath, Integer[1,10000]],Array[Tuple[Stdlib::Absolutepath, Integer[1,10000]]]],
+    Optional['IOReadBandwidthMax']        => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOReadIOPSMax']             => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOWeight']                  => Integer[1,10000],
+    Optional['IOWriteBandwidthMax']       => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOWriteIOPSMax']            => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IPAccounting']              => Boolean,
+    Optional['IPAddressAllow']            => Variant[Enum['any','localhost','link-local','multicast'],Array[Variant[Stdlib::IP::Address, Stdlib::IP::Address::CIDR]]],
+    Optional['IPAddressDeny']             => Variant[Enum['any','localhost','link-local','multicast'],Array[Variant[Stdlib::IP::Address, Stdlib::IP::Address::CIDR]]],
+    Optional['MemoryAccounting']          => Boolean,
+    Optional['MemoryHigh']                => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryLow']                 => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryMax']                 => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryMin']                 => Systemd::Unit::AmountOrPercent,
+    Optional['MemorySwapMax']             => Systemd::Unit::AmountOrPercent,
+    Optional['Slice']                     => String[1],
+    Optional['StartupIOWeight']           => Integer[1,10000],
+    Optional['TasksAccounting']           => Boolean,
+    Optional['TasksMax']                  => Systemd::Unit::AmountOrPercent,
     # Deprecated Options. Still valid systemd configuration but often hidden from man pages
+    Optional['MemoryLimit']               => Systemd::Unit::Amount,
     Optional['PermissionsStartOnly']      => Boolean,
   }]
 ```
@@ -6765,14 +6804,17 @@ Alias of
 
 ```puppet
 Struct[{
+    # Options from systemd.slice
+    # https://www.freedesktop.org/software/systemd/man/systemd.slice.html
+    #
+    # Options from systemd.resource-control
+    # https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html
     Optional['AllowedCPUs']         => Pattern[/^\d+(-\d+)?(,\d+(-\d+)?)*$/],
-    Optional['CPUAccounting']       => Boolean,
     Optional['CPUQuota']            => Optional[Pattern['^([1-9][0-9]*)%$']], # bigger than 100% is okay.
-    Optional['CPUShares']           => Integer[2,262144],
     Optional['CPUWeight']           => Variant[Enum['idle'],Integer[1,10000]],
-    Optional['Delegate']            => Boolean,
     Optional['DeviceAllow']         => Pattern['^(/dev/)|(char-)|(block-).*$'],
     Optional['DevicePolicy']        => Enum['auto','closed','strict'],
+    Optional['Delegate']            => Boolean,
     Optional['IOAccounting']        => Boolean,
     Optional['IODeviceWeight']      => Variant[Tuple[Stdlib::Absolutepath, Integer[1,10000]],Array[Tuple[Stdlib::Absolutepath, Integer[1,10000]]]],
     Optional['IOReadBandwidthMax']  => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
@@ -6781,18 +6823,23 @@ Struct[{
     Optional['IOWriteBandwidthMax'] => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
     Optional['IOWriteIOPSMax']      => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
     Optional['IPAccounting']        => Boolean,
+    Optional['IPAddressAllow']      => Variant[Enum['any','localhost','link-local','multicast'],Array[Variant[Stdlib::IP::Address, Stdlib::IP::Address::CIDR]]],
+    Optional['IPAddressDeny']       => Variant[Enum['any','localhost','link-local','multicast'],Array[Variant[Stdlib::IP::Address, Stdlib::IP::Address::CIDR]]],
     Optional['MemoryAccounting']    => Boolean,
     Optional['MemoryHigh']          => Systemd::Unit::AmountOrPercent,
-    Optional['MemoryLimit']         => Systemd::Unit::AmountOrPercent, # depprecated in systemd
     Optional['MemoryLow']           => Systemd::Unit::AmountOrPercent,
     Optional['MemoryMax']           => Systemd::Unit::AmountOrPercent,
     Optional['MemoryMin']           => Systemd::Unit::AmountOrPercent,
     Optional['MemorySwapMax']       => Systemd::Unit::AmountOrPercent,
     Optional['Slice']               => String[1],
-    Optional['StartupCPUShares']    => Integer[2,262144],
     Optional['StartupIOWeight']     => Integer[1,10000],
     Optional['TasksAccounting']     => Boolean,
     Optional['TasksMax']            => Systemd::Unit::AmountOrPercent,
+    # Deprecated options
+    Optional['CPUAccounting']       => Boolean,
+    Optional['CPUShares']           => Integer[2,262144],
+    Optional['MemoryLimit']         => Systemd::Unit::AmountOrPercent,
+    Optional['StartupCPUShares']    => Integer[2,262144],
   }]
 ```
 
@@ -6802,6 +6849,7 @@ Possible keys for the [Socket] section of a unit file
 
 * **See also**
   * https://www.freedesktop.org/software/systemd/man/systemd.socket.html
+  * https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
 
 Alias of
 
@@ -6866,6 +6914,34 @@ Struct[{
     Optional['TriggerLimitIntervalSec'] => Systemd::Timespan,
     Optional['TriggerLimitBurst']       => Integer[0],
     Optional['OOMScoreAdjust']          => Integer[-1000,1000],
+    # Options from systemd.resource-control
+    # https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html
+    Optional['AllowedCPUs']         => Pattern[/^\d+(-\d+)?(,\d+(-\d+)?)*$/],
+    Optional['CPUQuota']            => Optional[Pattern['^([1-9][0-9]*)%$']], # bigger than 100% is okay.
+    Optional['CPUWeight']           => Variant[Enum['idle'],Integer[1,10000]],
+    Optional['Delegate']            => Boolean,
+    Optional['DeviceAllow']         => Pattern['^(/dev/)|(char-)|(block-).*$'],
+    Optional['DevicePolicy']        => Enum['auto','closed','strict'],
+    Optional['IOAccounting']        => Boolean,
+    Optional['IODeviceWeight']      => Variant[Tuple[Stdlib::Absolutepath, Integer[1,10000]],Array[Tuple[Stdlib::Absolutepath, Integer[1,10000]]]],
+    Optional['IOReadBandwidthMax']  => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOReadIOPSMax']       => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOWeight']            => Integer[1,10000],
+    Optional['IOWriteBandwidthMax'] => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IOWriteIOPSMax']      => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
+    Optional['IPAccounting']        => Boolean,
+    Optional['IPAddressAllow']      => Variant[Enum['any','localhost','link-local','multicast'],Array[Variant[Stdlib::IP::Address, Stdlib::IP::Address::CIDR]]],
+    Optional['IPAddressDeny']       => Variant[Enum['any','localhost','link-local','multicast'],Array[Variant[Stdlib::IP::Address, Stdlib::IP::Address::CIDR]]],
+    Optional['MemoryAccounting']    => Boolean,
+    Optional['MemoryHigh']          => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryLow']           => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryMax']           => Systemd::Unit::AmountOrPercent,
+    Optional['MemoryMin']           => Systemd::Unit::AmountOrPercent,
+    Optional['MemorySwapMax']       => Systemd::Unit::AmountOrPercent,
+    Optional['Slice']               => String[1],
+    Optional['StartupIOWeight']     => Integer[1,10000],
+    Optional['TasksAccounting']     => Boolean,
+    Optional['TasksMax']            => Systemd::Unit::AmountOrPercent,
   }]
 ```
 

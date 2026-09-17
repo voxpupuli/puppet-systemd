@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'type_aliases/shared_systemd_resource_control'
 
 describe 'Systemd::Unit::Socket' do
   %w[ListenStream ListenDatagram ListenSequentialPacket].each do |assert|
@@ -26,4 +27,7 @@ describe 'Systemd::Unit::Socket' do
       is_expected.not_to allow_value({ 'OOMScoreAdjust' => '10' })
     }
   end
+
+  # systemd.resource-control
+  it_behaves_like 'systemd_resource_control'
 end
