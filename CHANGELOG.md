@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v10.2.0](https://github.com/voxpupuli/puppet-systemd/tree/v10.2.0) (2026-09-24)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v10.1.0...v10.2.0)
+
+**Implemented enhancements:**
+
+- Missing IPAddress directives [\#655](https://github.com/voxpupuli/puppet-systemd/issues/655)
+- chore: allow stdlib 10.x + bump inifile version [\#658](https://github.com/voxpupuli/puppet-systemd/pull/658) ([d1nuc0m](https://github.com/d1nuc0m))
+- feat: extend support for systemd.resource-control [\#656](https://github.com/voxpupuli/puppet-systemd/pull/656) ([d1nuc0m](https://github.com/d1nuc0m))
+
+**Closed issues:**
+
+- Support stdlib version 10 [\#657](https://github.com/voxpupuli/puppet-systemd/issues/657)
+
 ## [v10.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v10.1.0) (2026-09-13)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v10.0.0...v10.1.0)
