@@ -54,6 +54,7 @@ define systemd::dropin_file (
         ensure                  => directory,
         owner                   => 'root',
         group                   => 'root',
+        mode                    => '0755',
         recurse                 => $systemd::purge_dropin_dirs,
         purge                   => $systemd::purge_dropin_dirs,
         selinux_ignore_defaults => $selinux_ignore_defaults,

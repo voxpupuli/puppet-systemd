@@ -4,21 +4,23 @@
 class systemd::sleep {
   assert_private()
 
-  $systemd::sleep_settings.each |$option, $value| {
-    ini_setting {
-      $option:
-        path    => '/etc/systemd/sleep.conf',
-        section => 'Sleep',
-        setting => $option,
-        notify  => Systemd::Daemon_reexec['sleep.conf'],
-    }
-    if $value =~ Hash {
-      Ini_setting[$option] {
-        * => $value,
+  if $systemd::sleep_use_etc_conf {
+    $systemd::sleep_settings.each |$option, $value| {
+      ini_setting {
+        $option:
+          path    => '/etc/systemd/sleep.conf',
+          section => 'Sleep',
+          setting => $option,
+          notify  => Systemd::Daemon_reexec['sleep.conf'],
       }
-    } else {
-      Ini_setting[$option] {
-        value   => $value,
+      if $value =~ Hash {
+        Ini_setting[$option] {
+          * => $value,
+        }
+      } else {
+        Ini_setting[$option] {
+          value   => $value,
+        }
       }
     }
   }

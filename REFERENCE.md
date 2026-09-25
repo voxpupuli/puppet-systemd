@@ -35,22 +35,38 @@
 
 ### Defined types
 
+* [`systemd::coredump::dropin_file`](#systemd--coredump--dropin_file): Creates a drop-in file for coredump configuration
+* [`systemd::coredump::manage_dropin`](#systemd--coredump--manage_dropin): Creates a drop-in file for coredump configuration from a template
 * [`systemd::daemon_reexec`](#systemd--daemon_reexec): Run systemctl daemon-reexec
 * [`systemd::daemon_reload`](#systemd--daemon_reload): Run systemctl daemon-reload
 * [`systemd::dropin_file`](#systemd--dropin_file): Creates a drop-in file for a systemd unit
 * [`systemd::journald::dropin_file`](#systemd--journald--dropin_file): Creates a drop-in file for journald configuration
 * [`systemd::journald::manage_dropin`](#systemd--journald--manage_dropin): Creates a drop-in file for journald configuration from a template
+* [`systemd::logind::dropin_file`](#systemd--logind--dropin_file): Creates a drop-in file for logind configuration
+* [`systemd::logind::manage_dropin`](#systemd--logind--manage_dropin): Creates a drop-in file for logind configuration from a template
 * [`systemd::manage_dropin`](#systemd--manage_dropin): Creates a drop-in file for a systemd unit from a template
 * [`systemd::manage_unit`](#systemd--manage_unit): Generate unit file from template
 * [`systemd::modules_load`](#systemd--modules_load): Creates a modules-load.d drop file
 * [`systemd::network`](#systemd--network): Creates network config for systemd-networkd
 * [`systemd::networkd::interface`](#systemd--networkd--interface): This class implements a network interface file for systemd-networkd
+* [`systemd::oomd::dropin_file`](#systemd--oomd--dropin_file): Creates a drop-in file for oomd configuration
+* [`systemd::oomd::manage_dropin`](#systemd--oomd--manage_dropin): Creates a drop-in file for oomd configuration from a template
+* [`systemd::resolved::dropin_file`](#systemd--resolved--dropin_file): Creates a drop-in file for resolved configuration
+* [`systemd::resolved::manage_dropin`](#systemd--resolved--manage_dropin): Creates a drop-in file for resolved configuration from a template
+* [`systemd::sleep::dropin_file`](#systemd--sleep--dropin_file): Creates a drop-in file for sleep configuration
+* [`systemd::sleep::manage_dropin`](#systemd--sleep--manage_dropin): Creates a drop-in file for sleep configuration from a template
+* [`systemd::system::dropin_file`](#systemd--system--dropin_file): Creates a drop-in file for system.conf configuration
+* [`systemd::system::manage_dropin`](#systemd--system--manage_dropin): Creates a drop-in file for system.conf configuration from a template
 * [`systemd::sysuser`](#systemd--sysuser): Creates a sysusers.d configuration file
 * [`systemd::timer`](#systemd--timer): Create a timer and optionally a service unit to execute with the timer unit
 * [`systemd::timer_wrapper`](#systemd--timer_wrapper): Helper to define timer and accompanying services for a given task (cron like interface).
+* [`systemd::timesyncd::dropin_file`](#systemd--timesyncd--dropin_file): Creates a drop-in file for timesyncd configuration
+* [`systemd::timesyncd::manage_dropin`](#systemd--timesyncd--manage_dropin): Creates a drop-in file for timesyncd configuration from a template
 * [`systemd::tmpfile`](#systemd--tmpfile): Creates a systemd tmpfile
 * [`systemd::udev::rule`](#systemd--udev--rule): Adds a custom udev rule
 * [`systemd::unit_file`](#systemd--unit_file): Creates a systemd unit file
+* [`systemd::user::dropin_file`](#systemd--user--dropin_file): Creates a drop-in file for user.conf configuration
+* [`systemd::user::manage_dropin`](#systemd--user--manage_dropin): Creates a drop-in file for user.conf configuration from a template
 * [`systemd::user_service`](#systemd--user_service): Manage a user service running under systemd --user
 
 ### Resource types
@@ -221,6 +237,8 @@ The following parameters are available in the `systemd` class:
 * [`resolved_package`](#-systemd--resolved_package)
 * [`resolved_libraries`](#-systemd--resolved_libraries)
 * [`resolved_synthesize_hostname`](#-systemd--resolved_synthesize_hostname)
+* [`resolved_use_etc_conf`](#-systemd--resolved_use_etc_conf)
+* [`resolved_purge_dropin_dirs`](#-systemd--resolved_purge_dropin_dirs)
 * [`manage_nspawn`](#-systemd--manage_nspawn)
 * [`nspawn_package`](#-systemd--nspawn_package)
 * [`dns`](#-systemd--dns)
@@ -264,6 +282,8 @@ The following parameters are available in the `systemd` class:
 * [`fallback_ntp_server`](#-systemd--fallback_ntp_server)
 * [`timezone`](#-systemd--timezone)
 * [`set_local_rtc`](#-systemd--set_local_rtc)
+* [`timesyncd_use_etc_conf`](#-systemd--timesyncd_use_etc_conf)
+* [`timesyncd_purge_dropin_dirs`](#-systemd--timesyncd_purge_dropin_dirs)
 * [`manage_journald`](#-systemd--manage_journald)
 * [`journald_settings`](#-systemd--journald_settings)
 * [`journald_use_etc_conf`](#-systemd--journald_use_etc_conf)
@@ -284,6 +304,8 @@ The following parameters are available in the `systemd` class:
 * [`machine_info_settings`](#-systemd--machine_info_settings)
 * [`manage_logind`](#-systemd--manage_logind)
 * [`logind_settings`](#-systemd--logind_settings)
+* [`logind_use_etc_conf`](#-systemd--logind_use_etc_conf)
+* [`logind_purge_dropin_dirs`](#-systemd--logind_purge_dropin_dirs)
 * [`loginctl_users`](#-systemd--loginctl_users)
 * [`dropin_files`](#-systemd--dropin_files)
 * [`manage_units`](#-systemd--manage_units)
@@ -297,17 +319,25 @@ The following parameters are available in the `systemd` class:
 * [`manage_coredump`](#-systemd--manage_coredump)
 * [`coredump_settings`](#-systemd--coredump_settings)
 * [`coredump_backtrace`](#-systemd--coredump_backtrace)
+* [`coredump_use_etc_conf`](#-systemd--coredump_use_etc_conf)
+* [`coredump_purge_dropin_dirs`](#-systemd--coredump_purge_dropin_dirs)
 * [`manage_oomd`](#-systemd--manage_oomd)
 * [`oomd_package`](#-systemd--oomd_package)
 * [`oomd_ensure`](#-systemd--oomd_ensure)
 * [`oomd_settings`](#-systemd--oomd_settings)
+* [`oomd_use_etc_conf`](#-systemd--oomd_use_etc_conf)
+* [`oomd_purge_dropin_dirs`](#-systemd--oomd_purge_dropin_dirs)
 * [`manage_sleep`](#-systemd--manage_sleep)
 * [`sleep_settings`](#-systemd--sleep_settings)
+* [`sleep_use_etc_conf`](#-systemd--sleep_use_etc_conf)
+* [`sleep_purge_dropin_dirs`](#-systemd--sleep_purge_dropin_dirs)
 * [`udev_purge_rules`](#-systemd--udev_purge_rules)
 * [`manage_system_conf`](#-systemd--manage_system_conf)
 * [`system_settings`](#-systemd--system_settings)
+* [`system_purge_dropin_dirs`](#-systemd--system_purge_dropin_dirs)
 * [`manage_user_conf`](#-systemd--manage_user_conf)
 * [`user_settings`](#-systemd--user_settings)
+* [`user_purge_dropin_dirs`](#-systemd--user_purge_dropin_dirs)
 * [`install_runuser`](#-systemd--install_runuser)
 
 ##### <a name="-systemd--default_target"></a>`default_target`
@@ -391,6 +421,22 @@ Data type: `Optional[Boolean]`
 Control if the hostname lookup via systemd should be synthesized.
 
 Default value: `undef`
+
+##### <a name="-systemd--resolved_use_etc_conf"></a>`resolved_use_etc_conf`
+
+Data type: `Boolean`
+
+Whether to use the /etc/systemd/resolved.conf file.
+
+Default value: `true`
+
+##### <a name="-systemd--resolved_purge_dropin_dirs"></a>`resolved_purge_dropin_dirs`
+
+Data type: `Boolean`
+
+Whether to purge the resolved dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+
+Default value: `false`
 
 ##### <a name="-systemd--manage_nspawn"></a>`manage_nspawn`
 
@@ -759,6 +805,22 @@ adjustments. If at all possible, keep the RTC in UTC mode.
 
 Default value: `undef`
 
+##### <a name="-systemd--timesyncd_use_etc_conf"></a>`timesyncd_use_etc_conf`
+
+Data type: `Boolean`
+
+Whether to use the /etc/systemd/timesyncd.conf file.
+
+Default value: `true`
+
+##### <a name="-systemd--timesyncd_purge_dropin_dirs"></a>`timesyncd_purge_dropin_dirs`
+
+Data type: `Boolean`
+
+Whether to purge the timesyncd dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+
+Default value: `false`
+
 ##### <a name="-systemd--manage_journald"></a>`manage_journald`
 
 Data type: `Boolean`
@@ -920,6 +982,22 @@ Config Hash that is used to configure settings in logind.conf
 
 Default value: `{}`
 
+##### <a name="-systemd--logind_use_etc_conf"></a>`logind_use_etc_conf`
+
+Data type: `Boolean`
+
+Whether to use the /etc/systemd/logind.conf file.
+
+Default value: `true`
+
+##### <a name="-systemd--logind_purge_dropin_dirs"></a>`logind_purge_dropin_dirs`
+
+Data type: `Boolean`
+
+Whether to purge the logind dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+
+Default value: `false`
+
 ##### <a name="-systemd--loginctl_users"></a>`loginctl_users`
 
 Data type: `Stdlib::CreateResources`
@@ -1031,6 +1109,22 @@ Add --backtrace to systemd-coredump call systemd-coredump@.service unit
 
 Default value: `false`
 
+##### <a name="-systemd--coredump_use_etc_conf"></a>`coredump_use_etc_conf`
+
+Data type: `Boolean`
+
+Whether to use the /etc/systemd/coredump.conf file.
+
+Default value: `true`
+
+##### <a name="-systemd--coredump_purge_dropin_dirs"></a>`coredump_purge_dropin_dirs`
+
+Data type: `Boolean`
+
+Whether to purge the coredump dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+
+Default value: `false`
+
 ##### <a name="-systemd--manage_oomd"></a>`manage_oomd`
 
 Data type: `Boolean`
@@ -1063,6 +1157,22 @@ Hash of systemd-oomd configurations for oomd.conf
 
 Default value: `{}`
 
+##### <a name="-systemd--oomd_use_etc_conf"></a>`oomd_use_etc_conf`
+
+Data type: `Boolean`
+
+Whether to use the /etc/systemd/oomd.conf file.
+
+Default value: `true`
+
+##### <a name="-systemd--oomd_purge_dropin_dirs"></a>`oomd_purge_dropin_dirs`
+
+Data type: `Boolean`
+
+Whether to purge the oomd dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+
+Default value: `false`
+
 ##### <a name="-systemd--manage_sleep"></a>`manage_sleep`
 
 Data type: `Boolean`
@@ -1078,6 +1188,22 @@ Data type: `Systemd::SleepSettings`
 Config Hash that is used to configure settings in sleep.conf
 
 Default value: `{}`
+
+##### <a name="-systemd--sleep_use_etc_conf"></a>`sleep_use_etc_conf`
+
+Data type: `Boolean`
+
+Whether to use the /etc/systemd/sleep.conf file.
+
+Default value: `true`
+
+##### <a name="-systemd--sleep_purge_dropin_dirs"></a>`sleep_purge_dropin_dirs`
+
+Data type: `Boolean`
+
+Whether to purge the sleep dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+
+Default value: `false`
 
 ##### <a name="-systemd--udev_purge_rules"></a>`udev_purge_rules`
 
@@ -1105,6 +1231,14 @@ the settings.
 
 Default value: `{}`
 
+##### <a name="-systemd--system_purge_dropin_dirs"></a>`system_purge_dropin_dirs`
+
+Data type: `Boolean`
+
+Whether to purge the system.conf dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+
+Default value: `false`
+
 ##### <a name="-systemd--manage_user_conf"></a>`manage_user_conf`
 
 Data type: `Boolean`
@@ -1122,6 +1256,14 @@ NOTE: It's currently impossible to have multiple entries of the same key in
 the settings.
 
 Default value: `{}`
+
+##### <a name="-systemd--user_purge_dropin_dirs"></a>`user_purge_dropin_dirs`
+
+Data type: `Boolean`
+
+Whether to purge the user.conf dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+
+Default value: `false`
 
 ##### <a name="-systemd--install_runuser"></a>`install_runuser`
 
@@ -1228,6 +1370,232 @@ The operations to perform on the systemd tempfiles
 Default value: `['create']`
 
 ## Defined types
+
+### <a name="systemd--coredump--dropin_file"></a>`systemd::coredump::dropin_file`
+
+Creates a drop-in file for coredump configuration
+
+* **See also**
+  * coredump.conf(5)
+
+#### Parameters
+
+The following parameters are available in the `systemd::coredump::dropin_file` defined type:
+
+* [`filename`](#-systemd--coredump--dropin_file--filename)
+* [`ensure`](#-systemd--coredump--dropin_file--ensure)
+* [`path`](#-systemd--coredump--dropin_file--path)
+* [`selinux_ignore_defaults`](#-systemd--coredump--dropin_file--selinux_ignore_defaults)
+* [`content`](#-systemd--coredump--dropin_file--content)
+* [`source`](#-systemd--coredump--dropin_file--source)
+* [`owner`](#-systemd--coredump--dropin_file--owner)
+* [`group`](#-systemd--coredump--dropin_file--group)
+* [`mode`](#-systemd--coredump--dropin_file--mode)
+* [`show_diff`](#-systemd--coredump--dropin_file--show_diff)
+* [`notify_coredump`](#-systemd--coredump--dropin_file--notify_coredump)
+
+##### <a name="-systemd--coredump--dropin_file--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--coredump--dropin_file--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent', 'file']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--coredump--dropin_file--path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The coredump dropin configuration path
+
+Default value: `'/etc/systemd/coredump.conf.d'`
+
+##### <a name="-systemd--coredump--dropin_file--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Boolean`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `false`
+
+##### <a name="-systemd--coredump--dropin_file--content"></a>`content`
+
+Data type: `Optional[Variant[String,Sensitive[String]]]`
+
+The full content of the unit file (Mutually exclusive with `$source`)
+
+Default value: `undef`
+
+##### <a name="-systemd--coredump--dropin_file--source"></a>`source`
+
+Data type: `Optional[String]`
+
+The `File` resource compatible `source` (Mutually exclusive with `$content`)
+
+Default value: `undef`
+
+##### <a name="-systemd--coredump--dropin_file--owner"></a>`owner`
+
+Data type: `String[1]`
+
+The owner to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--coredump--dropin_file--group"></a>`group`
+
+Data type: `String[1]`
+
+The group to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--coredump--dropin_file--mode"></a>`mode`
+
+Data type: `Stdlib::Filemode`
+
+The mode to set on the dropin file
+
+Default value: `'0644'`
+
+##### <a name="-systemd--coredump--dropin_file--show_diff"></a>`show_diff`
+
+Data type: `Boolean`
+
+Whether to show the diff when updating dropin file
+
+Default value: `true`
+
+##### <a name="-systemd--coredump--dropin_file--notify_coredump"></a>`notify_coredump`
+
+Data type: `Optional[Boolean]`
+
+Accepted for API consistency with other systemd::*::dropin_file defines, but
+unused and has no effect. Coredump configuration is read on-demand by
+systemd-coredump when processing core dumps, not at daemon startup. Therefore,
+changes to coredump.conf or coredump.conf.d files take effect automatically
+on the next core dump event without requiring a service restart or daemon-reload.
+
+@see https://www.freedesktop.org/software/systemd/man/systemd-coredump.html
+@see https://www.freedesktop.org/software/systemd/man/coredump.conf.html
+
+Default value: `undef`
+
+### <a name="systemd--coredump--manage_dropin"></a>`systemd::coredump::manage_dropin`
+
+Creates a drop-in file for coredump configuration from a template
+
+#### Parameters
+
+The following parameters are available in the `systemd::coredump::manage_dropin` defined type:
+
+* [`filename`](#-systemd--coredump--manage_dropin--filename)
+* [`ensure`](#-systemd--coredump--manage_dropin--ensure)
+* [`comments`](#-systemd--coredump--manage_dropin--comments)
+* [`path`](#-systemd--coredump--manage_dropin--path)
+* [`selinux_ignore_defaults`](#-systemd--coredump--manage_dropin--selinux_ignore_defaults)
+* [`owner`](#-systemd--coredump--manage_dropin--owner)
+* [`group`](#-systemd--coredump--manage_dropin--group)
+* [`mode`](#-systemd--coredump--manage_dropin--mode)
+* [`show_diff`](#-systemd--coredump--manage_dropin--show_diff)
+* [`notify_coredump`](#-systemd--coredump--manage_dropin--notify_coredump)
+* [`coredump_entry`](#-systemd--coredump--manage_dropin--coredump_entry)
+
+##### <a name="-systemd--coredump--manage_dropin--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--coredump--manage_dropin--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--coredump--manage_dropin--comments"></a>`comments`
+
+Data type: `Optional[Array[String]]`
+
+An array of comments to put in the dropin
+
+Default value: `undef`
+
+##### <a name="-systemd--coredump--manage_dropin--path"></a>`path`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+The coredump dropin configuration path
+
+Default value: `undef`
+
+##### <a name="-systemd--coredump--manage_dropin--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Optional[Boolean]`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `undef`
+
+##### <a name="-systemd--coredump--manage_dropin--owner"></a>`owner`
+
+Data type: `Optional[String[1]]`
+
+The owner to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--coredump--manage_dropin--group"></a>`group`
+
+Data type: `Optional[String[1]]`
+
+The group to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--coredump--manage_dropin--mode"></a>`mode`
+
+Data type: `Optional[Stdlib::Filemode]`
+
+The mode to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--coredump--manage_dropin--show_diff"></a>`show_diff`
+
+Data type: `Optional[Boolean]`
+
+Whether to show the diff when updating dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--coredump--manage_dropin--notify_coredump"></a>`notify_coredump`
+
+Data type: `Optional[Boolean]`
+
+Accepted for API consistency but unused and has no effect.
+See systemd::coredump::dropin_file for details on why coredump config
+does not require service restart or daemon-reload.
+
+Default value: `undef`
+
+##### <a name="-systemd--coredump--manage_dropin--coredump_entry"></a>`coredump_entry`
+
+Data type: `Systemd::CoredumpSettings`
+
+key value pairs for the [Coredump] section of the dropin file
 
 ### <a name="systemd--daemon_reexec"></a>`systemd::daemon_reexec`
 
@@ -1599,6 +1967,7 @@ The following parameters are available in the `systemd::journald::manage_dropin`
 
 * [`filename`](#-systemd--journald--manage_dropin--filename)
 * [`ensure`](#-systemd--journald--manage_dropin--ensure)
+* [`comments`](#-systemd--journald--manage_dropin--comments)
 * [`path`](#-systemd--journald--manage_dropin--path)
 * [`selinux_ignore_defaults`](#-systemd--journald--manage_dropin--selinux_ignore_defaults)
 * [`owner`](#-systemd--journald--manage_dropin--owner)
@@ -1623,6 +1992,14 @@ Data type: `Enum['present', 'absent']`
 the state of this dropin file
 
 Default value: `'present'`
+
+##### <a name="-systemd--journald--manage_dropin--comments"></a>`comments`
+
+Data type: `Optional[Array[String]]`
+
+An array of comments to put in the dropin
+
+Default value: `undef`
 
 ##### <a name="-systemd--journald--manage_dropin--path"></a>`path`
 
@@ -1685,6 +2062,223 @@ Default value: `undef`
 Data type: `Systemd::JournaldSettings`
 
 key value pairs for the [Journal] section of the dropin file
+
+### <a name="systemd--logind--dropin_file"></a>`systemd::logind::dropin_file`
+
+Creates a drop-in file for logind configuration
+
+* **See also**
+  * logind.conf(5)
+
+#### Parameters
+
+The following parameters are available in the `systemd::logind::dropin_file` defined type:
+
+* [`filename`](#-systemd--logind--dropin_file--filename)
+* [`ensure`](#-systemd--logind--dropin_file--ensure)
+* [`path`](#-systemd--logind--dropin_file--path)
+* [`selinux_ignore_defaults`](#-systemd--logind--dropin_file--selinux_ignore_defaults)
+* [`content`](#-systemd--logind--dropin_file--content)
+* [`source`](#-systemd--logind--dropin_file--source)
+* [`owner`](#-systemd--logind--dropin_file--owner)
+* [`group`](#-systemd--logind--dropin_file--group)
+* [`mode`](#-systemd--logind--dropin_file--mode)
+* [`show_diff`](#-systemd--logind--dropin_file--show_diff)
+* [`notify_logind`](#-systemd--logind--dropin_file--notify_logind)
+
+##### <a name="-systemd--logind--dropin_file--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--logind--dropin_file--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent', 'file']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--logind--dropin_file--path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The logind dropin configuration path
+
+Default value: `'/etc/systemd/logind.conf.d'`
+
+##### <a name="-systemd--logind--dropin_file--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Boolean`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `false`
+
+##### <a name="-systemd--logind--dropin_file--content"></a>`content`
+
+Data type: `Optional[Variant[String,Sensitive[String]]]`
+
+The full content of the unit file (Mutually exclusive with `$source`)
+
+Default value: `undef`
+
+##### <a name="-systemd--logind--dropin_file--source"></a>`source`
+
+Data type: `Optional[String]`
+
+The `File` resource compatible `source` (Mutually exclusive with `$content`)
+
+Default value: `undef`
+
+##### <a name="-systemd--logind--dropin_file--owner"></a>`owner`
+
+Data type: `String[1]`
+
+The owner to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--logind--dropin_file--group"></a>`group`
+
+Data type: `String[1]`
+
+The group to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--logind--dropin_file--mode"></a>`mode`
+
+Data type: `Stdlib::Filemode`
+
+The mode to set on the dropin file
+
+Default value: `'0644'`
+
+##### <a name="-systemd--logind--dropin_file--show_diff"></a>`show_diff`
+
+Data type: `Boolean`
+
+Whether to show the diff when updating dropin file
+
+Default value: `true`
+
+##### <a name="-systemd--logind--dropin_file--notify_logind"></a>`notify_logind`
+
+Data type: `Boolean`
+
+Restart the logind service if the dropin file changes
+
+Default value: `true`
+
+### <a name="systemd--logind--manage_dropin"></a>`systemd::logind::manage_dropin`
+
+Creates a drop-in file for logind configuration from a template
+
+#### Parameters
+
+The following parameters are available in the `systemd::logind::manage_dropin` defined type:
+
+* [`filename`](#-systemd--logind--manage_dropin--filename)
+* [`ensure`](#-systemd--logind--manage_dropin--ensure)
+* [`comments`](#-systemd--logind--manage_dropin--comments)
+* [`path`](#-systemd--logind--manage_dropin--path)
+* [`selinux_ignore_defaults`](#-systemd--logind--manage_dropin--selinux_ignore_defaults)
+* [`owner`](#-systemd--logind--manage_dropin--owner)
+* [`group`](#-systemd--logind--manage_dropin--group)
+* [`mode`](#-systemd--logind--manage_dropin--mode)
+* [`show_diff`](#-systemd--logind--manage_dropin--show_diff)
+* [`notify_logind`](#-systemd--logind--manage_dropin--notify_logind)
+* [`logind_entry`](#-systemd--logind--manage_dropin--logind_entry)
+
+##### <a name="-systemd--logind--manage_dropin--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--logind--manage_dropin--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--logind--manage_dropin--comments"></a>`comments`
+
+Data type: `Optional[Array[String]]`
+
+An array of comments to put in the dropin
+
+Default value: `undef`
+
+##### <a name="-systemd--logind--manage_dropin--path"></a>`path`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+The logind dropin configuration path
+
+Default value: `undef`
+
+##### <a name="-systemd--logind--manage_dropin--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Optional[Boolean]`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `undef`
+
+##### <a name="-systemd--logind--manage_dropin--owner"></a>`owner`
+
+Data type: `Optional[String[1]]`
+
+The owner to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--logind--manage_dropin--group"></a>`group`
+
+Data type: `Optional[String[1]]`
+
+The group to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--logind--manage_dropin--mode"></a>`mode`
+
+Data type: `Optional[Stdlib::Filemode]`
+
+The mode to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--logind--manage_dropin--show_diff"></a>`show_diff`
+
+Data type: `Optional[Boolean]`
+
+Whether to show the diff when updating dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--logind--manage_dropin--notify_logind"></a>`notify_logind`
+
+Data type: `Optional[Boolean]`
+
+Restart the logind service if the dropin file changes
+
+Default value: `undef`
+
+##### <a name="-systemd--logind--manage_dropin--logind_entry"></a>`logind_entry`
+
+Data type: `Systemd::LogindSettings`
+
+key value pairs for the [Login] section of the dropin file
 
 ### <a name="systemd--manage_dropin"></a>`systemd::manage_dropin`
 
@@ -2696,6 +3290,874 @@ The structure is equal to the 'network' parameter of an interface.
 
 Default value: `{}`
 
+### <a name="systemd--oomd--dropin_file"></a>`systemd::oomd::dropin_file`
+
+Creates a drop-in file for oomd configuration
+
+* **See also**
+  * oomd.conf(5)
+
+#### Parameters
+
+The following parameters are available in the `systemd::oomd::dropin_file` defined type:
+
+* [`filename`](#-systemd--oomd--dropin_file--filename)
+* [`ensure`](#-systemd--oomd--dropin_file--ensure)
+* [`path`](#-systemd--oomd--dropin_file--path)
+* [`selinux_ignore_defaults`](#-systemd--oomd--dropin_file--selinux_ignore_defaults)
+* [`content`](#-systemd--oomd--dropin_file--content)
+* [`source`](#-systemd--oomd--dropin_file--source)
+* [`owner`](#-systemd--oomd--dropin_file--owner)
+* [`group`](#-systemd--oomd--dropin_file--group)
+* [`mode`](#-systemd--oomd--dropin_file--mode)
+* [`show_diff`](#-systemd--oomd--dropin_file--show_diff)
+* [`notify_oomd`](#-systemd--oomd--dropin_file--notify_oomd)
+
+##### <a name="-systemd--oomd--dropin_file--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--oomd--dropin_file--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent', 'file']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--oomd--dropin_file--path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The oomd dropin configuration path
+
+Default value: `'/etc/systemd/oomd.conf.d'`
+
+##### <a name="-systemd--oomd--dropin_file--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Boolean`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `false`
+
+##### <a name="-systemd--oomd--dropin_file--content"></a>`content`
+
+Data type: `Optional[Variant[String,Sensitive[String]]]`
+
+The full content of the unit file (Mutually exclusive with `$source`)
+
+Default value: `undef`
+
+##### <a name="-systemd--oomd--dropin_file--source"></a>`source`
+
+Data type: `Optional[String]`
+
+The `File` resource compatible `source` (Mutually exclusive with `$content`)
+
+Default value: `undef`
+
+##### <a name="-systemd--oomd--dropin_file--owner"></a>`owner`
+
+Data type: `String[1]`
+
+The owner to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--oomd--dropin_file--group"></a>`group`
+
+Data type: `String[1]`
+
+The group to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--oomd--dropin_file--mode"></a>`mode`
+
+Data type: `Stdlib::Filemode`
+
+The mode to set on the dropin file
+
+Default value: `'0644'`
+
+##### <a name="-systemd--oomd--dropin_file--show_diff"></a>`show_diff`
+
+Data type: `Boolean`
+
+Whether to show the diff when updating dropin file
+
+Default value: `true`
+
+##### <a name="-systemd--oomd--dropin_file--notify_oomd"></a>`notify_oomd`
+
+Data type: `Boolean`
+
+Restart the oomd service if the dropin file changes
+
+Default value: `true`
+
+### <a name="systemd--oomd--manage_dropin"></a>`systemd::oomd::manage_dropin`
+
+Creates a drop-in file for oomd configuration from a template
+
+#### Parameters
+
+The following parameters are available in the `systemd::oomd::manage_dropin` defined type:
+
+* [`filename`](#-systemd--oomd--manage_dropin--filename)
+* [`ensure`](#-systemd--oomd--manage_dropin--ensure)
+* [`comments`](#-systemd--oomd--manage_dropin--comments)
+* [`path`](#-systemd--oomd--manage_dropin--path)
+* [`selinux_ignore_defaults`](#-systemd--oomd--manage_dropin--selinux_ignore_defaults)
+* [`owner`](#-systemd--oomd--manage_dropin--owner)
+* [`group`](#-systemd--oomd--manage_dropin--group)
+* [`mode`](#-systemd--oomd--manage_dropin--mode)
+* [`show_diff`](#-systemd--oomd--manage_dropin--show_diff)
+* [`notify_oomd`](#-systemd--oomd--manage_dropin--notify_oomd)
+* [`oomd_entry`](#-systemd--oomd--manage_dropin--oomd_entry)
+
+##### <a name="-systemd--oomd--manage_dropin--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--oomd--manage_dropin--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--oomd--manage_dropin--comments"></a>`comments`
+
+Data type: `Optional[Array[String]]`
+
+An array of comments to put in the dropin
+
+Default value: `undef`
+
+##### <a name="-systemd--oomd--manage_dropin--path"></a>`path`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+The oomd dropin configuration path
+
+Default value: `undef`
+
+##### <a name="-systemd--oomd--manage_dropin--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Optional[Boolean]`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `undef`
+
+##### <a name="-systemd--oomd--manage_dropin--owner"></a>`owner`
+
+Data type: `Optional[String[1]]`
+
+The owner to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--oomd--manage_dropin--group"></a>`group`
+
+Data type: `Optional[String[1]]`
+
+The group to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--oomd--manage_dropin--mode"></a>`mode`
+
+Data type: `Optional[Stdlib::Filemode]`
+
+The mode to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--oomd--manage_dropin--show_diff"></a>`show_diff`
+
+Data type: `Optional[Boolean]`
+
+Whether to show the diff when updating dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--oomd--manage_dropin--notify_oomd"></a>`notify_oomd`
+
+Data type: `Optional[Boolean]`
+
+Restart the oomd service if the dropin file changes
+
+Default value: `undef`
+
+##### <a name="-systemd--oomd--manage_dropin--oomd_entry"></a>`oomd_entry`
+
+Data type: `Systemd::OomdSettings`
+
+key value pairs for the [OOM] section of the dropin file
+
+### <a name="systemd--resolved--dropin_file"></a>`systemd::resolved::dropin_file`
+
+Creates a drop-in file for resolved configuration
+
+* **See also**
+  * resolved.conf(5)
+
+#### Parameters
+
+The following parameters are available in the `systemd::resolved::dropin_file` defined type:
+
+* [`filename`](#-systemd--resolved--dropin_file--filename)
+* [`ensure`](#-systemd--resolved--dropin_file--ensure)
+* [`path`](#-systemd--resolved--dropin_file--path)
+* [`selinux_ignore_defaults`](#-systemd--resolved--dropin_file--selinux_ignore_defaults)
+* [`content`](#-systemd--resolved--dropin_file--content)
+* [`source`](#-systemd--resolved--dropin_file--source)
+* [`owner`](#-systemd--resolved--dropin_file--owner)
+* [`group`](#-systemd--resolved--dropin_file--group)
+* [`mode`](#-systemd--resolved--dropin_file--mode)
+* [`show_diff`](#-systemd--resolved--dropin_file--show_diff)
+* [`notify_resolved`](#-systemd--resolved--dropin_file--notify_resolved)
+
+##### <a name="-systemd--resolved--dropin_file--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--resolved--dropin_file--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent', 'file']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--resolved--dropin_file--path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The resolved dropin configuration path
+
+Default value: `'/etc/systemd/resolved.conf.d'`
+
+##### <a name="-systemd--resolved--dropin_file--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Boolean`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `false`
+
+##### <a name="-systemd--resolved--dropin_file--content"></a>`content`
+
+Data type: `Optional[Variant[String,Sensitive[String]]]`
+
+The full content of the unit file (Mutually exclusive with `$source`)
+
+Default value: `undef`
+
+##### <a name="-systemd--resolved--dropin_file--source"></a>`source`
+
+Data type: `Optional[String]`
+
+The `File` resource compatible `source` (Mutually exclusive with `$content`)
+
+Default value: `undef`
+
+##### <a name="-systemd--resolved--dropin_file--owner"></a>`owner`
+
+Data type: `String[1]`
+
+The owner to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--resolved--dropin_file--group"></a>`group`
+
+Data type: `String[1]`
+
+The group to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--resolved--dropin_file--mode"></a>`mode`
+
+Data type: `Stdlib::Filemode`
+
+The mode to set on the dropin file
+
+Default value: `'0644'`
+
+##### <a name="-systemd--resolved--dropin_file--show_diff"></a>`show_diff`
+
+Data type: `Boolean`
+
+Whether to show the diff when updating dropin file
+
+Default value: `true`
+
+##### <a name="-systemd--resolved--dropin_file--notify_resolved"></a>`notify_resolved`
+
+Data type: `Boolean`
+
+Restart the resolved service if the dropin file changes
+
+Default value: `true`
+
+### <a name="systemd--resolved--manage_dropin"></a>`systemd::resolved::manage_dropin`
+
+Creates a drop-in file for resolved configuration from a template
+
+#### Parameters
+
+The following parameters are available in the `systemd::resolved::manage_dropin` defined type:
+
+* [`filename`](#-systemd--resolved--manage_dropin--filename)
+* [`ensure`](#-systemd--resolved--manage_dropin--ensure)
+* [`comments`](#-systemd--resolved--manage_dropin--comments)
+* [`path`](#-systemd--resolved--manage_dropin--path)
+* [`selinux_ignore_defaults`](#-systemd--resolved--manage_dropin--selinux_ignore_defaults)
+* [`owner`](#-systemd--resolved--manage_dropin--owner)
+* [`group`](#-systemd--resolved--manage_dropin--group)
+* [`mode`](#-systemd--resolved--manage_dropin--mode)
+* [`show_diff`](#-systemd--resolved--manage_dropin--show_diff)
+* [`notify_resolved`](#-systemd--resolved--manage_dropin--notify_resolved)
+* [`resolved_entry`](#-systemd--resolved--manage_dropin--resolved_entry)
+
+##### <a name="-systemd--resolved--manage_dropin--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--resolved--manage_dropin--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--resolved--manage_dropin--comments"></a>`comments`
+
+Data type: `Optional[Array[String]]`
+
+An array of comments to put in the dropin
+
+Default value: `undef`
+
+##### <a name="-systemd--resolved--manage_dropin--path"></a>`path`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+The resolved dropin configuration path
+
+Default value: `undef`
+
+##### <a name="-systemd--resolved--manage_dropin--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Optional[Boolean]`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `undef`
+
+##### <a name="-systemd--resolved--manage_dropin--owner"></a>`owner`
+
+Data type: `Optional[String[1]]`
+
+The owner to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--resolved--manage_dropin--group"></a>`group`
+
+Data type: `Optional[String[1]]`
+
+The group to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--resolved--manage_dropin--mode"></a>`mode`
+
+Data type: `Optional[Stdlib::Filemode]`
+
+The mode to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--resolved--manage_dropin--show_diff"></a>`show_diff`
+
+Data type: `Optional[Boolean]`
+
+Whether to show the diff when updating dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--resolved--manage_dropin--notify_resolved"></a>`notify_resolved`
+
+Data type: `Optional[Boolean]`
+
+Restart the resolved service if the dropin file changes
+
+Default value: `undef`
+
+##### <a name="-systemd--resolved--manage_dropin--resolved_entry"></a>`resolved_entry`
+
+Data type: `Hash`
+
+key value pairs for the [Resolve] section of the dropin file
+
+### <a name="systemd--sleep--dropin_file"></a>`systemd::sleep::dropin_file`
+
+Creates a drop-in file for sleep configuration
+
+* **See also**
+  * sleep.conf(5)
+
+#### Parameters
+
+The following parameters are available in the `systemd::sleep::dropin_file` defined type:
+
+* [`filename`](#-systemd--sleep--dropin_file--filename)
+* [`ensure`](#-systemd--sleep--dropin_file--ensure)
+* [`path`](#-systemd--sleep--dropin_file--path)
+* [`selinux_ignore_defaults`](#-systemd--sleep--dropin_file--selinux_ignore_defaults)
+* [`content`](#-systemd--sleep--dropin_file--content)
+* [`source`](#-systemd--sleep--dropin_file--source)
+* [`owner`](#-systemd--sleep--dropin_file--owner)
+* [`group`](#-systemd--sleep--dropin_file--group)
+* [`mode`](#-systemd--sleep--dropin_file--mode)
+* [`show_diff`](#-systemd--sleep--dropin_file--show_diff)
+* [`notify_sleep`](#-systemd--sleep--dropin_file--notify_sleep)
+
+##### <a name="-systemd--sleep--dropin_file--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--sleep--dropin_file--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent', 'file']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--sleep--dropin_file--path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The sleep dropin configuration path
+
+Default value: `'/etc/systemd/sleep.conf.d'`
+
+##### <a name="-systemd--sleep--dropin_file--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Boolean`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `false`
+
+##### <a name="-systemd--sleep--dropin_file--content"></a>`content`
+
+Data type: `Optional[Variant[String,Sensitive[String]]]`
+
+The full content of the unit file (Mutually exclusive with `$source`)
+
+Default value: `undef`
+
+##### <a name="-systemd--sleep--dropin_file--source"></a>`source`
+
+Data type: `Optional[String]`
+
+The `File` resource compatible `source` (Mutually exclusive with `$content`)
+
+Default value: `undef`
+
+##### <a name="-systemd--sleep--dropin_file--owner"></a>`owner`
+
+Data type: `String[1]`
+
+The owner to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--sleep--dropin_file--group"></a>`group`
+
+Data type: `String[1]`
+
+The group to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--sleep--dropin_file--mode"></a>`mode`
+
+Data type: `Stdlib::Filemode`
+
+The mode to set on the dropin file
+
+Default value: `'0644'`
+
+##### <a name="-systemd--sleep--dropin_file--show_diff"></a>`show_diff`
+
+Data type: `Boolean`
+
+Whether to show the diff when updating dropin file
+
+Default value: `true`
+
+##### <a name="-systemd--sleep--dropin_file--notify_sleep"></a>`notify_sleep`
+
+Data type: `Boolean`
+
+Trigger daemon-reexec if the dropin file changes
+
+Default value: `true`
+
+### <a name="systemd--sleep--manage_dropin"></a>`systemd::sleep::manage_dropin`
+
+Creates a drop-in file for sleep configuration from a template
+
+#### Parameters
+
+The following parameters are available in the `systemd::sleep::manage_dropin` defined type:
+
+* [`filename`](#-systemd--sleep--manage_dropin--filename)
+* [`ensure`](#-systemd--sleep--manage_dropin--ensure)
+* [`comments`](#-systemd--sleep--manage_dropin--comments)
+* [`path`](#-systemd--sleep--manage_dropin--path)
+* [`selinux_ignore_defaults`](#-systemd--sleep--manage_dropin--selinux_ignore_defaults)
+* [`owner`](#-systemd--sleep--manage_dropin--owner)
+* [`group`](#-systemd--sleep--manage_dropin--group)
+* [`mode`](#-systemd--sleep--manage_dropin--mode)
+* [`show_diff`](#-systemd--sleep--manage_dropin--show_diff)
+* [`notify_sleep`](#-systemd--sleep--manage_dropin--notify_sleep)
+* [`sleep_entry`](#-systemd--sleep--manage_dropin--sleep_entry)
+
+##### <a name="-systemd--sleep--manage_dropin--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--sleep--manage_dropin--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--sleep--manage_dropin--comments"></a>`comments`
+
+Data type: `Optional[Array[String]]`
+
+An array of comments to put in the dropin
+
+Default value: `undef`
+
+##### <a name="-systemd--sleep--manage_dropin--path"></a>`path`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+The sleep dropin configuration path
+
+Default value: `undef`
+
+##### <a name="-systemd--sleep--manage_dropin--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Optional[Boolean]`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `undef`
+
+##### <a name="-systemd--sleep--manage_dropin--owner"></a>`owner`
+
+Data type: `Optional[String[1]]`
+
+The owner to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--sleep--manage_dropin--group"></a>`group`
+
+Data type: `Optional[String[1]]`
+
+The group to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--sleep--manage_dropin--mode"></a>`mode`
+
+Data type: `Optional[Stdlib::Filemode]`
+
+The mode to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--sleep--manage_dropin--show_diff"></a>`show_diff`
+
+Data type: `Optional[Boolean]`
+
+Whether to show the diff when updating dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--sleep--manage_dropin--notify_sleep"></a>`notify_sleep`
+
+Data type: `Optional[Boolean]`
+
+Trigger daemon-reexec if the dropin file changes
+
+Default value: `undef`
+
+##### <a name="-systemd--sleep--manage_dropin--sleep_entry"></a>`sleep_entry`
+
+Data type: `Systemd::SleepSettings`
+
+key value pairs for the [Sleep] section of the dropin file
+
+### <a name="systemd--system--dropin_file"></a>`systemd::system::dropin_file`
+
+Creates a drop-in file for system.conf configuration
+
+* **See also**
+  * systemd-system.conf(5)
+
+#### Parameters
+
+The following parameters are available in the `systemd::system::dropin_file` defined type:
+
+* [`filename`](#-systemd--system--dropin_file--filename)
+* [`ensure`](#-systemd--system--dropin_file--ensure)
+* [`path`](#-systemd--system--dropin_file--path)
+* [`selinux_ignore_defaults`](#-systemd--system--dropin_file--selinux_ignore_defaults)
+* [`content`](#-systemd--system--dropin_file--content)
+* [`source`](#-systemd--system--dropin_file--source)
+* [`owner`](#-systemd--system--dropin_file--owner)
+* [`group`](#-systemd--system--dropin_file--group)
+* [`mode`](#-systemd--system--dropin_file--mode)
+* [`show_diff`](#-systemd--system--dropin_file--show_diff)
+* [`notify_system`](#-systemd--system--dropin_file--notify_system)
+
+##### <a name="-systemd--system--dropin_file--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--system--dropin_file--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent', 'file']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--system--dropin_file--path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The system.conf dropin configuration path
+
+Default value: `'/etc/systemd/system.conf.d'`
+
+##### <a name="-systemd--system--dropin_file--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Boolean`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `false`
+
+##### <a name="-systemd--system--dropin_file--content"></a>`content`
+
+Data type: `Optional[Variant[String,Sensitive[String]]]`
+
+The full content of the unit file (Mutually exclusive with `$source`)
+
+Default value: `undef`
+
+##### <a name="-systemd--system--dropin_file--source"></a>`source`
+
+Data type: `Optional[String]`
+
+The `File` resource compatible `source` (Mutually exclusive with `$content`)
+
+Default value: `undef`
+
+##### <a name="-systemd--system--dropin_file--owner"></a>`owner`
+
+Data type: `String[1]`
+
+The owner to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--system--dropin_file--group"></a>`group`
+
+Data type: `String[1]`
+
+The group to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--system--dropin_file--mode"></a>`mode`
+
+Data type: `Stdlib::Filemode`
+
+The mode to set on the dropin file
+
+Default value: `'0644'`
+
+##### <a name="-systemd--system--dropin_file--show_diff"></a>`show_diff`
+
+Data type: `Boolean`
+
+Whether to show the diff when updating dropin file
+
+Default value: `true`
+
+##### <a name="-systemd--system--dropin_file--notify_system"></a>`notify_system`
+
+Data type: `Boolean`
+
+Trigger daemon-reexec if the dropin file changes
+
+Default value: `true`
+
+### <a name="systemd--system--manage_dropin"></a>`systemd::system::manage_dropin`
+
+Creates a drop-in file for system.conf configuration from a template
+
+#### Parameters
+
+The following parameters are available in the `systemd::system::manage_dropin` defined type:
+
+* [`filename`](#-systemd--system--manage_dropin--filename)
+* [`ensure`](#-systemd--system--manage_dropin--ensure)
+* [`comments`](#-systemd--system--manage_dropin--comments)
+* [`path`](#-systemd--system--manage_dropin--path)
+* [`selinux_ignore_defaults`](#-systemd--system--manage_dropin--selinux_ignore_defaults)
+* [`owner`](#-systemd--system--manage_dropin--owner)
+* [`group`](#-systemd--system--manage_dropin--group)
+* [`mode`](#-systemd--system--manage_dropin--mode)
+* [`show_diff`](#-systemd--system--manage_dropin--show_diff)
+* [`notify_system`](#-systemd--system--manage_dropin--notify_system)
+* [`system_entry`](#-systemd--system--manage_dropin--system_entry)
+
+##### <a name="-systemd--system--manage_dropin--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--system--manage_dropin--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--system--manage_dropin--comments"></a>`comments`
+
+Data type: `Optional[Array[String]]`
+
+An array of comments to put in the dropin
+
+Default value: `undef`
+
+##### <a name="-systemd--system--manage_dropin--path"></a>`path`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+The system.conf dropin configuration path
+
+Default value: `undef`
+
+##### <a name="-systemd--system--manage_dropin--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Optional[Boolean]`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `undef`
+
+##### <a name="-systemd--system--manage_dropin--owner"></a>`owner`
+
+Data type: `Optional[String[1]]`
+
+The owner to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--system--manage_dropin--group"></a>`group`
+
+Data type: `Optional[String[1]]`
+
+The group to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--system--manage_dropin--mode"></a>`mode`
+
+Data type: `Optional[Stdlib::Filemode]`
+
+The mode to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--system--manage_dropin--show_diff"></a>`show_diff`
+
+Data type: `Optional[Boolean]`
+
+Whether to show the diff when updating dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--system--manage_dropin--notify_system"></a>`notify_system`
+
+Data type: `Optional[Boolean]`
+
+Trigger daemon-reexec if the dropin file changes
+
+Default value: `undef`
+
+##### <a name="-systemd--system--manage_dropin--system_entry"></a>`system_entry`
+
+Data type: `Systemd::ServiceManagerSettings`
+
+key value pairs for the [Manager] section of the dropin file
+
 ### <a name="systemd--sysuser"></a>`systemd::sysuser`
 
 Creates a sysusers.d configuration file
@@ -3122,6 +4584,223 @@ override for the `[Unit]` section of the timer
 
 Default value: `{}`
 
+### <a name="systemd--timesyncd--dropin_file"></a>`systemd::timesyncd::dropin_file`
+
+Creates a drop-in file for timesyncd configuration
+
+* **See also**
+  * timesyncd.conf(5)
+
+#### Parameters
+
+The following parameters are available in the `systemd::timesyncd::dropin_file` defined type:
+
+* [`filename`](#-systemd--timesyncd--dropin_file--filename)
+* [`ensure`](#-systemd--timesyncd--dropin_file--ensure)
+* [`path`](#-systemd--timesyncd--dropin_file--path)
+* [`selinux_ignore_defaults`](#-systemd--timesyncd--dropin_file--selinux_ignore_defaults)
+* [`content`](#-systemd--timesyncd--dropin_file--content)
+* [`source`](#-systemd--timesyncd--dropin_file--source)
+* [`owner`](#-systemd--timesyncd--dropin_file--owner)
+* [`group`](#-systemd--timesyncd--dropin_file--group)
+* [`mode`](#-systemd--timesyncd--dropin_file--mode)
+* [`show_diff`](#-systemd--timesyncd--dropin_file--show_diff)
+* [`notify_timesyncd`](#-systemd--timesyncd--dropin_file--notify_timesyncd)
+
+##### <a name="-systemd--timesyncd--dropin_file--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--timesyncd--dropin_file--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent', 'file']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--timesyncd--dropin_file--path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The timesyncd dropin configuration path
+
+Default value: `'/etc/systemd/timesyncd.conf.d'`
+
+##### <a name="-systemd--timesyncd--dropin_file--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Boolean`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `false`
+
+##### <a name="-systemd--timesyncd--dropin_file--content"></a>`content`
+
+Data type: `Optional[Variant[String,Sensitive[String]]]`
+
+The full content of the unit file (Mutually exclusive with `$source`)
+
+Default value: `undef`
+
+##### <a name="-systemd--timesyncd--dropin_file--source"></a>`source`
+
+Data type: `Optional[String]`
+
+The `File` resource compatible `source` (Mutually exclusive with `$content`)
+
+Default value: `undef`
+
+##### <a name="-systemd--timesyncd--dropin_file--owner"></a>`owner`
+
+Data type: `String[1]`
+
+The owner to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--timesyncd--dropin_file--group"></a>`group`
+
+Data type: `String[1]`
+
+The group to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--timesyncd--dropin_file--mode"></a>`mode`
+
+Data type: `Stdlib::Filemode`
+
+The mode to set on the dropin file
+
+Default value: `'0644'`
+
+##### <a name="-systemd--timesyncd--dropin_file--show_diff"></a>`show_diff`
+
+Data type: `Boolean`
+
+Whether to show the diff when updating dropin file
+
+Default value: `true`
+
+##### <a name="-systemd--timesyncd--dropin_file--notify_timesyncd"></a>`notify_timesyncd`
+
+Data type: `Boolean`
+
+Restart the timesyncd service if the dropin file changes
+
+Default value: `true`
+
+### <a name="systemd--timesyncd--manage_dropin"></a>`systemd::timesyncd::manage_dropin`
+
+Creates a drop-in file for timesyncd configuration from a template
+
+#### Parameters
+
+The following parameters are available in the `systemd::timesyncd::manage_dropin` defined type:
+
+* [`filename`](#-systemd--timesyncd--manage_dropin--filename)
+* [`ensure`](#-systemd--timesyncd--manage_dropin--ensure)
+* [`comments`](#-systemd--timesyncd--manage_dropin--comments)
+* [`path`](#-systemd--timesyncd--manage_dropin--path)
+* [`selinux_ignore_defaults`](#-systemd--timesyncd--manage_dropin--selinux_ignore_defaults)
+* [`owner`](#-systemd--timesyncd--manage_dropin--owner)
+* [`group`](#-systemd--timesyncd--manage_dropin--group)
+* [`mode`](#-systemd--timesyncd--manage_dropin--mode)
+* [`show_diff`](#-systemd--timesyncd--manage_dropin--show_diff)
+* [`notify_timesyncd`](#-systemd--timesyncd--manage_dropin--notify_timesyncd)
+* [`timesyncd_entry`](#-systemd--timesyncd--manage_dropin--timesyncd_entry)
+
+##### <a name="-systemd--timesyncd--manage_dropin--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--timesyncd--manage_dropin--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--timesyncd--manage_dropin--comments"></a>`comments`
+
+Data type: `Optional[Array[String]]`
+
+An array of comments to put in the dropin
+
+Default value: `undef`
+
+##### <a name="-systemd--timesyncd--manage_dropin--path"></a>`path`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+The timesyncd dropin configuration path
+
+Default value: `undef`
+
+##### <a name="-systemd--timesyncd--manage_dropin--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Optional[Boolean]`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `undef`
+
+##### <a name="-systemd--timesyncd--manage_dropin--owner"></a>`owner`
+
+Data type: `Optional[String[1]]`
+
+The owner to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--timesyncd--manage_dropin--group"></a>`group`
+
+Data type: `Optional[String[1]]`
+
+The group to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--timesyncd--manage_dropin--mode"></a>`mode`
+
+Data type: `Optional[Stdlib::Filemode]`
+
+The mode to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--timesyncd--manage_dropin--show_diff"></a>`show_diff`
+
+Data type: `Optional[Boolean]`
+
+Whether to show the diff when updating dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--timesyncd--manage_dropin--notify_timesyncd"></a>`notify_timesyncd`
+
+Data type: `Optional[Boolean]`
+
+Restart the timesyncd service if the dropin file changes
+
+Default value: `undef`
+
+##### <a name="-systemd--timesyncd--manage_dropin--timesyncd_entry"></a>`timesyncd_entry`
+
+Data type: `Hash`
+
+key value pairs for the [Time] section of the dropin file
+
 ### <a name="systemd--tmpfile"></a>`systemd::tmpfile`
 
 Creates a systemd tmpfile
@@ -3427,6 +5106,223 @@ Data type: `Boolean`
 restart (notify) the service when unit file changed
 
 Default value: `true`
+
+### <a name="systemd--user--dropin_file"></a>`systemd::user::dropin_file`
+
+Creates a drop-in file for user.conf configuration
+
+* **See also**
+  * systemd-user.conf(5)
+
+#### Parameters
+
+The following parameters are available in the `systemd::user::dropin_file` defined type:
+
+* [`filename`](#-systemd--user--dropin_file--filename)
+* [`ensure`](#-systemd--user--dropin_file--ensure)
+* [`path`](#-systemd--user--dropin_file--path)
+* [`selinux_ignore_defaults`](#-systemd--user--dropin_file--selinux_ignore_defaults)
+* [`content`](#-systemd--user--dropin_file--content)
+* [`source`](#-systemd--user--dropin_file--source)
+* [`owner`](#-systemd--user--dropin_file--owner)
+* [`group`](#-systemd--user--dropin_file--group)
+* [`mode`](#-systemd--user--dropin_file--mode)
+* [`show_diff`](#-systemd--user--dropin_file--show_diff)
+* [`notify_user`](#-systemd--user--dropin_file--notify_user)
+
+##### <a name="-systemd--user--dropin_file--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--user--dropin_file--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent', 'file']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--user--dropin_file--path"></a>`path`
+
+Data type: `Stdlib::Absolutepath`
+
+The user.conf dropin configuration path
+
+Default value: `'/etc/systemd/user.conf.d'`
+
+##### <a name="-systemd--user--dropin_file--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Boolean`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `false`
+
+##### <a name="-systemd--user--dropin_file--content"></a>`content`
+
+Data type: `Optional[Variant[String,Sensitive[String]]]`
+
+The full content of the unit file (Mutually exclusive with `$source`)
+
+Default value: `undef`
+
+##### <a name="-systemd--user--dropin_file--source"></a>`source`
+
+Data type: `Optional[String]`
+
+The `File` resource compatible `source` (Mutually exclusive with `$content`)
+
+Default value: `undef`
+
+##### <a name="-systemd--user--dropin_file--owner"></a>`owner`
+
+Data type: `String[1]`
+
+The owner to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--user--dropin_file--group"></a>`group`
+
+Data type: `String[1]`
+
+The group to set on the dropin file
+
+Default value: `'root'`
+
+##### <a name="-systemd--user--dropin_file--mode"></a>`mode`
+
+Data type: `Stdlib::Filemode`
+
+The mode to set on the dropin file
+
+Default value: `'0644'`
+
+##### <a name="-systemd--user--dropin_file--show_diff"></a>`show_diff`
+
+Data type: `Boolean`
+
+Whether to show the diff when updating dropin file
+
+Default value: `true`
+
+##### <a name="-systemd--user--dropin_file--notify_user"></a>`notify_user`
+
+Data type: `Boolean`
+
+Trigger daemon-reexec if the dropin file changes
+
+Default value: `true`
+
+### <a name="systemd--user--manage_dropin"></a>`systemd::user::manage_dropin`
+
+Creates a drop-in file for user.conf configuration from a template
+
+#### Parameters
+
+The following parameters are available in the `systemd::user::manage_dropin` defined type:
+
+* [`filename`](#-systemd--user--manage_dropin--filename)
+* [`ensure`](#-systemd--user--manage_dropin--ensure)
+* [`comments`](#-systemd--user--manage_dropin--comments)
+* [`path`](#-systemd--user--manage_dropin--path)
+* [`selinux_ignore_defaults`](#-systemd--user--manage_dropin--selinux_ignore_defaults)
+* [`owner`](#-systemd--user--manage_dropin--owner)
+* [`group`](#-systemd--user--manage_dropin--group)
+* [`mode`](#-systemd--user--manage_dropin--mode)
+* [`show_diff`](#-systemd--user--manage_dropin--show_diff)
+* [`notify_user`](#-systemd--user--manage_dropin--notify_user)
+* [`user_entry`](#-systemd--user--manage_dropin--user_entry)
+
+##### <a name="-systemd--user--manage_dropin--filename"></a>`filename`
+
+Data type: `Systemd::Dropin`
+
+The filename of the drop in. The full path is determined using the path and this filename.
+
+Default value: `$name`
+
+##### <a name="-systemd--user--manage_dropin--ensure"></a>`ensure`
+
+Data type: `Enum['present', 'absent']`
+
+the state of this dropin file
+
+Default value: `'present'`
+
+##### <a name="-systemd--user--manage_dropin--comments"></a>`comments`
+
+Data type: `Optional[Array[String]]`
+
+An array of comments to put in the dropin
+
+Default value: `undef`
+
+##### <a name="-systemd--user--manage_dropin--path"></a>`path`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+The user.conf dropin configuration path
+
+Default value: `undef`
+
+##### <a name="-systemd--user--manage_dropin--selinux_ignore_defaults"></a>`selinux_ignore_defaults`
+
+Data type: `Optional[Boolean]`
+
+If Puppet should ignore the default SELinux labels.
+
+Default value: `undef`
+
+##### <a name="-systemd--user--manage_dropin--owner"></a>`owner`
+
+Data type: `Optional[String[1]]`
+
+The owner to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--user--manage_dropin--group"></a>`group`
+
+Data type: `Optional[String[1]]`
+
+The group to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--user--manage_dropin--mode"></a>`mode`
+
+Data type: `Optional[Stdlib::Filemode]`
+
+The mode to set on the dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--user--manage_dropin--show_diff"></a>`show_diff`
+
+Data type: `Optional[Boolean]`
+
+Whether to show the diff when updating dropin file
+
+Default value: `undef`
+
+##### <a name="-systemd--user--manage_dropin--notify_user"></a>`notify_user`
+
+Data type: `Optional[Boolean]`
+
+Trigger daemon-reexec if the dropin file changes
+
+Default value: `undef`
+
+##### <a name="-systemd--user--manage_dropin--user_entry"></a>`user_entry`
+
+Data type: `Systemd::ServiceManagerSettings`
+
+key value pairs for the [Manager] section of the dropin file
 
 ### <a name="systemd--user_service"></a>`systemd::user_service`
 
@@ -3771,14 +5667,14 @@ Alias of
 
 ```puppet
 Struct[{
-    Optional['Storage']         => Enum['none', 'external', 'journal'],
-    Optional['Compress']        => Enum['yes','no'],
-    Optional['ProcessSizeMax']  => Systemd::Unit::Amount,
-    Optional['ExternalSizeMax'] => Systemd::Unit::Amount,
-    Optional['EnterNamespace']  => Enum['yes','no'],
-    Optional['JournalSizeMax']  => Systemd::Unit::Amount,
-    Optional['MaxUse']          => Systemd::Unit::Amount,
-    Optional['KeepFree']        => Systemd::Unit::Amount,
+    Optional['Storage']         => Variant[Enum['none', 'external', 'journal'], Systemd::SettingEnsure],
+    Optional['Compress']        => Variant[Enum['yes','no'], Systemd::SettingEnsure],
+    Optional['ProcessSizeMax']  => Variant[Systemd::Unit::Amount, Systemd::SettingEnsure],
+    Optional['ExternalSizeMax'] => Variant[Systemd::Unit::Amount, Systemd::SettingEnsure],
+    Optional['EnterNamespace']  => Variant[Enum['yes','no'], Systemd::SettingEnsure],
+    Optional['JournalSizeMax']  => Variant[Systemd::Unit::Amount, Systemd::SettingEnsure],
+    Optional['MaxUse']          => Variant[Systemd::Unit::Amount, Systemd::SettingEnsure],
+    Optional['KeepFree']        => Variant[Systemd::Unit::Amount, Systemd::SettingEnsure],
   }]
 ```
 
@@ -6173,9 +8069,9 @@ Alias of
 
 ```puppet
 Struct[{
-    Optional['SwapUsedLimit']                    => Variant[Systemd::Unit::Percent,Systemd::Unit::Permille,Systemd::Unit::Permyriad],
-    Optional['DefaultMemoryPressureLimit']       => Variant[Systemd::Unit::Percent,Systemd::Unit::Permille,Systemd::Unit::Permyriad],
-    Optional['DefaultMemoryPressureDurationSec'] => Systemd::Timespan,
+    Optional['SwapUsedLimit']                    => Variant[Systemd::Unit::Percent,Systemd::Unit::Permille,Systemd::Unit::Permyriad,Systemd::SettingEnsure],
+    Optional['DefaultMemoryPressureLimit']       => Variant[Systemd::Unit::Percent,Systemd::Unit::Permille,Systemd::Unit::Permyriad,Systemd::SettingEnsure],
+    Optional['DefaultMemoryPressureDurationSec'] => Variant[Systemd::Timespan,Systemd::SettingEnsure],
   }]
 ```
 

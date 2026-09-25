@@ -8,21 +8,23 @@ class systemd::oomd {
     ensure => $systemd::oomd_ensure,
     enable => true,
   }
-  $systemd::oomd_settings.each |$option, $value| {
-    ini_setting {
-      $option:
-        path    => '/etc/systemd/oomd.conf',
-        section => 'OOM',
-        setting => $option,
-        notify  => Service['systemd-oomd'],
-    }
-    if $value =~ Hash {
-      Ini_setting[$option] {
-        * => $value,
+  if $systemd::oomd_use_etc_conf {
+    $systemd::oomd_settings.each |$option, $value| {
+      ini_setting {
+        $option:
+          path    => '/etc/systemd/oomd.conf',
+          section => 'OOM',
+          setting => $option,
+          notify  => Service['systemd-oomd'],
       }
-    } else {
-      Ini_setting[$option] {
-        value   => $value,
+      if $value =~ Hash {
+        Ini_setting[$option] {
+          * => $value,
+        }
+      } else {
+        Ini_setting[$option] {
+          value   => $value,
+        }
       }
     }
   }
