@@ -46,15 +46,38 @@ ABSPATH_INVALID = [
   [],
 ].freeze
 
-# Variant[Enum[''], Stdlib::Unixpath, Pattern[/^!.*/], Array[...same..., 1]]
-# Empty-string reset, absolute path, negated path (!...), or non-empty array.
-NEGATABLE_PATH_VALID = [
+# Variant[Enum[''], Stdlib::Unixpath, Pattern[/^!.*$/], Array[...same..., 1]]
+# Empty-string reset, absolute path, negated path (!...), or non-empty array of those.
+# (Assert* keys use this pattern - only negation with !)
+ASSERT_PATH_VALID = [
   '/my/path',
   '!/my/path',
   '',
   ['', '/my/path', '!/my/other/path'],
 ].freeze
-NEGATABLE_PATH_INVALID = [
+ASSERT_PATH_INVALID = [
+  '|/my/path',
+  '|!/my/path',
+  ['|/my/path'],
+  ['|!/my/path'],
+  'not/absolute',
+  ['not/absolute'],
+  [],
+].freeze
+
+# Variant[Enum[''], Stdlib::Unixpath, Pattern[/^(\|!?)?.*$/], Array[...same..., 1]]
+# Empty-string reset, absolute path, negated path (!...), triggering path (|...),
+# or triggering negated path (|!...), or non-empty array of those.
+# (Condition* keys use this pattern - supports both ! and |)
+CONDITION_PATH_VALID = [
+  '/my/path',
+  '!/my/path',
+  '|/my/path',
+  '|!/my/path',
+  '',
+  ['', '/my/path', '!/my/other/path', '|/third/path', '|!/fourth/path'],
+].freeze
+CONDITION_PATH_INVALID = [
   'not/absolute',
   ['not/absolute'],
   [],
@@ -417,14 +440,17 @@ describe 'Systemd::Unit::Unit' do
   end
 
   # ---------------------------------------------------------------------------
-  # Assert: path checks (absolute path or negated, empty-string reset allowed)
-  # Variant[Enum[''], Stdlib::Unixpath, Pattern[/^!.*/], Array[...same..., 1]]
+  # Assert: path checks :
+  #     absolute path
+  #     negated (!...)
+  #     empty-string reset allowed
+  # Variant[Enum[''], Stdlib::Unixpath, Pattern[/^!.*$/], Array[...same..., 1]]
   # ---------------------------------------------------------------------------
 
   ASSERT_PATH_KEYS.each do |key|
     context key do
-      NEGATABLE_PATH_VALID.each   { |v| it { is_expected.to     allow_value({ key => v }) } }
-      NEGATABLE_PATH_INVALID.each { |v| it { is_expected.not_to allow_value({ key => v }) } }
+      ASSERT_PATH_VALID.each   { |v| it { is_expected.to     allow_value({ key => v }) } }
+      ASSERT_PATH_INVALID.each { |v| it { is_expected.not_to allow_value({ key => v }) } }
     end
   end
 
@@ -457,14 +483,18 @@ describe 'Systemd::Unit::Unit' do
   end
 
   # ---------------------------------------------------------------------------
-  # Condition: path checks (absolute path or negated, empty-string reset allowed)
-  # Variant[Enum[''], Stdlib::Unixpath, Pattern[/^!.*/], Array[...same..., 1]]
+  # Condition: path checks
+  #     absolute path
+  #     negated (!...)
+  #     triggering (|.../|!...)
+  #     empty-string reset allowed
+  # Variant[Enum[''], Stdlib::Unixpath, Pattern[/^\|!?.*/], Array[...same..., 1]]
   # ---------------------------------------------------------------------------
 
   CONDITION_PATH_KEYS.each do |key|
     context key do
-      NEGATABLE_PATH_VALID.each   { |v| it { is_expected.to     allow_value({ key => v }) } }
-      NEGATABLE_PATH_INVALID.each { |v| it { is_expected.not_to allow_value({ key => v }) } }
+      CONDITION_PATH_VALID.each   { |v| it { is_expected.to     allow_value({ key => v }) } }
+      CONDITION_PATH_INVALID.each { |v| it { is_expected.not_to allow_value({ key => v }) } }
     end
   end
 end
