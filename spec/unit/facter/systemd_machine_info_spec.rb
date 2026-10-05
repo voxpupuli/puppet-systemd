@@ -1,0 +1,62 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+describe Facter.fact(:systemd_machine_info) do
+  before do
+    Facter.clear
+  end
+
+  after do
+    Facter.clear
+  end
+
+  describe 'systemd_machine_info' do
+    context 'returns machine info when systemd present' do
+      let(:json_output) do
+        '{"CHASSIS":"desktop","DEPLOYMENT":"production","DOCUMENTATION":"https://docs.example.com","HOSTNAME":"server01.example.com","ICON_NAME":"computer-desktop","ML_MACHINE":"x86_64","ML_SUBMODEL":"Pro","ML_VERSION":"1","OPERATING_SYSTEM_VERSION":"8.5","PRETTY_CHASSIS":"Desktop","SUPPORT_END":"2029-05-31","SUPPORT_URL":"https://support.example.com","SUPPORT_ZONE":"enterprise","TAGS":"production:x86_64:team=enterprise","USR_LOCAL":"/usr/local"}'
+      end
+
+      before do
+        allow(Facter.fact(:systemd)).to receive(:value).and_return(true)
+      end
+
+      it 'parses JSON output correctly' do
+        allow(Facter::Core::Execution).to receive(:execute).with('hostnamectl --json=short 2>/dev/null').and_return(json_output)
+        result = Facter.value(:systemd_machine_info)
+        expect(result).to be_a(Hash)
+        expect(result['HOSTNAME']).to eq('server01.example.com')
+        expect(result['CHASSIS']).to eq('desktop')
+        expect(result['TAGS']).to eq(['production', 'team=enterprise', 'x86_64'])
+      end
+
+      it 'sorts TAGS array' do
+        allow(Facter::Core::Execution).to receive(:execute).with('hostnamectl --json=short 2>/dev/null').and_return(json_output)
+        result = Facter.value(:systemd_machine_info)
+        expect(result['TAGS']).to eq(['production', 'team=enterprise', 'x86_64'])
+      end
+    end
+
+    context 'returns nil when hostnamectl fails' do
+      before do
+        allow(Facter.fact(:systemd)).to receive(:value).and_return(true)
+      end
+
+      it 'handles missing hostnamectl' do
+        allow(Facter::Core::Execution).to receive(:execute).with('hostnamectl --json=short 2>/dev/null').and_return('')
+        expect(Facter.value(:systemd_machine_info)).to be_nil
+      end
+    end
+
+    context 'returns nil when systemd not present' do
+      before do
+        allow(Facter.fact(:systemd)).to receive(:value).and_return(false)
+      end
+
+      it 'does not execute hostnamectl' do
+        expect(Facter::Core::Execution).not_to receive(:execute)
+        expect(Facter.value(:systemd_machine_info)).to be_nil
+      end
+    end
+  end
+end

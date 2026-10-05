@@ -35,6 +35,18 @@
 #
 # Caveats:
 #
+
+# Fact: systemd_machine_info
+#
+# Purpose:
+#   Provide structured machine information from systemd's machine-info
+#
+# Resolution:
+#   Parse the JSON output from hostnamectl --json=short
+#
+# Caveats:
+#   Requires hostnamectl to be available
+#
 Facter.add(:systemd) do
   confine kernel: :linux
   setcode do
@@ -59,5 +71,26 @@ Facter.add(:systemd_internal_services) do
     lines.each_with_object({}) do |(service, status, *), result|
       result[service] = status
     end
+  end
+end
+
+Facter.add(:systemd_machine_info) do
+  confine systemd: true
+  setcode do
+    command_output = Facter::Core::Execution.execute('hostnamectl --json=short 2>/dev/null')
+    json_data = JSON.parse(command_output)
+
+    result = {}
+    json_data.each do |key, value|
+      result[key] = if key == 'TAGS'
+                      # TAGS is a colon-separated string; split and sort
+                      value.to_s.split(':').reject(&:empty?).sort
+                    else
+                      value
+                    end
+    end
+    result
+  rescue JSON::ParserError
+    nil
   end
 end
