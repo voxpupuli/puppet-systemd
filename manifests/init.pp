@@ -310,6 +310,12 @@
 # @param oomd_settings
 #   Hash of systemd-oomd configurations for oomd.conf
 #
+# @param oomd_use_etc_conf
+#   Whether to use the /etc/systemd/oomd.conf file.
+#
+# @param oomd_purge_dropin_dirs
+#   Whether to purge the oomd dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param manage_sleep
 #   Should systemd sleep configuration be managed
 #
@@ -431,6 +437,8 @@ class systemd (
   Optional[String[1]]                                 $oomd_package = undef,
   Enum['stopped','running']                           $oomd_ensure = 'running',
   Systemd::OomdSettings                               $oomd_settings = {},
+  Boolean                                             $oomd_use_etc_conf = true,
+  Boolean                                             $oomd_purge_dropin_dirs = false,
   Boolean                                             $manage_sleep = false,
   Systemd::SleepSettings                              $sleep_settings = {},
   Boolean                                             $udev_purge_rules = false,

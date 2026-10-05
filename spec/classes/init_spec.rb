@@ -463,6 +463,40 @@ describe 'systemd' do
           }
         end
 
+        context 'when oomd_use_etc_conf is false' do
+          let(:params) do
+            {
+              manage_oomd: true,
+              oomd_settings: {
+                'SwapUsedLimit' => '10‰',
+              },
+              oomd_use_etc_conf: false,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_ini_setting('SwapUsedLimit')
+          }
+        end
+
+        context 'when oomd_purge_dropin_dirs is true' do
+          let(:pre_condition) do
+            'systemd::oomd::dropin_file { "test.conf": content => "[OOM]\nSwapUsedLimit=10‰\n" }'
+          end
+          let(:params) do
+            {
+              manage_oomd: true,
+              oomd_purge_dropin_dirs: true,
+            }
+          end
+
+          it {
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_file('/etc/systemd/oomd.conf.d').with_purge(true).with_recurse(true)
+          }
+        end
+
         context 'when enabling sleep with options' do
           let(:params) do
             {
