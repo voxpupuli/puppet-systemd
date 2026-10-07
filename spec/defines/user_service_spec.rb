@@ -3,10 +3,16 @@
 require 'spec_helper'
 
 describe 'systemd::user_service' do
+  # Mirrors the command array returned by systemd::systemctl_user
+  def systemctl_user(user, *args)
+    ['runuser', '-u', user, '--', '/usr/bin/bash', '-c',
+     "env XDG_RUNTIME_DIR=/run/user/$(id -u) /usr/bin/systemctl --user #{args.join(' ')}",]
+  end
+
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
-        let(:facts) { facts.merge(systemd_version: '256') }
+        let(:facts) { facts }
         let(:title) { 'mine.timer' }
 
         context 'with defaults' do
@@ -86,23 +92,15 @@ describe 'systemd::user_service' do
 
             it {
               is_expected.to contain_exec('Stop user service mine.timer for user steve')
-                .with_command(
-                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'stop', 'mine.timer'],
-                )
-                .with_onlyif(
-                  [['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'is-active', 'mine.timer']],
-                )
+                .with_command(systemctl_user('steve', 'stop', 'mine.timer'))
+                .with_onlyif([systemctl_user('steve', 'is-active', 'mine.timer')])
                 .without_unless
             }
 
             it {
               is_expected.to contain_exec('Disable user service mine.timer for user steve')
-                .with_command(
-                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'disable', 'mine.timer'],
-                )
-                .with_onlyif(
-                  [['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'is-enabled', 'mine.timer']],
-                )
+                .with_command(systemctl_user('steve', 'disable', 'mine.timer'))
+                .with_onlyif([systemctl_user('steve', 'is-enabled', 'mine.timer')])
                 .without_unless
             }
           end
@@ -114,24 +112,16 @@ describe 'systemd::user_service' do
 
             it {
               is_expected.to contain_exec('Start user service mine.timer for user steve')
-                .with_command(
-                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'start', 'mine.timer'],
-                )
+                .with_command(systemctl_user('steve', 'start', 'mine.timer'))
                 .without_onlyif
-                .with_unless(
-                  [['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'is-active', 'mine.timer']],
-                )
+                .with_unless([systemctl_user('steve', 'is-active', 'mine.timer')])
             }
 
             it {
               is_expected.to contain_exec('Enable user service mine.timer for user steve')
-                .with_command(
-                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'enable', 'mine.timer'],
-                )
-                .without_onlif
-                .with_unless(
-                  [['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'is-enabled', 'mine.timer']],
-                )
+                .with_command(systemctl_user('steve', 'enable', 'mine.timer'))
+                .without_onlyif
+                .with_unless([systemctl_user('steve', 'is-enabled', 'mine.timer')])
             }
           end
 
@@ -160,11 +150,9 @@ describe 'systemd::user_service' do
 
             it {
               is_expected.to contain_exec('Mask user service mine.timer for user steve')
-                .with_command(
-                  ['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'mask', 'mine.timer'],
-                )
+                .with_command(systemctl_user('steve', 'mask', 'mine.timer'))
                 .with_unless(
-                  [['/bin/sh', '-c', 'test "$(run0 --user steve /usr/bin/systemctl --user is-enabled mine.timer)" = masked']],
+                  [['/bin/sh', '-c', "test \"$(#{systemctl_user('steve', 'is-enabled', 'mine.timer').join(' ')})\" = masked"]],
                 )
                 .without_onlyif
             }

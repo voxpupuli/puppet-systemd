@@ -56,7 +56,7 @@
 ### Resource types
 
 * [`loginctl_user`](#loginctl_user): An arbitrary name used as the identity of the resource.
-* [`systemd_purge_units`](#systemd_purge_units): This is a metatype to purge unmanaged systemd units that were previously created with the `systemd::manage_unit` defined type.  Set the name 
+* [`systemd_purge_units`](#systemd_purge_units): This is a metatype to purge unmanaged systemd units that were previously created with the `systemd::manage_unit` defined type.  Set the name
 
 ### Functions
 
@@ -2568,7 +2568,7 @@ with the given content.
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 $_network_profile = {
@@ -2604,7 +2604,7 @@ with content:
   Name=enp2s0
 ```
 
-##### 
+#####
 
 ```puppet
 $_interface => {
@@ -7168,4 +7168,3 @@ Properties to retrieve from the unit
 Data type: `String[1]`
 
 Name of the unit
-
