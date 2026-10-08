@@ -6,7 +6,7 @@ describe 'systemd::daemon_reexec' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
-        let(:facts) { facts.merge(systemd_version: '256') }
+        let(:facts) { facts }
         let(:title) { 'irregardless' }
 
         it { is_expected.to compile.with_all_deps }
@@ -31,7 +31,10 @@ describe 'systemd::daemon_reexec' do
 
               it {
                 is_expected.to contain_exec('systemd-irregardless-systemctl-user-steve-daemon-reexec')
-                  .with_command(['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'daemon-reexec'])
+                  .with_command([
+                                  'runuser', '-u', 'steve', '--', '/usr/bin/bash', '-c',
+                                  'env XDG_RUNTIME_DIR=/run/user/$(id -u) /usr/bin/systemctl --user daemon-reexec',
+                                ])
                   .with_refreshonly(true)
               }
 

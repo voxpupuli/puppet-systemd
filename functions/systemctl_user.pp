@@ -14,16 +14,14 @@ function systemd::systemctl_user(String[1] $user, Array[String[1],1] $arguments)
   # * ['systemctl', '--user', '--machine', "${user}@.host"] + $arguments
   # * ['systemd-run','--wait','--pipe', 'systemctl', '--user', '--machine', "${user}@.host"] + $arguments
   # However none of these work when puppet is run as a background service. They only work with
-  # puppet apply in the foreground. Reason is unclear, possibly polkit blocking access
+  # puppet apply in the foreground. Reason is unclear, some selinux, possibly polkit blocking access
   # https://github.com/voxpupuli/puppet-systemd/issues/459
+  # https://github.com/voxpupuli/puppet-systemd/issues/664
 
-  $_cmd_array  = Integer($facts['systemd_version']) < 256 ? {
-    true    => [
-      'runuser', '-u', $user, '--' ,'/usr/bin/bash', '-c',
-      "env XDG_RUNTIME_DIR=/run/user/\$(id -u) /usr/bin/systemctl --user ${arguments.join(' ')}",
-    ],
-    default => ['run0','--user',$user,'/usr/bin/systemctl','--user'] + $arguments,
-  }
+  $_cmd_array  = [
+    'runuser', '-u', $user, '--' ,'/usr/bin/bash', '-c',
+    "env XDG_RUNTIME_DIR=/run/user/\$(id -u) /usr/bin/systemctl --user ${arguments.join(' ')}",
+  ]
 
   return $_cmd_array
 }

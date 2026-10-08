@@ -3,10 +3,16 @@
 require 'spec_helper'
 
 describe 'systemd::daemon_reload' do
+  # Mirrors the command array returned by systemd::systemctl_user
+  def systemctl_user(user, *args)
+    ['runuser', '-u', user, '--', '/usr/bin/bash', '-c',
+     "env XDG_RUNTIME_DIR=/run/user/$(id -u) /usr/bin/systemctl --user #{args.join(' ')}",]
+  end
+
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
-        let(:facts) { facts.merge(systemd_version: '256') }
+        let(:facts) { facts }
         let(:title) { 'irregardless' }
 
         it { is_expected.to compile.with_all_deps }
@@ -31,7 +37,7 @@ describe 'systemd::daemon_reload' do
 
               it {
                 is_expected.to contain_exec('systemd-irregardless-systemctl-user-steve-daemon-reload')
-                  .with_command(['run0', '--user', 'steve', '/usr/bin/systemctl', '--user', 'daemon-reload'])
+                  .with_command(systemctl_user('steve', 'daemon-reload'))
                   .with_refreshonly(true)
               }
 
