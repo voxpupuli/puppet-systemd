@@ -34,6 +34,12 @@
 # @param resolved_synthesize_hostname
 #   Control if the hostname lookup via systemd should be synthesized.
 #
+# @param resolved_use_etc_conf
+#   Whether to use the /etc/systemd/resolved.conf file.
+#
+# @param resolved_purge_dropin_dirs
+#   Whether to purge the resolved dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param manage_nspawn
 #   Manage the systemd-nspawn@service and machinectl subsystem.
 #
@@ -186,6 +192,12 @@
 #   and will create various problems with time zone changes and daylight saving
 #   adjustments. If at all possible, keep the RTC in UTC mode.
 #
+# @param timesyncd_use_etc_conf
+#   Whether to use the /etc/systemd/timesyncd.conf file.
+#
+# @param timesyncd_purge_dropin_dirs
+#   Whether to purge the timesyncd dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param manage_journald
 #   Manage the systemd journald
 #
@@ -247,6 +259,12 @@
 # @param logind_settings
 #   Config Hash that is used to configure settings in logind.conf
 #
+# @param logind_use_etc_conf
+#   Whether to use the /etc/systemd/logind.conf file.
+#
+# @param logind_purge_dropin_dirs
+#   Whether to purge the logind dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param loginctl_users
 #   Config Hash that is used to generate instances of our type
 #   `loginctl_user`.
@@ -292,6 +310,12 @@
 # @param coredump_backtrace
 #   Add --backtrace to systemd-coredump call systemd-coredump@.service unit
 #
+# @param coredump_use_etc_conf
+#   Whether to use the /etc/systemd/coredump.conf file.
+#
+# @param coredump_purge_dropin_dirs
+#   Whether to purge the coredump dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param manage_oomd
 #   Should systemd-oomd configuration be managed
 #
@@ -304,11 +328,23 @@
 # @param oomd_settings
 #   Hash of systemd-oomd configurations for oomd.conf
 #
+# @param oomd_use_etc_conf
+#   Whether to use the /etc/systemd/oomd.conf file.
+#
+# @param oomd_purge_dropin_dirs
+#   Whether to purge the oomd dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param manage_sleep
 #   Should systemd sleep configuration be managed
 #
 # @param sleep_settings
 #   Config Hash that is used to configure settings in sleep.conf
+#
+# @param sleep_use_etc_conf
+#   Whether to use the /etc/systemd/sleep.conf file.
+#
+# @param sleep_purge_dropin_dirs
+#   Whether to purge the sleep dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
 #
 # @param udev_purge_rules
 #   Toggle if unmanaged files in /etc/udev/rules.d should be purged if manage_udevd is enabled
@@ -321,6 +357,9 @@
 #   NOTE: It's currently impossible to have multiple entries of the same key in
 #   the settings.
 #
+# @param system_purge_dropin_dirs
+#   Whether to purge the system.conf dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
+#
 # @param manage_user_conf
 #   Should user service manager configurations be managed
 #
@@ -328,6 +367,9 @@
 #   Config Hash that is used to configure settings in user.conf
 #   NOTE: It's currently impossible to have multiple entries of the same key in
 #   the settings.
+#
+# @param user_purge_dropin_dirs
+#   Whether to purge the user.conf dropin directories. This will remove any files in the dropin directories that are not managed by Puppet.
 #
 # @param install_runuser
 #   If true, the util-linux package is installed, for runuser command.
@@ -344,6 +386,8 @@ class systemd (
   Array[String[1]]                                    $resolved_libraries = [],
   Enum['stopped','running']                           $resolved_ensure = 'running',
   Optional[Boolean]                                   $resolved_synthesize_hostname = undef,
+  Boolean                                             $resolved_use_etc_conf = true,
+  Boolean                                             $resolved_purge_dropin_dirs = false,
   Optional[Variant[Array[String],String]]             $dns = undef,
   Optional[Variant[Array[String],String]]             $fallback_dns = undef,
   Optional[Variant[Array[String],String]]             $domains = undef,
@@ -385,6 +429,8 @@ class systemd (
   Optional[Variant[Array,String]]                     $fallback_ntp_server = undef,
   Optional[Boolean]                                   $set_local_rtc = undef,
   Optional[String[1]]                                 $timezone = undef,
+  Boolean                                             $timesyncd_use_etc_conf = true,
+  Boolean                                             $timesyncd_purge_dropin_dirs = false,
   Boolean                                             $manage_accounting = false,
   Boolean                                             $purge_dropin_dirs = true,
   Boolean                                             $manage_journald = true,
@@ -406,6 +452,8 @@ class systemd (
   Boolean                                             $udev_reload = false,
   Boolean                                             $manage_logind = false,
   Systemd::LogindSettings                             $logind_settings = {},
+  Boolean                                             $logind_use_etc_conf = true,
+  Boolean                                             $logind_purge_dropin_dirs = false,
   Boolean                                             $manage_all_network_files = false,
   Stdlib::Absolutepath                                $network_path = '/etc/systemd/network',
   Stdlib::CreateResources                             $loginctl_users = {},
@@ -419,17 +467,25 @@ class systemd (
   Optional[Enum['systemd-container']]                 $nspawn_package = undef,
   Systemd::CoredumpSettings                           $coredump_settings = {},
   Boolean                                             $coredump_backtrace = false,
+  Boolean                                             $coredump_use_etc_conf = true,
+  Boolean                                             $coredump_purge_dropin_dirs = false,
   Boolean                                             $manage_oomd = false,
   Optional[String[1]]                                 $oomd_package = undef,
   Enum['stopped','running']                           $oomd_ensure = 'running',
   Systemd::OomdSettings                               $oomd_settings = {},
+  Boolean                                             $oomd_use_etc_conf = true,
+  Boolean                                             $oomd_purge_dropin_dirs = false,
   Boolean                                             $manage_sleep = false,
   Systemd::SleepSettings                              $sleep_settings = {},
+  Boolean                                             $sleep_use_etc_conf = true,
+  Boolean                                             $sleep_purge_dropin_dirs = false,
   Boolean                                             $udev_purge_rules = false,
   Boolean                                             $manage_system_conf = false,
   Systemd::ServiceManagerSettings                     $system_settings = {},
+  Boolean                                             $system_purge_dropin_dirs = false,
   Boolean                                             $manage_user_conf = false,
   Systemd::ServiceManagerSettings                     $user_settings = {},
+  Boolean                                             $user_purge_dropin_dirs = false,
   Boolean                                             $install_runuser = false,
 ) {
   contain systemd::install
