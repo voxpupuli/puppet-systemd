@@ -28,7 +28,7 @@
 #   systemd::manage_dropin { 'corelimit.conf':
 #     ensure     => present,
 #     unit       => 'rsyslog.conf',
-#     path_entry => {
+#     service_entry => {
 #       'LimitCORE' => 'infinity',
 #     },
 #   }
