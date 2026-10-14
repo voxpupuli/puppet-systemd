@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v10.2.1](https://github.com/voxpupuli/puppet-systemd/tree/v10.2.1) (2026-10-14)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v10.2.0...v10.2.1)
+
+**Implemented enhancements:**
+
+- Update requirements to allow OpenVox 9 [\#663](https://github.com/voxpupuli/puppet-systemd/pull/663) ([sebastianrakel](https://github.com/sebastianrakel))
+- Add fact systemd\_machine\_info [\#661](https://github.com/voxpupuli/puppet-systemd/pull/661) ([jcpunk](https://github.com/jcpunk))
+- Unit file Conditions may also accept a `|` [\#660](https://github.com/voxpupuli/puppet-systemd/pull/660) ([jcpunk](https://github.com/jcpunk))
+
+**Fixed bugs:**
+
+- Use runuser command always for user services [\#665](https://github.com/voxpupuli/puppet-systemd/pull/665) ([traylenator](https://github.com/traylenator))
+
 ## [v10.2.0](https://github.com/voxpupuli/puppet-systemd/tree/v10.2.0) (2026-09-24)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v10.1.0...v10.2.0)
