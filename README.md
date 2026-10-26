@@ -1,54 +1,213 @@
 # Systemd
 
-[![Build Status](https://github.com/voxpupuli/puppet-systemd/workflows/CI/badge.svg)](https://github.com/voxpupuli/puppet-systemd/actions?query=workflow%3ACI)
+[![Build Status](https://github.com/voxpupuli/puppet-systemd/actions/workflows/CI/badge.svg)](https://github.com/voxpupuli/puppet-systemd/actions?query=workflow%3ACI)
 [![Release](https://github.com/voxpupuli/puppet-systemd/actions/workflows/release.yml/badge.svg)](https://github.com/voxpupuli/puppet-systemd/actions/workflows/release.yml)
-[![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/systemd.svg)](https://forge.puppetlabs.com/puppet/systemd)
-[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/systemd.svg)](https://forge.puppetlabs.com/puppet/systemd)
-[![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/systemd.svg)](https://forge.puppetlabs.com/puppet/systemd)
-[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/systemd.svg)](https://forge.puppetlabs.com/puppet/systemd)
-[![puppetmodule.info docs](http://www.puppetmodule.info/images/badge.png)](http://www.puppetmodule.info/m/puppet-systemd)
-[![Apache-2 License](https://img.shields.io/github/license/voxpupuli/puppet-systemd.svg)](LICENSE)
-[![Donated by Camptocamp](https://img.shields.io/badge/donated%20by-camptocamp-fb7047.svg)](#transfer-notice)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/voxpupuli/systemd.svg)](https://forge.puppet.com/puppet/systemd)
+[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/voxpupuli/systemd.svg)](https://forge.puppet.com/puppet/systemd)
+[![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/voxpupuli/systemd.svg)](https://forge.puppet.com/puppet/systemd)
+[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/voxpupuli/systemd.svg)](https://forge.puppet.com/puppet/systemd)
+[![Apache-2 License](https://img.shields.io/github/license/voxpupuli/puppet-systemd.svg)](/voxpupuli/puppet-systemd/blob/master/LICENSE)
+
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [What this module manages](#what-this-module-manages)
+- [Getting started](#getting-started)
+- [The systemd class: tuning what is managed](#the-systemd-class--tuning-what-is-managed)
+- [The defined types](#the-defined-types)
+  - [Which resource do I use?](#which-resource-do-i-use)
+  - [systemd::unit_file -- deploy a unit file](#systemd--unit_file---deploy-a-unit-file)
+  - [systemd::manage_unit -- generate a unit from parameters](#systemd--manage_unit---generate-a-unit-from-parameters)
+  - [systemd::dropin_file / systemd::manage_dropin -- extend a unit](#systemd--dropin_file--systemd--manage_dropin---extend-a-unit)
+  - [Strongly-typed daemon config drop-ins](#strongly-typed-daemon-config-drop-ins)
+  - [systemd::modules_load -- load kernel modules](#systemd--modules_load---load-kernel-modules)
+  - [systemd::sysuser -- create system users](#systemd--sysuser---create-system-users)
+  - [systemd::tmpfile -- manage tmpfiles.d entries](#systemd--tmpfile---manage-tmpfilesd-entries)
+  - [systemd::timer / systemd::timer_wrapper -- schedule tasks](#systemd--timer--systemd--timer_wrapper---schedule-tasks)
+  - [systemd::network / systemd::networkd::interface -- network configuration](#systemd--network--systemd--networkd--interface---network-configuration)
+  - [systemd::user_service -- manage user services](#systemd--user_service---manage-user-services)
+  - [systemd::purge_units -- remove unmanaged units](#systemd--purge_units---remove-unmanaged-units)
+  - [systemd::daemon_reload / systemd::daemon_reexec -- reload systemd](#systemd--daemon_reload--systemd--daemon_reexec---reload-systemd)
+- [Advanced configuration](#advanced-configuration)
+  - [Two ways to configure a daemon](#two-ways-to-configure-a-daemon)
+  - [Daemon reload behaviour](#daemon-reload-behaviour)
+  - [systemd-escape on the agent](#systemd-escape-on-the-agent)
+  - [Query units with Bolt](#query-units-with-bolt)
+- [Limitations and deprecations](#limitations-and-deprecations)
+- [Development](#development)
+- [Support and authors](#support-and-authors)
+
+---
 
 ## Overview
 
-This module declares exec resources to create global sync points for reloading systemd.
+`puppet-systemd` manages [systemd](https://www.freedesktop.org/software/systemd/man/latest/index.html)
+across its whole surface area: unit files, drop-in overrides, timers, network
+configuration, kernel modules, system users, and many systemd-managed daemons.
 
-### Version 2 and newer of the module don't work with Hiera 3! You need to migrate your existing Hiera setup to Hiera 5
+Instead of declaring raw `exec { 'systemctl daemon-reload': }` resources, you
+declare declarative Puppet resources such as `systemd::unit_file` and
+`systemd::manage_unit`. The module writes the correct files under `/etc/systemd`,
+runs the right `systemctl`/`systemd-*` reload commands, and orders everything so
+changes apply cleanly on every run.
 
-## Usage and examples
+---
 
-There are two ways to use this module.
+## What this module manages
 
-### unit files
+Depending on how you use it, the module can manage these things:
 
-Let this module handle file creation.
+| Element | Default location | Puppet representation |
+| --- | --- | --- |
+| Unit files | `/etc/systemd/system/*.unit` | `systemd::unit_file`, `systemd::manage_unit` |
+| Unit drop-ins | `<unit>.d/*.conf` | `systemd::dropin_file`, `systemd::manage_dropin` |
+| Daemon config drop-ins | `<daemon>.conf.d/*.conf` | `systemd::<daemon>::manage_dropin` |
+| Kernel modules | `/etc/modules-load.d/*.conf` | `systemd::modules_load` |
+| System users | `/etc/sysusers.d/*.conf` | `systemd::sysuser` |
+| tmpfiles.d entries | `/etc/tmpfiles.d/*.conf` | `systemd::tmpfile` |
+| Timers + services | `/etc/systemd/system/*.timer` | `systemd::timer`, `systemd::timer_wrapper` |
+| networkd files | `/etc/systemd/network/*` | `systemd::network`, `systemd::networkd::interface` |
+| User services | per-user `systemd --user` | `systemd::user_service` |
+| Bundled daemons | per daemon | the `systemd` class parameters |
+
+All of these can also be declared through Hiera hashes on the main `systemd`
+class (see [The systemd class](#the-systemd-class--tuning-what-is-managed)).
+
+---
+
+## Getting started
+
+The smallest useful configuration declares a single unit file and lets the
+module handle the file, the ordering, and the reload:
 
 ```puppet
 systemd::unit_file { 'foo.service':
   source => "puppet:///modules/${module_name}/foo.service",
 }
-~> service { 'foo':
-  ensure => 'running',
+
+ ~> service { 'foo':
+  ensure => running,
 }
 ```
 
-This is equivalent to:
+To actually install and run a service you write, use `systemd::manage_unit`,
+which generates the unit from section hashes so you never hand-edit INI:
 
 ```puppet
-file { '/etc/systemd/system/foo.service':
-  ensure => file,
-  owner  => 'root',
-  group  => 'root',
-  mode   => '0644',
-  source => "puppet:///modules/${module_name}/foo.service",
-}
-~> service { 'foo':
-  ensure => 'running',
+systemd::manage_unit { 'myrunner.service':
+  unit_entry    => {
+    Description => 'My great service',
+  },
+  service_entry => {
+    Type      => oneshot,
+    ExecStart => '/usr/bin/doit.sh',
+  },
+  install_entry => {
+    WantedBy => 'multi-user.target',
+  },
+  enable => true,
+  active => true,
 }
 ```
 
-You can also use this module to more fully manage the new unit. This example deploys the unit, reloads systemd and then enables and starts it.
+After the next Puppet run the file exists at
+`/etc/systemd/system/myrunner.service` with a `# Deployed with puppet` banner,
+systemd has been reloaded, and the service is enabled and running.
+
+### The equivalent in Hiera
+
+You do not have to touch a manifest. The same result is obtained by setting the
+`manage_units` class parameter, which accepts a hash and expands it with
+`create_resources` semantics:
+
+```yaml
+# conf/hiera/common.yaml
+lookup_options:
+  systemd::manage_units:
+    merge: hash
+
+systemd::manage_units:
+  myrunner.service:
+    unit_entry:
+      Description: My great service
+    service_entry:
+      Type: oneshot
+      ExecStart: /usr/bin/doit.sh
+    install_entry:
+      WantedBy: multi-user.target
+```
+
+Any valid `systemd::manage_unit` manifest can be written this way, as can
+`systemd::manage_dropins`, `systemd::dropin_files`, `systemd::timers`,
+`systemd::unit_files`, `systemd::tmpfiles`, and `systemd::networks`.
+
+---
+
+## The systemd class -- tuning what is managed
+
+`class systemd (...)` is the entry point. Pulling it in (which every defined
+type does automatically via `include systemd`) installs any required sub-package
+and wires up the reload machinery. The most commonly used parameters:
+
+| Parameter | Default | Purpose |
+| --- | --- | --- |
+| `manage_resolved` | `false` | Manage `systemd-resolved` and `/etc/resolv.conf`. |
+| `manage_networkd` | `false` | Manage `systemd-networkd` and `networkd.conf`. |
+| `manage_timesyncd` | `false` | Manage `systemd-timesyncd` and `timesyncd.conf`. |
+| `manage_journald` | `true` | Manage `systemd-journald` and `journald.conf`. |
+| `manage_udevd` | `false` | Manage `systemd-udevd` and `udev.conf`. |
+| `manage_logind` | `false` | Manage `systemd-logind` and `logind.conf`. |
+| `manage_coredump` | `false` | Manage `systemd-coredump` and `coredump.conf`. |
+| `manage_oomd` | `false` | Manage `systemd-oomd` and `oomd.conf`. |
+| `manage_sleep` | `false` | Manage `systemd-sleep` and `sleep.conf`. |
+| `manage_system_conf` | `false` | Manage `[Manager]` keys in `system.conf`. |
+| `manage_user_conf` | `false` | Manage `[Manager]` keys in `user.conf`. |
+| `manage_accounting` | `false` | Enable per-unit accounting (network/IO/CPU). |
+| `purge_dropin_dirs` | `true` | Remove drop-in files the module does not manage. |
+| `default_target` | `undef` | Set the default boot target (unmanaged if undef). |
+| `manage_units` | `{}` | Hash of `systemd::manage_unit` entries. |
+| `manage_dropins` | `{}` | Hash of `systemd::manage_dropin` entries. |
+| `dropin_files` | `{}` | Hash of `systemd::dropin_file` entries. |
+| `timers` | `{}` | Hash of `systemd::timer` entries. |
+| `unit_files` | `{}` | Hash of `systemd::unit_file` entries. |
+| `tmpfiles` | `{}` | Hash of `systemd::tmpfile` entries. |
+| `networks` | `{}` | Hash of `systemd::network` entries. |
+| `purge_units` | `false` | `true`, or an array of paths, to purge old units. |
+
+Per-daemon configuration is supplied through `*_settings` hashes (for example
+`journald_settings`, `logind_settings`, `coredump_settings`, `oomd_settings`,
+`sleep_settings`, `system_settings`, `user_settings`) and, where relevant, a set
+of dedicated parameters (DNS/NTP for resolved/timesyncd, udev knobs, etc.). The
+full parameter list is in [REFERENCE.md](REFERENCE.md).
+
+---
+
+## The defined types
+
+### Which resource do I use?
+
+Use this table to pick the right resource.
+
+| What you want to put... | Use... |
+| --- | --- |
+| A complete unit file you ship as a template or file | `systemd::unit_file` |
+| A unit you describe as key/value sections (no hand-written INI) | `systemd::manage_unit` |
+| A drop-in file on top of an existing unit, from a template | `systemd::dropin_file` |
+| A drop-in file on top of an existing unit, from key/value sections | `systemd::manage_dropin` |
+| A `[Section]` config for one of systemd's bundled daemons | `systemd::<daemon>::manage_dropin` |
+| A kernel module to load at boot | `systemd::modules_load` |
+| A `sysusers.d` entry (create a user/group/mode) | `systemd::sysuser` |
+| A `tmpfiles.d` entry | `systemd::tmpfile` |
+| A timer (and optional service) | `systemd::timer` or `systemd::timer_wrapper` |
+| A `systemd-networkd` file | `systemd::network` or `systemd::networkd::interface` |
+| A unit under a `systemd --user` instance | `systemd::user_service` |
+
+### systemd::unit_file -- deploy a unit file
+
+`systemd::unit_file` deploys a unit file. Provide `content` or `source` (they
+are mutually exclusive). The file is written as mode `0444` and owned by root.
 
 ```puppet
 systemd::unit_file { 'foo.service':
@@ -58,210 +217,178 @@ systemd::unit_file { 'foo.service':
 }
 ```
 
-If you're using "template" units (those with a `@` in it), you can
-simply enable an instance of the template with a `service` resource. This, for example, will
-enable the `foo@bar` service unit, based on the `foo@` template:
+When `enable` or `active` is set, the module also declares a `service` resource
+and orders the file change ahead of it. Use `enable => 'mask'` to symlink the
+unit to `/dev/null`, or `ensure => 'absent'` to remove the unit and its
+enablement link.
+
+A template unit (a name containing `@`) can be enabled for a concrete instance
+through an ordinary `service` resource:
 
 ```puppet
 systemd::unit_file { 'foo@.service':
   content => file("${module_name}/foo@.service"),
-  enable  => false,
-  active  => false,
 }
+
 service { 'foo@bar.service':
-  ensure => true,
+  ensure => running,
   enable => true,
 }
 ```
 
-### unit files from parameters
+### systemd::manage_unit -- generate a unit from parameters
 
-Create a unit file from parameters
+`systemd::manage_unit` generates a unit file from section hashes. Each `*_entry`
+maps to a section:
+
+- `unit_entry` -> `[Unit]`
+- `service_entry` -> `[Service]`
+- `install_entry` -> `[Install]`
+- `timer_entry` -> `[Timer]`
+- `path_entry` -> `[Path]`
+- `socket_entry` -> `[Socket]`
+- `automount_entry` -> `[Automount]`
+- `mount_entry` -> `[Mount]`
+- `swap_entry` -> `[Swap]`
+- `slice_entry` -> `[Slice]`
 
 ```puppet
-systemd::manage_unit { 'myrunner.service':
-  unit_entry    => {
-    'Description' => 'My great service',
+systemd::manage_unit { 'arcd.socket':
+  ensure        => present,
+  unit_entry    => { Description => 'arcd.socket' },
+  socket_entry  => {
+    ListenStream => 4241,
+    Accept       => true,
   },
-  service_entry => {
-    'Type'      => 'oneshot',
-    'ExecStart' => '/usr/bin/doit.sh',
-  },
-  install_entry => {
-    'WantedBy' => 'multi-user.target',
-  },
+  install_entry => { WantedBy => 'sockets.target' },
+}
+
+ systemd::manage_unit { 'arcd@.service':
+  ensure        => present,
   enable        => true,
-  active        => true,
+  service_entry => {
+    Type          => simple,
+    ExecStart     => '/usr/sbin/arcd /usr/libexec/arcd/arcd.pl',
+    StandardInput => 'socket',
+  },
 }
 ```
 
-The parameters `unit_entry`, `service_entry` and `install_entry` populate the
-`[Unit]`, `[Service]` and `[Install]` sections of the generated unit file.
+For service units `service_entry` is required, unless `enable => 'mask'` or
+`ensure => 'absent'`. The resource title is the unit name and must carry a valid
+extension such as `.service`, `.timer`, or `.mount`.
 
-You may add an optional `comments` of `Array[String]` to provide additional comment
-at the top of the unit file.
+### systemd::dropin_file / systemd::manage_dropin -- extend a unit
 
-Similarly units can be created from hiera yaml files
+Drop-ins extend or override a unit without editing the unit itself.
 
-```yaml
-systemd::manage_units:
-  myservice.service:
-    unit_entry:
-      Description: My Customisation
-    service_entry:
-      CPUWeight: 2000
-```
-
-#### purging previously managed unit files
-
-After removing any `systemd::manage_unit` definitions from your manifests, by default, the unit files installed will remain on your system.
-If you wish to remove them automatically, this module can help with that.
-
-Only unit files written by `systemd::manage_unit` are eligible for purging: they are identified by the `# Deployed with puppet` header that the module writes as the first line of every unit file. Hand-written unit files and symlinks (such as systemd enablement links) are never touched.
-
-You can either...
-
-Purge all previously managed units in `/etc/systemd/system`, and reload the systemd daemon...
-
-```puppet
-include systemd::purge_units
-```
-
-Declare the class with custom options such as custom paths, the unit types to consider, and the `daemon_reload` setting.
-
-```puppet
-class { 'systemd::purge_units':
-  paths         => [
-    '/path/to/custom/unit/dir1',
-    '/path/to/custom/unit/dir2',
-  ],
-  unit_types    => ['service', 'timer'],
-  daemon_reload => false,
-}
-```
-
-You can also include the functionality through the `systemd` base class `purge_units` parameter. For example, you could do this via hiera.
-
-```yaml
-systemd::purge_units: true
-```
-
-or...
-
-```yaml
-systemd::purge_units: ['/custom/path']
-```
-
-If you need full flexibility, you can declare the `systemd_purge_units` type in your manifests directly.
-
-```puppet
-systemd_purge_units { '/etc/systemd/system':
-  unit_types => ['service', 'timer'],
-}
-```
-
-### drop-in files
-
-Drop-in files are used to add or alter settings of a unit without modifying the
-unit itself. As for the unit files, the module can handle the file and
-directory creation:
+`systemd::dropin_file` deploys a file you already have, onto `<unit>.d/`:
 
 ```puppet
 systemd::dropin_file { 'foo.conf':
   unit   => 'foo.service',
   source => "puppet:///modules/${module_name}/foo.conf",
 }
-~> service { 'foo':
-  ensure => 'running',
+
+ ~> service { 'foo':
+  ensure => running,
 }
 ```
 
-This is equivalent to:
-
-```puppet
-file { '/etc/systemd/system/foo.service.d':
-  ensure => directory,
-  owner  => 'root',
-  group  => 'root',
-}
-
-file { '/etc/systemd/system/foo.service.d/foo.conf':
-  ensure => file,
-  owner  => 'root',
-  group  => 'root',
-  mode   => '0644',
-  source => "puppet:///modules/${module_name}/foo.conf",
-}
-~> service { 'foo':
-  ensure => 'running',
-}
-```
-
-dropin-files can also be generated via hiera:
-
-```yaml
-systemd::dropin_files:
-  my-foo.conf:
-    unit: foo.service
-    source: puppet:///modules/${module_name}/foo.conf
-```
-
-### drop-in files from parameters
+`systemd::manage_dropin` generates a drop-in from sections instead:
 
 ```puppet
 systemd::manage_dropin { 'myconf.conf':
   ensure        => present,
   unit          => 'myservice.service',
   service_entry => {
-    'Type'      => 'oneshot',
-    'ExecStart' => ['', '/usr/bin/doit.sh'],
+    LimitNOFILE => 8192,
+    LimitNPROC  => 16384,
   },
 }
 ```
 
-Dropins can also be created similarly via yaml
+Both create the `<unit>.d` directory, notify the service on change, and reload
+systemd. Add `comments => ['...', ...]` to prefix the generated file with a
+comment block. The `manage_dropin` variants also support `path_entry`,
+`socket_entry`, `mount_entry`, `swap_entry`, `automount_entry`, `slice_entry`,
+and `manager_entry` (for `system.conf`/`user.conf`).
 
-```yaml
-systemd::manage_dropins:
-  myconf.conf:
-    ensure: present
-    unit: myservice.service
-    service_entry:
-      Type: oneshot
-      ExecStart:
-        - ''
-        - '/usr/bin/doit.sh'
-```
+### Strongly-typed daemon config drop-ins
 
-The filename of the drop in. The full path is determined using the path, unit and this filename.
+There is a set of general-purpose `.d` config drop-ins for systemd's bundled
+daemons. Each daemon has a matching class with a strongly typed settings hash so
+that only valid keys are accepted and the file is rendered from the correct
+`[Section]`:
 
-You may add an optional `comments` of `Array[String]` to provide additional comment at the top
-of the dropin file.
+| Daemon | Section class | `[Section]` | Default drop-in path |
+| --- | --- | --- | --- |
+| resolved | `systemd::resolved::manage_dropin` | `[Resolve]` | `/etc/systemd/resolved.conf.d` |
+| timesyncd | `systemd::timesyncd::manage_dropin` | `[Time]` | `/etc/systemd/timesyncd.conf.d` |
+| journald | `systemd::journald::manage_dropin` | `[Journal]` | `/etc/systemd/journald.conf.d` |
+| logind | `systemd::logind::manage_dropin` | `[Login]` | `/etc/systemd/logind.conf.d` |
+| oomd | `systemd::oomd::manage_dropin` | `[OOM]` | `/etc/systemd/oomd.conf.d` |
+| coredump | `systemd::coredump::manage_dropin` | `[Coredump]` | `/etc/systemd/coredump.conf.d` |
+| sleep | `systemd::sleep::manage_dropin` | `[Sleep]` | `/etc/systemd/sleep.conf.d` |
+| system.conf | `systemd::system::manage_dropin` | `[Manager]` | `/etc/systemd/system.conf.d` |
+| user.conf | `systemd::user::manage_dropin` | `[Manager]` | `/etc/systemd/user.conf.d` |
 
-### modules-load.d
-
-Create a file entry for modules-loads directory and start
-`systemd-modules-load.service`
+Each has a paired `dropin_file` variant that accepts arbitrary content when you
+want raw control instead of type validation.
 
 ```puppet
-systemd::modules_load { 'impi.conf':
-  content => "ipmi\n",
+systemd::journald::manage_dropin { 'storage.conf':
+  journal_entry => {
+    Storage: persistent,
+    // A value can be removed by pairing it with an absent ensure:
+    Audit: { ensure => absent },
+  },
+  comments => ['Tune journald storage'],
 }
 ```
 
-### sysusers
+Notes:
 
-Module can create sysusers.d files and will run `systemd-sysusers` afterwards.
+- The settings hash is validated against a per-daemon type (for example
+  `Systemd::JournaldSettings`); only valid keys and value shapes are accepted.
+- A value written as a hash with `ensure => 'absent'` is stripped from the file,
+  which is the supported way to remove a key that another tool may have added.
+- `comments => [...]` writes a `# managed with puppet` banner plus your lines.
+- These drop-ins require the daemon to be managed: set the matching
+  `manage_<daemon>` flag (for example `manage_journald => true`) on the `systemd`
+  class, otherwise the resource fails to compile. The `system` and `user`
+  drop-ins call `daemon-reexec` instead of restarting a service, because
+  `system.conf`/`user.conf` changes need it.
+- A raw-content `dropin_file` variant exists for every daemon in the table.
+
+### systemd::modules_load -- load kernel modules
+
+`systemd::modules_load` writes a file in `modules-load.d` and notifies
+`systemd-modules-load.service`:
 
 ```puppet
-systemd::sysuser { 'plato.conf':
+systemd::modules_load { 'ipi.conf':
+  content => "ipi\n",
+}
+```
+
+### systemd::sysuser -- create system users
+
+`systemd::sysuser` writes a `sysusers.d` file and runs `systemd-sysusers`
+afterwards:
+
+```puppet
+systemd::sysuser { 'plato':
   content => 'u plato - "Be Kind"',
 }
 ```
 
-### tmpfiles
+The `.conf` extension is optional in the title; the value is literal
+`sysusers.d` syntax. Set `ensure => 'absent'` to remove the file.
 
-Let this module handle file creation and systemd reloading
+### systemd::tmpfile -- manage tmpfiles.d entries
+
+Let the module manage the file and trigger `systemd-tmpfiles`:
 
 ```puppet
 systemd::tmpfile { 'foo.conf':
@@ -269,29 +396,27 @@ systemd::tmpfile { 'foo.conf':
 }
 ```
 
-Or handle file creation yourself and trigger systemd.
+Or manage the file yourself and trigger the update via the `systemd::tmpfiles`
+class:
 
 ```puppet
 include systemd::tmpfiles
 
 file { '/etc/tmpfiles.d/foo.conf':
-  ensure => file,
-  owner  => 'root',
-  group  => 'root',
-  mode   => '0644',
-  source => "puppet:///modules/${module_name}/foo.conf",
+  ensure  => file,
+  owner   => root,
+  group   => root,
+  mode    => '0444',
+  source  => "puppet:///modules/${module_name}/foo.conf",
 }
-~> Class['systemd::tmpfiles']
+
+ ~> Class['systemd::tmpfiles']
 ```
 
-### timer units
+### systemd::timer / systemd::timer_wrapper -- schedule tasks
 
-Create a systemd timer unit and a systemd service unit to execute from
-that timer
-
-The following will create a timer unit and a service unit file.
-When `active` and `enable` are set to `true` the puppet service `runoften.timer` will be
-declared, started and enabled.
+`systemd::timer` creates a timer unit and, optionally, the service it triggers.
+With `enable`/`active` set the module also manages the `*.timer` service.
 
 ```puppet
 systemd::timer { 'runoften.timer':
@@ -302,98 +427,26 @@ systemd::timer { 'runoften.timer':
 }
 ```
 
-A trivial daily run.
-In this case enable and active are both unset and so the service `daily.timer`
-is not declared by the `systemd::timer` type.
+Prefer a cron-like interface? `systemd::timer_wrapper` builds the timer and
+service for you:
 
 ```puppet
-$_timer = @(EOT)
-[Timer]
-OnCalendar=daily
-RandomizedDelaySec=1d
-EOT
-
-$_service = @(EOT)
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/touch /tmp/file
-EOT
-
-systemd::timer { 'daily.timer':
-  timer_content   => $_timer,
-  service_content => $_service,
-}
-
-service { 'daily.timer':
-  ensure    => running,
-  subscribe => Systemd::Timer['daily.timer'],
+systemd::timer_wrapper { 'my_cleanup':
+  ensure      => present,
+  command     => '/usr/bin/my_cleanup.sh',
+  on_calendar => '@hourly',
 }
 ```
 
-If neither `service_content` or `service_source` are specified then no
-service unit will be created.
+`systemd::timer` accepts either `*_source` (a `File`-compatible source) or
+`*_content` for the timer and service; if neither `service_source` nor
+`service_content` is given, no companion service unit is created. The service
+unit name defaults to the timer name with the suffix swapped, override it with
+`service_unit`.
 
-The service unit name can also be specified.
+### systemd::network / systemd::networkd::interface -- network configuration
 
-```puppet
-$_timer = @(EOT)
-[Timer]
-OnCalendar=daily
-RandomizedDelaySec=1d
-Unit=touch-me-today.service
-EOT
-
-$_service = @(EOT)
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/touch /tmp/file
-EOT
-
-systemd::timer { 'daily.timer':
-  timer_content   => $_timer,
-  service_unit    => 'touch-me-today.service',
-  service_content => $_service,
-  active          => true,
-  enable          => true,
-}
-```
-
-### service limits
-
-It's possible to ensure soft and hard limits on various resources for executed processes
-with the `systemd::manage_dropin` defined type.
-
-```puppet
-systemd::manage_dropin { 'foo.service-90-limits.conf':
-  unit            => 'foo.service',
-  filename        => '90-limits.conf',
-  service_entry   => {
-    'LimitNOFILE' => 8192,
-    'LimitNPROC'  => 16384,
-  },
-}
-```
-
-### machine-info (hostnamectl)
-
-You can set elements of `/etc/machine-info` via the `machine_info_settings` parameter.  These values are read by `hostnamectl`.
-
-To manage these, you'll need to add an additional module, [augeasproviders\_shellvar](https://forge.puppet.com/modules/herculesteam/augeasproviders_shellvar), to your environment.
-
-### Daemon reloads
-
-Systemd caches unit files and their relations. This means it needs to reload, typically done via `systemctl daemon-reload`. Since Puppet 6.1.0 ([PUP-3483](https://tickets.puppetlabs.com/browse/PUP-3483)) takes care of this by calling `systemctl show $SERVICE -- --property=NeedDaemonReload` to determine if a reload is needed. Typically this works well and removes the need for `systemd::systemctl::daemon_reload` as provided prior to camptocamp/systemd 3.0.0. This avoids common circular dependencies.
-
-It does contain a workaround for [PUP-9473](https://tickets.puppetlabs.com/browse/PUP-9473) but there's no guarantee that this works in every case.
-
-### network
-
-`systemd-networkd` manages your network configuration.
-Most settings in `/etc/systemd/networkd.conf` can be configured via `init.pp` class parameters.
-
-We provide a defined resource which can write the interface configurations.
-systemd-networkd needs to be restarted to apply the configs. The defined
-resource can do this for you:
+`systemd-networkd` manages network configuration. Deploy a file directly:
 
 ```puppet
 systemd::network { 'eth0.network':
@@ -402,349 +455,142 @@ systemd::network { 'eth0.network':
 }
 ```
 
-We also provide a more structured option:
+Or use the structured `systemd::networkd::interface` define, which writes
+`/etc/systemd/network/50-static.network`:
 
 ```puppet
-$_network_profile = {
-  'Network' => {
-    'Gateway' => '192.168.0.1',
-  },
-}
-
-$_interface => {
-  'filename' => '50-static',
-  'network' => {
-    'Match' => {
-      'Name' => 'enp2s0',
-    },
-    'Network' => {
-      'Address' => '192.168.0.15/24',
-    },
-  },
-}
-
 systemd::networkd::interface { 'static-enp2s0':
   type            => 'network',
-  interface       => $_interface,
-  network_profile => $_network_profile,
-}
-```
-
-Gives you a file `/etc/systemd/network/50-static.network` with content:
-
-```plain
-[Network]
-Gateway=192.168.0.1
-Address=192.168.0.15/24
-
-[Match]
-Name=enp2s0
-```
-
-Lastly, the `systemd::networkd` class that is automatically included allows you to
-configure your networking via hiera. The example above could be achieved with the following
-hiera data:
-
-```yaml
-systemd::networkd::network_profiles:
-  mynet:
-    Network:
-      Gateway: 192.168.0.1
-
-systemd::networkd::interfaces:
-  mynet:
-    filename: 50-static
-    network:
-      Match:
-        Name: enp2s0
-      Network:
-        Address: 192.168.0.15/24
-```
-
-### Services
-
-The default target is managed via the `default_target` parameter.  If this is left at its default value (`undef`), the default-target will be unmanaged by puppet.
-
-Systemd provides multiple services. Currently you can manage `systemd-resolved`,
-`systemd-timesyncd`, `systemd-networkd`, `systemd-journald`, `systemd-coredump`
-and `systemd-logind`
-via the main class:
-
-```puppet
-class { 'systemd':
-  manage_resolved  => true,
-  manage_networkd  => true,
-  manage_timesyncd => true,
-  manage_journald  => true,
-  manage_udevd     => true,
-  manage_logind    => true,
-  manage_coredump  => true,
-}
-```
-
-$manage_networkd is required if you want to reload it for new
-`systemd::network` resources. Setting $manage_resolved will also manage your
-`/etc/resolv.conf`.
-
-When configuring `systemd::resolved` you could set `use_stub_resolver` to false (default) to use a *standard* `/etc/resolved.conf`, or you could set it to `true` to use the local resolver provided by `systemd-resolved`.
-
-Systemd introduced `DNS Over TLS` in release 239. Currently three states are supported `yes` (since systemd 243), `opportunistic` (true) and `no` (false, default). When enabled with `yes` or `opportunistic` `systemd-resolved` will start a TCP-session to a DNS server with `DNS Over TLS` support. When enabled with `yes` (strict mode), queries will fail if the configured DNS servers do not support `DNS Over TLS`. Note that there will be no host checking for `DNS Over TLS` due to missing implementation in `systemd-resolved`.
-
-Stopping `systemd-resolved` once running can be problematic and care should be taken.
-
-```puppet
-class { 'systemd':
-  manage_resolved => true,
-  resolved_ensure => false,
-}
-```
-
-will stop the service and should also copy `/run/systemd/resolve/resolv.conf` to `/etc/resolve.conf`.
-
-- Writing your own file to `/etc/resolv.conf` is also possible.
-
-It is possible to configure the default ntp servers in `/etc/systemd/timesyncd.conf`:
-
-```puppet
-class { 'systemd':
-  manage_timesyncd    => true,
-  ntp_server          => ['0.pool.ntp.org', '1.pool.ntp.org'],
-  fallback_ntp_server => ['2.pool.ntp.org', '3.pool.ntp.org'],
-}
-```
-
-when `manage_systemd` is true any required sub package, e.g. `systemd-resolved` on CentOS 9 or Debian 12, will be installed. However configuration of
-systemd-resolved will only occur on second puppet run after that installation.
-
-This requires [puppetlabs-inifile](https://forge.puppet.com/puppetlabs/inifile), which is only a soft dependency in this module (you need to explicitly install it). Both parameters accept a string or an array.
-
-### Resource Accounting
-
-Systemd has support for different accounting option. It can track
-CPU/Memory/Network stats per process. This is explained in depth at [systemd-system.conf](https://www.freedesktop.org/software/systemd/man/systemd-system.conf.html).
-This defaults to off (default on most operating systems). You can enable this
-with the `$manage_accounting` parameter. The module provides a default set of
-working accounting options per operating system, but you can still modify them
-with `$accounting`:
-
-```puppet
-class { 'systemd':
-  manage_accounting => true,
-  accounting        => {
-    'DefaultCPUAccounting'    => 'yes',
-    'DefaultMemoryAccounting' => 'no',
-  }
-}
-```
-
-### User Services
-
-User services can be managed
-
-```puppet
-
-systemd::user_service { 'hour.service':
-  ensure => true,
-  enable => true,
-  user   => 'higgs',
-}
-```
-
-This will run `systemctl --user enable hour.service` and `systemctl --user start hour.service` as the user higgs.
-
-On Debian 12 and RHEL9 the `runuser` command is used for `systemd::user_service` which can be installed with
-the `runuser => true` parameter to the main class. Newer operating systems use `run0` which is always available with `systemd`.
-
-
-### journald configuration
-
-It also allows you to manage journald settings. You can manage journald settings through setting the `journald_settings` parameter. If you want a parameter to be removed, you can pass its value as params.
-
-```yaml
----
-systemd::journald_settings:
-  Storage: auto
-  MaxRetentionSec: 5day
-  MaxLevelStore:
-    ensure: absent
-```
-
-### udevd configuration
-
-It allows you to manage the udevd configuration.  You can set the udev.conf values via the `udev_log`, `udev_children_max`, `udev_exec_delay`, `udev_event_timeout`, `udev_resolve_names`, and `udev_timeout_signal` parameters.
-
-Additionally you can set custom udev rules with the `udev_rules` parameter.
-
-```puppet
-class { 'systemd':
-  manage_udevd => true,
-  udev_rules   => {
-    'example_raw.rules' => {
-      'rules' => [
-        'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"',
-        'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
-      ],
+  interface       => {
+    filename => '50-static',
+    network  => {
+      Match   => { Name => 'enp2s0' },
+      Network => { Address => '192.168.0.15/24' },
     },
+  },
+  network_profile => {
+    Network => { Gateway => '192.168.0.1' },
   },
 }
 ```
 
-With enabled `udev_reload` modified rules would be applied immediately by executing `udevadm control --reload-rules`.
+Many `/etc/systemd/networkd.conf` `[Network]` settings are also available
+directly on the main `systemd` class (for example `ipv4_forwarding`,
+`ipv6_forwarding`, and `manage_foreign_routes`).
 
-```yaml
+### systemd::user_service -- manage user services
+
+`systemd::user_service` acts on units under a `systemd --user` instance. Provide
+either a `user` or `global`:
+
+```puppet
+# Enable a service for one user:
+systemd::user_service { 'podman-auto-update.timer':
+  ensure => true,
+  enable => true,
+  user   => 'steve',
+}
+
+# Disable a service for all users:
+systemd::user_service { 'systemd-tmpfiles-clean.timer':
+  enable => false,
+  global => true,
+}
+```
+
+### systemd::purge_units -- remove unmanaged units
+
+When you remove a `systemd::manage_unit` definition, its file stays on disk by
+default. To remove the files that `systemd::manage_unit` previously wrote,
+enable purging. Only files whose first line is the `# Deployed with puppet`
+header are removed; hand-written units and enablement symlinks are never
+touched.
+
+```puppet
+include systemd::purge_units
+
+# Or, limited to custom paths, unit types, and without a daemon reload:
+class { 'systemd::purge_units':
+  paths         => ['/custom/path'],
+  unit_types    => ['service', 'timer'],
+  daemon_reload => false,
+}
+```
+
+Trigger it from Hiera with `systemd::purge_units => true`, or for finer control
+declare the `systemd_purge_units` type directly.
+
+### systemd::daemon_reload / systemd::daemon_reexec -- reload systemd
+
+When you need explicit control over the reload, use `systemd::daemon_reload`
+(for the system manager, or a `systemd --user` instance via `user =>`) and
+`systemd::daemon_reexec` (required for `system.conf`/`user.conf` changes):
+
+```puppet
+notify { 'fake change':
+  notify => Systemd::Daemon_reload['special'],
+}
+
+systemd::daemon_reload { 'special': }
+```
+
 ---
-systemd::udev_reload: true
-systemd::manage_udevd: true
-systemd::udev_rules:
-  50-md.rules:
-    rules:
-      - 'SUBSYSTEM=="block", KERNEL=="md*", ACTION=="change", TEST=="md/stripe_cache_size", ATTR{md/stripe_cache_size}="4096"'
-```
 
-### udev::rules configuration
+## Advanced configuration
 
-Custom udev rules can be defined for specific events.
+### Two ways to configure a daemon
 
-```yaml
-systemd::udev::rule:
-  ensure: present
-  path: /etc/udev/rules.d
-  selinux_ignore_defaults: false
-  notify: "Service[systemd-udevd]"
-  rules:
-    - 'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"'
-    - 'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"'
-```
+Each managed daemon can be configured in two complementary ways:
 
-### oomd configuration
+1. **The main config file** (for example `/etc/systemd/journald.conf`) is managed
+   through the class `*_settings` hash and `*_use_etc_conf` (for example
+   `journald_use_etc_conf`). This writes the file in place with `inifile`.
+2. **A `.d` drop-in** (for example
+   `/etc/systemd/journald.conf.d/10-custom.conf`) is managed through the
+   `systemd::<daemon>::manage_dropin` / `dropin_file` types described above.
 
-The `systemd-oomd` system can be configured.
+Both may coexist; systemd merges drop-ins on top of the main file. Prefer
+drop-ins when you want to layer small overrides, or when you need to remove a
+key another tool added (see the `ensure => 'absent'` value form).
 
-```puppet
-class { 'systemd':
-  manage_oomd   => true,
-  oomd_ensure   => 'running'
-  oomd_settings => {
-    'SwapUsedLimit'                    => '90%',
-    'DefaultMemoryPressureLimit'       => '60%',
-    'DefaultMemoryPressureDurationSec' => 30,
-  }
-}
-```
+### Daemon reload behaviour
 
-### coredump configuration
+systemd caches unit files, so configuration changes require a reload. Since
+Puppet 6.1.0 ([PUP-3483](https://tickets.puppetlabs.com/browse/PUP-3483)) the
+`service` resource calls
+`systemctl show <unit> --property=NeedDaemonReload` to decide whether a reload
+is needed, so most resources reload automatically.
 
-The `systemd-coredump` system can be configured.
+`system.conf`/`user.conf` changes need `daemon-reexec` (not just
+`daemon-reload`); the module performs it automatically whenever a
+`systemd::system::*` or `systemd::user::*` drop-in changes. Explicit control is
+available via `systemd::daemon_reload` and `systemd::daemon_reexec`.
+
+### systemd-escape on the agent
+
+`systemd::escape` escapes strings at catalog compile time, mirroring
+`systemd-escape` without spawning a command:
 
 ```puppet
-class { 'systemd':
-  manage_coredump    => true,
-  coredump_backtrace => true,
-  coredump_settings  => {
-    'Storage'         => 'external',
-    'Compress'        => 'yes',
-    'ProcessSizeMax'  => '2G',
-    'ExternalSizeMax' => '10G',
-    'JournalSizeMax'  => '20T',
-    'MaxUse'          => '1E',
-    'KeepFree'        => '1P',
-  }
-}
+systemd::escape('foo::bar/')   # 'foo::bar-'
+systemd::escape('/mnt/foobar', true)  # 'mnt-foobar' (path escaping)
 ```
 
-### logind configuration
-
-It also allows you to manage logind settings. You can manage logind settings through setting the `logind_settings` parameter. If you want a parameter to be removed, you can pass its value as params.
-
-```yaml
-systemd::logind_settings:
-  HandleSuspendKey: 'ignore'
-  KillUserProcesses: 'no'
-  RemoveIPC:
-    ensure: absent
-  UserTasksMax: 10000
-```
-
-### User linger
-
-A `loginctl_user` resource is available to manage user linger enablement:
-
-```puppet
-loginctl_user { 'foo':
-  linger => enabled,
-}
-```
-
-or as a hash via the `systemd::loginctl_users` parameter.
-
-### Systemd Escape Function
-
-Partially escape strings as `systemd-escape` command does.
-
-This functions only escapes a subset of chars. Non-ASCII character will not escape.
-
-```puppet
-$result = systemd::escape('foo::bar/')
-```
-
-`$result` would be `foo::bar-`
-
-or path escape as if with `-p` option.
-
-```puppet
-$result = systemd::escape('/mnt/foobar/', true)
-```
-
-`$result` would be `mnt-foobar`.
-
-### Systemd Escape Function (uses systemd-escape)
-
-Escape strings call the `systemd-escape` command in the background.
-
-It's highly recommend running the function as [deferred function](https://puppet.com/docs/puppet/6/deferring_functions.html) since it executes the command on the agent.
+`systemd::systemd_escape` runs the real `systemd-escape` on the agent, so it must
+be used as a deferred function:
 
 ```puppet
 $result = Deferred('systemd::systemd_escape', ["foo::bar"])
 ```
 
-`$result` would be `foo::bar-`
+### Query units with Bolt
 
-or path escape as if with `-p` option.
+The `systemd::systemctl_show` task returns structured output, unlike the plain
+`service` task:
 
 ```puppet
-$result = Deferred('systemd::systemd_escape', ["/mnt/foo-bar/", true])
-```
-
-`$result` would be `mnt-foo\x2dbar`.
-
-## Tasks
-
-### systemd::systemctl_show
-
-Returns more parseable output then the standard service task from bolt itself.
-
-Default property filter: `["ActiveState", "LoadState", "MainPID", "SubState", "UnitFileState"]`
-
-#### output of standard task from bolt
-
-```text
-bolt task run service name=puppet.service action=status -t controller-0
-
-Started on controller-0...
-Finished on controller-0:
-  {
-    "status": "MainPID=686,LoadState=loaded,ActiveState=active",
-    "enabled": "enabled"
-  }
-```
-
-#### output of systemd::systemctl_show
-
-```text
 bolt task run systemd::systemctl_show unit_name=puppet.service -t controller-0
 
-Started on controller-0...
-Finished on controller-0:
   {
     "MainPID": "686",
     "LoadState": "loaded",
@@ -754,10 +600,51 @@ Finished on controller-0:
   }
 ```
 
-## Transfer Notice
+---
 
-This plugin was originally authored by [Camptocamp](http://www.camptocamp.com).
-The maintainer preferred that Puppet Community take ownership of the module for future improvement and maintenance.
-Existing pull requests and issues were transferred over, please fork and continue to contribute here instead of Camptocamp.
+## Limitations and deprecations
 
-Previously: [https://github.com/camptocamp/puppet-systemd]
+- The `systemd` class is private in spirit: declare daemon state through its
+  `manage_*` parameters rather than including `systemd::journald`, etc. directly.
+- `systemd::service_limits` was removed; use `systemd::manage_dropin` with a
+  `service_entry` instead.
+- `systemd::unit_file` no longer accepts `ensure => file` or the
+  `hasrestart`/`hasstatus` parameters.
+- `systemd::systemd_escape` must be invoked as a deferred function.
+- Daemon `*_dropin` and `*_manage_dropin` resources require the matching
+  `manage_<daemon>` flag on the `systemd` class.
+- Setting `networkd_ensure => 'stopped'` may only be transient on systemd 260+
+  (a socket can restart the service almost immediately).
+- See [CHANGELOG.md](CHANGELOG.md) for the full list of changes per release.
+
+---
+
+## Development
+
+The full, machine-generated API reference is in
+[REFERENCE.md](REFERENCE.md), covering every class, defined type, resource type,
+function, data type, and the Bolt task, including all parameters and their
+defaults.
+
+Development follows the Vox Pupuli conventions shared across its modules:
+
+- Unit tests use rspec-puppet (`spec/`); run with `rake spec`.
+- Acceptance tests (`spec/acceptance`) provision nodes via
+  [voxpupuli-acceptance](https://github.com/voxpupuli/test) (Beaker-based).
+- CI runs on GitHub Actions (`.github/workflows/`).
+
+For the module's own metadata -- its dependencies, supported operating systems,
+and version requirements -- see
+[metadata.json](metadata.json).
+
+---
+
+## Support and authors
+
+For issues, feature requests, and documentation, see the project's home pages:
+
+- GitHub: https://github.com/voxpupuli/puppet-systemd
+- Puppet Forge: https://forge.puppet.com/puppet/systemd
+
+Authored and maintained by Vox Pupuli. See [LICENSE](LICENSE) for the
+Apache-2.0 terms.
