@@ -31,35 +31,37 @@ class systemd::timesyncd (
     enable => $_enable_timesyncd,
   }
 
-  if $ntp_server {
-    if $ntp_server =~ String {
-      $_ntp_server = $ntp_server
-    } else {
-      $_ntp_server = join($ntp_server, ' ')
+  if $systemd::timesyncd_use_etc_conf {
+    if $ntp_server {
+      if $ntp_server =~ String {
+        $_ntp_server = $ntp_server
+      } else {
+        $_ntp_server = join($ntp_server, ' ')
+      }
+      ini_setting { 'ntp_server':
+        ensure  => 'present',
+        value   => $_ntp_server,
+        setting => 'NTP',
+        section => 'Time',
+        path    => '/etc/systemd/timesyncd.conf',
+        notify  => Service['systemd-timesyncd'],
+      }
     }
-    ini_setting { 'ntp_server':
-      ensure  => 'present',
-      value   => $_ntp_server,
-      setting => 'NTP',
-      section => 'Time',
-      path    => '/etc/systemd/timesyncd.conf',
-      notify  => Service['systemd-timesyncd'],
-    }
-  }
 
-  if $fallback_ntp_server {
-    if $fallback_ntp_server =~ String {
-      $_fallback_ntp_server = $fallback_ntp_server
-    } else {
-      $_fallback_ntp_server = join($fallback_ntp_server, ' ')
-    }
-    ini_setting { 'fallback_ntp_server':
-      ensure  => 'present',
-      value   => $_fallback_ntp_server,
-      setting => 'FallbackNTP',
-      section => 'Time',
-      path    => '/etc/systemd/timesyncd.conf',
-      notify  => Service['systemd-timesyncd'],
+    if $fallback_ntp_server {
+      if $fallback_ntp_server =~ String {
+        $_fallback_ntp_server = $fallback_ntp_server
+      } else {
+        $_fallback_ntp_server = join($fallback_ntp_server, ' ')
+      }
+      ini_setting { 'fallback_ntp_server':
+        ensure  => 'present',
+        value   => $_fallback_ntp_server,
+        setting => 'FallbackNTP',
+        section => 'Time',
+        path    => '/etc/systemd/timesyncd.conf',
+        notify  => Service['systemd-timesyncd'],
+      }
     }
   }
 }

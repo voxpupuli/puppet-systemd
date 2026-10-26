@@ -40,6 +40,7 @@ define systemd::journald::dropin_file (
         ensure                  => 'directory',
         owner                   => 'root',
         group                   => 'root',
+        mode                    => '0755',
         recurse                 => $systemd::journald_purge_dropin_dirs,
         purge                   => $systemd::journald_purge_dropin_dirs,
         selinux_ignore_defaults => $selinux_ignore_defaults,

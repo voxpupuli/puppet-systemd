@@ -22,6 +22,9 @@ describe 'systemd::dropin_file' do
         it {
           expect(subject).to create_file("/etc/systemd/system/#{params[:unit]}.d").with(
             ensure: 'directory',
+            owner: 'root',
+            group: 'root',
+            mode: '0755',
             recurse: 'true',
             purge: 'true',
             selinux_ignore_defaults: false,

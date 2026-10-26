@@ -4,13 +4,15 @@
 class systemd::coredump {
   assert_private()
 
-  $systemd::coredump_settings.each |$option, $value| {
-    ini_setting {
-      "coredump_${option}":
-        path    => '/etc/systemd/coredump.conf',
-        section => 'Coredump',
-        setting => $option,
-        value   => $value,
+  if $systemd::coredump_use_etc_conf {
+    $systemd::coredump_settings.each |$option, $value| {
+      ini_setting {
+        "coredump_${option}":
+          path    => '/etc/systemd/coredump.conf',
+          section => 'Coredump',
+          setting => $option,
+          value   => $value,
+      }
     }
   }
 

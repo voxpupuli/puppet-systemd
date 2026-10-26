@@ -3,13 +3,13 @@
 #
 type Systemd::CoredumpSettings = Struct[
   {
-    Optional['Storage']         => Enum['none', 'external', 'journal'],
-    Optional['Compress']        => Enum['yes','no'],
-    Optional['ProcessSizeMax']  => Systemd::Unit::Amount,
-    Optional['ExternalSizeMax'] => Systemd::Unit::Amount,
-    Optional['EnterNamespace']  => Enum['yes','no'],
-    Optional['JournalSizeMax']  => Systemd::Unit::Amount,
-    Optional['MaxUse']          => Systemd::Unit::Amount,
-    Optional['KeepFree']        => Systemd::Unit::Amount,
+    Optional['Storage']         => Variant[Enum['none', 'external', 'journal'], Systemd::SettingEnsure],
+    Optional['Compress']        => Variant[Enum['yes','no'], Systemd::SettingEnsure],
+    Optional['ProcessSizeMax']  => Variant[Systemd::Unit::Amount, Systemd::SettingEnsure],
+    Optional['ExternalSizeMax'] => Variant[Systemd::Unit::Amount, Systemd::SettingEnsure],
+    Optional['EnterNamespace']  => Variant[Enum['yes','no'], Systemd::SettingEnsure],
+    Optional['JournalSizeMax']  => Variant[Systemd::Unit::Amount, Systemd::SettingEnsure],
+    Optional['MaxUse']          => Variant[Systemd::Unit::Amount, Systemd::SettingEnsure],
+    Optional['KeepFree']        => Variant[Systemd::Unit::Amount, Systemd::SettingEnsure],
   }
 ]
