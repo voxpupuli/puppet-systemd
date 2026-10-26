@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v11.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v11.0.0) (2026-10-26)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v10.3.0...v11.0.0)
+
+**Breaking changes:**
+
+- Make general purpose ".d" service configs with strong types and new templates [\#646](https://github.com/voxpupuli/puppet-systemd/pull/646) ([jcpunk](https://github.com/jcpunk))
+
+**Merged pull requests:**
+
+- Correct `LimitCORE` example to use `service_entry` [\#668](https://github.com/voxpupuli/puppet-systemd/pull/668) ([m0dular](https://github.com/m0dular))
+
 ## [v10.3.0](https://github.com/voxpupuli/puppet-systemd/tree/v10.3.0) (2026-10-14)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v10.2.0...v10.3.0)
