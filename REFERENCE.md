@@ -203,6 +203,8 @@
 * [`Systemd::Unit::Amount`](#Systemd--Unit--Amount): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::AmountOrPercent`](#Systemd--Unit--AmountOrPercent): Systemd definition of amount, often bytes or united bytes
 * [`Systemd::Unit::Automount`](#Systemd--Unit--Automount): Possible keys for the [Automount] section of a unit file
+* [`Systemd::Unit::Controller`](#Systemd--Unit--Controller): A cgroup controller name that can be delegated via Delegate=
+* [`Systemd::Unit::ControllerList`](#Systemd--Unit--ControllerList): One or more cgroup controllers, as an array or space-separated string
 * [`Systemd::Unit::Install`](#Systemd--Unit--Install): Possible keys for the [Install] section of a unit file
 * [`Systemd::Unit::Manager`](#Systemd--Unit--Manager): Possible keys for the [Manager] section of a system.conf/user.conf drop-in file
 * [`Systemd::Unit::Mount`](#Systemd--Unit--Mount): Possible keys for the [Mount] section of a unit file
@@ -8381,6 +8383,24 @@ Struct[{
   }]
 ```
 
+### <a name="Systemd--Unit--Controller"></a>`Systemd::Unit::Controller`
+
+A cgroup controller name that can be delegated via Delegate=
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html
+
+Alias of `Enum['cpu', 'cpuset', 'io', 'memory', 'pids', 'bpf-firewall', 'bpf-devices', 'bpf-foreign', 'bpf-socket-bind', 'bpf-restrict-network-interfaces', 'bpf-bind-network-interface']`
+
+### <a name="Systemd--Unit--ControllerList"></a>`Systemd::Unit::ControllerList`
+
+One or more cgroup controllers, as an array or space-separated string
+
+* **See also**
+  * https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html
+
+Alias of `Variant[Systemd::Unit::Controller, Array[Systemd::Unit::Controller], Pattern[/\A(?:cpu|cpuset|io|memory|pids|bpf-firewall|bpf-devices|bpf-foreign|bpf-socket-bind|bpf-restrict-network-interfaces|bpf-bind-network-interface)(?:[ \t]+(?:cpu|cpuset|io|memory|pids|bpf-firewall|bpf-devices|bpf-foreign|bpf-socket-bind|bpf-restrict-network-interfaces|bpf-bind-network-interface))*\z/]]`
+
 ### <a name="Systemd--Unit--Install"></a>`Systemd::Unit::Install`
 
 Possible keys for the [Install] section of a unit file
@@ -8509,7 +8529,7 @@ Struct[{
     Optional['AllowedCPUs']         => Pattern[/^\d+(-\d+)?(,\d+(-\d+)?)*$/],
     Optional['CPUQuota']            => Optional[Pattern['^([1-9][0-9]*)%$']], # bigger than 100% is okay.
     Optional['CPUWeight']           => Variant[Enum['idle'],Integer[1,10000]],
-    Optional['Delegate']            => Boolean,
+    Optional['Delegate']            => Variant[Boolean, Systemd::Unit::ControllerList],
     Optional['DeviceAllow']         => Pattern['^(/dev/)|(char-)|(block-).*$'],
     Optional['DevicePolicy']        => Enum['auto','closed','strict'],
     Optional['IOAccounting']        => Boolean,
@@ -8839,7 +8859,7 @@ Struct[{
     Optional['AllowedCPUs']               => Pattern[/^\d+(-\d+)?(,\d+(-\d+)?)*$/],
     Optional['CPUQuota']                  => Optional[Pattern['^([1-9][0-9]*)%$']], # bigger than 100% is okay.
     Optional['CPUWeight']                 => Variant[Enum['idle'],Integer[1,10000]],
-    Optional['Delegate']                  => Boolean,
+    Optional['Delegate']                  => Variant[Boolean, Systemd::Unit::ControllerList],
     Optional['DeviceAllow']               => Pattern['^(/dev/)|(char-)|(block-).*$'],
     Optional['DevicePolicy']              => Enum['auto','closed','strict'],
     Optional['IOAccounting']              => Boolean,
@@ -8900,7 +8920,7 @@ Struct[{
     Optional['CPUWeight']           => Variant[Enum['idle'],Integer[1,10000]],
     Optional['DeviceAllow']         => Pattern['^(/dev/)|(char-)|(block-).*$'],
     Optional['DevicePolicy']        => Enum['auto','closed','strict'],
-    Optional['Delegate']            => Boolean,
+    Optional['Delegate']            => Variant[Boolean, Systemd::Unit::ControllerList],
     Optional['IOAccounting']        => Boolean,
     Optional['IODeviceWeight']      => Variant[Tuple[Stdlib::Absolutepath, Integer[1,10000]],Array[Tuple[Stdlib::Absolutepath, Integer[1,10000]]]],
     Optional['IOReadBandwidthMax']  => Variant[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount],Array[Tuple[Stdlib::Absolutepath, Systemd::Unit::Amount]]],
@@ -9005,7 +9025,7 @@ Struct[{
     Optional['AllowedCPUs']         => Pattern[/^\d+(-\d+)?(,\d+(-\d+)?)*$/],
     Optional['CPUQuota']            => Optional[Pattern['^([1-9][0-9]*)%$']], # bigger than 100% is okay.
     Optional['CPUWeight']           => Variant[Enum['idle'],Integer[1,10000]],
-    Optional['Delegate']            => Boolean,
+    Optional['Delegate']            => Variant[Boolean, Systemd::Unit::ControllerList],
     Optional['DeviceAllow']         => Pattern['^(/dev/)|(char-)|(block-).*$'],
     Optional['DevicePolicy']        => Enum['auto','closed','strict'],
     Optional['IOAccounting']        => Boolean,

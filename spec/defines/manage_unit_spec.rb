@@ -109,6 +109,41 @@ describe 'systemd::manage_unit' do
           end
         end
 
+        context 'with Delegate as an array of controllers' do
+          let(:params) do
+            {
+              service_entry: {
+                'Delegate' => %w[cpu memory],
+              },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__unit_file('foobar.service')
+              .with_content(%r{^Delegate=cpu$})
+              .with_content(%r{^Delegate=memory$})
+          }
+        end
+
+        context 'with Delegate as a space-separated string' do
+          let(:params) do
+            {
+              service_entry: {
+                'Delegate' => 'cpu memory',
+              },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it {
+            is_expected.to contain_systemd__unit_file('foobar.service')
+              .with_content(%r{^Delegate=cpu memory$})
+          }
+        end
+
         context 'on an automount' do
           let(:title) { 'some-dir.automount' }
 
