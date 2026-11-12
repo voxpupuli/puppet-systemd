@@ -9,6 +9,7 @@
 #### Public Classes
 
 * [`systemd`](#systemd): This module allows triggering systemd commands once for all modules
+* [`systemd::mail_on_failure`](#systemd--mail_on_failure): mail on systemd units failing  This class manages a set of scripts that helps to send out emails of failing units. It prepares a unit templat
 * [`systemd::purge_units`](#systemd--purge_units): Purges previously managed `systemd::manage_unit` units
 * [`systemd::sysusers`](#systemd--sysusers): Prepare systemd sysusers files
 * [`systemd::tmpfiles`](#systemd--tmpfiles): Update the systemd temp files
@@ -1286,6 +1287,42 @@ Data type: `Boolean`
 If true, the util-linux package is installed, for runuser command.
 
 Default value: `false`
+
+### <a name="systemd--mail_on_failure"></a>`systemd::mail_on_failure`
+
+mail on systemd units failing
+
+This class manages a set of scripts that helps to
+send out emails of failing units.
+It prepares a unit template that can then be referenced
+in units via OnFailure=status_email_USER@%n.service
+
+Email sending is handed over to sendmail and expected to
+be allowed for user nobody.
+
+This is helpful to monitor failing systemd.timers in a cron-like
+MAILTO style reporting.
+See https://wiki.archlinux.org/index.php/Systemd/Timers#MAILTO
+for background and implementation details.
+
+#### Parameters
+
+The following parameters are available in the `systemd::mail_on_failure` class:
+
+* [`email_users`](#-systemd--mail_on_failure--email_users)
+
+##### <a name="-systemd--mail_on_failure--email_users"></a>`email_users`
+
+Data type: `Array[String[1]]`
+
+Users to prepare a template unit for.
+By default this class prepares a template for root.
+Besides local users you can also define an email address.
+Due to the naming restrictionsof systemd units, the `@` in the template name
+will be replaced with `_AT_` and `ALIAS@DOMAIN` will get a unit called:
+`status_email_ALIAS_AT_DOMAIN@%n.service`
+
+Default value: `['root']`
 
 ### <a name="systemd--purge_units"></a>`systemd::purge_units`
 
