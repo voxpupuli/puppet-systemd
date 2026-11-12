@@ -134,7 +134,15 @@ shared_examples_for 'systemd_resource_control' do
   context 'Delegate=' do
     it { is_expected.to allow_value({ 'Delegate' => true }) }
     it { is_expected.to allow_value({ 'Delegate' => false }) }
+    it { is_expected.to allow_value({ 'Delegate' => 'cpu' }) }
+    it { is_expected.to allow_value({ 'Delegate' => 'cpu memory' }) }
+    it { is_expected.to allow_value({ 'Delegate' => %w[cpu memory pids] }) }
+
     it { is_expected.not_to allow_value({ 'Delegate' => 'yes' }) }
+    it { is_expected.not_to allow_value({ 'Delegate' => '' }) }
+    it { is_expected.not_to allow_value({ 'Delegate' => 'CPU' }) }
+    it { is_expected.not_to allow_value({ 'Delegate' => 'cpu nope' }) }
+    it { is_expected.not_to allow_value({ 'Delegate' => ['cpu', 'not-a-controller'] }) }
   end
 
   # === Task limits ===
