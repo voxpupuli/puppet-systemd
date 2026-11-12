@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v11.1.0](https://github.com/voxpupuli/puppet-systemd/tree/v11.1.0) (2026-11-12)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v11.0.0...v11.1.0)
+
+**Implemented enhancements:**
+
+- \[FEATURE\] Add `LOCATION` and `ENVIRONMENT` from `/etc/machine-info` [\#553](https://github.com/voxpupuli/puppet-systemd/issues/553)
+- Add support for all controller names in Delegate= [\#678](https://github.com/voxpupuli/puppet-systemd/pull/678) ([kbcz1989](https://github.com/kbcz1989))
+- Allow systemd specifiers in unit paths [\#674](https://github.com/voxpupuli/puppet-systemd/pull/674) ([bwitt](https://github.com/bwitt))
+
+**Fixed bugs:**
+
+- systemd::user\_service broken for background puppet on EL10 [\#664](https://github.com/voxpupuli/puppet-systemd/issues/664)
+- `loginctl_user` completes before `systemd --user` is really ready [\#578](https://github.com/voxpupuli/puppet-systemd/issues/578)
+- The systemd\_machine\_info TAGS is not a toplevel key. [\#676](https://github.com/voxpupuli/puppet-systemd/pull/676) ([jcpunk](https://github.com/jcpunk))
+- Wait for `systemd --user` instance to be ready when using linger [\#604](https://github.com/voxpupuli/puppet-systemd/pull/604) ([bwitt](https://github.com/bwitt))
+
+**Closed issues:**
+
+- Allow systemd unit specifiers in path values [\#478](https://github.com/voxpupuli/puppet-systemd/issues/478)
+
+**Merged pull requests:**
+
+- Add acceptance tests for `unit_file`, `timer`, and `dropin_file` [\#673](https://github.com/voxpupuli/puppet-systemd/pull/673) ([bwitt](https://github.com/bwitt))
+- Update README.md [\#672](https://github.com/voxpupuli/puppet-systemd/pull/672) ([jcpunk](https://github.com/jcpunk))
+
 ## [v11.0.0](https://github.com/voxpupuli/puppet-systemd/tree/v11.0.0) (2026-10-26)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-systemd/compare/v10.3.0...v11.0.0)
