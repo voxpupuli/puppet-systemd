@@ -1,0 +1,16 @@
+<%| String[1] $user,
+|%>
+# THIS FILE IS MANAGED BY PUPPET
+[Unit]
+Description=Status email for %i to <%= $user %>
+
+[Service]
+Type=oneshot
+<% if $user =~ /@/ {
+  $user_email = $user
+} else {
+  $user_email = "${user}@%H"
+} -%>
+ExecStart=/usr/local/bin/systemd-email <%= $user_email %> %i
+User=nobody
+Group=systemd-journal

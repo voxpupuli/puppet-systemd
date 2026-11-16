@@ -1,0 +1,14 @@
+#!/bin/sh
+# THIS FILE IS MANAGED BY PUPPET
+
+HOSTNAME="${HOSTNAME:-$(uname -n)}"
+
+sendmail -t <<ERRMAIL
+To: $1
+From: systemd <root@$HOSTNAME>
+Subject: $2 on $HOSTNAME
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+
+$(systemctl status --full "$2")
+ERRMAIL
