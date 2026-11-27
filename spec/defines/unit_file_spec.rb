@@ -77,6 +77,40 @@ describe 'systemd::unit_file' do
           it { is_expected.to compile.and_raise_error(%r{expects a match for Systemd::Unit}) }
         end
 
+        context 'with a bad unit parameter' do
+          let(:title) { 'anything' }
+          let(:params) { { unit: 'test.badtype' } }
+
+          it { is_expected.to compile.and_raise_error(%r{expects a match for Systemd::Unit}) }
+        end
+
+        context 'with unit differing from title' do
+          let(:title) { 'test in usr' }
+          let(:params) { { unit: 'test.service', path: '/usr/lib/systemd/system', enable: false, active: false } }
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            expect(subject).to contain_file('/usr/lib/systemd/system/test.service')
+              .that_notifies("Systemd::Daemon_reload[#{title}]")
+              .that_notifies('Service[test.service]')
+          end
+
+          it { is_expected.to contain_service('test.service').with_enable(false).with_ensure(false) }
+        end
+
+        context 'with the same unit absent in two paths' do
+          let(:title) { 'test in usr' }
+          let(:params) { { ensure: 'absent', unit: 'test.service', path: '/usr/lib/systemd/system' } }
+          let(:pre_condition) { "systemd::unit_file { 'test.service': ensure => absent }" }
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_file('/etc/systemd/system/test.service').with_ensure('absent') }
+          it { is_expected.to contain_file('/usr/lib/systemd/system/test.service').with_ensure('absent') }
+          it { is_expected.to contain_systemd__daemon_reload('test.service') }
+          it { is_expected.to contain_systemd__daemon_reload(title) }
+        end
+
         context 'with enable => true and active => true' do
           let(:params) do
             super().merge(

@@ -4996,11 +4996,22 @@ systemd::unit_file { 'foo.service':
 }
 ```
 
+##### remove the same unit file from two paths
+
+```puppet
+systemd::unit_file { 'foo.service': ensure => absent }
+systemd::unit_file { 'foo.service in /usr':
+  ensure => absent,
+  unit   => 'foo.service',
+  path   => '/usr/lib/systemd/system',
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `systemd::unit_file` defined type:
 
-* [`name`](#-systemd--unit_file--name)
+* [`unit`](#-systemd--unit_file--unit)
 * [`ensure`](#-systemd--unit_file--ensure)
 * [`path`](#-systemd--unit_file--path)
 * [`content`](#-systemd--unit_file--content)
@@ -5018,11 +5029,13 @@ The following parameters are available in the `systemd::unit_file` defined type:
 * [`daemon_reload`](#-systemd--unit_file--daemon_reload)
 * [`service_restart`](#-systemd--unit_file--service_restart)
 
-##### <a name="-systemd--unit_file--name"></a>`name`
+##### <a name="-systemd--unit_file--unit"></a>`unit`
 
-Data type: `Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']`
+Data type: `Systemd::Unit`
 
-The target unit file to create
+The actual name of the unit file to manage. Defaults to the resource title.
+
+Default value: `$name`
 
 ##### <a name="-systemd--unit_file--ensure"></a>`ensure`
 
@@ -5046,7 +5059,7 @@ Data type: `Optional[Variant[String, Sensitive[String], Deferred]]`
 
 The full content of the unit file
 
-* Mutually exclusive with ``$source``
+* Mutually exclusive with `$source`
 
 Default value: `undef`
 
@@ -5054,9 +5067,9 @@ Default value: `undef`
 
 Data type: `Optional[String]`
 
-The ``File`` resource compatible ``source``
+The `File` resource compatible `source`
 
-* Mutually exclusive with ``$content``
+* Mutually exclusive with `$content`
 
 Default value: `undef`
 
@@ -5066,7 +5079,7 @@ Data type: `Optional[Stdlib::Absolutepath]`
 
 If set, will force the file to be a symlink to the given target
 
-* Mutually exclusive with both ``$source`` and ``$content``
+* Mutually exclusive with both `$source` and `$content`
 
 Default value: `undef`
 

@@ -4,8 +4,8 @@
 #
 # @see systemd.unit(5)
 #
-# @param name [Pattern['^[^/]+\.(service|socket|device|mount|automount|swap|target|path|timer|slice|scope)$']]
-#   The target unit file to create
+# @param unit
+#   The actual name of the unit file to manage. Defaults to the resource title.
 #
 # @param ensure
 #   The state of the unit file to ensure
@@ -16,17 +16,17 @@
 # @param content
 #   The full content of the unit file
 #
-#   * Mutually exclusive with ``$source``
+#   * Mutually exclusive with `$source`
 #
 # @param source
-#   The ``File`` resource compatible ``source``
+#   The `File` resource compatible `source`
 #
-#   * Mutually exclusive with ``$content``
+#   * Mutually exclusive with `$content`
 #
 # @param target
 #   If set, will force the file to be a symlink to the given target
 #
-#   * Mutually exclusive with both ``$source`` and ``$content``
+#   * Mutually exclusive with both `$source` and `$content`
 #
 # @param owner
 #   The owner to set on the unit file
@@ -68,7 +68,16 @@
 #     active  => true,
 #   }
 #
+# @example remove the same unit file from two paths
+#   systemd::unit_file { 'foo.service': ensure => absent }
+#   systemd::unit_file { 'foo.service in /usr':
+#     ensure => absent,
+#     unit   => 'foo.service',
+#     path   => '/usr/lib/systemd/system',
+#   }
+#
 define systemd::unit_file (
+  Systemd::Unit                            $unit      = $name,
   Enum['present', 'absent']                $ensure    = 'present',
   Stdlib::Absolutepath                     $path      = '/etc/systemd/system',
   Optional[Variant[String, Sensitive[String], Deferred]] $content = undef,
@@ -88,8 +97,6 @@ define systemd::unit_file (
 ) {
   include systemd
 
-  assert_type(Systemd::Unit, $name)
-
   if $enable == 'mask' {
     $_target = '/dev/null'
     $_content = undef
@@ -106,7 +113,7 @@ define systemd::unit_file (
     $_ensure = stdlib::ensure($ensure, 'file')
   }
 
-  file { "${path}/${name}":
+  file { "${path}/${unit}":
     ensure                  => $_ensure,
     content                 => $_content,
     source                  => $_source,
@@ -121,11 +128,11 @@ define systemd::unit_file (
   if $daemon_reload {
     ensure_resource('systemd::daemon_reload', $name)
 
-    File["${path}/${name}"] ~> Systemd::Daemon_reload[$name]
+    File["${path}/${unit}"] ~> Systemd::Daemon_reload[$name]
   }
 
   if $enable != undef or $active != undef {
-    service { $name:
+    service { $unit:
       ensure   => $active,
       enable   => $enable,
       restart  => $restart,
@@ -137,12 +144,12 @@ define systemd::unit_file (
       if $enable or $active {
         fail("Can't ensure the unit file is absent and activate/enable the service at the same time")
       }
-      Service[$name] -> File["${path}/${name}"]
+      Service[$unit] -> File["${path}/${unit}"]
     } elsif $service_restart {
-      File["${path}/${name}"] ~> Service[$name]
+      File["${path}/${unit}"] ~> Service[$unit]
 
       if $daemon_reload {
-        Systemd::Daemon_reload[$name] ~> Service[$name]
+        Systemd::Daemon_reload[$name] ~> Service[$unit]
       }
     }
   }
